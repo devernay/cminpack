@@ -3,12 +3,12 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <cminpack.h>
+#include <minpack.h>
 
-/* Subroutine */ void lmstr1(void (*fcn)(int m, int n, const double *x, double *fvec,
-			   double *fjrow, int *iflag ), int m, int n, double *x, 
-	double *fvec, double *fjac, int ldfjac, double tol, 
-	int *info, int *ipvt, double *wa, int lwa)
+/* Subroutine */ void lmstr1_(void (*fcn)(const int *m, const int *n, const double *x, double *fvec,
+			   double *fjrow, int *iflag ), const int *m, const int *n, double *x, 
+	double *fvec, double *fjac, const int *ldfjac, const double *tol, 
+	int *info, int *ipvt, double *wa, const int *lwa)
 {
     /* Initialized data */
 
@@ -147,7 +147,7 @@
     --fvec;
     --ipvt;
     --x;
-    fjac_dim1 = ldfjac;
+    fjac_dim1 = *ldfjac;
     fjac_offset = 1 + fjac_dim1 * 1;
     fjac -= fjac_offset;
     --wa;
@@ -157,7 +157,7 @@
 
 /*     check the input parameters for errors. */
 
-    if (n <= 0 || m < n || ldfjac < n || tol < 0. || lwa < n * 5 +
+    if (*n <= 0 || *m < *n || *ldfjac < *n || *tol < 0. || *lwa < *n * 5 + *
 	    m) {
 	/* goto L10; */
         return;
@@ -165,16 +165,16 @@
 
 /*     call lmstr. */
 
-    maxfev = (n + 1) * 100;
-    ftol = tol;
-    xtol = tol;
+    maxfev = (*n + 1) * 100;
+    ftol = *tol;
+    xtol = *tol;
     gtol = 0.;
     mode = 1;
     nprint = 0;
-    lmstr(fcn, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac,
-	    ftol, xtol, gtol, maxfev, &wa[1], mode, factor, nprint, 
-	    info, &nfev, &njev, &ipvt[1], &wa[n + 1], &wa[(n << 1) + 1], &
-	    wa[n * 3 + 1], &wa[(n << 2) + 1], &wa[n * 5 + 1]);
+    lmstr_(fcn, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &
+	    ftol, &xtol, &gtol, &maxfev, &wa[1], &mode, &factor, &nprint, 
+	    info, &nfev, &njev, &ipvt[1], &wa[*n + 1], &wa[(*n << 1) + 1], &
+	    wa[*n * 3 + 1], &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);
     if (*info == 8) {
 	*info = 4;
     }

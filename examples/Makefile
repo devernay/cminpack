@@ -7,10 +7,15 @@ F77=gfortran
 # uncomment the following for FORTRAN MINPACK
 #MINPACK=-lminpack
 #F77C=$(F77)
+#F77CFLAGS=-g
 
 # uncomment the following for C MINPACK
 MINPACK=../libminpack.a
-F77C=gcc -I..
+F77C=gcc
+F77CFLAGS=-I .. -g
+
+# uncomment the following to debug using valgrind
+#VALGRIND=valgrind --tool=memcheck
 
 # Execute this script to extract the examples from the MINPACK
 # documentation (/usr/share/doc/minpack-devel-19961126/minpack-documentation.txt)
@@ -29,10 +34,10 @@ CSRC=tchkder.c thybrd.c thybrd1.c thybrj.c thybrj1.c tlmder.c tlmder1.c \
 all: ctest ftest
 
 ctest: ${CPGM}
-	for x in ${CPGM}; do echo $$x; ./$$x; done
+	for x in ${CPGM}; do echo $$x; $(VALGRIND) ./$$x; done
 
 ftest: ${PGM} 
-	for x in ${PGM}; do echo $$x; ./$$x; done
+	for x in ${PGM}; do echo $$x; $(VALGRIND) ./$$x; done
 
 clean:
 	-rm $(PGM) $(CPGM) $(SRC)
@@ -77,24 +82,24 @@ tlmstr1: tlmstr1.f
 	$(F77) -o $@ $< $(MINPACK)
 
 tcchkder: tchkder.c					
-	$(F77C) -o $@ $< $(MINPACK) -lm
+	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
 tchybrd: thybrd.c					
-	$(F77C) -o $@ $< $(MINPACK) -lm
+	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
 tchybrd1: thybrd1.c					
-	$(F77C) -o $@ $< $(MINPACK) -lm
+	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
 tchybrj: thybrj.c					
-	$(F77C) -o $@ $< $(MINPACK) -lm
+	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
 tchybrj1: thybrj1.c					
-	$(F77C) -o $@ $< $(MINPACK) -lm
+	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
 tclmder: tlmder.c					
-	$(F77C) -o $@ $< $(MINPACK) -lm
+	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
 tclmder1: tlmder1.c					
-	$(F77C) -o $@ $< $(MINPACK) -lm
+	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
 tclmdif: tlmdif.c
-	$(F77C) -o $@ $< $(MINPACK) -lm
+	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
 tclmdif1: tlmdif1.c
-	$(F77C) -o $@ $< $(MINPACK) -lm
+	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
 tclmstr: tlmstr.c
-	$(F77C) -o $@ $< $(MINPACK) -lm
+	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
 tclmstr1: tlmstr1.c
-	$(F77C) -o $@ $< $(MINPACK) -lm
+	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm

@@ -4,10 +4,10 @@
 */
 
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-double enorm(int n, const double *x)
+double enorm_(const int *n, const double *x)
 {
     /* Initialized data */
 
@@ -68,9 +68,9 @@ double enorm(int n, const double *x)
     s3 = 0.;
     x1max = 0.;
     x3max = 0.;
-    floatn = (double) (n);
+    floatn = (double) (*n);
     agiant = rgiant / floatn;
-    i__1 = n;
+    i__1 = *n;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	xabs = (d__1 = x[i__], abs(d__1));
 	if (xabs > rdwarf && xabs < agiant) {

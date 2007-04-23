@@ -3,12 +3,12 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <cminpack.h>
+#include <minpack.h>
 
-/* Subroutine */ void hybrj1(void (*fcn)(int n, const double *x, double *fvec, double *fjec,
-			   int ldfjac, int *iflag ), int n, double *x, double *
-	fvec, double *fjac, int ldfjac, double tol, int *
-	info, double *wa, int lwa)
+/* Subroutine */ void hybrj1_(void (*fcn)(const int *n, const double *x, double *fvec, double *fjec,
+			   const int *ldfjac, int *iflag ), const int *n, double *x, double *
+	fvec, double *fjac, const int *ldfjac, const double *tol, int *
+	info, double *wa, const int *lwa)
 {
     /* Initialized data */
 
@@ -117,7 +117,7 @@
     /* Parameter adjustments */
     --fvec;
     --x;
-    fjac_dim1 = ldfjac;
+    fjac_dim1 = *ldfjac;
     fjac_offset = 1 + fjac_dim1 * 1;
     fjac -= fjac_offset;
     --wa;
@@ -127,27 +127,27 @@
 
 /*     check the input parameters for errors. */
 
-    if (n <= 0 || ldfjac < n || tol < 0. || lwa < n * (n + 13) / 2) {
+    if (*n <= 0 || *ldfjac < *n || *tol < 0. || *lwa < *n * (*n + 13) / 2) {
 	/* goto L20; */
         return;
     }
 
 /*     call hybrj. */
 
-    maxfev = (n + 1) * 100;
-    xtol = tol;
+    maxfev = (*n + 1) * 100;
+    xtol = *tol;
     mode = 2;
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	wa[j] = 1.;
 /* L10: */
     }
     nprint = 0;
-    lr = n * (n + 1) / 2;
-    hybrj(fcn, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, xtol,
-	    maxfev, &wa[1], mode, factor, nprint, info, &nfev, &njev, &wa[
-	    n * 6 + 1], lr, &wa[n + 1], &wa[(n << 1) + 1], &wa[n * 3 + 1],
-	     &wa[(n << 2) + 1], &wa[n * 5 + 1]);
+    lr = *n * (*n + 1) / 2;
+    hybrj_(fcn, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &xtol, &
+	    maxfev, &wa[1], &mode, &factor, &nprint, info, &nfev, &njev, &wa[*
+	    n * 6 + 1], &lr, &wa[*n + 1], &wa[(*n << 1) + 1], &wa[*n * 3 + 1],
+	     &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);
     if (*info == 5) {
 	*info = 4;
     }

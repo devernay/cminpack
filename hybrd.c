@@ -3,65 +3,47 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <f2c.h>
+#include <cminpack.h>
+#define min(a,b) ((a) <= (b) ? (a) : (b))
+#define max(a,b) ((a) >= (b) ? (a) : (b))
+#define abs(x) ((x) >= 0 ? (x) : -(x))
+#define TRUE_ (1)
+#define FALSE_ (0)
 
-/* Table of constant values */
-
-static integer c__1 = 1;
-static logical c_false = FALSE_;
-
-/* Subroutine */ int hybrd_(S_fp fcn, integer *n, doublereal *x, doublereal *
-	fvec, doublereal *xtol, integer *maxfev, integer *ml, integer *mu, 
-	doublereal *epsfcn, doublereal *diag, integer *mode, doublereal *
-	factor, integer *nprint, integer *info, integer *nfev, doublereal *
-	fjac, integer *ldfjac, doublereal *r__, integer *lr, doublereal *qtf, 
-	doublereal *wa1, doublereal *wa2, doublereal *wa3, doublereal *wa4)
+/* Subroutine */ void hybrd(void (*fcn)(int n, const double *x, double *fvec, int *iflag ), int n, double *x, double *
+	fvec, double xtol, int maxfev, int ml, int mu, 
+	double epsfcn, double *diag, int mode, double
+	factor, int nprint, int *info, int *nfev, double *
+	fjac, int ldfjac, double *r__, int lr, double *qtf, 
+	double *wa1, double *wa2, double *wa3, double *wa4)
 {
     /* Initialized data */
 
-    static doublereal one = 1.;
-    static doublereal p1 = .1;
-    static doublereal p5 = .5;
-    static doublereal p001 = .001;
-    static doublereal p0001 = 1e-4;
-    static doublereal zero = 0.;
+#define p1 .1
+#define p5 .5
+#define p001 .001
+#define p0001 1e-4
 
     /* System generated locals */
-    integer fjac_dim1, fjac_offset, i__1, i__2;
-    doublereal d__1, d__2;
+    int fjac_dim1, fjac_offset, i__1, i__2;
+    double d__1, d__2;
 
     /* Local variables */
-    static integer i__, j, l, jm1, iwa[1];
-    static doublereal sum;
-    static logical sing;
-    static integer iter;
-    static doublereal temp;
-    static integer msum, iflag;
-    static doublereal delta;
-    extern /* Subroutine */ int qrfac_(integer *, integer *, doublereal *, 
-	    integer *, logical *, integer *, integer *, doublereal *, 
-	    doublereal *, doublereal *);
-    static logical jeval;
-    static integer ncsuc;
-    static doublereal ratio;
-    extern doublereal enorm_(integer *, doublereal *);
-    static doublereal fnorm;
-    extern /* Subroutine */ int qform_(integer *, integer *, doublereal *, 
-	    integer *, doublereal *), fdjac1_(S_fp, integer *, doublereal *, 
-	    doublereal *, doublereal *, integer *, integer *, integer *, 
-	    integer *, doublereal *, doublereal *, doublereal *);
-    static doublereal pnorm, xnorm, fnorm1;
-    extern /* Subroutine */ int r1updt_(integer *, integer *, doublereal *, 
-	    integer *, doublereal *, doublereal *, doublereal *, logical *);
-    static integer nslow1, nslow2;
-    extern /* Subroutine */ int r1mpyq_(integer *, integer *, doublereal *, 
-	    integer *, doublereal *, doublereal *);
-    static integer ncfail;
-    extern /* Subroutine */ int dogleg_(integer *, doublereal *, integer *, 
-	    doublereal *, doublereal *, doublereal *, doublereal *, 
-	    doublereal *, doublereal *);
-    static doublereal actred, epsmch, prered;
-    extern doublereal dpmpar_(integer *);
+    int i__, j, l, jm1, iwa[1];
+    double sum;
+    int sing;
+    int iter;
+    double temp;
+    int msum, iflag;
+    double delta;
+    int jeval;
+    int ncsuc;
+    double ratio;
+    double fnorm;
+    double pnorm, xnorm, fnorm1;
+    int nslow1, nslow2;
+    int ncfail;
+    double actred, epsmch, prered;
 
 /*     ********** */
 
@@ -228,7 +210,7 @@ static logical c_false = FALSE_;
     --diag;
     --fvec;
     --x;
-    fjac_dim1 = *ldfjac;
+    fjac_dim1 = ldfjac;
     fjac_offset = 1 + fjac_dim1 * 1;
     fjac -= fjac_offset;
     --r__;
@@ -237,7 +219,7 @@ static logical c_false = FALSE_;
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar_(&c__1);
+    epsmch = dpmpar(1);
 
     *info = 0;
     iflag = 0;
@@ -245,16 +227,16 @@ static logical c_false = FALSE_;
 
 /*     check the input parameters for errors. */
 
-    if (*n <= 0 || *xtol < zero || *maxfev <= 0 || *ml < 0 || *mu < 0 || *
-	    factor <= zero || *ldfjac < *n || *lr < *n * (*n + 1) / 2) {
+    if (n <= 0 || xtol < 0. || maxfev <= 0 || ml < 0 || mu < 0 ||
+	    factor <= 0. || ldfjac < n || lr < n * (n + 1) / 2) {
 	goto L300;
     }
-    if (*mode != 2) {
+    if (mode != 2) {
 	goto L20;
     }
-    i__1 = *n;
+    i__1 = n;
     for (j = 1; j <= i__1; ++j) {
-	if (diag[j] <= zero) {
+	if (diag[j] <= 0.) {
 	    goto L300;
 	}
 /* L10: */
@@ -270,14 +252,14 @@ L20:
     if (iflag < 0) {
 	goto L300;
     }
-    fnorm = enorm_(n, &fvec[1]);
+    fnorm = enorm(n, &fvec[1]);
 
 /*     determine the number of calls to fcn needed to compute */
 /*     the jacobian matrix. */
 
 /* Computing MIN */
-    i__1 = *ml + *mu + 1;
-    msum = min(i__1,*n);
+    i__1 = ml + mu + 1;
+    msum = min(i__1,n);
 
 /*     initialize iteration counter and monitors. */
 
@@ -295,7 +277,7 @@ L30:
 /*        calculate the jacobian matrix. */
 
     iflag = 2;
-    fdjac1_((S_fp)fcn, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag,
+    fdjac1(fcn, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag,
 	     ml, mu, epsfcn, &wa1[1], &wa2[1]);
     *nfev += msum;
     if (iflag < 0) {
@@ -304,7 +286,7 @@ L30:
 
 /*        compute the qr factorization of the jacobian. */
 
-    qrfac_(n, n, &fjac[fjac_offset], ldfjac, &c_false, iwa, &c__1, &wa1[1], &
+    qrfac(n, n, &fjac[fjac_offset], ldfjac, FALSE_, iwa, 1, &wa1[1], &
 	    wa2[1], &wa3[1]);
 
 /*        on the first iteration and if mode is 1, scale according */
@@ -313,14 +295,14 @@ L30:
     if (iter != 1) {
 	goto L70;
     }
-    if (*mode == 2) {
+    if (mode == 2) {
 	goto L50;
     }
-    i__1 = *n;
+    i__1 = n;
     for (j = 1; j <= i__1; ++j) {
 	diag[j] = wa2[j];
-	if (wa2[j] == zero) {
-	    diag[j] = one;
+	if (wa2[j] == 0.) {
+	    diag[j] = 1.;
 	}
 /* L40: */
     }
@@ -329,38 +311,38 @@ L50:
 /*        on the first iteration, calculate the norm of the scaled x */
 /*        and initialize the step bound delta. */
 
-    i__1 = *n;
+    i__1 = n;
     for (j = 1; j <= i__1; ++j) {
 	wa3[j] = diag[j] * x[j];
 /* L60: */
     }
-    xnorm = enorm_(n, &wa3[1]);
-    delta = *factor * xnorm;
-    if (delta == zero) {
-	delta = *factor;
+    xnorm = enorm(n, &wa3[1]);
+    delta = factor * xnorm;
+    if (delta == 0.) {
+	delta = factor;
     }
 L70:
 
 /*        form (q transpose)*fvec and store in qtf. */
 
-    i__1 = *n;
+    i__1 = n;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	qtf[i__] = fvec[i__];
 /* L80: */
     }
-    i__1 = *n;
+    i__1 = n;
     for (j = 1; j <= i__1; ++j) {
-	if (fjac[j + j * fjac_dim1] == zero) {
+	if (fjac[j + j * fjac_dim1] == 0.) {
 	    goto L110;
 	}
-	sum = zero;
-	i__2 = *n;
+	sum = 0.;
+	i__2 = n;
 	for (i__ = j; i__ <= i__2; ++i__) {
 	    sum += fjac[i__ + j * fjac_dim1] * qtf[i__];
 /* L90: */
 	}
 	temp = -sum / fjac[j + j * fjac_dim1];
-	i__2 = *n;
+	i__2 = n;
 	for (i__ = j; i__ <= i__2; ++i__) {
 	    qtf[i__] += fjac[i__ + j * fjac_dim1] * temp;
 /* L100: */
@@ -373,7 +355,7 @@ L110:
 /*        copy the triangular factor of the qr factorization into r. */
 
     sing = FALSE_;
-    i__1 = *n;
+    i__1 = n;
     for (j = 1; j <= i__1; ++j) {
 	l = j;
 	jm1 = j - 1;
@@ -383,12 +365,12 @@ L110:
 	i__2 = jm1;
 	for (i__ = 1; i__ <= i__2; ++i__) {
 	    r__[l] = fjac[i__ + j * fjac_dim1];
-	    l = l + *n - i__;
+	    l = l + n - i__;
 /* L130: */
 	}
 L140:
 	r__[l] = wa1[j];
-	if (wa1[j] == zero) {
+	if (wa1[j] == 0.) {
 	    sing = TRUE_;
 	}
 /* L150: */
@@ -396,14 +378,14 @@ L140:
 
 /*        accumulate the orthogonal factor in fjac. */
 
-    qform_(n, n, &fjac[fjac_offset], ldfjac, &wa1[1]);
+    qform(n, n, &fjac[fjac_offset], ldfjac, &wa1[1]);
 
 /*        rescale if necessary. */
 
-    if (*mode == 2) {
+    if (mode == 2) {
 	goto L170;
     }
-    i__1 = *n;
+    i__1 = n;
     for (j = 1; j <= i__1; ++j) {
 /* Computing MAX */
 	d__1 = diag[j], d__2 = wa2[j];
@@ -418,11 +400,11 @@ L180:
 
 /*           if requested, call fcn to enable printing of iterates. */
 
-    if (*nprint <= 0) {
+    if (nprint <= 0) {
 	goto L190;
     }
     iflag = 0;
-    if ((iter - 1) % *nprint == 0) {
+    if ((iter - 1) % nprint == 0) {
 	(*fcn)(n, &x[1], &fvec[1], &iflag);
     }
     if (iflag < 0) {
@@ -432,19 +414,19 @@ L190:
 
 /*           determine the direction p. */
 
-    dogleg_(n, &r__[1], lr, &diag[1], &qtf[1], &delta, &wa1[1], &wa2[1], &wa3[
+    dogleg(n, &r__[1], lr, &diag[1], &qtf[1], delta, &wa1[1], &wa2[1], &wa3[
 	    1]);
 
 /*           store the direction p and x + p. calculate the norm of p. */
 
-    i__1 = *n;
+    i__1 = n;
     for (j = 1; j <= i__1; ++j) {
 	wa1[j] = -wa1[j];
 	wa2[j] = x[j] + wa1[j];
 	wa3[j] = diag[j] * wa1[j];
 /* L200: */
     }
-    pnorm = enorm_(n, &wa3[1]);
+    pnorm = enorm(n, &wa3[1]);
 
 /*           on the first iteration, adjust the initial step bound. */
 
@@ -460,24 +442,24 @@ L190:
     if (iflag < 0) {
 	goto L300;
     }
-    fnorm1 = enorm_(n, &wa4[1]);
+    fnorm1 = enorm(n, &wa4[1]);
 
 /*           compute the scaled actual reduction. */
 
-    actred = -one;
+    actred = -1.;
     if (fnorm1 < fnorm) {
 /* Computing 2nd power */
 	d__1 = fnorm1 / fnorm;
-	actred = one - d__1 * d__1;
+	actred = 1. - d__1 * d__1;
     }
 
 /*           compute the scaled predicted reduction. */
 
     l = 1;
-    i__1 = *n;
+    i__1 = n;
     for (i__ = 1; i__ <= i__1; ++i__) {
-	sum = zero;
-	i__2 = *n;
+	sum = 0.;
+	i__2 = n;
 	for (j = i__; j <= i__2; ++j) {
 	    sum += r__[l] * wa1[j];
 	    ++l;
@@ -486,19 +468,19 @@ L190:
 	wa3[i__] = qtf[i__] + sum;
 /* L220: */
     }
-    temp = enorm_(n, &wa3[1]);
-    prered = zero;
+    temp = enorm(n, &wa3[1]);
+    prered = 0.;
     if (temp < fnorm) {
 /* Computing 2nd power */
 	d__1 = temp / fnorm;
-	prered = one - d__1 * d__1;
+	prered = 1. - d__1 * d__1;
     }
 
 /*           compute the ratio of the actual to the predicted */
 /*           reduction. */
 
-    ratio = zero;
-    if (prered > zero) {
+    ratio = 0.;
+    if (prered > 0.) {
 	ratio = actred / prered;
     }
 
@@ -519,7 +501,7 @@ L230:
 	d__1 = delta, d__2 = pnorm / p5;
 	delta = max(d__1,d__2);
     }
-    if ((d__1 = ratio - one, abs(d__1)) <= p1) {
+    if ((d__1 = ratio - 1., abs(d__1)) <= p1) {
 	delta = pnorm / p5;
     }
 L240:
@@ -532,14 +514,14 @@ L240:
 
 /*           successful iteration. update x, fvec, and their norms. */
 
-    i__1 = *n;
+    i__1 = n;
     for (j = 1; j <= i__1; ++j) {
 	x[j] = wa2[j];
 	wa2[j] = diag[j] * x[j];
 	fvec[j] = wa4[j];
 /* L250: */
     }
-    xnorm = enorm_(n, &wa2[1]);
+    xnorm = enorm(n, &wa2[1]);
     fnorm = fnorm1;
     ++iter;
 L260:
@@ -559,7 +541,7 @@ L260:
 
 /*           test for convergence. */
 
-    if (delta <= *xtol * xnorm || fnorm == zero) {
+    if (delta <= xtol * xnorm || fnorm == 0.) {
 	*info = 1;
     }
     if (*info != 0) {
@@ -568,7 +550,7 @@ L260:
 
 /*           tests for termination and stringent tolerances. */
 
-    if (*nfev >= *maxfev) {
+    if (*nfev >= maxfev) {
 	*info = 2;
     }
 /* Computing MAX */
@@ -596,10 +578,10 @@ L260:
 /*           calculate the rank one modification to the jacobian */
 /*           and update qtf if necessary. */
 
-    i__1 = *n;
+    i__1 = n;
     for (j = 1; j <= i__1; ++j) {
-	sum = zero;
-	i__2 = *n;
+	sum = 0.;
+	i__2 = n;
 	for (i__ = 1; i__ <= i__2; ++i__) {
 	    sum += fjac[i__ + j * fjac_dim1] * wa4[i__];
 /* L270: */
@@ -614,9 +596,9 @@ L260:
 
 /*           compute the qr factorization of the updated jacobian. */
 
-    r1updt_(n, n, &r__[1], lr, &wa1[1], &wa2[1], &wa3[1], &sing);
-    r1mpyq_(n, n, &fjac[fjac_offset], ldfjac, &wa2[1], &wa3[1]);
-    r1mpyq_(&c__1, n, &qtf[1], &c__1, &wa2[1], &wa3[1]);
+    r1updt(n, n, &r__[1], lr, &wa1[1], &wa2[1], &wa3[1], &sing);
+    r1mpyq(n, n, &fjac[fjac_offset], ldfjac, &wa2[1], &wa3[1]);
+    r1mpyq(1, n, &qtf[1], 1, &wa2[1], &wa3[1]);
 
 /*           end of the inner loop. */
 
@@ -635,10 +617,10 @@ L300:
 	*info = iflag;
     }
     iflag = 0;
-    if (*nprint > 0) {
+    if (nprint > 0) {
 	(*fcn)(n, &x[1], &fvec[1], &iflag);
     }
-    return 0;
+    return;
 
 /*     last card of subroutine hybrd. */
 

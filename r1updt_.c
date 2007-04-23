@@ -4,18 +4,19 @@
 */
 
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-/* Subroutine */ void r1updt(int m, int n, double *s, int
+/* Subroutine */ void r1updt_(const int *m, const int *n, double *s, const int *
 	ls, const double *u, double *v, double *w, int *sing)
 {
     /* Initialized data */
 
 #define p5 .5
 #define p25 .25
+    const int c__3 = 3;
 
     /* System generated locals */
     int i__1, i__2;
@@ -105,17 +106,17 @@
 
 /*     giant is the largest magnitude. */
 
-    giant = dpmpar(3);
+    giant = dpmpar_(&c__3);
 
 /*     initialize the diagonal element pointer. */
 
-    jj = n * ((m << 1) - n + 1) / 2 - (m - n);
+    jj = *n * ((*m << 1) - *n + 1) / 2 - (*m - *n);
 
 /*     move the nontrivial part of the last column of s into w. */
 
     l = jj;
-    i__1 = m;
-    for (i__ = n; i__ <= i__1; ++i__) {
+    i__1 = *m;
+    for (i__ = *n; i__ <= i__1; ++i__) {
 	w[i__] = s[l];
 	++l;
 /* L10: */
@@ -124,14 +125,14 @@
 /*     rotate the vector v into a multiple of the n-th unit vector */
 /*     in such a way that a spike is introduced into w. */
 
-    nm1 = n - 1;
+    nm1 = *n - 1;
     if (nm1 < 1) {
 	goto L70;
     }
     i__1 = nm1;
     for (nmj = 1; nmj <= i__1; ++nmj) {
-	j = n - nmj;
-	jj -= m - j + 1;
+	j = *n - nmj;
+	jj -= *m - j + 1;
 	w[j] = 0.;
 	if (v[j] == 0.) {
 	    goto L50;
@@ -140,10 +141,10 @@
 /*        determine a givens rotation which eliminates the */
 /*        j-th element of v. */
 
-	if ((d__1 = v[n], abs(d__1)) >= (d__2 = v[j], abs(d__2))) {
+	if ((d__1 = v[*n], abs(d__1)) >= (d__2 = v[j], abs(d__2))) {
 	    goto L20;
 	}
-	cotan = v[n] / v[j];
+	cotan = v[*n] / v[j];
 /* Computing 2nd power */
 	d__1 = cotan;
 	sin__ = p5 / sqrt(p25 + p25 * (d__1 * d__1));
@@ -154,7 +155,7 @@
 	}
 	goto L30;
 L20:
-	tan__ = v[j] / v[n];
+	tan__ = v[j] / v[*n];
 /* Computing 2nd power */
 	d__1 = tan__;
 	cos__ = p5 / sqrt(p25 + p25 * (d__1 * d__1));
@@ -165,13 +166,13 @@ L30:
 /*        apply the transformation to v and store the information */
 /*        necessary to recover the givens rotation. */
 
-	v[n] = sin__ * v[j] + cos__ * v[n];
+	v[*n] = sin__ * v[j] + cos__ * v[*n];
 	v[j] = tau;
 
 /*        apply the transformation to s and extend the spike in w. */
 
 	l = jj;
-	i__2 = m;
+	i__2 = *m;
 	for (i__ = j; i__ <= i__2; ++i__) {
 	    temp = cos__ * s[l] - sin__ * w[i__];
 	    w[i__] = sin__ * s[l] + cos__ * w[i__];
@@ -187,9 +188,9 @@ L70:
 
 /*     add the spike from the rank 1 update to w. */
 
-    i__1 = m;
+    i__1 = *m;
     for (i__ = 1; i__ <= i__1; ++i__) {
-	w[i__] += v[n] * u[i__];
+	w[i__] += v[*n] * u[i__];
 /* L80: */
     }
 
@@ -233,7 +234,7 @@ L100:
 /*        apply the transformation to s and reduce the spike in w. */
 
 	l = jj;
-	i__2 = m;
+	i__2 = *m;
 	for (i__ = j; i__ <= i__2; ++i__) {
 	    temp = cos__ * s[l] + sin__ * w[i__];
 	    w[i__] = -sin__ * s[l] + cos__ * w[i__];
@@ -253,7 +254,7 @@ L120:
 	if (s[jj] == 0.) {
 	    *sing = TRUE_;
 	}
-	jj += m - j + 1;
+	jj += *m - j + 1;
 /* L130: */
     }
 L140:
@@ -261,8 +262,8 @@ L140:
 /*     move w back into the last column of the output s. */
 
     l = jj;
-    i__1 = m;
-    for (i__ = n; i__ <= i__1; ++i__) {
+    i__1 = *m;
+    for (i__ = *n; i__ <= i__1; ++i__) {
 	s[l] = w[i__];
 	++l;
 /* L150: */

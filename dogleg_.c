@@ -4,15 +4,15 @@
 */
 
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
 /* Table of constant values */
 
-/* Subroutine */ void dogleg(int n, const double *r__, int lr, 
-	const double *diag, const double *qtb, double delta, double *x, 
+/* Subroutine */ void dogleg_(const int *n, const double *r__, const int *lr, 
+	const double *diag, const double *qtb, const double *delta, double *x, 
 	double *wa1, double *wa2)
 {
     /* System generated locals */
@@ -24,6 +24,7 @@
     double sum, temp, alpha, bnorm;
     double gnorm, qnorm, epsmch;
     double sgnorm;
+    const int c__1 = 1;
 
 /*     ********** */
 
@@ -94,22 +95,22 @@
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar(1);
+    epsmch = dpmpar_(&c__1);
 
 /*     first, calculate the gauss-newton direction. */
 
-    jj = n * (n + 1) / 2 + 1;
-    i__1 = n;
+    jj = *n * (*n + 1) / 2 + 1;
+    i__1 = *n;
     for (k = 1; k <= i__1; ++k) {
-	j = n - k + 1;
+	j = *n - k + 1;
 	jp1 = j + 1;
 	jj -= k;
 	l = jj + 1;
 	sum = 0.;
-	if (n < jp1) {
+	if (*n < jp1) {
 	    goto L20;
 	}
-	i__2 = n;
+	i__2 = *n;
 	for (i__ = jp1; i__ <= i__2; ++i__) {
 	    sum += r__[l] * x[i__];
 	    ++l;
@@ -126,7 +127,7 @@ L20:
 /* Computing MAX */
 	    d__2 = temp, d__3 = (d__1 = r__[l], abs(d__1));
 	    temp = max(d__2,d__3);
-	    l = l + n - i__;
+	    l = l + *n - i__;
 /* L30: */
 	}
 	temp = epsmch * temp;
@@ -140,14 +141,14 @@ L40:
 
 /*     test whether the gauss-newton direction is acceptable. */
 
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	wa1[j] = 0.;
 	wa2[j] = diag[j] * x[j];
 /* L60: */
     }
-    qnorm = enorm(n, &wa2[1]);
-    if (qnorm <= delta) {
+    qnorm = enorm_(n, &wa2[1]);
+    if (qnorm <= *delta) {
 	/* goto L140; */
         return;
     }
@@ -156,10 +157,10 @@ L40:
 /*     next, calculate the scaled gradient direction. */
 
     l = 1;
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	temp = qtb[j];
-	i__2 = n;
+	i__2 = *n;
 	for (i__ = j; i__ <= i__2; ++i__) {
 	    wa1[i__] += r__[l] * temp;
 	    ++l;
@@ -172,9 +173,9 @@ L40:
 /*     calculate the norm of the scaled gradient and test for */
 /*     the special case in which the scaled gradient is zero. */
 
-    gnorm = enorm(n, &wa1[1]);
+    gnorm = enorm_(n, &wa1[1]);
     sgnorm = 0.;
-    alpha = delta / qnorm;
+    alpha = *delta / qnorm;
     if (gnorm == 0.) {
 	goto L120;
     }
@@ -182,16 +183,16 @@ L40:
 /*     calculate the point along the scaled gradient */
 /*     at which the quadratic is minimized. */
 
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	wa1[j] = wa1[j] / gnorm / diag[j];
 /* L90: */
     }
     l = 1;
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	sum = 0.;
-	i__2 = n;
+	i__2 = *n;
 	for (i__ = j; i__ <= i__2; ++i__) {
 	    sum += r__[l] * wa1[i__];
 	    ++l;
@@ -200,13 +201,13 @@ L40:
 	wa2[j] = sum;
 /* L110: */
     }
-    temp = enorm(n, &wa2[1]);
+    temp = enorm_(n, &wa2[1]);
     sgnorm = gnorm / temp / temp;
 
 /*     test whether the scaled gradient direction is acceptable. */
 
     alpha = 0.;
-    if (sgnorm >= delta) {
+    if (sgnorm >= *delta) {
 	goto L120;
     }
 
@@ -214,28 +215,28 @@ L40:
 /*     finally, calculate the point along the dogleg */
 /*     at which the quadratic is minimized. */
 
-    bnorm = enorm(n, &qtb[1]);
-    temp = bnorm / gnorm * (bnorm / qnorm) * (sgnorm / delta);
+    bnorm = enorm_(n, &qtb[1]);
+    temp = bnorm / gnorm * (bnorm / qnorm) * (sgnorm / *delta);
 /* Computing 2nd power */
-    d__1 = sgnorm / delta;
+    d__1 = sgnorm / *delta;
 /* Computing 2nd power */
-    d__2 = temp - delta / qnorm;
+    d__2 = temp - *delta / qnorm;
 /* Computing 2nd power */
-    d__3 = delta / qnorm;
+    d__3 = *delta / qnorm;
 /* Computing 2nd power */
-    d__4 = sgnorm / delta;
-    temp = temp - delta / qnorm * (d__1 * d__1) + sqrt(d__2 * d__2 + (1. - 
+    d__4 = sgnorm / *delta;
+    temp = temp - *delta / qnorm * (d__1 * d__1) + sqrt(d__2 * d__2 + (1. - 
 	    d__3 * d__3) * (1. - d__4 * d__4));
 /* Computing 2nd power */
-    d__1 = sgnorm / delta;
-    alpha = delta / qnorm * (1. - d__1 * d__1) / temp;
+    d__1 = sgnorm / *delta;
+    alpha = *delta / qnorm * (1. - d__1 * d__1) / temp;
 L120:
 
 /*     form appropriate convex combination of the gauss-newton */
 /*     direction and the scaled gradient direction. */
 
-    temp = (1. - alpha) * min(sgnorm,delta);
-    i__1 = n;
+    temp = (1. - alpha) * min(sgnorm,*delta);
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	x[j] = temp * wa1[j] + alpha * x[j];
 /* L130: */

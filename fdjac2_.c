@@ -4,15 +4,19 @@
 */
 
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-/* Subroutine */ void fdjac2(void (*fcn)(int m, int n, const double *x, double *fvec,
-			 int *iflag ), int m, int n, double *x, 
-	const double *fvec, double *fjac, int ldfjac, int *iflag, 
-	double epsfcn, double *wa)
+/* Subroutine */ void fdjac2_(void (*fcn)(const int *m, const int *n, const double *x, double *fvec,
+			 int *iflag ), const int *m, const int *n, double *x, 
+	const double *fvec, double *fjac, const int *ldfjac, int *iflag, 
+	const double *epsfcn, double *wa)
 {
+    /* Table of constant values */
+
+    const int c__1 = 1;
+
     /* System generated locals */
     int fjac_dim1, fjac_offset, i__1, i__2;
 
@@ -100,7 +104,7 @@
     --wa;
     --fvec;
     --x;
-    fjac_dim1 = ldfjac;
+    fjac_dim1 = *ldfjac;
     fjac_offset = 1 + fjac_dim1 * 1;
     fjac -= fjac_offset;
 
@@ -108,10 +112,10 @@
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar(1);
+    epsmch = dpmpar_(&c__1);
 
-    eps = sqrt((max(epsfcn,epsmch)));
-    i__1 = n;
+    eps = sqrt((max(*epsfcn,epsmch)));
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	temp = x[j];
 	h__ = eps * abs(temp);
@@ -125,7 +129,7 @@
             return;
 	}
 	x[j] = temp;
-	i__2 = m;
+	i__2 = *m;
 	for (i__ = 1; i__ <= i__2; ++i__) {
 	    fjac[i__ + j * fjac_dim1] = (wa[i__] - fvec[i__]) / h__;
 /* L10: */

@@ -3,9 +3,9 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <cminpack.h>
+#include <minpack.h>
 
-double dpmpar(int i__)
+double dpmpar_(const int *i__)
 {
     /* Initialized data */
 
@@ -184,7 +184,7 @@ double dpmpar(int i__)
 /*     Machine constants for IEEE machines. */
 
 
-    ret_val = dmach[(0 + (0 + ((i__ - 1) << 3))) / 8];
+    ret_val = dmach[(0 + (0 + ((*i__ - 1) << 3))) / 8];
     return ret_val;
 
 /*     Last card of function dpmpar. */

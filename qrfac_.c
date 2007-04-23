@@ -4,17 +4,18 @@
 */
 
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 
-/* Subroutine */ void qrfac(int m, int n, double *a, int
-	lda, int pivot, int *ipvt, int lipvt, double *rdiag,
+/* Subroutine */ void qrfac_(const int *m, const int *n, double *a, const int *
+	lda, const int *pivot, int *ipvt, const int *lipvt, double *rdiag,
 	 double *acnorm, double *wa)
 {
     /* Initialized data */
 
 #define p05 .05
+    const int c__1 = 1;
 
     /* System generated locals */
     int a_dim1, a_offset, i__1, i__2, i__3;
@@ -108,7 +109,7 @@
     --wa;
     --acnorm;
     --rdiag;
-    a_dim1 = lda;
+    a_dim1 = *lda;
     a_offset = 1 + a_dim1 * 1;
     a -= a_offset;
     --ipvt;
@@ -117,16 +118,16 @@
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar(1);
+    epsmch = dpmpar_(&c__1);
 
 /*     compute the initial column norms and initialize several arrays. */
 
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	acnorm[j] = enorm(m, &a[j * a_dim1 + 1]);
+	acnorm[j] = enorm_(m, &a[j * a_dim1 + 1]);
 	rdiag[j] = acnorm[j];
 	wa[j] = rdiag[j];
-	if (pivot) {
+	if (*pivot) {
 	    ipvt[j] = j;
 	}
 /* L10: */
@@ -134,17 +135,17 @@
 
 /*     reduce a to r with householder transformations. */
 
-    minmn = min(m,n);
+    minmn = min(*m,*n);
     i__1 = minmn;
     for (j = 1; j <= i__1; ++j) {
-	if (! (pivot)) {
+	if (! (*pivot)) {
 	    goto L40;
 	}
 
 /*        bring the column of largest norm into the pivot position. */
 
 	kmax = j;
-	i__2 = n;
+	i__2 = *n;
 	for (k = j; k <= i__2; ++k) {
 	    if (rdiag[k] > rdiag[kmax]) {
 		kmax = k;
@@ -154,7 +155,7 @@
 	if (kmax == j) {
 	    goto L40;
 	}
-	i__2 = m;
+	i__2 = *m;
 	for (i__ = 1; i__ <= i__2; ++i__) {
 	    temp = a[i__ + j * a_dim1];
 	    a[i__ + j * a_dim1] = a[i__ + kmax * a_dim1];
@@ -171,15 +172,15 @@ L40:
 /*        compute the householder transformation to reduce the */
 /*        j-th column of a to a multiple of the j-th unit vector. */
 
-	i__2 = m - j + 1;
-	ajnorm = enorm(i__2, &a[j + j * a_dim1]);
+	i__2 = *m - j + 1;
+	ajnorm = enorm_(&i__2, &a[j + j * a_dim1]);
 	if (ajnorm == 0.) {
 	    goto L100;
 	}
 	if (a[j + j * a_dim1] < 0.) {
 	    ajnorm = -ajnorm;
 	}
-	i__2 = m;
+	i__2 = *m;
 	for (i__ = j; i__ <= i__2; ++i__) {
 	    a[i__ + j * a_dim1] /= ajnorm;
 /* L50: */
@@ -190,24 +191,24 @@ L40:
 /*        and update the norms. */
 
 	jp1 = j + 1;
-	if (n < jp1) {
+	if (*n < jp1) {
 	    goto L100;
 	}
-	i__2 = n;
+	i__2 = *n;
 	for (k = jp1; k <= i__2; ++k) {
 	    sum = 0.;
-	    i__3 = m;
+	    i__3 = *m;
 	    for (i__ = j; i__ <= i__3; ++i__) {
 		sum += a[i__ + j * a_dim1] * a[i__ + k * a_dim1];
 /* L60: */
 	    }
 	    temp = sum / a[j + j * a_dim1];
-	    i__3 = m;
+	    i__3 = *m;
 	    for (i__ = j; i__ <= i__3; ++i__) {
 		a[i__ + k * a_dim1] -= temp * a[i__ + j * a_dim1];
 /* L70: */
 	    }
-	    if (! (pivot) || rdiag[k] == 0.) {
+	    if (! (*pivot) || rdiag[k] == 0.) {
 		goto L80;
 	    }
 	    temp = a[j + k * a_dim1] / rdiag[k];
@@ -221,8 +222,8 @@ L40:
 	    if (p05 * (d__1 * d__1) > epsmch) {
 		goto L80;
 	    }
-	    i__3 = m - j;
-	    rdiag[k] = enorm(i__3, &a[jp1 + k * a_dim1]);
+	    i__3 = *m - j;
+	    rdiag[k] = enorm_(&i__3, &a[jp1 + k * a_dim1]);
 	    wa[k] = rdiag[k];
 L80:
 /* L90: */

@@ -4,10 +4,10 @@
 */
 
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-/* Subroutine */ void rwupdt(int n, double *r__, int ldr, 
+/* Subroutine */ void rwupdt_(const int *n, double *r__, const int *ldr, 
 	const double *w, double *b, double *alpha, double *cos__, 
 	double *sin__)
 {
@@ -90,13 +90,13 @@
     --cos__;
     --b;
     --w;
-    r_dim1 = ldr;
+    r_dim1 = *ldr;
     r_offset = 1 + r_dim1 * 1;
     r__ -= r_offset;
 
     /* Function Body */
 
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	rowj = w[j];
 	jm1 = j - 1;

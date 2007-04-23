@@ -3,32 +3,24 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <f2c.h>
+#include <cminpack.h>
 
-/* Subroutine */ int hybrd1_(U_fp fcn, integer *n, doublereal *x, doublereal *
-	fvec, doublereal *tol, integer *info, doublereal *wa, integer *lwa)
+/* Subroutine */ void hybrd1(void (*fcn)(int n, const double *x, double *fvec, int *iflag ), int n, double *x, double *
+	fvec, double tol, int *info, double *wa, int lwa)
 {
     /* Initialized data */
 
-    static doublereal factor = 100.;
-    static doublereal one = 1.;
-    static doublereal zero = 0.;
+    const double factor = 100.;
 
     /* System generated locals */
-    integer i__1;
+    int i__1;
 
     /* Local variables */
-    static integer j, ml, lr, mu, mode, nfev;
-    static doublereal xtol;
-    static integer index;
-    extern /* Subroutine */ int hybrd_(U_fp, integer *, doublereal *, 
-	    doublereal *, doublereal *, integer *, integer *, integer *, 
-	    doublereal *, doublereal *, integer *, doublereal *, integer *, 
-	    integer *, integer *, doublereal *, integer *, doublereal *, 
-	    integer *, doublereal *, doublereal *, doublereal *, doublereal *,
-	     doublereal *);
-    static doublereal epsfcn;
-    static integer maxfev, nprint;
+    int j, ml, lr, mu, mode, nfev;
+    double xtol;
+    int index;
+    double epsfcn;
+    int maxfev, nprint;
 
 /*     ********** */
 
@@ -124,35 +116,36 @@
 
 /*     check the input parameters for errors. */
 
-    if (*n <= 0 || *tol < zero || *lwa < *n * (*n * 3 + 13) / 2) {
-	goto L20;
+    if (n <= 0 || tol < 0. || lwa < n * (n * 3 + 13) / 2) {
+	/* goto L20; */
+        return;
     }
 
 /*     call hybrd. */
 
-    maxfev = (*n + 1) * 200;
-    xtol = *tol;
-    ml = *n - 1;
-    mu = *n - 1;
-    epsfcn = zero;
+    maxfev = (n + 1) * 200;
+    xtol = tol;
+    ml = n - 1;
+    mu = n - 1;
+    epsfcn = 0.;
     mode = 2;
-    i__1 = *n;
+    i__1 = n;
     for (j = 1; j <= i__1; ++j) {
-	wa[j] = one;
+	wa[j] = 1.;
 /* L10: */
     }
     nprint = 0;
-    lr = *n * (*n + 1) / 2;
-    index = *n * 6 + lr;
-    hybrd_((U_fp)fcn, n, &x[1], &fvec[1], &xtol, &maxfev, &ml, &mu, &epsfcn, &
-	    wa[1], &mode, &factor, &nprint, info, &nfev, &wa[index + 1], n, &
-	    wa[*n * 6 + 1], &lr, &wa[*n + 1], &wa[(*n << 1) + 1], &wa[*n * 3 
-	    + 1], &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);
+    lr = n * (n + 1) / 2;
+    index = n * 6 + lr;
+    hybrd(fcn, n, &x[1], &fvec[1], xtol, maxfev, ml, mu, epsfcn, &
+	    wa[1], mode, factor, nprint, info, &nfev, &wa[index + 1], n, &
+	    wa[n * 6 + 1], lr, &wa[n + 1], &wa[(n << 1) + 1], &wa[n * 3 
+	    + 1], &wa[(n << 2) + 1], &wa[n * 5 + 1]);
     if (*info == 5) {
 	*info = 4;
     }
-L20:
-    return 0;
+/* L20: */
+    return;
 
 /*     last card of subroutine hybrd1. */
 

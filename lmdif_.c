@@ -1,24 +1,30 @@
-/* lmder.f -- translated by f2c (version 20020621).
+/* lmdif.f -- translated by f2c (version 20020621).
    You must link the resulting object file with the libraries:
 	-lf2c -lm   (in that order)
 */
 
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-/* Subroutine */ void lmder(void (*fcn)(int m, int n, const double *x, double *fvec,
-			  double *fjec, int ldfjac, int *iflag ), int m, int n, double *x, 
-	double *fvec, double *fjac, int ldfjac, double ftol,
-	double xtol, double gtol, int maxfev, double *
-	diag, int mode, double factor, int nprint, int *
-	info, int *nfev, int *njev, int *ipvt, double *qtf, 
-	double *wa1, double *wa2, double *wa3, double *wa4)
+/* Subroutine */ void lmdif_(void (*fcn)(const int *m, const int *n, const double *x, double *fvec,
+			  int *iflag ), const int *m, const int *n, double *x, 
+	double *fvec, const double *ftol, const double *xtol, const double *
+	gtol, const int *maxfev, const double *epsfcn, double *diag, const int *
+	mode, const double *factor, const int *nprint, int *info, int *
+	nfev, double *fjac, const int *ldfjac, int *ipvt, double *
+	qtf, double *wa1, double *wa2, double *wa3, double *
+	wa4)
 {
+    /* Table of constant values */
+
+    const int c__1 = 1;
+    const int c_true = TRUE_;
+
     /* Initialized data */
 
 #define p1 .1
@@ -39,45 +45,44 @@
     int iflag;
     double delta;
     double ratio;
-    double fnorm, gnorm, pnorm, xnorm, fnorm1, actred, dirder, 
-	    epsmch, prered;
+    double fnorm, gnorm;
+    double pnorm, xnorm, fnorm1, actred, dirder, epsmch, prered;
 
 /*     ********** */
 
-/*     subroutine lmder */
+/*     subroutine lmdif */
 
-/*     the purpose of lmder is to minimize the sum of the squares of */
+/*     the purpose of lmdif is to minimize the sum of the squares of */
 /*     m nonlinear functions in n variables by a modification of */
 /*     the levenberg-marquardt algorithm. the user must provide a */
-/*     subroutine which calculates the functions and the jacobian. */
+/*     subroutine which calculates the functions. the jacobian is */
+/*     then calculated by a forward-difference approximation. */
 
 /*     the subroutine statement is */
 
-/*       subroutine lmder(fcn,m,n,x,fvec,fjac,ldfjac,ftol,xtol,gtol, */
-/*                        maxfev,diag,mode,factor,nprint,info,nfev, */
-/*                        njev,ipvt,qtf,wa1,wa2,wa3,wa4) */
+/*       subroutine lmdif(fcn,m,n,x,fvec,ftol,xtol,gtol,maxfev,epsfcn, */
+/*                        diag,mode,factor,nprint,info,nfev,fjac, */
+/*                        ldfjac,ipvt,qtf,wa1,wa2,wa3,wa4) */
 
 /*     where */
 
 /*       fcn is the name of the user-supplied subroutine which */
-/*         calculates the functions and the jacobian. fcn must */
-/*         be declared in an external statement in the user */
-/*         calling program, and should be written as follows. */
+/*         calculates the functions. fcn must be declared */
+/*         in an external statement in the user calling */
+/*         program, and should be written as follows. */
 
-/*         subroutine fcn(m,n,x,fvec,fjac,ldfjac,iflag) */
-/*         integer m,n,ldfjac,iflag */
-/*         double precision x(n),fvec(m),fjac(ldfjac,n) */
+/*         subroutine fcn(m,n,x,fvec,iflag) */
+/*         integer m,n,iflag */
+/*         double precision x(n),fvec(m) */
 /*         ---------- */
-/*         if iflag = 1 calculate the functions at x and */
-/*         return this vector in fvec. do not alter fjac. */
-/*         if iflag = 2 calculate the jacobian at x and */
-/*         return this matrix in fjac. do not alter fvec. */
+/*         calculate the functions at x and */
+/*         return this vector in fvec. */
 /*         ---------- */
 /*         return */
 /*         end */
 
 /*         the value of iflag should not be changed by fcn unless */
-/*         the user wants to terminate execution of lmder. */
+/*         the user wants to terminate execution of lmdif. */
 /*         in this case set iflag to a negative integer. */
 
 /*       m is a positive integer input variable set to the number */
@@ -92,22 +97,6 @@
 
 /*       fvec is an output array of length m which contains */
 /*         the functions evaluated at the output x. */
-
-/*       fjac is an output m by n array. the upper n by n submatrix */
-/*         of fjac contains an upper triangular matrix r with */
-/*         diagonal elements of nonincreasing magnitude such that */
-
-/*                t     t           t */
-/*               p *(jac *jac)*p = r *r, */
-
-/*         where p is a permutation matrix and jac is the final */
-/*         calculated jacobian. column j of p is column ipvt(j) */
-/*         (see below) of the identity matrix. the lower trapezoidal */
-/*         part of fjac contains information generated during */
-/*         the computation of r. */
-
-/*       ldfjac is a positive integer input variable not less than m */
-/*         which specifies the leading dimension of the array fjac. */
 
 /*       ftol is a nonnegative input variable. termination */
 /*         occurs when both the actual and predicted relative */
@@ -128,8 +117,16 @@
 /*         of the jacobian. */
 
 /*       maxfev is a positive integer input variable. termination */
-/*         occurs when the number of calls to fcn with iflag = 1 */
-/*         has reached maxfev. */
+/*         occurs when the number of calls to fcn is at least */
+/*         maxfev by the end of an iteration. */
+
+/*       epsfcn is an input variable used in determining a suitable */
+/*         step length for the forward-difference approximation. this */
+/*         approximation assumes that the relative errors in the */
+/*         functions are of the order of epsfcn. if epsfcn is less */
+/*         than the machine precision, it is assumed that the relative */
+/*         errors in the functions are of the order of the machine */
+/*         precision. */
 
 /*       diag is an array of length n. if mode = 1 (see */
 /*         below), diag is internally set. if mode = 2, diag */
@@ -145,15 +142,14 @@
 /*         initial step bound. this bound is set to the product of */
 /*         factor and the euclidean norm of diag*x if nonzero, or else */
 /*         to factor itself. in most cases factor should lie in the */
-/*         interval (.1,100.).100. is a generally recommended value. */
+/*         interval (.1,100.). 100. is a generally recommended value. */
 
 /*       nprint is an integer input variable that enables controlled */
 /*         printing of iterates if it is positive. in this case, */
 /*         fcn is called with iflag = 0 at the beginning of the first */
 /*         iteration and every nprint iterations thereafter and */
-/*         immediately prior to return, with x, fvec, and fjac */
-/*         available for printing. fvec and fjac should not be */
-/*         altered. if nprint is not positive, no special calls */
+/*         immediately prior to return, with x and fvec available */
+/*         for printing. if nprint is not positive, no special calls */
 /*         of fcn with iflag = 0 are made. */
 
 /*       info is an integer output variable. if the user has */
@@ -175,8 +171,8 @@
 /*                   column of the jacobian is at most gtol in */
 /*                   absolute value. */
 
-/*         info = 5  number of calls to fcn with iflag = 1 has */
-/*                   reached maxfev. */
+/*         info = 5  number of calls to fcn has reached or */
+/*                   exceeded maxfev. */
 
 /*         info = 6  ftol is too small. no further reduction in */
 /*                   the sum of squares is possible. */
@@ -188,10 +184,23 @@
 /*                   columns of the jacobian to machine precision. */
 
 /*       nfev is an integer output variable set to the number of */
-/*         calls to fcn with iflag = 1. */
+/*         calls to fcn. */
 
-/*       njev is an integer output variable set to the number of */
-/*         calls to fcn with iflag = 2. */
+/*       fjac is an output m by n array. the upper n by n submatrix */
+/*         of fjac contains an upper triangular matrix r with */
+/*         diagonal elements of nonincreasing magnitude such that */
+
+/*                t     t           t */
+/*               p *(jac *jac)*p = r *r, */
+
+/*         where p is a permutation matrix and jac is the final */
+/*         calculated jacobian. column j of p is column ipvt(j) */
+/*         (see below) of the identity matrix. the lower trapezoidal */
+/*         part of fjac contains information generated during */
+/*         the computation of r. */
+
+/*       ldfjac is a positive integer input variable not less than m */
+/*         which specifies the leading dimension of the array fjac. */
 
 /*       ipvt is an integer output array of length n. ipvt */
 /*         defines a permutation matrix p such that jac*p = q*r, */
@@ -211,7 +220,7 @@
 
 /*       user-supplied ...... fcn */
 
-/*       minpack-supplied ... dpmpar,enorm,lmpar,qrfac */
+/*       minpack-supplied ... dpmpar,enorm,fdjac2,lmpar,qrfac */
 
 /*       fortran-supplied ... dabs,dmax1,dmin1,dsqrt,mod */
 
@@ -229,7 +238,7 @@
     --ipvt;
     --diag;
     --x;
-    fjac_dim1 = ldfjac;
+    fjac_dim1 = *ldfjac;
     fjac_offset = 1 + fjac_dim1 * 1;
     fjac -= fjac_offset;
 
@@ -237,23 +246,22 @@
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar(1);
+    epsmch = dpmpar_(&c__1);
 
     *info = 0;
     iflag = 0;
     *nfev = 0;
-    *njev = 0;
 
 /*     check the input parameters for errors. */
 
-    if (n <= 0 || m < n || ldfjac < m || ftol < 0. || xtol < 0. || 
-	    gtol < 0. || maxfev <= 0 || factor <= 0.) {
+    if (*n <= 0 || *m < *n || *ldfjac < *m || *ftol < 0. || *xtol < 0. || 
+	    *gtol < 0. || *maxfev <= 0 || *factor <= 0.) {
 	goto L300;
     }
-    if (mode != 2) {
+    if (*mode != 2) {
 	goto L20;
     }
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	if (diag[j] <= 0.) {
 	    goto L300;
@@ -266,12 +274,12 @@ L20:
 /*     and calculate its norm. */
 
     iflag = 1;
-    (*fcn)(m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag);
+    (*fcn)(m, n, &x[1], &fvec[1], &iflag);
     *nfev = 1;
     if (iflag < 0) {
 	goto L300;
     }
-    fnorm = enorm(m, &fvec[1]);
+    fnorm = enorm_(m, &fvec[1]);
 
 /*     initialize levenberg-marquardt parameter and iteration counter. */
 
@@ -285,20 +293,21 @@ L30:
 /*        calculate the jacobian matrix. */
 
     iflag = 2;
-    (*fcn)(m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag);
-    ++(*njev);
+    fdjac2_(fcn, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &
+	    iflag, epsfcn, &wa4[1]);
+    *nfev += *n;
     if (iflag < 0) {
 	goto L300;
     }
 
 /*        if requested, call fcn to enable printing of iterates. */
 
-    if (nprint <= 0) {
+    if (*nprint <= 0) {
 	goto L40;
     }
     iflag = 0;
-    if ((iter - 1) % nprint == 0) {
-	(*fcn)(m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag);
+    if ((iter - 1) % *nprint == 0) {
+	(*fcn)(m, n, &x[1], &fvec[1], &iflag);
     }
     if (iflag < 0) {
 	goto L300;
@@ -307,7 +316,7 @@ L40:
 
 /*        compute the qr factorization of the jacobian. */
 
-    qrfac(m, n, &fjac[fjac_offset], ldfjac, TRUE_, &ipvt[1], n, &wa1[1], &
+    qrfac_(m, n, &fjac[fjac_offset], ldfjac, &c_true, &ipvt[1], n, &wa1[1], &
 	    wa2[1], &wa3[1]);
 
 /*        on the first iteration and if mode is 1, scale according */
@@ -316,10 +325,10 @@ L40:
     if (iter != 1) {
 	goto L80;
     }
-    if (mode == 2) {
+    if (*mode == 2) {
 	goto L60;
     }
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	diag[j] = wa2[j];
 	if (wa2[j] == 0.) {
@@ -332,39 +341,39 @@ L60:
 /*        on the first iteration, calculate the norm of the scaled x */
 /*        and initialize the step bound delta. */
 
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	wa3[j] = diag[j] * x[j];
 /* L70: */
     }
-    xnorm = enorm(n, &wa3[1]);
-    delta = factor * xnorm;
+    xnorm = enorm_(n, &wa3[1]);
+    delta = *factor * xnorm;
     if (delta == 0.) {
-	delta = factor;
+	delta = *factor;
     }
 L80:
 
 /*        form (q transpose)*fvec and store the first n components in */
 /*        qtf. */
 
-    i__1 = m;
+    i__1 = *m;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	wa4[i__] = fvec[i__];
 /* L90: */
     }
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	if (fjac[j + j * fjac_dim1] == 0.) {
 	    goto L120;
 	}
 	sum = 0.;
-	i__2 = m;
+	i__2 = *m;
 	for (i__ = j; i__ <= i__2; ++i__) {
 	    sum += fjac[i__ + j * fjac_dim1] * wa4[i__];
 /* L100: */
 	}
 	temp = -sum / fjac[j + j * fjac_dim1];
-	i__2 = m;
+	i__2 = *m;
 	for (i__ = j; i__ <= i__2; ++i__) {
 	    wa4[i__] += fjac[i__ + j * fjac_dim1] * temp;
 /* L110: */
@@ -381,7 +390,7 @@ L120:
     if (fnorm == 0.) {
 	goto L170;
     }
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	l = ipvt[j];
 	if (wa2[l] == 0.) {
@@ -404,7 +413,7 @@ L170:
 
 /*        test for convergence of the gradient norm. */
 
-    if (gnorm <= gtol) {
+    if (gnorm <= *gtol) {
 	*info = 4;
     }
     if (*info != 0) {
@@ -413,10 +422,10 @@ L170:
 
 /*        rescale if necessary. */
 
-    if (mode == 2) {
+    if (*mode == 2) {
 	goto L190;
     }
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 /* Computing MAX */
 	d__1 = diag[j], d__2 = wa2[j];
@@ -431,19 +440,19 @@ L200:
 
 /*           determine the levenberg-marquardt parameter. */
 
-    lmpar(n, &fjac[fjac_offset], ldfjac, &ipvt[1], &diag[1], &qtf[1], delta,
+    lmpar_(n, &fjac[fjac_offset], ldfjac, &ipvt[1], &diag[1], &qtf[1], &delta,
 	     &par, &wa1[1], &wa2[1], &wa3[1], &wa4[1]);
 
 /*           store the direction p and x + p. calculate the norm of p. */
 
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	wa1[j] = -wa1[j];
 	wa2[j] = x[j] + wa1[j];
 	wa3[j] = diag[j] * wa1[j];
 /* L210: */
     }
-    pnorm = enorm(n, &wa3[1]);
+    pnorm = enorm_(n, &wa3[1]);
 
 /*           on the first iteration, adjust the initial step bound. */
 
@@ -454,12 +463,12 @@ L200:
 /*           evaluate the function at x + p and calculate its norm. */
 
     iflag = 1;
-    (*fcn)(m, n, &wa2[1], &wa4[1], &fjac[fjac_offset], ldfjac, &iflag);
+    (*fcn)(m, n, &wa2[1], &wa4[1], &iflag);
     ++(*nfev);
     if (iflag < 0) {
 	goto L300;
     }
-    fnorm1 = enorm(m, &wa4[1]);
+    fnorm1 = enorm_(m, &wa4[1]);
 
 /*           compute the scaled actual reduction. */
 
@@ -473,7 +482,7 @@ L200:
 /*           compute the scaled predicted reduction and */
 /*           the scaled directional derivative. */
 
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	wa3[j] = 0.;
 	l = ipvt[j];
@@ -485,7 +494,7 @@ L200:
 	}
 /* L230: */
     }
-    temp1 = enorm(n, &wa3[1]) / fnorm;
+    temp1 = enorm_(n, &wa3[1]) / fnorm;
     temp2 = sqrt(par) * pnorm / fnorm;
 /* Computing 2nd power */
     d__1 = temp1;
@@ -542,31 +551,31 @@ L260:
 
 /*           successful iteration. update x, fvec, and their norms. */
 
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	x[j] = wa2[j];
 	wa2[j] = diag[j] * x[j];
 /* L270: */
     }
-    i__1 = m;
+    i__1 = *m;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	fvec[i__] = wa4[i__];
 /* L280: */
     }
-    xnorm = enorm(n, &wa2[1]);
+    xnorm = enorm_(n, &wa2[1]);
     fnorm = fnorm1;
     ++iter;
 L290:
 
 /*           tests for convergence. */
 
-    if (abs(actred) <= ftol && prered <= ftol && p5 * ratio <= 1.) {
+    if (abs(actred) <= *ftol && prered <= *ftol && p5 * ratio <= 1.) {
 	*info = 1;
     }
-    if (delta <= xtol * xnorm) {
+    if (delta <= *xtol * xnorm) {
 	*info = 2;
     }
-    if (abs(actred) <= ftol && prered <= ftol && p5 * ratio <= 1. && *info 
+    if (abs(actred) <= *ftol && prered <= *ftol && p5 * ratio <= 1. && *info 
 	    == 2) {
 	*info = 3;
     }
@@ -576,7 +585,7 @@ L290:
 
 /*           tests for termination and stringent tolerances. */
 
-    if (*nfev >= maxfev) {
+    if (*nfev >= *maxfev) {
 	*info = 5;
     }
     if (abs(actred) <= epsmch && prered <= epsmch && p5 * ratio <= 1.) {
@@ -609,12 +618,12 @@ L300:
 	*info = iflag;
     }
     iflag = 0;
-    if (nprint > 0) {
-	(*fcn)(m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag);
+    if (*nprint > 0) {
+	(*fcn)(m, n, &x[1], &fvec[1], &iflag);
     }
     return;
 
-/*     last card of subroutine lmder. */
+/*     last card of subroutine lmdif. */
 
-} /* lmder_ */
+} /* lmdif_ */
 

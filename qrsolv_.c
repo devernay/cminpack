@@ -4,10 +4,10 @@
 */
 
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-/* Subroutine */ void qrsolv(int n, double *r__, int ldr, 
+/* Subroutine */ void qrsolv_(const int *n, double *r__, const int *ldr, 
 	const int *ipvt, const double *diag, const double *qtb, double *x, 
 	double *sdiag, double *wa)
 {
@@ -110,7 +110,7 @@
     --qtb;
     --diag;
     --ipvt;
-    r_dim1 = ldr;
+    r_dim1 = *ldr;
     r_offset = 1 + r_dim1 * 1;
     r__ -= r_offset;
 
@@ -119,9 +119,9 @@
 /*     copy r and (q transpose)*b to preserve input and initialize s. */
 /*     in particular, save the diagonal elements of r in x. */
 
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	i__2 = n;
+	i__2 = *n;
 	for (i__ = j; i__ <= i__2; ++i__) {
 	    r__[i__ + j * r_dim1] = r__[j + i__ * r_dim1];
 /* L10: */
@@ -133,7 +133,7 @@
 
 /*     eliminate the diagonal matrix d using a givens rotation. */
 
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 
 /*        prepare the row of d to be eliminated, locating the */
@@ -143,7 +143,7 @@
 	if (diag[l] == 0.) {
 	    goto L90;
 	}
-	i__2 = n;
+	i__2 = *n;
 	for (k = j; k <= i__2; ++k) {
 	    sdiag[k] = 0.;
 /* L30: */
@@ -155,7 +155,7 @@
 /*        beyond the first n, which is initially zero. */
 
 	qtbpj = 0.;
-	i__2 = n;
+	i__2 = *n;
 	for (k = j; k <= i__2; ++k) {
 
 /*           determine a givens rotation which eliminates the */
@@ -194,10 +194,10 @@ L50:
 /*           accumulate the tranformation in the row of s. */
 
 	    kp1 = k + 1;
-	    if (n < kp1) {
+	    if (*n < kp1) {
 		goto L70;
 	    }
-	    i__3 = n;
+	    i__3 = *n;
 	    for (i__ = kp1; i__ <= i__3; ++i__) {
 		temp = cos__ * r__[i__ + k * r_dim1] + sin__ * sdiag[i__];
 		sdiag[i__] = -sin__ * r__[i__ + k * r_dim1] + cos__ * sdiag[
@@ -222,13 +222,13 @@ L90:
 /*     solve the triangular system for z. if the system is */
 /*     singular, then obtain a least squares solution. */
 
-    nsing = n;
-    i__1 = n;
+    nsing = *n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	if (sdiag[j] == 0. && nsing == n) {
+	if (sdiag[j] == 0. && nsing == *n) {
 	    nsing = j - 1;
 	}
-	if (nsing < n) {
+	if (nsing < *n) {
 	    wa[j] = 0.;
 	}
 /* L110: */
@@ -257,7 +257,7 @@ L150:
 
 /*     permute the components of z back to components of x. */
 
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	l = ipvt[j];
 	x[l] = wa[j];

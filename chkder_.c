@@ -4,7 +4,7 @@
 */
 
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
 #define log10e 0.43429448190325182765
@@ -12,10 +12,14 @@
 
 /* Table of constant values */
 
-/* Subroutine */ void chkder(int m, int n, const double *x, 
-	double *fvec, double *fjac, int ldfjac, double *xp, 
-	double *fvecp, int mode, double *err)
+/* Subroutine */ void chkder_(const int *m, const int *n, const double *x, 
+	double *fvec, double *fjac, const int *ldfjac, double *xp, 
+	double *fvecp, const int *mode, double *err)
 {
+    /* Initialized data */
+
+    const int c__1 = 1;
+
     /* System generated locals */
     int fjac_dim1, fjac_offset, i__1, i__2;
     double d__1, d__2, d__3, d__4, d__5;
@@ -112,7 +116,7 @@
     --fvec;
     --xp;
     --x;
-    fjac_dim1 = ldfjac;
+    fjac_dim1 = *ldfjac;
     fjac_offset = 1 + fjac_dim1 * 1;
     fjac -= fjac_offset;
 
@@ -120,17 +124,17 @@
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar(1);
+    epsmch = dpmpar_(&c__1);
 
     eps = sqrt(epsmch);
 
-    if (mode == 2) {
+    if (*mode == 2) {
 	goto L20;
     }
 
 /*        mode = 1. */
 
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	temp = eps * (d__1 = x[j], abs(d__1));
 	if (temp == 0.) {
@@ -147,25 +151,25 @@ L20:
 
     epsf = factor * epsmch;
     epslog = log10e * log(eps);
-    i__1 = m;
+    i__1 = *m;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	err[i__] = 0.;
 /* L30: */
     }
-    i__1 = n;
+    i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	temp = (d__1 = x[j], abs(d__1));
 	if (temp == 0.) {
 	    temp = 1.;
 	}
-	i__2 = m;
+	i__2 = *m;
 	for (i__ = 1; i__ <= i__2; ++i__) {
 	    err[i__] += temp * fjac[i__ + j * fjac_dim1];
 /* L40: */
 	}
 /* L50: */
     }
-    i__1 = m;
+    i__1 = *m;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	temp = 1.;
 	if (fvec[i__] != 0. && fvecp[i__] != 0. && (d__2 = fvecp[i__] - 

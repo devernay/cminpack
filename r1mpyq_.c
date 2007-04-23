@@ -4,10 +4,10 @@
 */
 
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-/* Subroutine */ void r1mpyq(int m, int n, double *a, int
+/* Subroutine */ void r1mpyq_(const int *m, const int *n, double *a, const int *
 	lda, const double *v, const double *w)
 {
     /* System generated locals */
@@ -70,7 +70,7 @@
     /* Parameter adjustments */
     --w;
     --v;
-    a_dim1 = lda;
+    a_dim1 = *lda;
     a_offset = 1 + a_dim1 * 1;
     a -= a_offset;
 
@@ -78,14 +78,14 @@
 
 /*     apply the first set of givens rotations to a. */
 
-    nm1 = n - 1;
+    nm1 = *n - 1;
     if (nm1 < 1) {
 	/* goto L50; */
         return;
     }
     i__1 = nm1;
     for (nmj = 1; nmj <= i__1; ++nmj) {
-	j = n - nmj;
+	j = *n - nmj;
 	if ((d__1 = v[j], abs(d__1)) > 1.) {
 	    cos__ = 1. / v[j];
 	}
@@ -102,11 +102,11 @@
 	    d__2 = sin__;
 	    cos__ = sqrt(1. - d__2 * d__2);
 	}
-	i__2 = m;
+	i__2 = *m;
 	for (i__ = 1; i__ <= i__2; ++i__) {
-	    temp = cos__ * a[i__ + j * a_dim1] - sin__ * a[i__ + n * a_dim1];
-	    a[i__ + n * a_dim1] = sin__ * a[i__ + j * a_dim1] + cos__ * a[
-		    i__ + n * a_dim1];
+	    temp = cos__ * a[i__ + j * a_dim1] - sin__ * a[i__ + *n * a_dim1];
+	    a[i__ + *n * a_dim1] = sin__ * a[i__ + j * a_dim1] + cos__ * a[
+		    i__ + *n * a_dim1];
 	    a[i__ + j * a_dim1] = temp;
 /* L10: */
 	}
@@ -133,11 +133,11 @@
 	    d__2 = sin__;
 	    cos__ = sqrt(1. - d__2 * d__2);
 	}
-	i__2 = m;
+	i__2 = *m;
 	for (i__ = 1; i__ <= i__2; ++i__) {
-	    temp = cos__ * a[i__ + j * a_dim1] + sin__ * a[i__ + n * a_dim1];
-	    a[i__ + n * a_dim1] = -sin__ * a[i__ + j * a_dim1] + cos__ * a[
-		    i__ + n * a_dim1];
+	    temp = cos__ * a[i__ + j * a_dim1] + sin__ * a[i__ + *n * a_dim1];
+	    a[i__ + *n * a_dim1] = -sin__ * a[i__ + j * a_dim1] + cos__ * a[
+		    i__ + *n * a_dim1];
 	    a[i__ + j * a_dim1] = temp;
 /* L30: */
 	}

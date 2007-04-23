@@ -3,12 +3,12 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <cminpack.h>
+#include <minpack.h>
 
-/* Subroutine */ void lmdif1( void (*fcn)(int m, int n, const double *x, double *fvec,
-			   int *iflag ), int m, int n, double *x, 
-	double *fvec, double tol, int *info, int *iwa, 
-	double *wa, int lwa)
+/* Subroutine */ void lmdif1_( void (*fcn)(const int *m, const int *n, const double *x, double *fvec,
+			   int *iflag ), const int *m, const int *n, double *x, 
+	double *fvec, const double *tol, int *info, int *iwa, 
+	double *wa, const int *lwa)
 {
     /* Initialized data */
 
@@ -129,25 +129,25 @@
 
 /*     check the input parameters for errors. */
 
-    if (n <= 0 || m < n || tol < 0. || lwa < m * n + n * 5 + m) {
+    if (*n <= 0 || *m < *n || *tol < 0. || *lwa < *m * *n + *n * 5 + *m) {
 	/* goto L10; */
         return;
     }
 
 /*     call lmdif. */
 
-    maxfev = (n + 1) * 200;
-    ftol = tol;
-    xtol = tol;
+    maxfev = (*n + 1) * 200;
+    ftol = *tol;
+    xtol = *tol;
     gtol = 0.;
     epsfcn = 0.;
     mode = 1;
     nprint = 0;
-    mp5n = m + n * 5;
-    lmdif(fcn, m, n, &x[1], &fvec[1], ftol, xtol, gtol, maxfev,
-	    epsfcn, &wa[1], mode, factor, nprint, info, &nfev, &wa[mp5n + 
-	    1], m, &iwa[1], &wa[n + 1], &wa[(n << 1) + 1], &wa[n * 3 + 1], 
-	    &wa[(n << 2) + 1], &wa[n * 5 + 1]);
+    mp5n = *m + *n * 5;
+    lmdif_(fcn, m, n, &x[1], &fvec[1], &ftol, &xtol, &gtol, &maxfev, &
+	    epsfcn, &wa[1], &mode, &factor, &nprint, info, &nfev, &wa[mp5n + 
+	    1], m, &iwa[1], &wa[*n + 1], &wa[(*n << 1) + 1], &wa[*n * 3 + 1], 
+	    &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);
     if (*info == 8) {
 	*info = 4;
     }

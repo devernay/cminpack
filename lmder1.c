@@ -3,30 +3,24 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <f2c.h>
+#include <cminpack.h>
 
-/* Subroutine */ int lmder1_(U_fp fcn, integer *m, integer *n, doublereal *x, 
-	doublereal *fvec, doublereal *fjac, integer *ldfjac, doublereal *tol, 
-	integer *info, integer *ipvt, doublereal *wa, integer *lwa)
+/* Subroutine */ void lmder1(void (*fcn)(int m, int n, const double *x, double *fvec,
+			   double *fjec, int ldfjac, int *iflag ), int m, int n, double *x, 
+	double *fvec, double *fjac, int ldfjac, double tol, 
+	int *info, int *ipvt, double *wa, int lwa)
 {
     /* Initialized data */
 
-    static doublereal factor = 100.;
-    static doublereal zero = 0.;
+    const double factor = 100.;
 
     /* System generated locals */
-    integer fjac_dim1, fjac_offset;
+    int fjac_dim1, fjac_offset;
 
     /* Local variables */
-    static integer mode, nfev, njev;
-    static doublereal ftol, gtol, xtol;
-    extern /* Subroutine */ int lmder_(U_fp, integer *, integer *, doublereal 
-	    *, doublereal *, doublereal *, integer *, doublereal *, 
-	    doublereal *, doublereal *, integer *, doublereal *, integer *, 
-	    doublereal *, integer *, integer *, integer *, integer *, integer 
-	    *, doublereal *, doublereal *, doublereal *, doublereal *, 
-	    doublereal *);
-    static integer maxfev, nprint;
+    int mode, nfev, njev;
+    double ftol, gtol, xtol;
+    int maxfev, nprint;
 
 /*     ********** */
 
@@ -153,7 +147,7 @@
     --fvec;
     --ipvt;
     --x;
-    fjac_dim1 = *ldfjac;
+    fjac_dim1 = ldfjac;
     fjac_offset = 1 + fjac_dim1 * 1;
     fjac -= fjac_offset;
     --wa;
@@ -163,28 +157,29 @@
 
 /*     check the input parameters for errors. */
 
-    if (*n <= 0 || *m < *n || *ldfjac < *m || *tol < zero || *lwa < *n * 5 + *
+    if (n <= 0 || m < n || ldfjac < m || tol < 0. || lwa < n * 5 +
 	    m) {
-	goto L10;
+	/* goto L10; */
+        return;
     }
 
 /*     call lmder. */
 
-    maxfev = (*n + 1) * 100;
-    ftol = *tol;
-    xtol = *tol;
-    gtol = zero;
+    maxfev = (n + 1) * 100;
+    ftol = tol;
+    xtol = tol;
+    gtol = 0.;
     mode = 1;
     nprint = 0;
-    lmder_((U_fp)fcn, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &
-	    ftol, &xtol, &gtol, &maxfev, &wa[1], &mode, &factor, &nprint, 
-	    info, &nfev, &njev, &ipvt[1], &wa[*n + 1], &wa[(*n << 1) + 1], &
-	    wa[*n * 3 + 1], &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);
+    lmder(fcn, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac,
+	    ftol, xtol, gtol, maxfev, &wa[1], mode, factor, nprint, 
+	    info, &nfev, &njev, &ipvt[1], &wa[n + 1], &wa[(n << 1) + 1], &
+	    wa[n * 3 + 1], &wa[(n << 2) + 1], &wa[n * 5 + 1]);
     if (*info == 8) {
 	*info = 4;
     }
-L10:
-    return 0;
+/* L10: */
+    return;
 
 /*     last card of subroutine lmder1. */
 
