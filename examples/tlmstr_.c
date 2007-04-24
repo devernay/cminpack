@@ -2,9 +2,9 @@
 
 #include <stdio.h>
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 
-int fcn(int m, int n, const double *x, double *fvec, double *fjrow, int iflag);
+void fcn(const int *m, const int *n, const double *x, double *fvec, double *fjrow, int *iflag);
 
 int main()
 {
@@ -13,6 +13,7 @@ int main()
   double ftol, xtol, gtol, factor, fnorm;
   double x[3], fvec[15], fjac[3*3], diag[3], qtf[3], 
     wa1[3], wa2[3], wa3[3], wa4[15];
+  int one=1;
 
   m = 15;
   n = 3;
@@ -29,8 +30,8 @@ int main()
   /*      and gtol to zero. unless high solutions are */
   /*      required, these are the recommended settings. */
 
-  ftol = sqrt(dpmpar(1));
-  xtol = sqrt(dpmpar(1));
+  ftol = sqrt(dpmpar_(&one));
+  xtol = sqrt(dpmpar_(&one));
   gtol = 0.;
 
   maxfev = 400;
@@ -38,10 +39,10 @@ int main()
   factor = 1.e2;
   nprint = 0;
 
-  info = lmstr(fcn, m, n, x, fvec, fjac, ldfjac, ftol, xtol, gtol, 
-	maxfev, diag, mode, factor, nprint, &nfev, &njev, 
+  lmstr_(&fcn, &m, &n, x, fvec, fjac, &ldfjac, &ftol, &xtol, &gtol, 
+	&maxfev, diag, &mode, &factor, &nprint, &info, &nfev, &njev, 
 	ipvt, qtf, wa1, wa2, wa3, wa4);
-  fnorm = enorm(m, fvec);
+  fnorm = enorm_(&m, fvec);
 
   printf("      final L2 norm of the residuals%15.7g\n\n", fnorm);
   printf("      number of function evaluations%10i\n\n", nfev);
@@ -54,7 +55,7 @@ int main()
   return 0;
 }
 
-int fcn(int m, int n, const double *x, double *fvec, double *fjrow, int iflag)
+void fcn(const int *m, const int *n, const double *x, double *fvec, double *fjrow, int *iflag)
 {
 
   /*      subroutine fcn for lmstr example. */
@@ -64,12 +65,12 @@ int fcn(int m, int n, const double *x, double *fvec, double *fjrow, int iflag)
   double y[15]={1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
 		3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
 
-  if (iflag == 0)
+  if (*iflag == 0)
     {
       /*      insert print statements here when nprint is positive. */
-      return 0;
+      return;
     }
-  if (iflag < 2)
+  if (*iflag < 2)
     {
       for (i = 1; i <= 15; i++)
 	{
@@ -82,7 +83,7 @@ int fcn(int m, int n, const double *x, double *fvec, double *fjrow, int iflag)
 			 }
 else
   {
-    i = iflag - 1;
+    i = *iflag - 1;
     tmp1 = i;
     tmp2 = 16 - i;
     tmp3 = tmp1;
@@ -92,5 +93,5 @@ else
     fjrow[2-1] = tmp1*tmp2/tmp4;
     fjrow[3-1] = tmp1*tmp3/tmp4;
   }
-  return 0;
+  return;
 }

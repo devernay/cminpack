@@ -5,8 +5,8 @@
 
 #include <cminpack.h>
 
-/* Subroutine */ void hybrd1(void (*fcn)(int n, const double *x, double *fvec, int *iflag ), int n, double *x, double *
-	fvec, double tol, int *info, double *wa, int lwa)
+/* Subroutine */ int hybrd1(minpack_func_nn fcn, int n, double *x, double *
+	fvec, double tol, double *wa, int lwa)
 {
     /* Initialized data */
 
@@ -21,6 +21,7 @@
     int index;
     double epsfcn;
     int maxfev, nprint;
+    int info;
 
 /*     ********** */
 
@@ -112,13 +113,13 @@
     --wa;
 
     /* Function Body */
-    *info = 0;
+    info = 0;
 
 /*     check the input parameters for errors. */
 
     if (n <= 0 || tol < 0. || lwa < n * (n * 3 + 13) / 2) {
 	/* goto L20; */
-        return;
+        return info;
     }
 
 /*     call hybrd. */
@@ -137,15 +138,15 @@
     nprint = 0;
     lr = n * (n + 1) / 2;
     index = n * 6 + lr;
-    hybrd(fcn, n, &x[1], &fvec[1], xtol, maxfev, ml, mu, epsfcn, &
-	    wa[1], mode, factor, nprint, info, &nfev, &wa[index + 1], n, &
+    info = hybrd(fcn, n, &x[1], &fvec[1], xtol, maxfev, ml, mu, epsfcn, &
+	    wa[1], mode, factor, nprint, &nfev, &wa[index + 1], n, &
 	    wa[n * 6 + 1], lr, &wa[n + 1], &wa[(n << 1) + 1], &wa[n * 3 
 	    + 1], &wa[(n << 2) + 1], &wa[n * 5 + 1]);
-    if (*info == 5) {
-	*info = 4;
+    if (info == 5) {
+	info = 4;
     }
 /* L20: */
-    return;
+    return info;
 
 /*     last card of subroutine hybrd1. */
 

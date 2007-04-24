@@ -2,16 +2,17 @@
 
 #include <stdio.h>
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 
-int fcn(int m, int n, const double *x, double *fvec,
-	 double *fjac, int ldfjac, int iflag);
+void fcn(int *m, int *n, double *x, double *fvec,
+	 double *fjac, int *ldfjac, int *iflag);
 
 int main()
 {
-  int i, m, n, ldfjac;
+  int i, m, n, ldfjac, mode;
   double x[3], fvec[15], fjac[15*3], xp[3], fvecp[15], 
     err[15];
+  int one=1, two=2;
 
   m = 15;
   n = 3;
@@ -25,11 +26,13 @@ int main()
 
   ldfjac = 15;
 
-  chkder(m, n, x, fvec, fjac, ldfjac, xp, fvecp, 1, err);
-  fcn(m, n, x, fvec, fjac, ldfjac, 1);
-  fcn(m, n, x, fvec, fjac, ldfjac, 2);
-  fcn(m, n, xp, fvecp, fjac, ldfjac, 1);
-  chkder(m, n, x, fvec, fjac, ldfjac, xp, fvecp, 2, err);
+  mode = 1;
+  chkder_(&m, &n, x, fvec, fjac, &ldfjac, xp, fvecp, &mode, err);
+  mode = 2;
+  fcn(&m, &n, x, fvec, fjac, &ldfjac, &one);
+  fcn(&m, &n, x, fvec, fjac, &ldfjac, &two);
+  fcn(&m, &n, xp, fvecp, fjac, &ldfjac, &one);
+  chkder_(&m, &n, x, fvec, fjac, &ldfjac, xp, fvecp, &mode, err);
 
   for (i=1; i<=m; i++)
     {
@@ -45,8 +48,8 @@ int main()
   return 0;
 }
 
-int fcn(int m, int n, const double *x, double *fvec,
-	 double *fjac, int ldfjac, int iflag)
+void fcn(int *m, int *n, double *x, double *fvec,
+	 double *fjac, int *ldfjac, int *iflag)
 {
   /*      subroutine fcn for chkder example. */
 
@@ -56,13 +59,7 @@ int fcn(int m, int n, const double *x, double *fvec,
 		3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
 
   
-  if (iflag == 0) 
-    {
-      /*      insert print statements here when nprint is positive. */
-      return 0;
-    }
-
-  if (iflag != 2) 
+  if (*iflag != 2) 
 
     for (i=1; i<=15; i++)
       {
@@ -85,10 +82,10 @@ int fcn(int m, int n, const double *x, double *fvec,
 	  tmp3 = tmp2;
 	  if (i > 8) tmp3 = tmp2;
 	  tmp4 = (x[2-1]*tmp2 + x[3-1]*tmp3); tmp4=tmp4*tmp4;
-	  fjac[i-1+ ldfjac*(1-1)] = -1.;
-	  fjac[i-1+ ldfjac*(2-1)] = tmp1*tmp2/tmp4;
-	  fjac[i-1+ ldfjac*(3-1)] = tmp1*tmp3/tmp4;
+	  fjac[i-1+ *ldfjac*(1-1)] = -1.;
+	  fjac[i-1+ *ldfjac*(2-1)] = tmp1*tmp2/tmp4;
+	  fjac[i-1+ *ldfjac*(3-1)] = tmp1*tmp3/tmp4;
 	}
     }
-  return 0;
+  return;
 }

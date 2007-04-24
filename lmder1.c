@@ -5,10 +5,9 @@
 
 #include <cminpack.h>
 
-/* Subroutine */ void lmder1(void (*fcn)(int m, int n, const double *x, double *fvec,
-			   double *fjec, int ldfjac, int *iflag ), int m, int n, double *x, 
+/* Subroutine */ int lmder1(minpack_funcder_mn fcn, int m, int n, double *x, 
 	double *fvec, double *fjac, int ldfjac, double tol, 
-	int *info, int *ipvt, double *wa, int lwa)
+	int *ipvt, double *wa, int lwa)
 {
     /* Initialized data */
 
@@ -21,6 +20,7 @@
     int mode, nfev, njev;
     double ftol, gtol, xtol;
     int maxfev, nprint;
+    int info;
 
 /*     ********** */
 
@@ -153,14 +153,14 @@
     --wa;
 
     /* Function Body */
-    *info = 0;
+    info = 0;
 
 /*     check the input parameters for errors. */
 
     if (n <= 0 || m < n || ldfjac < m || tol < 0. || lwa < n * 5 +
 	    m) {
 	/* goto L10; */
-        return;
+        return info;
     }
 
 /*     call lmder. */
@@ -171,15 +171,15 @@
     gtol = 0.;
     mode = 1;
     nprint = 0;
-    lmder(fcn, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac,
+    info = lmder(fcn, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac,
 	    ftol, xtol, gtol, maxfev, &wa[1], mode, factor, nprint, 
-	    info, &nfev, &njev, &ipvt[1], &wa[n + 1], &wa[(n << 1) + 1], &
+	    &nfev, &njev, &ipvt[1], &wa[n + 1], &wa[(n << 1) + 1], &
 	    wa[n * 3 + 1], &wa[(n << 2) + 1], &wa[n * 5 + 1]);
-    if (*info == 8) {
-	*info = 4;
+    if (info == 8) {
+	info = 4;
     }
 /* L10: */
-    return;
+    return info;
 
 /*     last card of subroutine lmder1. */
 

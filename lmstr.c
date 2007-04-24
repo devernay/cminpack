@@ -11,12 +11,11 @@
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-/* Subroutine */ void lmstr(void (*fcn)(int m, int n, const double *x, double *fvec,
-			  double *fjrow, int *iflag ), int m, int n, double *x, 
+/* Subroutine */ int lmstr(minpack_funcderstr_mn fcn, int m, int n, double *x, 
 	double *fvec, double *fjac, int ldfjac, double ftol,
 	double xtol, double gtol, int maxfev, double *
-	diag, int mode, double factor, int nprint, int *
-	info, int *nfev, int *njev, int *ipvt, double *qtf, 
+	diag, int mode, double factor, int nprint,
+	int *nfev, int *njev, int *ipvt, double *qtf, 
 	double *wa1, double *wa2, double *wa3, double *wa4)
 {
     /* Initialized data */
@@ -42,6 +41,7 @@
     double ratio;
     double fnorm, gnorm, pnorm, xnorm, fnorm1, actred, dirder, 
 	    epsmch, prered;
+    int info;
 
 /*     ********** */
 
@@ -239,7 +239,7 @@
 
     epsmch = dpmpar(1);
 
-    *info = 0;
+    info = 0;
     iflag = 0;
     *nfev = 0;
     *njev = 0;
@@ -265,8 +265,7 @@ L20:
 /*     evaluate the function at the starting point */
 /*     and calculate its norm. */
 
-    iflag = 1;
-    (*fcn)(m, n, &x[1], &fvec[1], &wa3[1], &iflag);
+    iflag = (*fcn)(m, n, &x[1], &fvec[1], &wa3[1], 1);
     *nfev = 1;
     if (iflag < 0) {
 	goto L340;
@@ -289,7 +288,7 @@ L30:
     }
     iflag = 0;
     if ((iter - 1) % nprint == 0) {
-	(*fcn)(m, n, &x[1], &fvec[1], &wa3[1], &iflag);
+	iflag = (*fcn)(m, n, &x[1], &fvec[1], &wa3[1], 0);
     }
     if (iflag < 0) {
 	goto L340;
@@ -314,8 +313,7 @@ L40:
     iflag = 2;
     i__1 = m;
     for (i__ = 1; i__ <= i__1; ++i__) {
-	(*fcn)(m, n, &x[1], &fvec[1], &wa3[1], &iflag);
-	if (iflag < 0) {
+	if ((*fcn)(m, n, &x[1], &fvec[1], &wa3[1], iflag) < 0) {
 	    goto L340;
 	}
 	temp = fvec[i__];
@@ -431,9 +429,9 @@ L210:
 /*        test for convergence of the gradient norm. */
 
     if (gnorm <= gtol) {
-	*info = 4;
+	info = 4;
     }
-    if (*info != 0) {
+    if (info != 0) {
 	goto L340;
     }
 
@@ -479,8 +477,7 @@ L240:
 
 /*           evaluate the function at x + p and calculate its norm. */
 
-    iflag = 1;
-    (*fcn)(m, n, &wa2[1], &wa4[1], &wa3[1], &iflag);
+    iflag = (*fcn)(m, n, &wa2[1], &wa4[1], &wa3[1], 1);
     ++(*nfev);
     if (iflag < 0) {
 	goto L340;
@@ -587,34 +584,34 @@ L330:
 /*           tests for convergence. */
 
     if (abs(actred) <= ftol && prered <= ftol && p5 * ratio <= 1.) {
-	*info = 1;
+	info = 1;
     }
     if (delta <= xtol * xnorm) {
-	*info = 2;
+	info = 2;
     }
-    if (abs(actred) <= ftol && prered <= ftol && p5 * ratio <= 1. && *info 
+    if (abs(actred) <= ftol && prered <= ftol && p5 * ratio <= 1. && info 
 	    == 2) {
-	*info = 3;
+	info = 3;
     }
-    if (*info != 0) {
+    if (info != 0) {
 	goto L340;
     }
 
 /*           tests for termination and stringent tolerances. */
 
     if (*nfev >= maxfev) {
-	*info = 5;
+	info = 5;
     }
     if (abs(actred) <= epsmch && prered <= epsmch && p5 * ratio <= 1.) {
-	*info = 6;
+	info = 6;
     }
     if (delta <= epsmch * xnorm) {
-	*info = 7;
+	info = 7;
     }
     if (gnorm <= epsmch) {
-	*info = 8;
+	info = 8;
     }
-    if (*info != 0) {
+    if (info != 0) {
 	goto L340;
     }
 
@@ -632,13 +629,13 @@ L340:
 /*     termination, either normal or user imposed. */
 
     if (iflag < 0) {
-	*info = iflag;
+	info = iflag;
     }
     iflag = 0;
     if (nprint > 0) {
-	(*fcn)(m, n, &x[1], &fvec[1], &wa3[1], &iflag);
+	iflag = (*fcn)(m, n, &x[1], &fvec[1], &wa3[1], 0);
     }
-    return;
+    return info;
 
 /*     last card of subroutine lmstr. */
 

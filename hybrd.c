@@ -10,10 +10,10 @@
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-/* Subroutine */ void hybrd(void (*fcn)(int n, const double *x, double *fvec, int *iflag ), int n, double *x, double *
+/* Subroutine */ int hybrd(minpack_func_nn fcn, int n, double *x, double *
 	fvec, double xtol, int maxfev, int ml, int mu, 
 	double epsfcn, double *diag, int mode, double
-	factor, int nprint, int *info, int *nfev, double *
+	factor, int nprint, int *nfev, double *
 	fjac, int ldfjac, double *r__, int lr, double *qtf, 
 	double *wa1, double *wa2, double *wa3, double *wa4)
 {
@@ -44,6 +44,7 @@
     int nslow1, nslow2;
     int ncfail;
     double actred, epsmch, prered;
+    int info;
 
 /*     ********** */
 
@@ -221,7 +222,7 @@
 
     epsmch = dpmpar(1);
 
-    *info = 0;
+    info = 0;
     iflag = 0;
     *nfev = 0;
 
@@ -246,8 +247,7 @@ L20:
 /*     evaluate the function at the starting point */
 /*     and calculate its norm. */
 
-    iflag = 1;
-    (*fcn)(n, &x[1], &fvec[1], &iflag);
+    iflag = (*fcn)(n, &x[1], &fvec[1], 1);
     *nfev = 1;
     if (iflag < 0) {
 	goto L300;
@@ -276,8 +276,7 @@ L30:
 
 /*        calculate the jacobian matrix. */
 
-    iflag = 2;
-    fdjac1(fcn, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag,
+    iflag = fdjac1(fcn, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac,
 	     ml, mu, epsfcn, &wa1[1], &wa2[1]);
     *nfev += msum;
     if (iflag < 0) {
@@ -405,7 +404,7 @@ L180:
     }
     iflag = 0;
     if ((iter - 1) % nprint == 0) {
-	(*fcn)(n, &x[1], &fvec[1], &iflag);
+	iflag = (*fcn)(n, &x[1], &fvec[1], 0);
     }
     if (iflag < 0) {
 	goto L300;
@@ -436,8 +435,7 @@ L190:
 
 /*           evaluate the function at x + p and calculate its norm. */
 
-    iflag = 1;
-    (*fcn)(n, &wa2[1], &wa4[1], &iflag);
+    iflag = (*fcn)(n, &wa2[1], &wa4[1], 1);
     ++(*nfev);
     if (iflag < 0) {
 	goto L300;
@@ -542,29 +540,29 @@ L260:
 /*           test for convergence. */
 
     if (delta <= xtol * xnorm || fnorm == 0.) {
-	*info = 1;
+	info = 1;
     }
-    if (*info != 0) {
+    if (info != 0) {
 	goto L300;
     }
 
 /*           tests for termination and stringent tolerances. */
 
     if (*nfev >= maxfev) {
-	*info = 2;
+	info = 2;
     }
 /* Computing MAX */
     d__1 = p1 * delta;
     if (p1 * max(d__1,pnorm) <= epsmch * xnorm) {
-	*info = 3;
+	info = 3;
     }
     if (nslow2 == 5) {
-	*info = 4;
+	info = 4;
     }
     if (nslow1 == 10) {
-	*info = 5;
+	info = 5;
     }
-    if (*info != 0) {
+    if (info != 0) {
 	goto L300;
     }
 
@@ -614,13 +612,12 @@ L300:
 /*     termination, either normal or user imposed. */
 
     if (iflag < 0) {
-	*info = iflag;
+	info = iflag;
     }
-    iflag = 0;
     if (nprint > 0) {
-	(*fcn)(n, &x[1], &fvec[1], &iflag);
+	(*fcn)(n, &x[1], &fvec[1], 0);
     }
-    return;
+    return info;
 
 /*     last card of subroutine hybrd. */
 

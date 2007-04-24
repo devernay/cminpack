@@ -3,10 +3,10 @@
 
 #include <stdio.h>
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 
-int fcn(int m, int n, const double *x, double *fvec, double *fjac, 
-	 int ldfjac, int iflag);
+void fcn(const int *m, const int *n, const double *x, double *fvec, double *fjac, 
+	 const int *ldfjac, int *iflag);
 
 int main()
 {
@@ -14,6 +14,7 @@ int main()
   int ipvt[3];
   double tol, fnorm;
   double x[3], fvec[15], fjac[15*3], wa[30];
+  int one=1;
 
   m = 15;
   n = 3;
@@ -31,11 +32,11 @@ int main()
 /*      unless high solutions are required, */
 /*      this is the recommended setting. */
 
-  tol = sqrt(dpmpar(1));
+  tol = sqrt(dpmpar_(&one));
 
-  info = lmder1(fcn, m, n, x, fvec, fjac, ldfjac, tol, 
-	  ipvt, wa, lwa);
-  fnorm = enorm(m, fvec);
+  lmder1_(&fcn, &m, &n, x, fvec, fjac, &ldfjac, &tol, 
+	  &info, ipvt, wa, &lwa);
+  fnorm = enorm_(&m, fvec);
   printf("      final l2 norm of the residuals%15.7g\n\n", fnorm);
   printf("      exit parameter                %10i\n\n", info);
   printf("      final approximate solution\n");
@@ -45,8 +46,8 @@ int main()
   return 0;
 }
 
-int fcn(int m, int n, const double *x, double *fvec, double *fjac, 
-	 int ldfjac, int iflag)
+void fcn(const int *m, const int *n, const double *x, double *fvec, double *fjac, 
+	 const int *ldfjac, int *iflag)
 {
 
 /*      subroutine fcn for lmder1 example. */
@@ -56,7 +57,7 @@ int fcn(int m, int n, const double *x, double *fvec, double *fjac,
   double y[15] = {1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
 		  3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
 
-  if (iflag != 2)
+  if (*iflag != 2)
     {
       for (i = 1; i <= 15; i++)
 	{
@@ -76,10 +77,9 @@ int fcn(int m, int n, const double *x, double *fvec, double *fjac,
 	  tmp3 = tmp1;
 	  if (i > 8) tmp3 = tmp2;
 	  tmp4 = (x[2-1]*tmp2 + x[3-1]*tmp3); tmp4 = tmp4*tmp4;
-	  fjac[i-1 + ldfjac*(1-1)] = -1.;
-	  fjac[i-1 + ldfjac*(2-1)] = tmp1*tmp2/tmp4;
-	  fjac[i-1 + ldfjac*(3-1)] = tmp1*tmp3/tmp4;
+	  fjac[i-1 + *ldfjac*(1-1)] = -1.;
+	  fjac[i-1 + *ldfjac*(2-1)] = tmp1*tmp2/tmp4;
+	  fjac[i-1 + *ldfjac*(3-1)] = tmp1*tmp3/tmp4;
 	}
     }
-  return 0;
 }

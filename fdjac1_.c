@@ -128,6 +128,7 @@
     epsmch = dpmpar_(&c__1);
 
     eps = sqrt((max(*epsfcn,epsmch)));
+    *iflag = 1;
     msum = *ml + *mu + 1;
     if (msum < *n) {
 	goto L40;

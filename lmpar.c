@@ -25,15 +25,15 @@
     double d__1, d__2;
 
     /* Local variables */
-    static int i__, j, k, l;
-    static double fp;
-    static int jm1, jp1;
-    static double sum, parc, parl;
-    static int iter;
-    static double temp, paru, dwarf;
-    static int nsing;
-    static double gnorm;
-    static double dxnorm;
+    int i__, j, k, l;
+    double fp;
+    int jm1, jp1;
+    double sum, parc, parl;
+    int iter;
+    double temp, paru, dwarf;
+    int nsing;
+    double gnorm;
+    double dxnorm;
 
 /*     ********** */
 

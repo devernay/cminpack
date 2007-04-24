@@ -2,9 +2,9 @@
 
 #include <stdio.h>
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 
-int fcn(int m, int n, const double *x, double *fvec, int iflag);
+void fcn(const int *m, const int *n, const double *x, double *fvec, int *iflag);
 
 int main()
 {
@@ -13,6 +13,7 @@ int main()
   double ftol, xtol, gtol, epsfcn, factor, fnorm;
   double x[3], fvec[15], diag[3], fjac[15*3], qtf[3], 
     wa1[3], wa2[3], wa3[3], wa4[15];
+  int one=1;
 
   m = 15;
   n = 3;
@@ -29,8 +30,8 @@ int main()
   /*      and gtol to zero. unless high solutions are */
   /*      required, these are the recommended settings. */
 
-  ftol = sqrt(dpmpar(1));
-  xtol = sqrt(dpmpar(1));
+  ftol = sqrt(dpmpar_(&one));
+  xtol = sqrt(dpmpar_(&one));
   gtol = 0.;
 
   maxfev = 800;
@@ -39,11 +40,11 @@ int main()
   factor = 1.e2;
   nprint = 0;
 
-  info = lmdif(fcn, m, n, x, fvec, ftol, xtol, gtol, maxfev, epsfcn, 
-	 diag, mode, factor, nprint, &nfev, fjac, ldfjac, 
+  lmdif_(&fcn, &m, &n, x, fvec, &ftol, &xtol, &gtol, &maxfev, &epsfcn, 
+	 diag, &mode, &factor, &nprint, &info, &nfev, fjac, &ldfjac, 
 	 ipvt, qtf, wa1, wa2, wa3, wa4);
 
-  fnorm = enorm(m, fvec);
+  fnorm = enorm_(&m, fvec);
 
   printf("      final l2 norm of the residuals%15.7g\n\n", fnorm);
   printf("      number of function evaluations%10i\n\n", nfev);
@@ -54,7 +55,7 @@ int main()
   return 0;
 }
 
-int fcn(int m, int n, const double *x, double *fvec, int iflag)
+void fcn(const int *m, const int *n, const double *x, double *fvec, int *iflag)
 {
 
 /*      subroutine fcn for lmdif example. */
@@ -64,10 +65,10 @@ int fcn(int m, int n, const double *x, double *fvec, int iflag)
   double y[15]={1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
 		3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
 
-  if (iflag == 0)
+  if (*iflag == 0)
     {
       /*      insert print statements here when nprint is positive. */
-      return 0;
+      return;
     }
   for (i = 1; i <= 15; i++)
     {
@@ -77,5 +78,5 @@ int fcn(int m, int n, const double *x, double *fvec, int iflag)
       if (i > 8) tmp3 = tmp2;
       fvec[i-1] = y[i-1] - (x[1-1] + tmp1/(x[2-1]*tmp2 + x[3-1]*tmp3));
     }
-  return 0;
+  return;
 }

@@ -3,15 +3,16 @@
 
 #include <stdio.h>
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 
-int fcn(int n, const double *x, double *fvec, int iflag);
+void fcn(const int *n, const double *x, double *fvec, int *iflag);
 
 int main()
 {
   int j, n, info, lwa;
   double tol, fnorm;
   double x[9], fvec[9], wa[180];
+  int one=1;
 
   n = 9;
 
@@ -28,9 +29,9 @@ int main()
 /*      unless high solutions are required, */
 /*      this is the recommended setting. */
 
-  tol = sqrt(dpmpar(1));
-  info = hybrd1(fcn, n, x, fvec, tol, wa, lwa);
-  fnorm = enorm(n, fvec);
+  tol = sqrt(dpmpar_(&one));
+  hybrd1_(&fcn, &n, x, fvec, &tol, &info, wa, &lwa);
+  fnorm = enorm_(&n, fvec);
 
   printf("     final L2 norm of the residuals %15.7g\n", fnorm);
   printf("     exit parameter                 %10i\n", info);
@@ -41,21 +42,21 @@ int main()
   return 0;
 }
 
-int fcn(int n, const double *x, double *fvec, int iflag)
+void fcn(const int *n, const double *x, double *fvec, int *iflag)
 {
 /*      subroutine fcn for hybrd1 example. */
 
   int k;
   double one=1, temp, temp1, temp2, three=3, two=2, zero=0;
 
-  for (k=1; k <= n; k++)
+  for (k=1; k <= *n; k++)
     {
       temp = (three - two*x[k-1])*x[k-1];
       temp1 = zero;
       if (k != 1) temp1 = x[k-1-1];
       temp2 = zero;
-      if (k != n) temp2 = x[k+1-1];
+      if (k != *n) temp2 = x[k+1-1];
       fvec[k-1] = temp - temp1 - two*temp2 + one;
     }
-  return 0;
+  return;
 }

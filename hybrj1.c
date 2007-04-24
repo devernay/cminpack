@@ -5,10 +5,9 @@
 
 #include <cminpack.h>
 
-/* Subroutine */ void hybrj1(void (*fcn)(int n, const double *x, double *fvec, double *fjec,
-			   int ldfjac, int *iflag ), int n, double *x, double *
-	fvec, double *fjac, int ldfjac, double tol, int *
-	info, double *wa, int lwa)
+/* Subroutine */ int hybrj1(minpack_funcder_nn fcn, int n, double *x, double *
+	fvec, double *fjac, int ldfjac, double tol,
+	double *wa, int lwa)
 {
     /* Initialized data */
 
@@ -21,6 +20,7 @@
     int j, lr, mode, nfev, njev;
     double xtol;
     int maxfev, nprint;
+    int info;
 
 /*     ********** */
 
@@ -123,13 +123,13 @@
     --wa;
 
     /* Function Body */
-    *info = 0;
+    info = 0;
 
 /*     check the input parameters for errors. */
 
     if (n <= 0 || ldfjac < n || tol < 0. || lwa < n * (n + 13) / 2) {
 	/* goto L20; */
-        return;
+        return info;
     }
 
 /*     call hybrj. */
@@ -144,15 +144,15 @@
     }
     nprint = 0;
     lr = n * (n + 1) / 2;
-    hybrj(fcn, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, xtol,
-	    maxfev, &wa[1], mode, factor, nprint, info, &nfev, &njev, &wa[
+    info = hybrj(fcn, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, xtol,
+	    maxfev, &wa[1], mode, factor, nprint, &nfev, &njev, &wa[
 	    n * 6 + 1], lr, &wa[n + 1], &wa[(n << 1) + 1], &wa[n * 3 + 1],
 	     &wa[(n << 2) + 1], &wa[n * 5 + 1]);
-    if (*info == 5) {
-	*info = 4;
+    if (info == 5) {
+	info = 4;
     }
 /* L20: */
-    return;
+    return info;
 
 /*     last card of subroutine hybrj1. */
 

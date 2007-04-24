@@ -1,6 +1,6 @@
 #CC=cc
 CC=gcc
-CFLAGS= -O2 -g -Wall -I.
+CFLAGS= -O2 -g -Wall -Wextra -I.
 #CFLAGS= -g -Wall -I.
 OBJS = \
 chkder.o  enorm.o   hybrd1.o  hybrj.o   lmdif1.o  lmstr1.o  qrfac.o   r1updt.o\

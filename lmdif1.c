@@ -5,19 +5,19 @@
 
 #include <cminpack.h>
 
-/* Subroutine */ void lmdif1( void (*fcn)(int m, int n, const double *x, double *fvec,
-			   int *iflag ), int m, int n, double *x, 
-	double *fvec, double tol, int *info, int *iwa, 
+/* Subroutine */ int lmdif1(minpack_func_mn fcn, int m, int n, double *x, 
+	double *fvec, double tol, int *iwa, 
 	double *wa, int lwa)
 {
     /* Initialized data */
 
     const double factor = 100.;
 
-    static int mp5n, mode, nfev;
-    static double ftol, gtol, xtol;
-    static double epsfcn;
-    static int maxfev, nprint;
+    int mp5n, mode, nfev;
+    double ftol, gtol, xtol;
+    double epsfcn;
+    int maxfev, nprint;
+    int info;
 
 /*     ********** */
 
@@ -125,13 +125,13 @@
     --wa;
 
     /* Function Body */
-    *info = 0;
+    info = 0;
 
 /*     check the input parameters for errors. */
 
     if (n <= 0 || m < n || tol < 0. || lwa < m * n + n * 5 + m) {
 	/* goto L10; */
-        return;
+        return info;
     }
 
 /*     call lmdif. */
@@ -144,15 +144,15 @@
     mode = 1;
     nprint = 0;
     mp5n = m + n * 5;
-    lmdif(fcn, m, n, &x[1], &fvec[1], ftol, xtol, gtol, maxfev,
-	    epsfcn, &wa[1], mode, factor, nprint, info, &nfev, &wa[mp5n + 
+    info = lmdif(fcn, m, n, &x[1], &fvec[1], ftol, xtol, gtol, maxfev,
+	    epsfcn, &wa[1], mode, factor, nprint, &nfev, &wa[mp5n + 
 	    1], m, &iwa[1], &wa[n + 1], &wa[(n << 1) + 1], &wa[n * 3 + 1], 
 	    &wa[(n << 2) + 1], &wa[n * 5 + 1]);
-    if (*info == 8) {
-	*info = 4;
+    if (info == 8) {
+	info = 4;
     }
 /* L10: */
-    return;
+    return info;
 
 /*     last card of subroutine lmdif1. */
 

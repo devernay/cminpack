@@ -1,99 +1,153 @@
+#ifndef __CMINPACK_H__
+#define __CMINPACK_H__
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /* Declarations for minpack */
+
+/* Function types: */
+/* the iflag parameter is input-only (with respect to the FORTRAN */
+/*  version), the output iflag value is the return value of the function. */
+/* If iflag=0, the function shoulkd just print the current values (see */
+/* the nprint parameters below). */
+  
+/* for hybrd1 and hybrd: */
+/*         calculate the functions at x and */
+/*         return this vector in fvec. */
+/* return a negative value to terminate hybrd1/hybrd */
+typedef int (*minpack_func_nn)(int n, const double *x, double *fvec, int iflag );
+
+/* for hybrj1 and hybrj */
+/*         if iflag = 1 calculate the functions at x and */
+/*         return this vector in fvec. do not alter fjac. */
+/*         if iflag = 2 calculate the jacobian at x and */
+/*         return this matrix in fjac. do not alter fvec. */
+/* return a negative value to terminate hybrj1/hybrj */
+typedef int (*minpack_funcder_nn)(int n, const double *x, double *fvec, double *fjac,
+                                  int ldfjac, int iflag );
+
+/* for lmdif1 and lmdif */
+/*         calculate the functions at x and */
+/*         return this vector in fvec. */
+/* return a negative value to terminate lmdif1/lmdif */
+typedef int (*minpack_func_mn)(int m, int n, const double *x, double *fvec,
+                               int iflag );
+
+/* for lmder1 and lmder */
+/*         if iflag = 1 calculate the functions at x and */
+/*         return this vector in fvec. do not alter fjac. */
+/*         if iflag = 2 calculate the jacobian at x and */
+/*         return this matrix in fjac. do not alter fvec. */
+/* return a negative value to terminate lmder1/lmder */
+typedef int (*minpack_funcder_mn)(int m, int n, const double *x, double *fvec,
+                                  double *fjac, int ldfjac, int iflag );
+
+/* for lmstr1 and lmstr */
+/*         if iflag = 1 calculate the functions at x and */
+/*         return this vector in fvec. */
+/*         if iflag = i calculate the (i-1)-st row of the */
+/*         jacobian at x and return this vector in fjrow. */
+/* return a negative value to terminate lmstr1/lmstr */
+typedef int (*minpack_funcderstr_mn)(int m, int n, const double *x, double *fvec,
+                                     double *fjrow, int iflag );
+
+
+
+
+
+
+/* MINPACK functions: */
+/* the info parameter was removed from most functions: the return */
+/* value of the function is used instead. */
 
 /* find a zero of a system of N nonlinear functions in N variables by
    a modification of the Powell hybrid method (Jacobian calculated by
    a forward-difference approximation) */
-void hybrd1 ( void (*fcn)(int n, const double *x, double *fvec, int *iflag ), 
-	       int n, double *x, double *fvec, double tol, int *info,
+int hybrd1 ( minpack_func_nn fcn, 
+	       int n, double *x, double *fvec, double tol,
 	       double *wa, int lwa );
 
 /* find a zero of a system of N nonlinear functions in N variables by
    a modification of the Powell hybrid method (Jacobian calculated by
    a forward-difference approximation, more general). */
-void hybrd ( void (*fcn)(int n, const double *x, double *fvec, int *iflag ), 
+int hybrd ( minpack_func_nn fcn,
 	      int n, double *x, double *fvec, double xtol, int maxfev,
 	      int ml, int mu, double epsfcn, double *diag, int mode,
-	      double factor, int nprint, int *info, int *nfev,
+	      double factor, int nprint, int *nfev,
 	      double *fjac, int ldfjac, double *r, int lr, double *qtf,
 	      double *wa1, double *wa2, double *wa3, double *wa4);
   
 /* find a zero of a system of N nonlinear functions in N variables by
    a modification of the Powell hybrid method (user-supplied Jacobian) */
-void hybrj1 ( void (*fcn)(int n, const double *x, double *fvec, double *fjac,
-			   int ldfjac, int *iflag ), int n, double *x,
+int hybrj1 ( minpack_funcder_nn fcn, int n, double *x,
 	       double *fvec, double *fjac, int ldfjac, double tol,
-	       int *info, double *wa, int lwa );
+	       double *wa, int lwa );
           
 /* find a zero of a system of N nonlinear functions in N variables by
    a modification of the Powell hybrid method (user-supplied Jacobian,
    more general) */
-void hybrj ( void (*fcn)(int n, const double *x, double *fvec, double *fjac,
-			  int ldfjac, int *iflag ), int n, double *x,
+int hybrj ( minpack_funcder_nn fcn, int n, double *x,
 	      double *fvec, double *fjac, int ldfjac, double xtol,
 	      int maxfev, double *diag, int mode, double factor,
-	      int nprint, int *info, int *nfev, int *njev, double *r,
+	      int nprint, int *nfev, int *njev, double *r,
 	      int lr, double *qtf, double *wa1, double *wa2,
 	      double *wa3, double *wa4 );
 
 /* minimize the sum of the squares of nonlinear functions in N
    variables by a modification of the Levenberg-Marquardt algorithm
    (Jacobian calculated by a forward-difference approximation) */
-void lmdif1 ( void (*fcn)(int m, int n, const double *x, double *fvec,
-			   int *iflag ),
+int lmdif1 ( minpack_func_mn fcn,
 	       int m, int n, double *x, double *fvec, double tol,
-	       int *info, int *iwa, double *wa, int lwa );
+	       int *iwa, double *wa, int lwa );
 
 /* minimize the sum of the squares of nonlinear functions in N
    variables by a modification of the Levenberg-Marquardt algorithm
    (Jacobian calculated by a forward-difference approximation, more
    general) */
-void lmdif ( void (*fcn)(int m, int n, const double *x, double *fvec,
-			  int *iflag ),
+int lmdif ( minpack_func_mn fcn,
 	      int m, int n, double *x, double *fvec, double ftol,
 	      double xtol, double gtol, int maxfev, double epsfcn,
 	      double *diag, int mode, double factor, int nprint,
-	      int *info, int *nfev, double *fjac, int ldfjac, int *ipvt,
+	      int *nfev, double *fjac, int ldfjac, int *ipvt,
 	      double *qtf, double *wa1, double *wa2, double *wa3,
 	      double *wa4 );
 
 /* minimize the sum of the squares of nonlinear functions in N
    variables by a modification of the Levenberg-Marquardt algorithm
    (user-supplied Jacobian) */
-void lmder1 ( void (*fcn)(int m, int n, const double *x, double *fvec,
-			   double *fjac, int ldfjac, int *iflag ),
+int lmder1 ( minpack_funcder_mn fcn,
 	       int m, int n, double *x, double *fvec, double *fjac,
-	       int ldfjac, double tol, int *info, int *ipvt,
+	       int ldfjac, double tol, int *ipvt,
 	       double *wa, int lwa );
 
 /* minimize the sum of the squares of nonlinear functions in N
    variables by a modification of the Levenberg-Marquardt algorithm
    (user-supplied Jacobian, more general) */
-void lmder ( void (*fcn)(int m, int n, const double *x, double *fvec,
-			  double *fjac, int ldfjac, int *iflag ),
+int lmder ( minpack_funcder_mn fcn,
 	      int m, int n, double *x, double *fvec, double *fjac,
 	      int ldfjac, double ftol, double xtol, double gtol,
 	      int maxfev, double *diag, int mode, double factor,
-	      int nprint, int *info, int *nfev, int *njev, int *ipvt,
+	      int nprint, int *nfev, int *njev, int *ipvt,
 	      double *qtf, double *wa1, double *wa2, double *wa3,
 	      double *wa4 );
 
 /* minimize the sum of the squares of nonlinear functions in N
    variables by a modification of the Levenberg-Marquardt algorithm
    (user-supplied Jacobian, minimal storage) */
-void lmstr1 ( void (*fcn)(int m, int n, const double *x, double *fvec,
-			   double *fjrow, int *iflag ), int m, int n,
+int lmstr1 ( minpack_funcderstr_mn fcn, int m, int n,
 	       double *x, double *fvec, double *fjac, int ldfjac,
-	       double tol, int *info, int *ipvt, double *wa, int lwa );
+	       double tol, int *ipvt, double *wa, int lwa );
 
 /* minimize the sum of the squares of nonlinear functions in N
    variables by a modification of the Levenberg-Marquardt algorithm
    (user-supplied Jacobian, minimal storage, more general) */
-void lmstr ( void (*fcn)(int m, int n, const double *x, double *fvec,
-			  double *fjrow, int *iflag ), int m,
+int lmstr (  minpack_funcderstr_mn fcn, int m,
 	      int n, double *x, double *fvec, double *fjac,
 	      int ldfjac, double ftol, double xtol, double gtol,
 	      int maxfev, double *diag, int mode, double factor,
-	      int nprint, int *info, int *nfev, int *njev, int *ipvt,
+	      int nprint, int *nfev, int *njev, int *ipvt,
 	      double *qtf, double *wa1, double *wa2, double *wa3,
 	      double *wa4 );
  
@@ -108,18 +162,17 @@ double enorm ( int n, const double *x );
 /* compute a forward-difference approximation to the m by n jacobian
    matrix associated with a specified problem of m functions in n
    variables. */
-void fdjac2(void (*fcn)(int m, int n, const double *x, double *fvec,
-			 int *iflag ),
+int fdjac2(minpack_func_mn fcn,
 	     int m, int n, double *x, const double *fvec, double *fjac,
-	     int ldfjac, int *iflag, double epsfcn, double *wa);
+	     int ldfjac, double epsfcn, double *wa);
 
 /* compute a forward-difference approximation to the n by n jacobian
    matrix associated with a specified problem of n functions in n
    variables. if the jacobian has a banded form, then function
    evaluations are saved by only approximating the nonzero terms. */
-void fdjac1(void (*fcn)(int n, const double *x, double *fvec, int *iflag ),
+int fdjac1(minpack_func_nn fcn,
 	     int n, double *x, const double *fvec, double *fjac, int ldfjac,
-	     int *iflag, int ml, int mu, double epsfcn, double *wa1,
+	     int ml, int mu, double epsfcn, double *wa1,
 	     double *wa2);
 
 /* internal MINPACK subroutines */
@@ -145,3 +198,10 @@ void lmpar(int n, double *r__, int ldr,
 void rwupdt(int n, double *r__, int ldr, 
              const double *w, double *b, double *alpha, double *cos__, 
              double *sin__);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+
+#endif /* __CMINPACK_H__ */

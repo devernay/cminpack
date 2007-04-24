@@ -2,16 +2,17 @@
 
 #include <stdio.h>
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 
-int fcn(int n, const double *x, double *fvec, double *fjac, int ldfjac, 
-	 int iflag);
+void fcn(const int *n, const double *x, double *fvec, double *fjac, const int *ldfjac, 
+	 int *iflag);
 
 int main()
 {
   int j, n, ldfjac, info, lwa;
   double tol, fnorm;
   double x[9], fvec[9], fjac[9*9], wa[99];
+  int one=1;
 
   n = 9;
 
@@ -29,11 +30,11 @@ int main()
 /*      unless high solutions are required, */
 /*      this is the recommended setting. */
 
-  tol = sqrt(dpmpar(1));
+  tol = sqrt(dpmpar_(&one));
 
-  info = hybrj1(fcn, n, x, fvec, fjac, ldfjac, tol, wa, lwa);
+  hybrj1_(&fcn, &n, x, fvec, fjac, &ldfjac, &tol, &info, wa, &lwa);
 
-  fnorm = enorm(n, fvec);
+  fnorm = enorm_(&n, fvec);
 
   printf("      final l2 norm of the residuals%15.7g\n\n", fnorm);
   printf("      exit parameter                %10i\n\n", info);
@@ -44,38 +45,38 @@ int main()
   return 0;
 }
 
-int fcn(int n, const double *x, double *fvec, double *fjac, int ldfjac, 
-	 int iflag)
+void fcn(const int *n, const double *x, double *fvec, double *fjac, const int *ldfjac, 
+	 int *iflag)
 {
   /*      subroutine fcn for hybrj1 example. */
 
   int j, k;
   double one=1, temp, temp1, temp2, three=3, two=2, zero=0, four=4;
 
-  if (iflag != 2)
+  if (*iflag != 2)
     {
-      for (k = 1; k <= n; k++)
+      for (k = 1; k <= *n; k++)
 	{
 	  temp = (three - two*x[k-1])*x[k-1];
 	  temp1 = zero;
 	  if (k != 1) temp1 = x[k-1-1];
 	  temp2 = zero;
-	  if (k != n) temp2 = x[k+1-1];
+	  if (k != *n) temp2 = x[k+1-1];
 	  fvec[k-1] = temp - temp1 - two*temp2 + one;
 	}
     }
   else
     {
-     for (k = 1; k <= n; k++)
+     for (k = 1; k <= *n; k++)
        {
-	 for (j = 1; j <= n; j++)
+	 for (j = 1; j <= *n; j++)
 	   {
-	     fjac[k-1 + ldfjac*(j-1)] = zero;
+	     fjac[k-1 + *ldfjac*(j-1)] = zero;
 	   }
-         fjac[k-1 + ldfjac*(k-1)] = three - four*x[k-1];
-         if (k != 1) fjac[k-1 + ldfjac*(k-1-1)] = -one;
-         if (k != n) fjac[k-1 + ldfjac*(k+1-1)] = -two;
+         fjac[k-1 + *ldfjac*(k-1)] = three - four*x[k-1];
+         if (k != 1) fjac[k-1 + *ldfjac*(k-1-1)] = -one;
+         if (k != *n) fjac[k-1 + *ldfjac*(k+1-1)] = -two;
        }
     }
-  return 0;
+  return;
 }

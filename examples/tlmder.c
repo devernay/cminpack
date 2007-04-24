@@ -3,10 +3,10 @@
 
 #include <stdio.h>
 #include <math.h>
-#include <minpack.h>
+#include <cminpack.h>
 
-void fcn(int *m, int *n, double *x, double *fvec, double *fjac, 
-	 int *ldfjac, int *iflag);
+int fcn(int m, int n, const double *x, double *fvec, double *fjac, 
+	 int ldfjac, int iflag);
 
 int main()
 {
@@ -15,7 +15,6 @@ int main()
   double ftol, xtol, gtol, factor, fnorm;
   double x[3], fvec[15], fjac[15*3], diag[3], qtf[3], 
     wa1[3], wa2[3], wa3[3], wa4[15];
-  int one=1;
 
   m = 15;
   n = 3;
@@ -32,8 +31,8 @@ int main()
   /*      and gtol to zero. unless high solutions are */
   /*      required, these are the recommended settings. */
 
-  ftol = sqrt(dpmpar_(&one));
-  xtol = sqrt(dpmpar_(&one));
+  ftol = sqrt(dpmpar(1));
+  xtol = sqrt(dpmpar(1));
   gtol = 0.;
     
   maxfev = 400;
@@ -41,10 +40,10 @@ int main()
   factor = 1.e2;
   nprint = 0;
 
-  lmder_(&fcn, &m, &n, x, fvec, fjac, &ldfjac, &ftol, &xtol, &gtol, 
-	&maxfev, diag, &mode, &factor, &nprint, &info, &nfev, &njev, 
+  info = lmder(fcn, m, n, x, fvec, fjac, ldfjac, ftol, xtol, gtol, 
+	maxfev, diag, mode, factor, nprint, &nfev, &njev, 
 	ipvt, qtf, wa1, wa2, wa3, wa4);
-  fnorm = enorm_(&m, fvec);
+  fnorm = enorm(m, fvec);
   printf("      final l2 norm of the residuals%15.7g\n\n", fnorm);
   printf("      number of function evaluations%10i\n\n", nfev);
   printf("      number of Jacobian evaluations%10i\n\n", njev);
@@ -55,8 +54,8 @@ int main()
   return 0;
 }
 
-void fcn(int *m, int *n, double *x, double *fvec, double *fjac, 
-	 int *ldfjac, int *iflag)
+int fcn(int m, int n, const double *x, double *fvec, double *fjac, 
+	 int ldfjac, int iflag)
 {      
 
   /*      subroutine fcn for lmder example. */
@@ -66,13 +65,13 @@ void fcn(int *m, int *n, double *x, double *fvec, double *fjac,
   double y[15]={1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
 		3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
 
-  if (*iflag == 0) 
+  if (iflag == 0) 
     {
       /*      insert print statements here when nprint is positive. */
-      return;
+      return 0;
     }
 
-  if (*iflag != 2) 
+  if (iflag != 2) 
     {
       for (i=1; i <= 15; i++)
 	{
@@ -92,10 +91,10 @@ void fcn(int *m, int *n, double *x, double *fvec, double *fjac,
 	  tmp3 = tmp1;
 	  if (i > 8) tmp3 = tmp2;
 	  tmp4 = (x[2-1]*tmp2 + x[3-1]*tmp3); tmp4 = tmp4*tmp4;
-	  fjac[i-1 + *ldfjac*(1-1)] = -1.;
-	  fjac[i-1 + *ldfjac*(2-1)] = tmp1*tmp2/tmp4;
-	  fjac[i-1 + *ldfjac*(3-1)] = tmp1*tmp3/tmp4;
+	  fjac[i-1 + ldfjac*(1-1)] = -1.;
+	  fjac[i-1 + ldfjac*(2-1)] = tmp1*tmp2/tmp4;
+	  fjac[i-1 + ldfjac*(3-1)] = tmp1*tmp3/tmp4;
 	};
     }
-  return;
+  return 0;
 }

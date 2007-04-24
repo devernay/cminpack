@@ -4,13 +4,13 @@
 
 #include <stdio.h>
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 
-int fcn(int m, int n, const double *x, double *fvec, int iflag);
+void fcn(const int *m, const int *n, const double *x, double *fvec, int *iflag);
 
 int main()
 {
-  int m, n, info, lwa, iwa[3];
+  int m, n, info, lwa, iwa[3], one=1;
   double tol, fnorm, x[3], fvec[15], wa[75];
 
   m = 15;
@@ -28,11 +28,11 @@ int main()
      precision solutions are required, this is the recommended
      setting. */
 
-  tol = sqrt(dpmpar(1));
+  tol = sqrt(dpmpar_(&one));
 
-  info = lmdif1(fcn, m, n, x, fvec, tol, iwa, wa, lwa);
+  lmdif1_(&fcn, &m, &n, x, fvec, &tol, &info, iwa, wa, &lwa);
 
-  fnorm = enorm(m, fvec);
+  fnorm = enorm_(&m, fvec);
 
   printf("      FINAL L2 NORM OF THE RESIDUALS%15.7f\n\n",fnorm);
   printf("      EXIT PARAMETER                %10i\n\n", info);
@@ -41,7 +41,7 @@ int main()
   return 0;
 }
 
-int fcn(int m, int n, const double *x, double *fvec, int iflag)
+void fcn(const int *m, const int *n, const double *x, double *fvec, int *iflag)
 {
   /* function fcn for lmdif1 example */
 
@@ -59,5 +59,4 @@ int fcn(int m, int n, const double *x, double *fvec, int iflag)
       if (i >= 8) tmp3 = tmp2;
       fvec[i] = y[i] - (x[0] + tmp1/(x[1]*tmp2 + x[2]*tmp3));
     }
-  return 0;
 }

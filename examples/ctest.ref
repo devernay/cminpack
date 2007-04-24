@@ -1,0 +1,126 @@
+tcchkder
+
+      fvec
+
+           -1.181606      -1.429655      -1.606344
+           -1.745269      -1.840654      -1.921586
+           -1.984141      -2.022537      -2.468977
+           -2.827562      -3.473582      -4.437612
+           -6.047662      -9.267761      -18.91806
+      fvecp - fvec
+
+       -7.724666e-09  -3.432405e-09  -2.034843e-10
+        2.313685e-09   4.331078e-09   5.984096e-09
+        7.363281e-09   8.531471e-09   1.488591e-08
+         2.33585e-08   3.522012e-08   5.301255e-08
+         8.26666e-08   1.419747e-07    3.19899e-07
+      err
+
+           0.1141397     0.09943516     0.09674474
+          0.09980447      0.1073116      0.1220445
+           0.1526814              1              1
+                   1              1              1
+                   1              1              1
+tchybrd
+     final l2 norm of the residuals    1.192636e-08
+
+     number of function evaluations          14
+
+     exit parameter                           1
+
+     final approximate solution
+
+          -0.5706545     -0.6816283     -0.7017325
+          -0.7042129      -0.701369     -0.6918656
+           -0.665792     -0.5960342     -0.4164121
+tchybrd1
+     final L2 norm of the residuals    1.192636e-08
+     exit parameter                          1
+     final approximates solution
+
+          -0.5706545     -0.6816283     -0.7017325
+          -0.7042129      -0.701369     -0.6918656
+           -0.665792     -0.5960342     -0.4164121
+tchybrj
+     final l2 norm of the residuals   1.192636e-08
+
+     number of function evaluations        11
+
+     number of jacobian evaluations         1
+
+     exit parameter                         1
+
+     final approximate solution
+
+
+          -0.5706545     -0.6816283     -0.7017325
+          -0.7042129      -0.701369     -0.6918656
+           -0.665792     -0.5960342     -0.4164121
+tchybrj1
+      final l2 norm of the residuals   1.192636e-08
+
+      exit parameter                         1
+
+      final approximate solution
+
+          -0.5706545     -0.6816283     -0.7017325
+          -0.7042129      -0.701369     -0.6918656
+           -0.665792     -0.5960342     -0.4164121
+tclmder
+      final l2 norm of the residuals     0.09063596
+
+      number of function evaluations         6
+
+      number of Jacobian evaluations         5
+
+      exit parameter                         1
+
+      final approximate solution
+
+          0.08241058       1.133037       2.343695
+tclmder1
+      final l2 norm of the residuals     0.09063596
+
+      exit parameter                         1
+
+      final approximate solution
+
+          0.08241058       1.133037       2.343695
+tclmdif
+      final l2 norm of the residuals     0.09063596
+
+      number of function evaluations        21
+
+      exit parameter                         1
+
+      final approximate solution
+
+          0.08241058       1.133037       2.343695
+tclmdif1
+      FINAL L2 NORM OF THE RESIDUALS      0.0906360
+
+      EXIT PARAMETER                         1
+
+      FINAL APPROXIMATE SOLUTION
+
+       0.0824106      1.1330367      2.3436946
+tclmstr
+      final L2 norm of the residuals     0.09063596
+
+      number of function evaluations         6
+
+      number of Jacobian evaluations         5
+
+      exit parameter                         1
+
+      final approximate solution
+
+          0.08241058       1.133037       2.343695
+tclmstr1
+      FINAL L2 NORM OF THE RESIDUALS     0.09063596
+
+      EXIT PARAMETER                         1
+
+      FINAL APPROXIMATE SOLUTION
+
+     0.08241058       1.133037       2.343695

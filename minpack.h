@@ -1,3 +1,10 @@
+#ifndef __MINPACK_H__
+#define __MINPACK_H__
+
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
+
 /* Declarations for minpack */
 
 /* find a zero of a system of N nonlinear functions in N variables by
@@ -145,3 +152,10 @@ void lmpar_(const int *n, double *r__, const int *ldr,
 void rwupdt_(const int *n, double *r__, const int *ldr, 
              const double *w, double *b, double *alpha, double *cos__, 
              double *sin__);
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+
+#endif /* __CMINPACK_H__ */

@@ -113,6 +113,7 @@
 /*     epsmch is the machine precision. */
 
     epsmch = dpmpar_(&c__1);
+    *iflag = 1;
 
     eps = sqrt((max(*epsfcn,epsmch)));
     i__1 = *n;

@@ -21,10 +21,10 @@
     double d__1, d__2, d__3;
 
     /* Local variables */
-    static int i__, j, k, jp1;
-    static double sum;
-    static int kmax;
-    static double temp;
+    int i__, j, k, jp1;
+    double sum;
+    int kmax;
+    double temp;
     int minmn;
     double epsmch;
     double ajnorm;

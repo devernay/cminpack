@@ -2,10 +2,10 @@
 
 #include <stdio.h>
 #include <math.h>
-#include <cminpack.h>
+#include <minpack.h>
 
-int fcn(int n, const double *x, double *fvec, double *fjac, int ldfjac, 
-	 int iflag);
+void fcn(const int *n, const double *x, double *fvec, double *fjac, const int *ldfjac, 
+	 int *iflag);
 
 int main()
 {
@@ -14,6 +14,7 @@ int main()
   double xtol, factor, fnorm;
   double x[9], fvec[9], fjac[9*9], diag[9], r[45], qtf[9],
     wa1[9], wa2[9], wa3[9], wa4[9];
+  int one=1;
 
   n = 9;
 
@@ -31,7 +32,7 @@ int main()
 /*      unless high solutions are required, */
 /*      this is the recommended setting. */
 
-  xtol = sqrt(dpmpar(1));
+  xtol = sqrt(dpmpar_(&one));
 
   maxfev = 1000;
   mode = 2;
@@ -42,10 +43,10 @@ int main()
   factor = 1.e2;
   nprint = 0;
 
- info = hybrj(fcn, n, x, fvec, fjac, ldfjac, xtol, maxfev, diag, 
-	mode, factor, nprint, &nfev, &njev, r, lr, qtf, 
+ hybrj_(&fcn, &n, x, fvec, fjac, &ldfjac, &xtol, &maxfev, diag, 
+	&mode, &factor, &nprint, &info, &nfev, &njev, r, &lr, qtf, 
 	wa1, wa2, wa3, wa4);
- fnorm = enorm(n, fvec);
+ fnorm = enorm_(&n, fvec);
 
  printf("     final l2 norm of the residuals%15.7g\n\n", fnorm);
  printf("     number of function evaluations%10i\n\n", nfev);
@@ -57,8 +58,8 @@ int main()
  return 0;
 }
 
-int fcn(int n, const double *x, double *fvec, double *fjac, int ldfjac, 
-	 int iflag)
+void fcn(const int *n, const double *x, double *fvec, double *fjac, const int *ldfjac, 
+	 int *iflag)
 {
   
   /*      subroutine fcn for hybrj example. */
@@ -69,34 +70,34 @@ int fcn(int n, const double *x, double *fvec, double *fjac, int ldfjac,
   if (iflag == 0)
     {
       /*      insert print statements here when nprint is positive. */
-      return 0;
+      return;
     }
 
-  if (iflag != 2) 
+  if (*iflag != 2) 
     {
-      for (k=1; k <= n; k++)
+      for (k=1; k <= *n; k++)
 	{
 	  temp = (three - two*x[k-1])*x[k-1];
 	  temp1 = zero;
 	  if (k != 1) temp1 = x[k-1-1];
 	  temp2 = zero;
-	  if (k != n) temp2 = x[k+1-1];
+	  if (k != *n) temp2 = x[k+1-1];
 	  fvec[k-1] = temp - temp1 - two*temp2 + one;
 	}
     }
   else
     {
-      for (k = 1; k <= n; k++)
+      for (k = 1; k <= *n; k++)
 	{
-	  for (j=1; j <= n; j++)
+	  for (j=1; j <= *n; j++)
 	    {
-	      fjac[k-1 + ldfjac*(j-1)] = zero;
+	      fjac[k-1 + *ldfjac*(j-1)] = zero;
 	    }
-	  fjac[k-1 + ldfjac*(k-1)] = three - four*x[k-1];
-	  if (k != 1) fjac[k-1 + ldfjac*(k-1-1)] = -one;
-	  if (k != n) fjac[k-1 + ldfjac*(k+1-1)] = -two;
+	  fjac[k-1 + *ldfjac*(k-1)] = three - four*x[k-1];
+	  if (k != 1) fjac[k-1 + *ldfjac*(k-1-1)] = -one;
+	  if (k != *n) fjac[k-1 + *ldfjac*(k+1-1)] = -two;
 	}      
     }
-  return 0;
+  return;
 }
 

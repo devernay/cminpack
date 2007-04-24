@@ -14,10 +14,10 @@
 
     const double factor = 100.;
 
-    static int mp5n, mode, nfev;
-    static double ftol, gtol, xtol;
-    static double epsfcn;
-    static int maxfev, nprint;
+    int mp5n, mode, nfev;
+    double ftol, gtol, xtol;
+    double epsfcn;
+    int maxfev, nprint;
 
 /*     ********** */
 

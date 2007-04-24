@@ -8,9 +8,8 @@
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-/* Subroutine */ void fdjac2(void (*fcn)(int m, int n, const double *x, double *fvec,
-			 int *iflag ), int m, int n, double *x, 
-	const double *fvec, double *fjac, int ldfjac, int *iflag, 
+/* Subroutine */ int fdjac2(minpack_func_mn fcn, int m, int n, double *x, 
+	const double *fvec, double *fjac, int ldfjac,
 	double epsfcn, double *wa)
 {
     /* System generated locals */
@@ -20,6 +19,7 @@
     double h__;
     int i__, j;
     double eps, temp, epsmch;
+    int iflag;
 
 /*     ********** */
 
@@ -119,10 +119,10 @@
 	    h__ = eps;
 	}
 	x[j] = temp + h__;
-	(*fcn)(m, n, &x[1], &wa[1], iflag);
-	if (*iflag < 0) {
+	iflag = (*fcn)(m, n, &x[1], &wa[1], 1);
+	if (iflag < 0) {
 	    /* goto L30; */
-            return;
+            return iflag;
 	}
 	x[j] = temp;
 	i__2 = m;
@@ -133,7 +133,7 @@
 /* L20: */
     }
 /* L30: */
-    return;
+    return iflag;
 
 /*     last card of subroutine fdjac2. */
 

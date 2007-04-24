@@ -8,8 +8,8 @@
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-/* Subroutine */ void fdjac1(void (*fcn)(int n, const double *x, double *fvec, int *iflag ), int n, double *x, const double *
-	fvec, double *fjac, int ldfjac, int *iflag, int ml, 
+/* Subroutine */ int fdjac1(minpack_func_nn fcn, int n, double *x, const double *
+	fvec, double *fjac, int ldfjac, int ml, 
 	int mu, double epsfcn, double *wa1, double *wa2)
 {
     /* System generated locals */
@@ -22,6 +22,7 @@
     double eps, temp;
     int msum;
     double epsmch;
+    int iflag = 0;
 
 /*     ********** */
 
@@ -139,8 +140,8 @@
 	    h__ = eps;
 	}
 	x[j] = temp + h__;
-	(*fcn)(n, &x[1], &wa1[1], iflag);
-	if (*iflag < 0) {
+	iflag = (*fcn)(n, &x[1], &wa1[1], 1);
+	if (iflag < 0) {
 	    goto L30;
 	}
 	x[j] = temp;
@@ -153,7 +154,7 @@
     }
 L30:
     /* goto L110; */
-    return;
+    return iflag;
 L40:
 
 /*        computation of banded approximate jacobian. */
@@ -171,10 +172,10 @@ L40:
 	    x[j] = wa2[j] + h__;
 /* L60: */
 	}
-	(*fcn)(n, &x[1], &wa1[1], iflag);
-	if (*iflag < 0) {
+	iflag = (*fcn)(n, &x[1], &wa1[1], 1);
+	if (iflag < 0) {
 	    /* goto L100; */
-            return;
+            return iflag;
 	}
 	i__3 = n;
 	i__2 = msum;
@@ -198,7 +199,7 @@ L40:
     }
 /* L100: */
 /* L110: */
-    return;
+    return iflag;
 
 /*     last card of subroutine fdjac1. */
 
