@@ -56,7 +56,7 @@ ftest: ${FPGM}
 	diff -u ftest.ref ftest.out
 
 clean:
-	-rm $(PGM) $(CPGM) $(FSRC) $(REF:.ref=.out) *~ #*#
+	-rm $(PGM) $(CPGM) $(FPGM) $(FSRC) $(REF:.ref=.out) *~ #*#
 
 ${FSRC}: /usr/share/doc/minpack-devel-19961126/minpack-documentation.txt.gz
 	zcat $< | awk  '					\
