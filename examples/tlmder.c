@@ -5,7 +5,7 @@
 #include <math.h>
 #include <cminpack.h>
 
-int fcn(int m, int n, const double *x, double *fvec, double *fjac, 
+int fcn(void *p, int m, int n, const double *x, double *fvec, double *fjac, 
 	 int ldfjac, int iflag);
 
 int main()
@@ -40,7 +40,7 @@ int main()
   factor = 1.e2;
   nprint = 0;
 
-  info = lmder(fcn, m, n, x, fvec, fjac, ldfjac, ftol, xtol, gtol, 
+  info = lmder(fcn, 0, m, n, x, fvec, fjac, ldfjac, ftol, xtol, gtol, 
 	maxfev, diag, mode, factor, nprint, &nfev, &njev, 
 	ipvt, qtf, wa1, wa2, wa3, wa4);
   fnorm = enorm(m, fvec);
@@ -54,7 +54,7 @@ int main()
   return 0;
 }
 
-int fcn(int m, int n, const double *x, double *fvec, double *fjac, 
+int fcn(void *p, int m, int n, const double *x, double *fvec, double *fjac, 
 	 int ldfjac, int iflag)
 {      
 

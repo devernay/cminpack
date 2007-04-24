@@ -4,7 +4,7 @@
 #include <math.h>
 #include <cminpack.h>
 
-int fcn(int m, int n, const double *x, double *fvec, int iflag);
+int fcn(void *p, int m, int n, const double *x, double *fvec, int iflag);
 
 int main()
 {
@@ -39,7 +39,7 @@ int main()
   factor = 1.e2;
   nprint = 0;
 
-  info = lmdif(fcn, m, n, x, fvec, ftol, xtol, gtol, maxfev, epsfcn, 
+  info = lmdif(fcn, 0, m, n, x, fvec, ftol, xtol, gtol, maxfev, epsfcn, 
 	 diag, mode, factor, nprint, &nfev, fjac, ldfjac, 
 	 ipvt, qtf, wa1, wa2, wa3, wa4);
 
@@ -54,7 +54,7 @@ int main()
   return 0;
 }
 
-int fcn(int m, int n, const double *x, double *fvec, int iflag)
+int fcn(void *p, int m, int n, const double *x, double *fvec, int iflag)
 {
 
 /*      subroutine fcn for lmdif example. */

@@ -5,7 +5,7 @@
 
 #include <cminpack.h>
 
-/* Subroutine */ int lmstr1(minpack_funcderstr_mn fcn, int m, int n, double *x, 
+/* Subroutine */ int lmstr1(minpack_funcderstr_mn fcn, void *p, int m, int n, double *x, 
 	double *fvec, double *fjac, int ldfjac, double tol, 
 	int *ipvt, double *wa, int lwa)
 {
@@ -171,7 +171,7 @@
     gtol = 0.;
     mode = 1;
     nprint = 0;
-    info = lmstr(fcn, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac,
+    info = lmstr(fcn, p, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac,
 	    ftol, xtol, gtol, maxfev, &wa[1], mode, factor, nprint, 
 	    &nfev, &njev, &ipvt[1], &wa[n + 1], &wa[(n << 1) + 1], &
 	    wa[n * 3 + 1], &wa[(n << 2) + 1], &wa[n * 5 + 1]);

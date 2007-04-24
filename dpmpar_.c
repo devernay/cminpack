@@ -13,7 +13,7 @@ double dpmpar_(const int *i__)
 	double e_1[3];
 	double fill_2[1];
 	} equiv_2 = { { 2.22044604926e-16, 2.22507385852e-308, 
-		1.79769313485e308 } };
+		1.79769313485e308 }, { 0. } };
 
 
     /* System generated locals */

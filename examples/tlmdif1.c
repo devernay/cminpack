@@ -6,7 +6,7 @@
 #include <math.h>
 #include <cminpack.h>
 
-int fcn(int m, int n, const double *x, double *fvec, int iflag);
+int fcn(void *p, int m, int n, const double *x, double *fvec, int iflag);
 
 int main()
 {
@@ -30,7 +30,7 @@ int main()
 
   tol = sqrt(dpmpar(1));
 
-  info = lmdif1(fcn, m, n, x, fvec, tol, iwa, wa, lwa);
+  info = lmdif1(fcn, 0, m, n, x, fvec, tol, iwa, wa, lwa);
 
   fnorm = enorm(m, fvec);
 
@@ -41,7 +41,7 @@ int main()
   return 0;
 }
 
-int fcn(int m, int n, const double *x, double *fvec, int iflag)
+int fcn(void *p, int m, int n, const double *x, double *fvec, int iflag)
 {
   /* function fcn for lmdif1 example */
 

@@ -5,7 +5,7 @@
 
 #include <cminpack.h>
 
-/* Subroutine */ int lmdif1(minpack_func_mn fcn, int m, int n, double *x, 
+/* Subroutine */ int lmdif1(minpack_func_mn fcn, void *p, int m, int n, double *x, 
 	double *fvec, double tol, int *iwa, 
 	double *wa, int lwa)
 {
@@ -144,7 +144,7 @@
     mode = 1;
     nprint = 0;
     mp5n = m + n * 5;
-    info = lmdif(fcn, m, n, &x[1], &fvec[1], ftol, xtol, gtol, maxfev,
+    info = lmdif(fcn, p, m, n, &x[1], &fvec[1], ftol, xtol, gtol, maxfev,
 	    epsfcn, &wa[1], mode, factor, nprint, &nfev, &wa[mp5n + 
 	    1], m, &iwa[1], &wa[n + 1], &wa[(n << 1) + 1], &wa[n * 3 + 1], 
 	    &wa[(n << 2) + 1], &wa[n * 5 + 1]);

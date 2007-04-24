@@ -4,7 +4,7 @@
 #include <math.h>
 #include <cminpack.h>
 
-int fcn(int n, const double *x, double *fvec, int iflag);
+int fcn(void *p, int n, const double *x, double *fvec, int iflag);
 
 int main()
 {
@@ -44,7 +44,7 @@ int main()
   factor = 1.e2;
   nprint = 0;
 
-  info = hybrd(fcn, n, x, fvec, xtol, maxfev, ml, mu, epsfcn,
+  info = hybrd(fcn, 0, n, x, fvec, xtol, maxfev, ml, mu, epsfcn,
 	 diag, mode, factor, nprint, &nfev,
 	 fjac, ldfjac, r, lr, qtf, wa1, wa2, wa3, wa4);
   fnorm = enorm(n, fvec);
@@ -58,7 +58,7 @@ int main()
 }
 
 
-int fcn(int n, const double *x, double *fvec, int iflag)
+int fcn(void *p, int n, const double *x, double *fvec, int iflag)
 {
   /*      subroutine fcn for hybrd example. */
 

@@ -5,7 +5,7 @@
 
 #include <cminpack.h>
 
-/* Subroutine */ int hybrj1(minpack_funcder_nn fcn, int n, double *x, double *
+/* Subroutine */ int hybrj1(minpack_funcder_nn fcn, void *p, int n, double *x, double *
 	fvec, double *fjac, int ldfjac, double tol,
 	double *wa, int lwa)
 {
@@ -144,7 +144,7 @@
     }
     nprint = 0;
     lr = n * (n + 1) / 2;
-    info = hybrj(fcn, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, xtol,
+    info = hybrj(fcn, p, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, xtol,
 	    maxfev, &wa[1], mode, factor, nprint, &nfev, &njev, &wa[
 	    n * 6 + 1], lr, &wa[n + 1], &wa[(n << 1) + 1], &wa[n * 3 + 1],
 	     &wa[(n << 2) + 1], &wa[n * 5 + 1]);

@@ -11,7 +11,7 @@
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-/* Subroutine */ int lmder(minpack_funcder_mn fcn, int m, int n, double *x, 
+/* Subroutine */ int lmder(minpack_funcder_mn fcn, void *p, int m, int n, double *x, 
 	double *fvec, double *fjac, int ldfjac, double ftol,
 	double xtol, double gtol, int maxfev, double *
 	diag, int mode, double factor, int nprint,
@@ -265,7 +265,7 @@ L20:
 /*     evaluate the function at the starting point */
 /*     and calculate its norm. */
 
-    iflag = (*fcn)(m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, 1);
+    iflag = (*fcn)(p, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, 1);
     *nfev = 1;
     if (iflag < 0) {
 	goto L300;
@@ -283,7 +283,7 @@ L30:
 
 /*        calculate the jacobian matrix. */
 
-    iflag = (*fcn)(m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, 2);
+    iflag = (*fcn)(p, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, 2);
     ++(*njev);
     if (iflag < 0) {
 	goto L300;
@@ -296,7 +296,7 @@ L30:
     }
     iflag = 0;
     if ((iter - 1) % nprint == 0) {
-	iflag = (*fcn)(m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, 0);
+	iflag = (*fcn)(p, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, 0);
     }
     if (iflag < 0) {
 	goto L300;
@@ -451,7 +451,7 @@ L200:
 
 /*           evaluate the function at x + p and calculate its norm. */
 
-    iflag = (*fcn)(m, n, &wa2[1], &wa4[1], &fjac[fjac_offset], ldfjac, 1);
+    iflag = (*fcn)(p, m, n, &wa2[1], &wa4[1], &fjac[fjac_offset], ldfjac, 1);
     ++(*nfev);
     if (iflag < 0) {
 	goto L300;
@@ -607,7 +607,7 @@ L300:
     }
     iflag = 0;
     if (nprint > 0) {
-	iflag = (*fcn)(m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, 0);
+	iflag = (*fcn)(p, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, 0);
     }
     return info;
 

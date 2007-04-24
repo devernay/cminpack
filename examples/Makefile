@@ -52,7 +52,7 @@ ctest: ${CPGM}
 	diff -u ctest.ref ctest.out
 
 ftest: ${FPGM} 
-	@for x in ${FPGM}; do echo $$x; $(VALGRIND) ./$$x; done > ftest.out
+	for x in ${FPGM}; do echo $$x; $(VALGRIND) ./$$x; done > ftest.out
 	diff -u ftest.ref ftest.out
 
 clean:

@@ -4,7 +4,7 @@
 #include <math.h>
 #include <cminpack.h>
 
-int fcn(int n, const double *x, double *fvec, double *fjac, int ldfjac, 
+int fcn(void *p, int n, const double *x, double *fvec, double *fjac, int ldfjac, 
 	 int iflag);
 
 int main()
@@ -42,7 +42,7 @@ int main()
   factor = 1.e2;
   nprint = 0;
 
- info = hybrj(fcn, n, x, fvec, fjac, ldfjac, xtol, maxfev, diag, 
+  info = hybrj(fcn, 0, n, x, fvec, fjac, ldfjac, xtol, maxfev, diag, 
 	mode, factor, nprint, &nfev, &njev, r, lr, qtf, 
 	wa1, wa2, wa3, wa4);
  fnorm = enorm(n, fvec);
@@ -57,7 +57,7 @@ int main()
  return 0;
 }
 
-int fcn(int n, const double *x, double *fvec, double *fjac, int ldfjac, 
+int fcn(void *p, int n, const double *x, double *fvec, double *fjac, int ldfjac, 
 	 int iflag)
 {
   

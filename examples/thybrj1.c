@@ -4,7 +4,7 @@
 #include <math.h>
 #include <cminpack.h>
 
-int fcn(int n, const double *x, double *fvec, double *fjac, int ldfjac, 
+int fcn(void *p, int n, const double *x, double *fvec, double *fjac, int ldfjac, 
 	 int iflag);
 
 int main()
@@ -31,7 +31,7 @@ int main()
 
   tol = sqrt(dpmpar(1));
 
-  info = hybrj1(fcn, n, x, fvec, fjac, ldfjac, tol, wa, lwa);
+  info = hybrj1(fcn, 0, n, x, fvec, fjac, ldfjac, tol, wa, lwa);
 
   fnorm = enorm(n, fvec);
 
@@ -44,7 +44,7 @@ int main()
   return 0;
 }
 
-int fcn(int n, const double *x, double *fvec, double *fjac, int ldfjac, 
+int fcn(void *p, int n, const double *x, double *fvec, double *fjac, int ldfjac, 
 	 int iflag)
 {
   /*      subroutine fcn for hybrj1 example. */

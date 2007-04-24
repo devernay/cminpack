@@ -8,7 +8,7 @@
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-/* Subroutine */ int fdjac2(minpack_func_mn fcn, int m, int n, double *x, 
+/* Subroutine */ int fdjac2(minpack_func_mn fcn, void *p, int m, int n, double *x, 
 	const double *fvec, double *fjac, int ldfjac,
 	double epsfcn, double *wa)
 {
@@ -119,7 +119,7 @@
 	    h__ = eps;
 	}
 	x[j] = temp + h__;
-	iflag = (*fcn)(m, n, &x[1], &wa[1], 1);
+	iflag = (*fcn)(p, m, n, &x[1], &wa[1], 1);
 	if (iflag < 0) {
 	    /* goto L30; */
             return iflag;

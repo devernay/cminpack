@@ -5,7 +5,7 @@
 #include <math.h>
 #include <cminpack.h>
 
-int fcn(int n, const double *x, double *fvec, int iflag);
+int fcn(void *p, int n, const double *x, double *fvec, int iflag);
 
 int main()
 {
@@ -29,7 +29,7 @@ int main()
 /*      this is the recommended setting. */
 
   tol = sqrt(dpmpar(1));
-  info = hybrd1(fcn, n, x, fvec, tol, wa, lwa);
+  info = hybrd1(fcn, 0, n, x, fvec, tol, wa, lwa);
   fnorm = enorm(n, fvec);
 
   printf("     final L2 norm of the residuals %15.7g\n", fnorm);
@@ -41,7 +41,7 @@ int main()
   return 0;
 }
 
-int fcn(int n, const double *x, double *fvec, int iflag)
+int fcn(void *p, int n, const double *x, double *fvec, int iflag)
 {
 /*      subroutine fcn for hybrd1 example. */
 

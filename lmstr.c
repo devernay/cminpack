@@ -11,7 +11,7 @@
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-/* Subroutine */ int lmstr(minpack_funcderstr_mn fcn, int m, int n, double *x, 
+/* Subroutine */ int lmstr(minpack_funcderstr_mn fcn, void *p, int m, int n, double *x, 
 	double *fvec, double *fjac, int ldfjac, double ftol,
 	double xtol, double gtol, int maxfev, double *
 	diag, int mode, double factor, int nprint,
@@ -265,7 +265,7 @@ L20:
 /*     evaluate the function at the starting point */
 /*     and calculate its norm. */
 
-    iflag = (*fcn)(m, n, &x[1], &fvec[1], &wa3[1], 1);
+    iflag = (*fcn)(p, m, n, &x[1], &fvec[1], &wa3[1], 1);
     *nfev = 1;
     if (iflag < 0) {
 	goto L340;
@@ -288,7 +288,7 @@ L30:
     }
     iflag = 0;
     if ((iter - 1) % nprint == 0) {
-	iflag = (*fcn)(m, n, &x[1], &fvec[1], &wa3[1], 0);
+	iflag = (*fcn)(p, m, n, &x[1], &fvec[1], &wa3[1], 0);
     }
     if (iflag < 0) {
 	goto L340;
@@ -313,7 +313,7 @@ L40:
     iflag = 2;
     i__1 = m;
     for (i__ = 1; i__ <= i__1; ++i__) {
-	if ((*fcn)(m, n, &x[1], &fvec[1], &wa3[1], iflag) < 0) {
+	if ((*fcn)(p, m, n, &x[1], &fvec[1], &wa3[1], iflag) < 0) {
 	    goto L340;
 	}
 	temp = fvec[i__];
@@ -477,7 +477,7 @@ L240:
 
 /*           evaluate the function at x + p and calculate its norm. */
 
-    iflag = (*fcn)(m, n, &wa2[1], &wa4[1], &wa3[1], 1);
+    iflag = (*fcn)(p, m, n, &wa2[1], &wa4[1], &wa3[1], 1);
     ++(*nfev);
     if (iflag < 0) {
 	goto L340;
@@ -633,7 +633,7 @@ L340:
     }
     iflag = 0;
     if (nprint > 0) {
-	iflag = (*fcn)(m, n, &x[1], &fvec[1], &wa3[1], 0);
+	iflag = (*fcn)(p, m, n, &x[1], &fvec[1], &wa3[1], 0);
     }
     return info;
 

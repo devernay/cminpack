@@ -5,7 +5,7 @@
 #include <math.h>
 #include <cminpack.h>
 
-int fcn(int m, int n, const double *x, double *fvec, double *fjac, 
+int fcn(void *p, int m, int n, const double *x, double *fvec, double *fjac, 
 	 int ldfjac, int iflag);
 
 int main()
@@ -33,7 +33,7 @@ int main()
 
   tol = sqrt(dpmpar(1));
 
-  info = lmder1(fcn, m, n, x, fvec, fjac, ldfjac, tol, 
+  info = lmder1(fcn, 0, m, n, x, fvec, fjac, ldfjac, tol, 
 	  ipvt, wa, lwa);
   fnorm = enorm(m, fvec);
   printf("      final l2 norm of the residuals%15.7g\n\n", fnorm);
@@ -45,7 +45,7 @@ int main()
   return 0;
 }
 
-int fcn(int m, int n, const double *x, double *fvec, double *fjac, 
+int fcn(void *p, int m, int n, const double *x, double *fvec, double *fjac, 
 	 int ldfjac, int iflag)
 {
 

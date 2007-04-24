@@ -4,7 +4,7 @@
 #include <math.h>
 #include <cminpack.h>
 
-int fcn(int m, int n, const double *x, double *fvec, double *fjrow, int iflag);
+int fcn(void *p, int m, int n, const double *x, double *fvec, double *fjrow, int iflag);
 
 int main()
 {
@@ -38,7 +38,7 @@ int main()
   factor = 1.e2;
   nprint = 0;
 
-  info = lmstr(fcn, m, n, x, fvec, fjac, ldfjac, ftol, xtol, gtol, 
+  info = lmstr(fcn, 0, m, n, x, fvec, fjac, ldfjac, ftol, xtol, gtol, 
 	maxfev, diag, mode, factor, nprint, &nfev, &njev, 
 	ipvt, qtf, wa1, wa2, wa3, wa4);
   fnorm = enorm(m, fvec);
@@ -54,7 +54,7 @@ int main()
   return 0;
 }
 
-int fcn(int m, int n, const double *x, double *fvec, double *fjrow, int iflag)
+int fcn(void *p, int m, int n, const double *x, double *fvec, double *fjrow, int iflag)
 {
 
   /*      subroutine fcn for lmstr example. */
