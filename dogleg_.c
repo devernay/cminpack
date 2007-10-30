@@ -7,7 +7,6 @@
 #include <minpack.h>
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
-#define abs(x) ((x) >= 0 ? (x) : -(x))
 
 /* Table of constant values */
 
@@ -125,7 +124,7 @@ L20:
 	i__2 = j;
 	for (i__ = 1; i__ <= i__2; ++i__) {
 /* Computing MAX */
-	    d__2 = temp, d__3 = (d__1 = r__[l], abs(d__1));
+	    d__2 = temp, d__3 = fabs(r__[l]);
 	    temp = max(d__2,d__3);
 	    l = l + *n - i__;
 /* L30: */

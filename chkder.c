@@ -5,7 +5,6 @@
 
 #include <math.h>
 #include <cminpack.h>
-#define abs(x) ((x) >= 0 ? (x) : -(x))
 
 #define log10e 0.43429448190325182765
 #define factor 100.
@@ -18,7 +17,6 @@
 {
     /* System generated locals */
     int fjac_dim1, fjac_offset, i__1, i__2;
-    double d__1, d__2, d__3, d__4, d__5;
 
     /* Local variables */
     int i__, j;
@@ -132,7 +130,7 @@
 
     i__1 = n;
     for (j = 1; j <= i__1; ++j) {
-	temp = eps * (d__1 = x[j], abs(d__1));
+	temp = eps * fabs(x[j]);
 	if (temp == 0.) {
 	    temp = eps;
 	}
@@ -154,7 +152,7 @@ L20:
     }
     i__1 = n;
     for (j = 1; j <= i__1; ++j) {
-	temp = (d__1 = x[j], abs(d__1));
+	temp = fabs(x[j]);
 	if (temp == 0.) {
 	    temp = 1.;
 	}
@@ -168,12 +166,12 @@ L20:
     i__1 = m;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	temp = 1.;
-	if (fvec[i__] != 0. && fvecp[i__] != 0. && (d__2 = fvecp[i__] - 
-		fvec[i__], abs(d__2)) >= epsf * (d__1 = fvec[i__], abs(d__1)))
+	if (fvec[i__] != 0. && fvecp[i__] != 0. && fabs(fvecp[i__] - 
+		fvec[i__]) >= epsf * fabs(fvec[i__]))
 		 {
-	    temp = eps * (d__3 = (fvecp[i__] - fvec[i__]) / eps - err[i__], 
-		    abs(d__3)) / ((d__4 = fvec[i__], abs(d__4)) + (d__5 = 
-		    fvecp[i__], abs(d__5)));
+	    temp = eps * fabs((fvecp[i__] - fvec[i__]) / eps - err[i__]) 
+		    / (fabs(fvec[i__]) +
+                       fabs(fvecp[i__]));
 	}
 	err[i__] = 1.;
 	if (temp > epsmch && temp < eps) {

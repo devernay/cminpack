@@ -6,7 +6,6 @@
 #include <math.h>
 #include <minpack.h>
 #define max(a,b) ((a) >= (b) ? (a) : (b))
-#define abs(x) ((x) >= 0 ? (x) : -(x))
 
 /* Subroutine */ void fdjac1_(void (*fcn)(const int *n, const double *x, double *fvec, int *iflag ), const int *n, double *x, const double *
 	fvec, double *fjac, const int *ldfjac, int *iflag, const int *ml, 
@@ -18,7 +17,6 @@
 
     /* System generated locals */
     int fjac_dim1, fjac_offset, i__1, i__2, i__3, i__4;
-    double d__1;
 
     /* Local variables */
     double h__;
@@ -139,7 +137,7 @@
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	temp = x[j];
-	h__ = eps * abs(temp);
+	h__ = eps * fabs(temp);
 	if (h__ == 0.) {
 	    h__ = eps;
 	}
@@ -169,7 +167,7 @@ L40:
 	i__3 = msum;
 	for (j = k; i__3 < 0 ? j >= i__2 : j <= i__2; j += i__3) {
 	    wa2[j] = x[j];
-	    h__ = eps * (d__1 = wa2[j], abs(d__1));
+	    h__ = eps * fabs(wa2[j]);
 	    if (h__ == 0.) {
 		h__ = eps;
 	    }
@@ -185,7 +183,7 @@ L40:
 	i__2 = msum;
 	for (j = k; i__2 < 0 ? j >= i__3 : j <= i__3; j += i__2) {
 	    x[j] = wa2[j];
-	    h__ = eps * (d__1 = wa2[j], abs(d__1));
+	    h__ = eps * fabs(wa2[j]);
 	    if (h__ == 0.) {
 		h__ = eps;
 	    }

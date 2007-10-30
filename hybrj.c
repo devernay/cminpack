@@ -3,10 +3,10 @@
 	-lf2c -lm   (in that order)
 */
 
+#include <math.h>
 #include <cminpack.h>
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
-#define abs(x) ((x) >= 0 ? (x) : -(x))
 #define TRUE_ (1)
 #define FALSE_ (0)
 
@@ -479,7 +479,7 @@ L230:
 	d__1 = delta, d__2 = pnorm / p5;
 	delta = max(d__1,d__2);
     }
-    if ((d__1 = ratio - 1., abs(d__1)) <= p1) {
+    if (fabs(ratio - 1.) <= p1) {
 	delta = pnorm / p5;
     }
 L240:

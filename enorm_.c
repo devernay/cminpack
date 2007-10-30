@@ -5,7 +5,6 @@
 
 #include <math.h>
 #include <minpack.h>
-#define abs(x) ((x) >= 0 ? (x) : -(x))
 
 double enorm_(const int *n, const double *x)
 {
@@ -72,7 +71,7 @@ double enorm_(const int *n, const double *x)
     agiant = rgiant / floatn;
     i__1 = *n;
     for (i__ = 1; i__ <= i__1; ++i__) {
-	xabs = (d__1 = x[i__], abs(d__1));
+	xabs = fabs(x[i__]);
 	if (xabs > rdwarf && xabs < agiant) {
 	    goto L70;
 	}

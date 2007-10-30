@@ -7,7 +7,6 @@
 #include <minpack.h>
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
-#define abs(x) ((x) >= 0 ? (x) : -(x))
 #define TRUE_ (1)
 #define FALSE_ (0)
 
@@ -403,7 +402,7 @@ L120:
 /* L140: */
 	}
 /* Computing MAX */
-	d__2 = gnorm, d__3 = (d__1 = sum / wa2[l], abs(d__1));
+	d__2 = gnorm, d__3 = fabs(sum / wa2[l]);
 	gnorm = max(d__2,d__3);
 L150:
 /* L160: */
@@ -569,13 +568,13 @@ L290:
 
 /*           tests for convergence. */
 
-    if (abs(actred) <= *ftol && prered <= *ftol && p5 * ratio <= 1.) {
+    if (fabs(actred) <= *ftol && prered <= *ftol && p5 * ratio <= 1.) {
 	*info = 1;
     }
     if (delta <= *xtol * xnorm) {
 	*info = 2;
     }
-    if (abs(actred) <= *ftol && prered <= *ftol && p5 * ratio <= 1. && *info 
+    if (fabs(actred) <= *ftol && prered <= *ftol && p5 * ratio <= 1. && *info 
 	    == 2) {
 	*info = 3;
     }
@@ -588,7 +587,7 @@ L290:
     if (*nfev >= *maxfev) {
 	*info = 5;
     }
-    if (abs(actred) <= epsmch && prered <= epsmch && p5 * ratio <= 1.) {
+    if (fabs(actred) <= epsmch && prered <= epsmch && p5 * ratio <= 1.) {
 	*info = 6;
     }
     if (delta <= epsmch * xnorm) {

@@ -6,7 +6,6 @@
 #include <math.h>
 #include <cminpack.h>
 #define max(a,b) ((a) >= (b) ? (a) : (b))
-#define abs(x) ((x) >= 0 ? (x) : -(x))
 
 /* Subroutine */ int fdjac2(minpack_func_mn fcn, void *p, int m, int n, double *x, 
 	const double *fvec, double *fjac, int ldfjac,
@@ -114,7 +113,7 @@
     i__1 = n;
     for (j = 1; j <= i__1; ++j) {
 	temp = x[j];
-	h__ = eps * abs(temp);
+	h__ = eps * fabs(temp);
 	if (h__ == 0.) {
 	    h__ = eps;
 	}
