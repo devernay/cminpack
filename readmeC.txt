@@ -23,4 +23,5 @@ Manolis Lourakis -- lourakis at ics forth gr, July 2002
 Repackaging by Frederic Devernay -- frederic dot devernay at m4x dot org:
 - Added fortran and C examples
 - Added documentation from Debian man pages
-
+- Wrote pure C version
+- Added covar() and covar_(), and use it in tlmdef/tlmdif

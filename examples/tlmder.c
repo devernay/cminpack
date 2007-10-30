@@ -10,11 +10,12 @@ int fcn(void *p, int m, int n, const double *x, double *fvec, double *fjac,
 
 int main()
 {
-  int j, m, n, ldfjac, maxfev, mode, nprint, info, nfev, njev;
+  int i, j, m, n, ldfjac, maxfev, mode, nprint, info, nfev, njev;
   int ipvt[3];
   double ftol, xtol, gtol, factor, fnorm;
   double x[3], fvec[15], fjac[15*3], diag[3], qtf[3], 
     wa1[3], wa2[3], wa3[3], wa4[15];
+  double covfac;
 
   m = 15;
   n = 3;
@@ -50,6 +51,15 @@ int main()
   printf("      exit parameter                %10i\n\n", info);
   printf("      final approximate solution\n");
   for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n     ":"", x[j-1]);
+  printf("\n");
+  ftol = dpmpar(1);
+  covfac = fnorm*fnorm/(m-n);
+  covar(n, fjac, ldfjac, ipvt, ftol, wa1);
+  printf("      covariance\n");
+  for (i=1; i<=n; i++) {
+    for (j=1; j<=n; j++)
+      printf("%s%15.7g", j%3==1?"\n     ":"", fjac[(i-1)*ldfjac+j-1]*covfac);
+  }
   printf("\n");
   return 0;
 }

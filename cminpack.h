@@ -203,7 +203,8 @@ void lmpar(int n, double *r__, int ldr,
 void rwupdt(int n, double *r__, int ldr, 
              const double *w, double *b, double *alpha, double *cos__, 
              double *sin__);
-
+void covar(int n, double *r__, int ldr, 
+           const int *ipvt, double tol, double *wa);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
