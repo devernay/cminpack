@@ -34,4 +34,4 @@ install: libminpack.a
 	chmod 644 ${DESTDIR}/include/cminpack.h
 
 clean:
-	rm -f *.o libminpack.a
+	rm -f *.o libminpack.a *~ #*#
