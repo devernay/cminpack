@@ -1,3 +1,6 @@
+PACKAGE=cminpack
+VERSION=1.0.1
+
 #CC=cc
 CC=gcc
 CFLAGS= -O2 -g -Wall -Wextra -I.
@@ -35,3 +38,10 @@ install: libminpack.a
 
 clean:
 	rm -f *.o libminpack.a *~ #*#
+
+.PHONY: dist
+dist:
+	mkdir $(PACKAGE)-$(VERSION)
+	tar --exclude-from dist-exclude --exclude $(PACKAGE)-$(VERSION) -cf - . | (cd $(PACKAGE)-$(VERSION); tar xf -)
+	tar zcvf $(PACKAGE)-$(VERSION).tar.gz $(PACKAGE)-$(VERSION)
+	rm -rf $(PACKAGE)-$(VERSION)
