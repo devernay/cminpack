@@ -92,6 +92,7 @@
     /* Parameter adjustments */
     --wa;
     --ipvt;
+    tolr = *tol * fabs(r__[0]);
     r_dim1 = *ldr;
     r_offset = 1 + r_dim1;
     r__ -= r_offset;
@@ -100,7 +101,6 @@
 
 /*     form the inverse of r in the full upper triangle of r. */
 
-    tolr = *tol * fabs(r__[0]);
     l = 0;
     i__1 = *n;
     for (k = 1; k <= i__1; ++k) {
