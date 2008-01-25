@@ -4,7 +4,7 @@
 */
 
 #include <math.h>
-#include <minpack.h>
+#include "minpack.h"
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 #define TRUE_ (1)
 #define FALSE_ (0)

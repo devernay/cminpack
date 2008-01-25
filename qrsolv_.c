@@ -4,7 +4,7 @@
 */
 
 #include <math.h>
-#include <minpack.h>
+#include "minpack.h"
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
 /* Subroutine */ void qrsolv_(const int *n, double *r__, const int *ldr, 

@@ -4,7 +4,7 @@
 */
 
 #include <math.h>
-#include <minpack.h>
+#include "minpack.h"
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 
 /* Subroutine */ void fdjac2_(void (*fcn)(const int *m, const int *n, const double *x, double *fvec,

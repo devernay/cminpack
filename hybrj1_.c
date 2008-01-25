@@ -3,7 +3,7 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <minpack.h>
+#include "minpack.h"
 
 /* Subroutine */ void hybrj1_(void (*fcn)(const int *n, const double *x, double *fvec, double *fjec,
 			   const int *ldfjac, int *iflag ), const int *n, double *x, double *

@@ -3,7 +3,7 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <cminpack.h>
+#include "cminpack.h"
 
 double dpmpar(int i__)
 {

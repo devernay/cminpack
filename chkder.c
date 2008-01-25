@@ -4,7 +4,7 @@
 */
 
 #include <math.h>
-#include <cminpack.h>
+#include "cminpack.h"
 
 #define log10e 0.43429448190325182765
 #define factor 100.

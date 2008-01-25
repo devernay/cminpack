@@ -4,7 +4,7 @@
 */
 
 #include <math.h>
-#include <minpack.h>
+#include "minpack.h"
 
 double enorm_(const int *n, const double *x)
 {

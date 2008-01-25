@@ -3,7 +3,7 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <cminpack.h>
+#include "cminpack.h"
 
 /* Subroutine */ int lmdif1(minpack_func_mn fcn, void *p, int m, int n, double *x, 
 	double *fvec, double tol, int *iwa, 

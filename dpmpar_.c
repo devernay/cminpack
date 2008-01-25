@@ -3,7 +3,7 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <minpack.h>
+#include "minpack.h"
 
 double dpmpar_(const int *i__)
 {

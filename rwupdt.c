@@ -4,7 +4,7 @@
 */
 
 #include <math.h>
-#include <cminpack.h>
+#include "cminpack.h"
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
 /* Subroutine */ void rwupdt(int n, double *r__, int ldr, 

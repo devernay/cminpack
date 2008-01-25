@@ -4,7 +4,7 @@
 */
 
 #include <math.h>
-#include <minpack.h>
+#include "minpack.h"
 
 #define log10e 0.43429448190325182765
 #define factor 100.

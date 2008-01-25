@@ -3,7 +3,7 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <minpack.h>
+#include "minpack.h"
 
 /* Subroutine */ void lmstr1_(void (*fcn)(const int *m, const int *n, const double *x, double *fvec,
 			   double *fjrow, int *iflag ), const int *m, const int *n, double *x, 

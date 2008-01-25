@@ -4,7 +4,7 @@
 */
 
 #include <math.h>
-#include <minpack.h>
+#include "minpack.h"
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
 /* Subroutine */ void r1mpyq_(const int *m, const int *n, double *a, const int *

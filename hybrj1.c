@@ -3,7 +3,7 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <cminpack.h>
+#include "cminpack.h"
 
 /* Subroutine */ int hybrj1(minpack_funcder_nn fcn, void *p, int n, double *x, double *
 	fvec, double *fjac, int ldfjac, double tol,

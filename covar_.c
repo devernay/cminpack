@@ -11,7 +11,7 @@
 */
 
 #include <math.h>
-#include <minpack.h>
+#include "minpack.h"
 
 /* Subroutine */ void covar_(const int *n, double *r__, const int *ldr, 
 	const int *ipvt, const double *tol, double *wa)

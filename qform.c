@@ -3,7 +3,7 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <cminpack.h>
+#include "cminpack.h"
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 
 /* Subroutine */ void qform(int m, int n, double *q, int
