@@ -3,11 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 44;
+	objectVersion = 45;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		35C3D1D20DB78F0200A4BB4B /* libminpack.a in CopyFiles */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
+		35C3D1D20DB78F0200A4BB4B /* libminpack.a in Install Library */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
 		35C3D6DF0DB79E4800A4BB4B /* lmdif.c in Sources */ = {isa = PBXBuildFile; fileRef = 35C3D6BC0DB79E4800A4BB4B /* lmdif.c */; };
 		35C3D6E00DB79E4800A4BB4B /* chkder.c in Sources */ = {isa = PBXBuildFile; fileRef = 35C3D6BD0DB79E4800A4BB4B /* chkder.c */; };
 		35C3D6E10DB79E4800A4BB4B /* covar.c in Sources */ = {isa = PBXBuildFile; fileRef = 35C3D6BE0DB79E4800A4BB4B /* covar.c */; };
@@ -46,32 +46,34 @@
 		35C3D7060DB79E5600A4BB4B /* cminpack.h in Headers */ = {isa = PBXBuildFile; fileRef = 35C3D7020DB79E5600A4BB4B /* cminpack.h */; };
 		35C3D7070DB79E5600A4BB4B /* minpack.h in Headers */ = {isa = PBXBuildFile; fileRef = 35C3D7030DB79E5600A4BB4B /* minpack.h */; };
 		35C3D7080DB79E5600A4BB4B /* f2c.h in Headers */ = {isa = PBXBuildFile; fileRef = 35C3D7050DB79E5600A4BB4B /* f2c.h */; };
-		35C3D70A0DB79E6900A4BB4B /* cminpack.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 35C3D7020DB79E5600A4BB4B /* cminpack.h */; };
-		35E9B71E0DBE2E4A0026B35F /* minpack.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 35C3D7030DB79E5600A4BB4B /* minpack.h */; };
-		35E9B71F0DBE2E4A0026B35F /* f2c.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 35C3D7050DB79E5600A4BB4B /* f2c.h */; };
+		35C3D70A0DB79E6900A4BB4B /* cminpack.h in Install Headers */ = {isa = PBXBuildFile; fileRef = 35C3D7020DB79E5600A4BB4B /* cminpack.h */; };
+		35E9B71E0DBE2E4A0026B35F /* minpack.h in Install Headers */ = {isa = PBXBuildFile; fileRef = 35C3D7030DB79E5600A4BB4B /* minpack.h */; };
+		35E9B71F0DBE2E4A0026B35F /* f2c.h in Install Headers */ = {isa = PBXBuildFile; fileRef = 35C3D7050DB79E5600A4BB4B /* f2c.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		35C3D1CB0DB78ED000A4BB4B /* CopyFiles */ = {
+		35C3D1CB0DB78ED000A4BB4B /* Install Library */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = ../../../local/lib;
 			dstSubfolderSpec = 16;
 			files = (
-				35C3D1D20DB78F0200A4BB4B /* libminpack.a in CopyFiles */,
+				35C3D1D20DB78F0200A4BB4B /* libminpack.a in Install Library */,
 			);
+			name = "Install Library";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		35C3D1D90DB78F2300A4BB4B /* CopyFiles */ = {
+		35C3D1D90DB78F2300A4BB4B /* Install Headers */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = ../../../local/include/cminpack;
 			dstSubfolderSpec = 16;
 			files = (
-				35E9B71E0DBE2E4A0026B35F /* minpack.h in CopyFiles */,
-				35E9B71F0DBE2E4A0026B35F /* f2c.h in CopyFiles */,
-				35C3D70A0DB79E6900A4BB4B /* cminpack.h in CopyFiles */,
+				35E9B71E0DBE2E4A0026B35F /* minpack.h in Install Headers */,
+				35E9B71F0DBE2E4A0026B35F /* f2c.h in Install Headers */,
+				35C3D70A0DB79E6900A4BB4B /* cminpack.h in Install Headers */,
 			);
+			name = "Install Headers";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -222,8 +224,8 @@
 				D2AAC043055464E500DB518D /* Headers */,
 				D2AAC044055464E500DB518D /* Sources */,
 				D289987405E68DCB004EDB86 /* Frameworks */,
-				35C3D1CB0DB78ED000A4BB4B /* CopyFiles */,
-				35C3D1D90DB78F2300A4BB4B /* CopyFiles */,
+				35C3D1CB0DB78ED000A4BB4B /* Install Library */,
+				35C3D1D90DB78F2300A4BB4B /* Install Headers */,
 			);
 			buildRules = (
 			);
@@ -240,7 +242,7 @@
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1DEB91EF08733DB70010E9CD /* Build configuration list for PBXProject "libminpack" */;
-			compatibilityVersion = "Xcode 3.0";
+			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
 			mainGroup = 08FB7794FE84155DC02AAC07 /* libfnt */;
 			projectDirPath = "";
@@ -346,6 +348,8 @@
 		1DEB91F008733DB70010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
@@ -359,8 +363,11 @@
 					ppc,
 					i386,
 				);
+				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				LLVM_LTO = NO;
 				PREBINDING = NO;
 			};
 			name = Release;
