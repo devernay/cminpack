@@ -3,3 +3,4 @@ CVS
 *.o
 *~
 #*#
+cminpack-*.tar.gz
