@@ -4,7 +4,7 @@
 #include <math.h>
 #include <cminpack.h>
 
-int fcn(int m, int n, const double *x, double *fvec,
+int fcn(void *p, int m, int n, const double *x, double *fvec,
 	 double *fjac, int ldfjac, int iflag);
 
 int main()
@@ -26,9 +26,9 @@ int main()
   ldfjac = 15;
 
   chkder(m, n, x, fvec, fjac, ldfjac, xp, fvecp, 1, err);
-  fcn(m, n, x, fvec, fjac, ldfjac, 1);
-  fcn(m, n, x, fvec, fjac, ldfjac, 2);
-  fcn(m, n, xp, fvecp, fjac, ldfjac, 1);
+  fcn(0, m, n, x, fvec, fjac, ldfjac, 1);
+  fcn(0, m, n, x, fvec, fjac, ldfjac, 2);
+  fcn(0, m, n, xp, fvecp, fjac, ldfjac, 1);
   chkder(m, n, x, fvec, fjac, ldfjac, xp, fvecp, 2, err);
 
   for (i=1; i<=m; i++)
@@ -45,7 +45,7 @@ int main()
   return 0;
 }
 
-int fcn(int m, int n, const double *x, double *fvec,
+int fcn(void *p, int m, int n, const double *x, double *fvec,
 	 double *fjac, int ldfjac, int iflag)
 {
   /*      subroutine fcn for chkder example. */

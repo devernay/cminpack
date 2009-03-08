@@ -4,8 +4,8 @@
 #include <math.h>
 #include <minpack.h>
 
-void fcn(int *m, int *n, double *x, double *fvec,
-	 double *fjac, int *ldfjac, int *iflag);
+void fcn(const int *m, const int *n, const double *x, double *fvec,
+	 double *fjac, const int *ldfjac, int *iflag);
 
 int main()
 {
@@ -48,8 +48,8 @@ int main()
   return 0;
 }
 
-void fcn(int *m, int *n, double *x, double *fvec,
-	 double *fjac, int *ldfjac, int *iflag)
+void fcn(const int *m, const int *n, const double *x, double *fvec,
+	 double *fjac, const int *ldfjac, int *iflag)
 {
   /*      subroutine fcn for chkder example. */
 
