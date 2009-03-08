@@ -14,7 +14,7 @@ int main()
   int i, m, n, ldfjac;
   double epsfcn;
   double x[3], fvec[15], fjac[15*3], fdjac[15*3], xp[3], fvecp[15], 
-      err[15], errd[15], wa[m];
+      err[15], errd[15], wa[15];
 
   m = 15;
   n = 3;

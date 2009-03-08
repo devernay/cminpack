@@ -15,7 +15,7 @@ int main()
   int i, m, n, ldfjac, mode;
   double epsfcn;
   double x[3], fvec[15], fjac[15*3], fdjac[15*3], xp[3], fvecp[15], 
-      err[15], errd[15], wa[m];
+      err[15], errd[15], wa[15];
   int one=1, iflag=1;
 
   m = 15;
