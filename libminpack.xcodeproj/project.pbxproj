@@ -96,161 +96,161 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC045055464E500DB518D /* minmack */;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
 			remoteInfo = minmack;
 		};
 		1E548EF20F83E3F90015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1E548DC50F83DF460015F022 /* tlmdif */;
+			remoteGlobalIDString = 1E548DC50F83DF460015F022;
 			remoteInfo = tlmdif;
 		};
 		1E548EF40F83E3F90015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1E548E060F83E1C10015F022 /* tlmdif1 */;
+			remoteGlobalIDString = 1E548E060F83E1C10015F022;
 			remoteInfo = tlmdif1;
 		};
 		1E548EF60F83E3F90015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1E548E180F83E2050015F022 /* tchkder */;
+			remoteGlobalIDString = 1E548E180F83E2050015F022;
 			remoteInfo = tchkder;
 		};
 		1E548EF80F83E3F90015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1E548E450F83E2DF0015F022 /* thybrd */;
+			remoteGlobalIDString = 1E548E450F83E2DF0015F022;
 			remoteInfo = thybrd;
 		};
 		1E548EFA0F83E3F90015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1E548E5A0F83E2F90015F022 /* thybrd1 */;
+			remoteGlobalIDString = 1E548E5A0F83E2F90015F022;
 			remoteInfo = thybrd1;
 		};
 		1E548EFC0F83E3F90015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1E548E6E0F83E3130015F022 /* thybrj */;
+			remoteGlobalIDString = 1E548E6E0F83E3130015F022;
 			remoteInfo = thybrj;
 		};
 		1E548EFE0F83E3F90015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1E548E810F83E32D0015F022 /* thybrj1 */;
+			remoteGlobalIDString = 1E548E810F83E32D0015F022;
 			remoteInfo = thybrj1;
 		};
 		1E548F000F83E3F90015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1E548E930F83E3440015F022 /* tlmder */;
+			remoteGlobalIDString = 1E548E930F83E3440015F022;
 			remoteInfo = tlmder;
 		};
 		1E548F020F83E3F90015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1E548EB30F83E3810015F022 /* tlmstr */;
+			remoteGlobalIDString = 1E548EB30F83E3810015F022;
 			remoteInfo = tlmstr;
 		};
 		1E548F040F83E3F90015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1E548EC30F83E38C0015F022 /* tlmstr1 */;
+			remoteGlobalIDString = 1E548EC30F83E38C0015F022;
 			remoteInfo = tlmstr1;
 		};
 		1E548F060F83E3F90015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1E548ED30F83E3A10015F022 /* tlmder1 */;
+			remoteGlobalIDString = 1E548ED30F83E3A10015F022;
 			remoteInfo = tlmder1;
 		};
 		1E548F100F83E4590015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC045055464E500DB518D /* minmack */;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
 			remoteInfo = minmack;
 		};
 		1E548F120F83E4620015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC045055464E500DB518D /* minmack */;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
 			remoteInfo = minmack;
 		};
 		1E548F140F83E4710015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC045055464E500DB518D /* minmack */;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
 			remoteInfo = minmack;
 		};
 		1E548F160F83E4740015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC045055464E500DB518D /* minmack */;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
 			remoteInfo = minmack;
 		};
 		1E548F180F83E4770015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC045055464E500DB518D /* minmack */;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
 			remoteInfo = minmack;
 		};
 		1E548F1A0F83E47E0015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC045055464E500DB518D /* minmack */;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
 			remoteInfo = minmack;
 		};
 		1E548F1C0F83E4820015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC045055464E500DB518D /* minmack */;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
 			remoteInfo = minmack;
 		};
 		1E548F1E0F83E4880015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC045055464E500DB518D /* minmack */;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
 			remoteInfo = minmack;
 		};
 		1E548F200F83E48B0015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC045055464E500DB518D /* minmack */;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
 			remoteInfo = minmack;
 		};
 		1E548F220F83E4920015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC045055464E500DB518D /* minmack */;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
 			remoteInfo = minmack;
 		};
 		1E548F240F83E4950015F022 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC045055464E500DB518D /* minmack */;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
 			remoteInfo = minmack;
 		};
 /* End PBXContainerItemProxy section */
@@ -264,16 +264,16 @@
 		1E548DE00F83E0960015F022 /* lmdif_.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = lmdif_.html; path = doc/lmdif_.html; sourceTree = "<group>"; };
 		1E548DE10F83E0960015F022 /* lmstr_.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = lmstr_.html; path = doc/lmstr_.html; sourceTree = "<group>"; };
 		1E548DE20F83E0960015F022 /* minpack-documentation.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "minpack-documentation.txt"; path = "doc/minpack-documentation.txt"; sourceTree = "<group>"; };
-		1E548E0E0F83E1C10015F022 /* tlmdif */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmdif; sourceTree = BUILT_PRODUCTS_DIR; };
-		1E548E200F83E2050015F022 /* tlmdif */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmdif; sourceTree = BUILT_PRODUCTS_DIR; };
-		1E548E550F83E2DF0015F022 /* tlmdif */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmdif; sourceTree = BUILT_PRODUCTS_DIR; };
-		1E548E690F83E2F90015F022 /* tlmdif */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmdif; sourceTree = BUILT_PRODUCTS_DIR; };
-		1E548E7C0F83E3130015F022 /* tlmdif */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmdif; sourceTree = BUILT_PRODUCTS_DIR; };
-		1E548E8E0F83E32D0015F022 /* tlmdif */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmdif; sourceTree = BUILT_PRODUCTS_DIR; };
-		1E548E9F0F83E3440015F022 /* tlmdif */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmdif; sourceTree = BUILT_PRODUCTS_DIR; };
-		1E548EBE0F83E3810015F022 /* tlmdif */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmdif; sourceTree = BUILT_PRODUCTS_DIR; };
-		1E548ECE0F83E38C0015F022 /* tlmdif */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmdif; sourceTree = BUILT_PRODUCTS_DIR; };
-		1E548EDD0F83E3A10015F022 /* tlmdif */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmdif; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E548E0E0F83E1C10015F022 /* tlmdif1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmdif1; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E548E200F83E2050015F022 /* tchkder */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tchkder; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E548E550F83E2DF0015F022 /* thybrd */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = thybrd; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E548E690F83E2F90015F022 /* thybrd1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = thybrd1; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E548E7C0F83E3130015F022 /* thybrj */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = thybrj; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E548E8E0F83E32D0015F022 /* thybrj1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = thybrj1; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E548E9F0F83E3440015F022 /* tlmder */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmder; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E548EBE0F83E3810015F022 /* tlmstr */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmstr; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E548ECE0F83E38C0015F022 /* tlmstr1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmstr1; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E548EDD0F83E3A10015F022 /* tlmder1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmder1; sourceTree = BUILT_PRODUCTS_DIR; };
 		35C3D6BC0DB79E4800A4BB4B /* lmdif.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lmdif.c; sourceTree = "<group>"; };
 		35C3D6BD0DB79E4800A4BB4B /* chkder.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = chkder.c; sourceTree = "<group>"; };
 		35C3D6BE0DB79E4800A4BB4B /* covar.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = covar.c; sourceTree = "<group>"; };
@@ -464,16 +464,16 @@
 			children = (
 				D2AAC046055464E500DB518D /* libminpack.a */,
 				1E548DC60F83DF460015F022 /* tlmdif */,
-				1E548E0E0F83E1C10015F022 /* tlmdif */,
-				1E548E200F83E2050015F022 /* tlmdif */,
-				1E548E550F83E2DF0015F022 /* tlmdif */,
-				1E548E690F83E2F90015F022 /* tlmdif */,
-				1E548E7C0F83E3130015F022 /* tlmdif */,
-				1E548E8E0F83E32D0015F022 /* tlmdif */,
-				1E548E9F0F83E3440015F022 /* tlmdif */,
-				1E548EBE0F83E3810015F022 /* tlmdif */,
-				1E548ECE0F83E38C0015F022 /* tlmdif */,
-				1E548EDD0F83E3A10015F022 /* tlmdif */,
+				1E548E0E0F83E1C10015F022 /* tlmdif1 */,
+				1E548E200F83E2050015F022 /* tchkder */,
+				1E548E550F83E2DF0015F022 /* thybrd */,
+				1E548E690F83E2F90015F022 /* thybrd1 */,
+				1E548E7C0F83E3130015F022 /* thybrj */,
+				1E548E8E0F83E32D0015F022 /* thybrj1 */,
+				1E548E9F0F83E3440015F022 /* tlmder */,
+				1E548EBE0F83E3810015F022 /* tlmstr */,
+				1E548ECE0F83E38C0015F022 /* tlmstr1 */,
+				1E548EDD0F83E3A10015F022 /* tlmder1 */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -544,7 +544,7 @@
 			);
 			name = tlmdif1;
 			productName = tlmdif;
-			productReference = 1E548E0E0F83E1C10015F022 /* tlmdif */;
+			productReference = 1E548E0E0F83E1C10015F022 /* tlmdif1 */;
 			productType = "com.apple.product-type.tool";
 		};
 		1E548E180F83E2050015F022 /* tchkder */ = {
@@ -561,7 +561,7 @@
 			);
 			name = tchkder;
 			productName = tlmdif;
-			productReference = 1E548E200F83E2050015F022 /* tlmdif */;
+			productReference = 1E548E200F83E2050015F022 /* tchkder */;
 			productType = "com.apple.product-type.tool";
 		};
 		1E548E450F83E2DF0015F022 /* thybrd */ = {
@@ -578,7 +578,7 @@
 			);
 			name = thybrd;
 			productName = tlmdif;
-			productReference = 1E548E550F83E2DF0015F022 /* tlmdif */;
+			productReference = 1E548E550F83E2DF0015F022 /* thybrd */;
 			productType = "com.apple.product-type.tool";
 		};
 		1E548E5A0F83E2F90015F022 /* thybrd1 */ = {
@@ -595,7 +595,7 @@
 			);
 			name = thybrd1;
 			productName = tlmdif;
-			productReference = 1E548E690F83E2F90015F022 /* tlmdif */;
+			productReference = 1E548E690F83E2F90015F022 /* thybrd1 */;
 			productType = "com.apple.product-type.tool";
 		};
 		1E548E6E0F83E3130015F022 /* thybrj */ = {
@@ -612,7 +612,7 @@
 			);
 			name = thybrj;
 			productName = tlmdif;
-			productReference = 1E548E7C0F83E3130015F022 /* tlmdif */;
+			productReference = 1E548E7C0F83E3130015F022 /* thybrj */;
 			productType = "com.apple.product-type.tool";
 		};
 		1E548E810F83E32D0015F022 /* thybrj1 */ = {
@@ -629,7 +629,7 @@
 			);
 			name = thybrj1;
 			productName = tlmdif;
-			productReference = 1E548E8E0F83E32D0015F022 /* tlmdif */;
+			productReference = 1E548E8E0F83E32D0015F022 /* thybrj1 */;
 			productType = "com.apple.product-type.tool";
 		};
 		1E548E930F83E3440015F022 /* tlmder */ = {
@@ -646,7 +646,7 @@
 			);
 			name = tlmder;
 			productName = tlmdif;
-			productReference = 1E548E9F0F83E3440015F022 /* tlmdif */;
+			productReference = 1E548E9F0F83E3440015F022 /* tlmder */;
 			productType = "com.apple.product-type.tool";
 		};
 		1E548EB30F83E3810015F022 /* tlmstr */ = {
@@ -663,7 +663,7 @@
 			);
 			name = tlmstr;
 			productName = tlmdif;
-			productReference = 1E548EBE0F83E3810015F022 /* tlmdif */;
+			productReference = 1E548EBE0F83E3810015F022 /* tlmstr */;
 			productType = "com.apple.product-type.tool";
 		};
 		1E548EC30F83E38C0015F022 /* tlmstr1 */ = {
@@ -680,7 +680,7 @@
 			);
 			name = tlmstr1;
 			productName = tlmdif;
-			productReference = 1E548ECE0F83E38C0015F022 /* tlmdif */;
+			productReference = 1E548ECE0F83E38C0015F022 /* tlmstr1 */;
 			productType = "com.apple.product-type.tool";
 		};
 		1E548ED30F83E3A10015F022 /* tlmder1 */ = {
@@ -697,7 +697,7 @@
 			);
 			name = tlmder1;
 			productName = tlmdif;
-			productReference = 1E548EDD0F83E3A10015F022 /* tlmdif */;
+			productReference = 1E548EDD0F83E3A10015F022 /* tlmder1 */;
 			productType = "com.apple.product-type.tool";
 		};
 		D2AAC045055464E500DB518D /* minmack */ = {
@@ -1054,14 +1054,6 @@
 		1E548DC80F83DF460015F022 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
 				PRODUCT_NAME = tlmdif;
 			};
 			name = Debug;
@@ -1069,75 +1061,35 @@
 		1E548DC90F83DF460015F022 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
 				PRODUCT_NAME = tlmdif;
-				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
 		1E548E0C0F83E1C10015F022 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
+				PRODUCT_NAME = tlmdif1;
 			};
 			name = Debug;
 		};
 		1E548E0D0F83E1C10015F022 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
-				ZERO_LINK = NO;
+				PRODUCT_NAME = tlmdif1;
 			};
 			name = Release;
 		};
 		1E548E1E0F83E2050015F022 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
+				PRODUCT_NAME = tchkder;
 			};
 			name = Debug;
 		};
 		1E548E1F0F83E2050015F022 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
-				ZERO_LINK = NO;
+				PRODUCT_NAME = tchkder;
 			};
 			name = Release;
 		};
@@ -1145,14 +1097,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
+				PRODUCT_NAME = thybrd;
 			};
 			name = Debug;
 		};
@@ -1160,13 +1110,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
+				PRODUCT_NAME = thybrd;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1175,14 +1122,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
+				PRODUCT_NAME = thybrd1;
 			};
 			name = Debug;
 		};
@@ -1190,194 +1135,95 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_MODEL_TUNING = G5;
 				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
-				ZERO_LINK = NO;
+				PRODUCT_NAME = thybrd1;
 			};
 			name = Release;
 		};
 		1E548E7A0F83E3130015F022 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
+				PRODUCT_NAME = thybrj;
 			};
 			name = Debug;
 		};
 		1E548E7B0F83E3130015F022 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
-				ZERO_LINK = NO;
+				PRODUCT_NAME = thybrj;
 			};
 			name = Release;
 		};
 		1E548E8C0F83E32D0015F022 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
+				PRODUCT_NAME = thybrj1;
 			};
 			name = Debug;
 		};
 		1E548E8D0F83E32D0015F022 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
-				ZERO_LINK = NO;
+				PRODUCT_NAME = thybrj1;
 			};
 			name = Release;
 		};
 		1E548E9D0F83E3440015F022 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
+				PRODUCT_NAME = tlmder;
 			};
 			name = Debug;
 		};
 		1E548E9E0F83E3440015F022 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
-				ZERO_LINK = NO;
+				PRODUCT_NAME = tlmder;
 			};
 			name = Release;
 		};
 		1E548EBC0F83E3810015F022 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
+				PRODUCT_NAME = tlmstr;
 			};
 			name = Debug;
 		};
 		1E548EBD0F83E3810015F022 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
-				ZERO_LINK = NO;
+				PRODUCT_NAME = tlmstr;
 			};
 			name = Release;
 		};
 		1E548ECC0F83E38C0015F022 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
+				PRODUCT_NAME = tlmstr1;
 			};
 			name = Debug;
 		};
 		1E548ECD0F83E38C0015F022 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
-				ZERO_LINK = NO;
+				PRODUCT_NAME = tlmstr1;
 			};
 			name = Release;
 		};
 		1E548EDB0F83E3A10015F022 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
+				PRODUCT_NAME = tlmder1;
 			};
 			name = Debug;
 		};
 		1E548EDC0F83E3A10015F022 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_MODEL_TUNING = G5;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)";
-				PREBINDING = NO;
-				PRODUCT_NAME = tlmdif;
-				ZERO_LINK = NO;
+				PRODUCT_NAME = tlmder1;
 			};
 			name = Release;
 		};
