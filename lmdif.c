@@ -4,7 +4,6 @@
 */
 
 #include <math.h>
-#include <assert.h>
 #include "cminpack.h"
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
@@ -327,7 +326,6 @@ L40:
 	if (wa2[j] == 0.) {
 	    diag[j] = 1.;
 	}
-        assert(!isnan(diag[j]));
 /* L50: */
     }
 L60:
@@ -423,10 +421,7 @@ L170:
     for (j = 1; j <= i__1; ++j) {
 /* Computing MAX */
 	d__1 = diag[j], d__2 = wa2[j];
-        assert(!isnan(d__1));
-        assert(!isnan(d__2));
 	diag[j] = max(d__1,d__2);
-        assert(!isnan(diag[j]));
 /* L180: */
     }
 L190:
