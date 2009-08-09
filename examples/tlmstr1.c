@@ -17,9 +17,9 @@ int main()
 
   /*     the following starting values provide a rough fit. */
 
+  x[0] = 1.;
   x[1] = 1.;
   x[2] = 1.;
-  x[3] = 1.;
 
   ldfjac = 3;
   lwa = 30;
