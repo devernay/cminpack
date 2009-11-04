@@ -700,9 +700,9 @@
 			productReference = 1E548EDD0F83E3A10015F022 /* tlmder1 */;
 			productType = "com.apple.product-type.tool";
 		};
-		D2AAC045055464E500DB518D /* minmack */ = {
+		D2AAC045055464E500DB518D /* minpack */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "minmack" */;
+			buildConfigurationList = 1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "minpack" */;
 			buildPhases = (
 				D2AAC044055464E500DB518D /* Sources */,
 				D289987405E68DCB004EDB86 /* Frameworks */,
@@ -711,7 +711,7 @@
 			);
 			dependencies = (
 			);
-			name = minmack;
+			name = minpack;
 			productName = libfnt;
 			productReference = D2AAC046055464E500DB518D /* libminpack.a */;
 			productType = "com.apple.product-type.library.static";
@@ -729,7 +729,7 @@
 			projectRoot = "";
 			targets = (
 				1E548EEC0F83E3F10015F022 /* cminpack */,
-				D2AAC045055464E500DB518D /* minmack */,
+				D2AAC045055464E500DB518D /* minpack */,
 				1E548E180F83E2050015F022 /* tchkder */,
 				1E548E450F83E2DF0015F022 /* thybrd */,
 				1E548E5A0F83E2F90015F022 /* thybrd1 */,
@@ -881,7 +881,7 @@
 /* Begin PBXTargetDependency section */
 		1E548EF10F83E3F90015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minmack */;
+			target = D2AAC045055464E500DB518D /* minpack */;
 			targetProxy = 1E548EF00F83E3F90015F022 /* PBXContainerItemProxy */;
 		};
 		1E548EF30F83E3F90015F022 /* PBXTargetDependency */ = {
@@ -941,57 +941,57 @@
 		};
 		1E548F110F83E4590015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minmack */;
+			target = D2AAC045055464E500DB518D /* minpack */;
 			targetProxy = 1E548F100F83E4590015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F130F83E4620015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minmack */;
+			target = D2AAC045055464E500DB518D /* minpack */;
 			targetProxy = 1E548F120F83E4620015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F150F83E4710015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minmack */;
+			target = D2AAC045055464E500DB518D /* minpack */;
 			targetProxy = 1E548F140F83E4710015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F170F83E4740015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minmack */;
+			target = D2AAC045055464E500DB518D /* minpack */;
 			targetProxy = 1E548F160F83E4740015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F190F83E4770015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minmack */;
+			target = D2AAC045055464E500DB518D /* minpack */;
 			targetProxy = 1E548F180F83E4770015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F1B0F83E47E0015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minmack */;
+			target = D2AAC045055464E500DB518D /* minpack */;
 			targetProxy = 1E548F1A0F83E47E0015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F1D0F83E4820015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minmack */;
+			target = D2AAC045055464E500DB518D /* minpack */;
 			targetProxy = 1E548F1C0F83E4820015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F1F0F83E4880015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minmack */;
+			target = D2AAC045055464E500DB518D /* minpack */;
 			targetProxy = 1E548F1E0F83E4880015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F210F83E48B0015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minmack */;
+			target = D2AAC045055464E500DB518D /* minpack */;
 			targetProxy = 1E548F200F83E48B0015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F230F83E4920015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minmack */;
+			target = D2AAC045055464E500DB518D /* minpack */;
 			targetProxy = 1E548F220F83E4920015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F250F83E4950015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minmack */;
+			target = D2AAC045055464E500DB518D /* minpack */;
 			targetProxy = 1E548F240F83E4950015F022 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1256,7 +1256,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "minmack" */ = {
+		1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "minpack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB91EC08733DB70010E9CD /* Debug */,
