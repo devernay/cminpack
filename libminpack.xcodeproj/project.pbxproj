@@ -1038,6 +1038,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_VERSION = 4.2;
+				SDKROOT = macosx10.5;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
@@ -1045,6 +1046,7 @@
 		1DEB91F108733DB70010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_AUTO_VECTORIZATION = YES;
 				GCC_ENABLE_SSE3_EXTENSIONS = YES;
@@ -1053,6 +1055,7 @@
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
 				GCC_VERSION = 4.2;
+				SDKROOT = macosx10.5;
 			};
 			name = Release;
 		};
