@@ -26,14 +26,14 @@ FPGM=tchkder thybrd thybrd1 thybrj thybrj1 tlmder tlmder1 tlmdif \
 	tlmdif1 tlmstr tlmstr1
 PGM=tchkder_ thybrd_ thybrd1_ thybrj_ thybrj1_ tlmder_ tlmder1_ tlmdif_ \
 	tlmdif1_ tlmstr_ tlmstr1_ tfdjac2_
-CPGM=tcchkder tchybrd tchybrd1 tchybrj tchybrj1 tclmder tclmder1 tclmdif \
-	tclmdif1 tclmstr tclmstr1 tcfdjac2
+CPGM=tchkderc thybrdc thybrd1c thybrjc thybrj1c tlmderc tlmder1c tlmdifc \
+	tlmdif1c tlmstrc tlmstr1c tfdjac2c
 FSRC=tchkder.f thybrd.f thybrd1.f thybrj.f thybrj1.f tlmder.f tlmder1.f \
 	tlmdif.f tlmdif1.f tlmstr.f tlmstr1.f
 SRC=tchkder_.c thybrd_.c thybrd1_.c thybrj_.c thybrj1_.c tlmder_.c tlmder1_.c \
 	tlmdif_.c tlmdif1_.c tlmstr_.c tlmstr1_.c tfdjac2_.c
-CSRC=tchkder.c thybrd.c thybrd1.c thybrj.c thybrj1.c tlmder.c tlmder1.c \
-	tlmdif.c tlmdif1.c tlmstr.c tlmstr1.c tfdjac2.c
+CSRC=tchkderc.c thybrdc.c thybrd1c.c thybrjc.c thybrj1c.c tlmderc.c tlmder1c.c \
+	tlmdifc.c tlmdif1c.c tlmstrc.c tlmstr1c.c tfdjac2c.c
 REF=test.ref ctest.ref ftest.ref
 
 all:
@@ -122,27 +122,27 @@ tlmstr1_: tlmstr1_.c
 tfdjac2_: tfdjac2_.c
 	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
 
-tcchkder: tchkder.c					
+tchkderc: tchkderc.c					
 	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tchybrd: thybrd.c					
+thybrdc: thybrdc.c					
 	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tchybrd1: thybrd1.c					
+thybrd1c: thybrd1c.c					
 	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tchybrj: thybrj.c					
+thybrjc: thybrjc.c					
 	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tchybrj1: thybrj1.c					
+thybrj1c: thybrj1c.c					
 	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tclmder: tlmder.c					
+tlmderc: tlmderc.c					
 	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tclmder1: tlmder1.c					
+tlmder1c: tlmder1c.c					
 	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tclmdif: tlmdif.c
+tlmdifc: tlmdifc.c
 	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tclmdif1: tlmdif1.c
+tlmdif1c: tlmdif1c.c
 	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tclmstr: tlmstr.c
+tlmstrc: tlmstrc.c
 	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tclmstr1: tlmstr1.c
+tlmstr1c: tlmstr1c.c
 	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tcfdjac2: tfdjac2.c
+tfdjac2c: tfdjac2c.c
 	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm

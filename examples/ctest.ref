@@ -1,4 +1,4 @@
-tcchkder
+tchkderc
 
       fvec
 
@@ -21,7 +21,7 @@ tcchkder
            0.1526814              1              1
                    1              1              1
                    1              1              1
-tchybrd
+thybrdc
      final l2 norm of the residuals    1.192636e-08
 
      number of function evaluations          14
@@ -33,7 +33,7 @@ tchybrd
           -0.5706545     -0.6816283     -0.7017325
           -0.7042129      -0.701369     -0.6918656
            -0.665792     -0.5960342     -0.4164121
-tchybrd1
+thybrd1c
      final L2 norm of the residuals    1.192636e-08
      exit parameter                          1
      final approximates solution
@@ -41,7 +41,7 @@ tchybrd1
           -0.5706545     -0.6816283     -0.7017325
           -0.7042129      -0.701369     -0.6918656
            -0.665792     -0.5960342     -0.4164121
-tchybrj
+thybrjc
      final l2 norm of the residuals   1.192636e-08
 
      number of function evaluations        11
@@ -56,7 +56,7 @@ tchybrj
           -0.5706545     -0.6816283     -0.7017325
           -0.7042129      -0.701369     -0.6918656
            -0.665792     -0.5960342     -0.4164121
-tchybrj1
+thybrj1c
       final l2 norm of the residuals   1.192636e-08
 
       exit parameter                         1
@@ -66,7 +66,7 @@ tchybrj1
           -0.5706545     -0.6816283     -0.7017325
           -0.7042129      -0.701369     -0.6918656
            -0.665792     -0.5960342     -0.4164121
-tclmder
+tlmderc
       final l2 norm of the residuals     0.09063596
 
       number of function evaluations         6
@@ -83,7 +83,7 @@ tclmder
         0.0001531202    0.002869941   -0.002656662
          0.002869941     0.09480935    -0.09098995
         -0.002656662    -0.09098995     0.08778727
-tclmder1
+tlmder1c
       final l2 norm of the residuals     0.09063596
 
       exit parameter                         1
@@ -91,7 +91,7 @@ tclmder1
       final approximate solution
 
           0.08241058       1.133037       2.343695
-tclmdif
+tlmdifc
       final l2 norm of the residuals     0.09063596
 
       number of function evaluations        21
@@ -106,7 +106,7 @@ tclmdif
         0.0001531202    0.002869941   -0.002656662
          0.002869941     0.09480935    -0.09098995
         -0.002656662    -0.09098995     0.08778728
-tclmdif1
+tlmdif1c
       FINAL L2 NORM OF THE RESIDUALS      0.0906360
 
       EXIT PARAMETER                         1
@@ -114,7 +114,7 @@ tclmdif1
       FINAL APPROXIMATE SOLUTION
 
        0.0824106      1.1330367      2.3436946
-tclmstr
+tlmstrc
       final L2 norm of the residuals     0.09063596
 
       number of function evaluations         6
@@ -126,7 +126,7 @@ tclmstr
       final approximate solution
 
           0.08241058       1.133037       2.343695
-tclmstr1
+tlmstr1c
       FINAL L2 NORM OF THE RESIDUALS     0.09063596
 
       EXIT PARAMETER                         1
@@ -134,3 +134,33 @@ tclmstr1
       FINAL APPROXIMATE SOLUTION
 
      0.08241058       1.133037       2.343695
+tfdjac2c
+
+      fvec
+
+           -1.181606      -1.429655      -1.606344
+           -1.745269      -1.840654      -1.921586
+           -1.984141      -2.022537      -2.468977
+           -2.827562      -3.473582      -4.437612
+           -6.047662      -9.267761      -18.91806
+      fvecp - fvec
+
+       -7.724666e-09  -3.432406e-09  -2.034843e-10
+        2.313685e-09   4.331078e-09   5.984096e-09
+        7.363281e-09    8.53147e-09   1.488591e-08
+         2.33585e-08   3.522012e-08   5.301255e-08
+         8.26666e-08   1.419747e-07    3.19899e-07
+      errd
+
+                   1              1              1
+                   1       0.995393              1
+                   1              1              1
+                   1              1              1
+                   1              1              1
+      err
+
+                   1              1              1
+                   1              1              1
+                   1              1              1
+                   1              1              1
+                   1              1              1
