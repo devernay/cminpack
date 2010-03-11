@@ -4,6 +4,12 @@
 cmake_minimum_required (VERSION 2.6)
 project (CMINPACK)
 
+# Build a Universal 32/64 bits library by default when using XCode
+CMAKE_OSX_ARCHITECTURES=ppc;i386;ppc64;x86_64
+
+enable_testing()
+
+
 #set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../build)
 
 # Recurse into the "Hello" and "Demo" subdirectories. This does not actually
@@ -14,4 +20,4 @@ add_subdirectory (examples)
 
 # Create a library called "cminpack" which includes the source file "hello.cxx".
 # The extension is already found. Any number of sources could be listed here.
-add_library(cminpack chkder.c  enorm.c   hybrd1.c  hybrj.c   lmdif1.c  lmstr1.c  qrfac.c   r1updt.c dogleg.c  fdjac1.c  hybrd.c   lmder1.c  lmdif.c   lmstr.c   qrsolv.c  rwupdt.c dpmpar.c  fdjac2.c  hybrj1.c  lmder.c   lmpar.c   qform.c   r1mpyq.c  covar.c chkder_.c enorm_.c  hybrd1_.c hybrj_.c  lmdif1_.c lmstr1_.c qrfac_.c  r1updt_.c dogleg_.c fdjac1_.c hybrd_.c  lmder1_.c lmdif_.c  lmstr_.c  qrsolv_.c rwupdt_.c dpmpar_.c fdjac2_.c hybrj1_.c lmder_.c  lmpar_.c  qform_.c  r1mpyq_.c covar_.c)
+add_library (cminpack chkder.c  enorm.c   hybrd1.c  hybrj.c   lmdif1.c  lmstr1.c  qrfac.c   r1updt.c dogleg.c  fdjac1.c  hybrd.c   lmder1.c  lmdif.c   lmstr.c   qrsolv.c  rwupdt.c dpmpar.c  fdjac2.c  hybrj1.c  lmder.c   lmpar.c   qform.c   r1mpyq.c  covar.c chkder_.c enorm_.c  hybrd1_.c hybrj_.c  lmdif1_.c lmstr1_.c qrfac_.c  r1updt_.c dogleg_.c fdjac1_.c hybrd_.c  lmder1_.c lmdif_.c  lmstr_.c  qrsolv_.c rwupdt_.c dpmpar_.c fdjac2_.c hybrj1_.c lmder_.c  lmpar_.c  qform_.c  r1mpyq_.c covar_.c)

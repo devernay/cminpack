@@ -44,19 +44,16 @@ all:
 	@echo "make ctest: calling C MINPACK from C"
 
 test: ${PGM}
-	for x in ${PGM}; do echo $$x; $(VALGRIND) ./$$x; done > test.out
-	diff -u test.ref test.out
+	for x in ${PGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 ctest: ${CPGM}
-	for x in ${CPGM}; do echo $$x; $(VALGRIND) ./$$x; done > ctest.out
-	diff -u ctest.ref ctest.out
+	for x in ${CPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 ftest: ${FPGM} 
-	for x in ${FPGM}; do echo $$x; $(VALGRIND) ./$$x; done > ftest.out
-	diff -u ftest.ref ftest.out
+	for x in ${FPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 clean:
-	-rm $(PGM) $(CPGM) $(FPGM) $(FSRC) $(REF:.ref=.out) *~ #*#
+	-rm $(PGM) $(CPGM) $(FPGM) $(FSRC) $(PGM:=.out) $(CPGM:=.out) $(FPGM:=.out) *~ #*#
 
 ${FSRC}: ../doc/minpack-documentation.txt
 	cat $< | awk  '					\
