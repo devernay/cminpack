@@ -71,75 +71,8 @@ ${FSRC}: ../doc/minpack-documentation.txt
 	    getline; $$0 = substr($$0,3); print >>oname;	\
 	}'
 
-tchkder: tchkder.f
-	$(F77) -o $@ $< $(MINPACK)
-thybrd: thybrd.f
-	$(F77) -o $@ $< $(MINPACK)
-thybrd1: thybrd1.f
-	$(F77) -o $@ $< $(MINPACK)
-thybrj: thybrj.f
-	$(F77) -o $@ $< $(MINPACK)
-thybrj1: thybrj1.f
-	$(F77) -o $@ $< $(MINPACK)
-tlmder: tlmder.f
-	$(F77) -o $@ $< $(MINPACK)
-tlmder1: tlmder1.f
-	$(F77) -o $@ $< $(MINPACK)
-tlmdif: tlmdif.f
-	$(F77) -o $@ $< $(MINPACK)
-tlmdif1: tlmdif1.f
-	$(F77) -o $@ $< $(MINPACK)
-tlmstr: tlmstr.f
-	$(F77) -o $@ $< $(MINPACK)
-tlmstr1: tlmstr1.f
+.f:
 	$(F77) -o $@ $< $(MINPACK)
 
-tchkder_: tchkder_.c					
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-thybrd_: thybrd_.c					
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-thybrd1_: thybrd1_.c					
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-thybrj_: thybrj_.c					
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-thybrj1_: thybrj1_.c					
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tlmder_: tlmder_.c					
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tlmder1_: tlmder1_.c					
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tlmdif_: tlmdif_.c
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tlmdif1_: tlmdif1_.c
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tlmstr_: tlmstr_.c
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tlmstr1_: tlmstr1_.c
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tfdjac2_: tfdjac2_.c
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-
-tchkderc: tchkderc.c					
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-thybrdc: thybrdc.c					
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-thybrd1c: thybrd1c.c					
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-thybrjc: thybrjc.c					
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-thybrj1c: thybrj1c.c					
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tlmderc: tlmderc.c					
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tlmder1c: tlmder1c.c					
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tlmdifc: tlmdifc.c
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tlmdif1c: tlmdif1c.c
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tlmstrc: tlmstrc.c
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tlmstr1c: tlmstr1c.c
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
-tfdjac2c: tfdjac2c.c
+.c:
 	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
