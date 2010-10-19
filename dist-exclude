@@ -4,3 +4,9 @@ CVS
 *~
 #*#
 cminpack-*.tar.gz
+build*
+CMakeFiles
+*.pbxuser
+*.perspectivev3
+xcuserdata
+*.patch
