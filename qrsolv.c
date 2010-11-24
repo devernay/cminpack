@@ -7,7 +7,7 @@
 #include "cminpack.h"
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-/* Subroutine */ void qrsolv(int n, double *r__, int ldr, 
+/* Subroutine */ void qrsolv(int n, double *r, int ldr, 
 	const int *ipvt, const double *diag, const double *qtb, double *x, 
 	double *sdiag, double *wa)
 {
@@ -20,8 +20,8 @@
     int r_dim1, r_offset;
 
     /* Local variables */
-    int i__, j, k, l, jp1, kp1;
-    double tan__, cos__, sin__, sum, temp, cotan;
+    int i, j, k, l, jp1, kp1;
+    double tan, cos, sin, sum, temp, cotan;
     int nsing;
     double qtbpj;
 
@@ -111,7 +111,7 @@
     --ipvt;
     r_dim1 = ldr;
     r_offset = 1 + r_dim1 * 1;
-    r__ -= r_offset;
+    r -= r_offset;
 
     /* Function Body */
 
@@ -119,10 +119,10 @@
 /*     in particular, save the diagonal elements of r in x. */
 
     for (j = 1; j <= n; ++j) {
-	for (i__ = j; i__ <= n; ++i__) {
-	    r__[i__ + j * r_dim1] = r__[j + i__ * r_dim1];
+	for (i = j; i <= n; ++i) {
+	    r[i + j * r_dim1] = r[j + i * r_dim1];
 	}
-	x[j] = r__[j + j * r_dim1];
+	x[j] = r[j + j * r_dim1];
 	wa[j] = qtb[j];
     }
 
@@ -151,32 +151,32 @@
 /*           appropriate element in the current row of d. */
 
                 if (sdiag[k] != 0.) {
-                    if (fabs(r__[k + k * r_dim1]) < fabs(sdiag[k])) {
-                        cotan = r__[k + k * r_dim1] / sdiag[k];
-                        sin__ = p5 / sqrt(p25 + p25 * (cotan * cotan));
-                        cos__ = sin__ * cotan;
+                    if (fabs(r[k + k * r_dim1]) < fabs(sdiag[k])) {
+                        cotan = r[k + k * r_dim1] / sdiag[k];
+                        sin = p5 / sqrt(p25 + p25 * (cotan * cotan));
+                        cos = sin * cotan;
                     } else {
-                        tan__ = sdiag[k] / r__[k + k * r_dim1];
-                        cos__ = p5 / sqrt(p25 + p25 * (tan__ * tan__));
-                        sin__ = cos__ * tan__;
+                        tan = sdiag[k] / r[k + k * r_dim1];
+                        cos = p5 / sqrt(p25 + p25 * (tan * tan));
+                        sin = cos * tan;
                     }
 
 /*           compute the modified diagonal element of r and */
 /*           the modified element of ((q transpose)*b,0). */
 
-                    r__[k + k * r_dim1] = cos__ * r__[k + k * r_dim1] + sin__ * sdiag[k];
-                    temp = cos__ * wa[k] + sin__ * qtbpj;
-                    qtbpj = -sin__ * wa[k] + cos__ * qtbpj;
+                    r[k + k * r_dim1] = cos * r[k + k * r_dim1] + sin * sdiag[k];
+                    temp = cos * wa[k] + sin * qtbpj;
+                    qtbpj = -sin * wa[k] + cos * qtbpj;
                     wa[k] = temp;
 
 /*           accumulate the tranformation in the row of s. */
 
                     kp1 = k + 1;
                     if (n >= kp1) {
-                        for (i__ = kp1; i__ <= n; ++i__) {
-                            temp = cos__ * r__[i__ + k * r_dim1] + sin__ * sdiag[i__];
-                            sdiag[i__] = -sin__ * r__[i__ + k * r_dim1] + cos__ * sdiag[i__];
-                            r__[i__ + k * r_dim1] = temp;
+                        for (i = kp1; i <= n; ++i) {
+                            temp = cos * r[i + k * r_dim1] + sin * sdiag[i];
+                            sdiag[i] = -sin * r[i + k * r_dim1] + cos * sdiag[i];
+                            r[i + k * r_dim1] = temp;
                         }
                     }
                 }
@@ -186,8 +186,8 @@
 /*        store the diagonal element of s and restore */
 /*        the corresponding diagonal element of r. */
 
-	sdiag[j] = r__[j + j * r_dim1];
-	r__[j + j * r_dim1] = x[j];
+	sdiag[j] = r[j + j * r_dim1];
+	r[j + j * r_dim1] = x[j];
     }
 
 /*     solve the triangular system for z. if the system is */
@@ -208,8 +208,8 @@
             sum = 0.;
             jp1 = j + 1;
             if (nsing >= jp1) {
-                for (i__ = jp1; i__ <= nsing; ++i__) {
-                    sum += r__[i__ + j * r_dim1] * wa[i__];
+                for (i = jp1; i <= nsing; ++i) {
+                    sum += r[i + j * r_dim1] * wa[i];
                 }
             }
             wa[j] = (wa[j] - sum) / sdiag[j];

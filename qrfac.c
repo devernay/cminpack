@@ -18,10 +18,10 @@
 
     /* System generated locals */
     int a_dim1, a_offset;
-    double d__1;
+    double d1;
 
     /* Local variables */
-    int i__, j, k, jp1;
+    int i, j, k, jp1;
     double sum;
     int kmax;
     double temp;
@@ -145,10 +145,10 @@
                 }
             }
             if (kmax != j) {
-                for (i__ = 1; i__ <= m; ++i__) {
-                    temp = a[i__ + j * a_dim1];
-                    a[i__ + j * a_dim1] = a[i__ + kmax * a_dim1];
-                    a[i__ + kmax * a_dim1] = temp;
+                for (i = 1; i <= m; ++i) {
+                    temp = a[i + j * a_dim1];
+                    a[i + j * a_dim1] = a[i + kmax * a_dim1];
+                    a[i + kmax * a_dim1] = temp;
                 }
                 rdiag[kmax] = rdiag[j];
                 wa[kmax] = wa[j];
@@ -166,8 +166,8 @@
             if (a[j + j * a_dim1] < 0.) {
                 ajnorm = -ajnorm;
             }
-            for (i__ = j; i__ <= m; ++i__) {
-                a[i__ + j * a_dim1] /= ajnorm;
+            for (i = j; i <= m; ++i) {
+                a[i + j * a_dim1] /= ajnorm;
             }
             a[j + j * a_dim1] += 1.;
 
@@ -178,21 +178,21 @@
             if (n >= jp1) {
                 for (k = jp1; k <= n; ++k) {
                     sum = 0.;
-                    for (i__ = j; i__ <= m; ++i__) {
-                        sum += a[i__ + j * a_dim1] * a[i__ + k * a_dim1];
+                    for (i = j; i <= m; ++i) {
+                        sum += a[i + j * a_dim1] * a[i + k * a_dim1];
                     }
                     temp = sum / a[j + j * a_dim1];
-                    for (i__ = j; i__ <= m; ++i__) {
-                        a[i__ + k * a_dim1] -= temp * a[i__ + j * a_dim1];
+                    for (i = j; i <= m; ++i) {
+                        a[i + k * a_dim1] -= temp * a[i + j * a_dim1];
                     }
                     if (pivot && rdiag[k] != 0.) {
                         temp = a[j + k * a_dim1] / rdiag[k];
                         /* Computing MAX */
-                        d__1 = 1. - temp * temp;
-                        rdiag[k] *= sqrt((max(0.,d__1)));
+                        d1 = 1. - temp * temp;
+                        rdiag[k] *= sqrt((max(0.,d1)));
                         /* Computing 2nd power */
-                        d__1 = rdiag[k] / wa[k];
-                        if (p05 * (d__1 * d__1) <= epsmch) {
+                        d1 = rdiag[k] / wa[k];
+                        if (p05 * (d1 * d1) <= epsmch) {
                             rdiag[k] = enorm(m - j, &a[jp1 + k * a_dim1]);
                             wa[k] = rdiag[k];
                         }

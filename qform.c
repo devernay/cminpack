@@ -13,7 +13,7 @@
     int q_dim1, q_offset;
 
     /* Local variables */
-    int i__, j, k, l, jm1, np1;
+    int i, j, k, l, jm1, np1;
     double sum, temp;
     int minmn;
 
@@ -68,8 +68,8 @@
     if (minmn >= 2) {
         for (j = 2; j <= minmn; ++j) {
             jm1 = j - 1;
-            for (i__ = 1; i__ <= jm1; ++i__) {
-                q[i__ + j * q_dim1] = 0.;
+            for (i = 1; i <= jm1; ++i) {
+                q[i + j * q_dim1] = 0.;
             }
         }
     }
@@ -79,8 +79,8 @@
     np1 = n + 1;
     if (m >= np1) {
         for (j = np1; j <= m; ++j) {
-            for (i__ = 1; i__ <= m; ++i__) {
-                q[i__ + j * q_dim1] = 0.;
+            for (i = 1; i <= m; ++i) {
+                q[i + j * q_dim1] = 0.;
             }
             q[j + j * q_dim1] = 1.;
         }
@@ -90,20 +90,20 @@
 
     for (l = 1; l <= minmn; ++l) {
 	k = minmn - l + 1;
-	for (i__ = k; i__ <= m; ++i__) {
-	    wa[i__] = q[i__ + k * q_dim1];
-	    q[i__ + k * q_dim1] = 0.;
+	for (i = k; i <= m; ++i) {
+	    wa[i] = q[i + k * q_dim1];
+	    q[i + k * q_dim1] = 0.;
 	}
 	q[k + k * q_dim1] = 1.;
 	if (wa[k] != 0.) {
             for (j = k; j <= m; ++j) {
                 sum = 0.;
-                for (i__ = k; i__ <= m; ++i__) {
-                    sum += q[i__ + j * q_dim1] * wa[i__];
+                for (i = k; i <= m; ++i) {
+                    sum += q[i + j * q_dim1] * wa[i];
                 }
                 temp = sum / wa[k];
-                for (i__ = k; i__ <= m; ++i__) {
-                    q[i__ + j * q_dim1] -= temp * wa[i__];
+                for (i = k; i <= m; ++i) {
+                    q[i + j * q_dim1] -= temp * wa[i];
                 }
             }
         }

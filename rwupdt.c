@@ -7,9 +7,9 @@
 #include "cminpack.h"
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-/* Subroutine */ void rwupdt(int n, double *r__, int ldr, 
-	const double *w, double *b, double *alpha, double *cos__, 
-	double *sin__)
+/* Subroutine */ void rwupdt(int n, double *r, int ldr, 
+	const double *w, double *b, double *alpha, double *cos, 
+	double *sin)
 {
     /* Initialized data */
 
@@ -20,8 +20,8 @@
     int r_dim1, r_offset;
 
     /* Local variables */
-    int i__, j, jm1;
-    double tan__, temp, rowj, cotan;
+    int i, j, jm1;
+    double tan, temp, rowj, cotan;
 
 /*     ********** */
 
@@ -85,13 +85,13 @@
 
 /*     ********** */
     /* Parameter adjustments */
-    --sin__;
-    --cos__;
+    --sin;
+    --cos;
     --b;
     --w;
     r_dim1 = ldr;
     r_offset = 1 + r_dim1 * 1;
-    r__ -= r_offset;
+    r -= r_offset;
 
     /* Function Body */
 
@@ -103,33 +103,33 @@
 /*        r(i,j), i=1,2,...,j-1, and to w(j). */
 
 	if (jm1 >= 1) {
-            for (i__ = 1; i__ <= jm1; ++i__) {
-                temp = cos__[i__] * r__[i__ + j * r_dim1] + sin__[i__] * rowj;
-                rowj = -sin__[i__] * r__[i__ + j * r_dim1] + cos__[i__] * rowj;
-                r__[i__ + j * r_dim1] = temp;
+            for (i = 1; i <= jm1; ++i) {
+                temp = cos[i] * r[i + j * r_dim1] + sin[i] * rowj;
+                rowj = -sin[i] * r[i + j * r_dim1] + cos[i] * rowj;
+                r[i + j * r_dim1] = temp;
             }
         }
 
 /*        determine a givens rotation which eliminates w(j). */
 
-	cos__[j] = 1.;
-	sin__[j] = 0.;
+	cos[j] = 1.;
+	sin[j] = 0.;
 	if (rowj != 0.) {
-            if (fabs(r__[j + j * r_dim1]) < fabs(rowj)) {
-                cotan = r__[j + j * r_dim1] / rowj;
-                sin__[j] = p5 / sqrt(p25 + p25 * (cotan * cotan));
-                cos__[j] = sin__[j] * cotan;
+            if (fabs(r[j + j * r_dim1]) < fabs(rowj)) {
+                cotan = r[j + j * r_dim1] / rowj;
+                sin[j] = p5 / sqrt(p25 + p25 * (cotan * cotan));
+                cos[j] = sin[j] * cotan;
             } else {
-                tan__ = rowj / r__[j + j * r_dim1];
-                cos__[j] = p5 / sqrt(p25 + p25 * (tan__ * tan__));
-                sin__[j] = cos__[j] * tan__;
+                tan = rowj / r[j + j * r_dim1];
+                cos[j] = p5 / sqrt(p25 + p25 * (tan * tan));
+                sin[j] = cos[j] * tan;
             }
 
 /*        apply the current transformation to r(j,j), b(j), and alpha. */
 
-            r__[j + j * r_dim1] = cos__[j] * r__[j + j * r_dim1] + sin__[j] * rowj;
-            temp = cos__[j] * b[j] + sin__[j] * *alpha;
-            *alpha = -sin__[j] * b[j] + cos__[j] * *alpha;
+            r[j + j * r_dim1] = cos[j] * r[j + j * r_dim1] + sin[j] * rowj;
+            temp = cos[j] * b[j] + sin[j] * *alpha;
+            *alpha = -sin[j] * b[j] + cos[j] * *alpha;
             b[j] = temp;
         }
     }

@@ -15,8 +15,8 @@
     int fjac_dim1, fjac_offset;
 
     /* Local variables */
-    double h__;
-    int i__, j, k;
+    double h;
+    int i, j, k;
     double eps, temp;
     int msum;
     double epsmch;
@@ -130,18 +130,18 @@
 
         for (j = 1; j <= n; ++j) {
             temp = x[j];
-            h__ = eps * fabs(temp);
-            if (h__ == 0.) {
-                h__ = eps;
+            h = eps * fabs(temp);
+            if (h == 0.) {
+                h = eps;
             }
-            x[j] = temp + h__;
+            x[j] = temp + h;
             iflag = (*fcn)(p, n, &x[1], &wa1[1], 1);
             if (iflag < 0) {
                 return iflag;
             }
             x[j] = temp;
-            for (i__ = 1; i__ <= n; ++i__) {
-                fjac[i__ + j * fjac_dim1] = (wa1[i__] - fvec[i__]) / h__;
+            for (i = 1; i <= n; ++i) {
+                fjac[i + j * fjac_dim1] = (wa1[i] - fvec[i]) / h;
             }
         }
         return 0;
@@ -152,11 +152,11 @@
     for (k = 1; k <= msum; ++k) {
 	for (j = k; msum < 0 ? j >= n : j <= n; j += msum) {
 	    wa2[j] = x[j];
-	    h__ = eps * fabs(wa2[j]);
-	    if (h__ == 0.) {
-		h__ = eps;
+	    h = eps * fabs(wa2[j]);
+	    if (h == 0.) {
+		h = eps;
 	    }
-	    x[j] = wa2[j] + h__;
+	    x[j] = wa2[j] + h;
 	}
 	iflag = (*fcn)(p, n, &x[1], &wa1[1], 1);
 	if (iflag < 0) {
@@ -164,14 +164,14 @@
 	}
 	for (j = k; msum < 0 ? j >= n : j <= n; j += msum) {
 	    x[j] = wa2[j];
-	    h__ = eps * fabs(wa2[j]);
-	    if (h__ == 0.) {
-		h__ = eps;
+	    h = eps * fabs(wa2[j]);
+	    if (h == 0.) {
+		h = eps;
 	    }
-	    for (i__ = 1; i__ <= n; ++i__) {
-		fjac[i__ + j * fjac_dim1] = 0.;
-		if (i__ >= j - mu && i__ <= j + ml) {
-		    fjac[i__ + j * fjac_dim1] = (wa1[i__] - fvec[i__]) / h__;
+	    for (i = 1; i <= n; ++i) {
+		fjac[i + j * fjac_dim1] = 0.;
+		if (i >= j - mu && i <= j + ml) {
+		    fjac[i + j * fjac_dim1] = (wa1[i] - fvec[i]) / h;
 		}
 	    }
 	}

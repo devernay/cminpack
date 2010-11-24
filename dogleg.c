@@ -10,15 +10,15 @@
 
 /* Table of constant values */
 
-/* Subroutine */ void dogleg(int n, const double *r__, int lr, 
+/* Subroutine */ void dogleg(int n, const double *r, int lr, 
 	const double *diag, const double *qtb, double delta, double *x, 
 	double *wa1, double *wa2)
 {
     /* System generated locals */
-    double d__1, d__2, d__3, d__4;
+    double d1, d2, d3, d4;
 
     /* Local variables */
-    int i__, j, k, l, jj, jp1;
+    int i, j, k, l, jj, jp1;
     double sum, temp, alpha, bnorm;
     double gnorm, qnorm, epsmch;
     double sgnorm;
@@ -86,7 +86,7 @@
     --x;
     --qtb;
     --diag;
-    --r__;
+    --r;
 
     /* Function Body */
 
@@ -104,19 +104,19 @@
 	l = jj + 1;
 	sum = 0.;
 	if (n >= jp1) {
-            for (i__ = jp1; i__ <= n; ++i__) {
-                sum += r__[l] * x[i__];
+            for (i = jp1; i <= n; ++i) {
+                sum += r[l] * x[i];
                 ++l;
             }
         }
-	temp = r__[jj];
+	temp = r[jj];
 	if (temp == 0.) {
             l = j;
-            for (i__ = 1; i__ <= j; ++i__) {
+            for (i = 1; i <= j; ++i) {
                 /* Computing MAX */
-                d__2 = fabs(r__[l]);
-                temp = max(temp,d__2);
-                l = l + n - i__;
+                d2 = fabs(r[l]);
+                temp = max(temp,d2);
+                l = l + n - i;
             }
             temp = epsmch * temp;
             if (temp == 0.) {
@@ -143,8 +143,8 @@
     l = 1;
     for (j = 1; j <= n; ++j) {
 	temp = qtb[j];
-	for (i__ = j; i__ <= n; ++i__) {
-	    wa1[i__] += r__[l] * temp;
+	for (i = j; i <= n; ++i) {
+	    wa1[i] += r[l] * temp;
 	    ++l;
 	}
 	wa1[j] /= diag[j];
@@ -167,8 +167,8 @@
         l = 1;
         for (j = 1; j <= n; ++j) {
             sum = 0.;
-            for (i__ = j; i__ <= n; ++i__) {
-                sum += r__[l] * wa1[i__];
+            for (i = j; i <= n; ++i) {
+                sum += r[l] * wa1[i];
                 ++l;
             }
             wa2[j] = sum;
@@ -188,19 +188,19 @@
             bnorm = enorm(n, &qtb[1]);
             temp = bnorm / gnorm * (bnorm / qnorm) * (sgnorm / delta);
             /* Computing 2nd power */
-            d__1 = sgnorm / delta;
+            d1 = sgnorm / delta;
             /* Computing 2nd power */
-            d__2 = temp - delta / qnorm;
+            d2 = temp - delta / qnorm;
             /* Computing 2nd power */
-            d__3 = delta / qnorm;
+            d3 = delta / qnorm;
             /* Computing 2nd power */
-            d__4 = sgnorm / delta;
-            temp = temp - delta / qnorm * (d__1 * d__1)
-                   + sqrt(d__2 * d__2
-                          + (1. - d__3 * d__3) * (1. - d__4 * d__4));
+            d4 = sgnorm / delta;
+            temp = temp - delta / qnorm * (d1 * d1)
+                   + sqrt(d2 * d2
+                          + (1. - d3 * d3) * (1. - d4 * d4));
             /* Computing 2nd power */
-            d__1 = sgnorm / delta;
-            alpha = delta / qnorm * (1. - d__1 * d__1) / temp;
+            d1 = sgnorm / delta;
+            alpha = delta / qnorm * (1. - d1 * d1) / temp;
         }
     }
 

@@ -14,7 +14,7 @@
 	fvec, double xtol, int maxfev, int ml, int mu, 
 	double epsfcn, double *diag, int mode, double
 	factor, int nprint, int *nfev, double *
-	fjac, int ldfjac, double *r__, int lr, double *qtf, 
+	fjac, int ldfjac, double *r, int lr, double *qtf, 
 	double *wa1, double *wa2, double *wa3, double *wa4)
 {
     /* Initialized data */
@@ -25,11 +25,11 @@
 #define p0001 1e-4
 
     /* System generated locals */
-    int fjac_dim1, fjac_offset, i__1;
-    double d__1, d__2;
+    int fjac_dim1, fjac_offset, i1;
+    double d1, d2;
 
     /* Local variables */
-    int i__, j, l, jm1, iwa[1];
+    int i, j, l, jm1, iwa[1];
     double sum;
     int sing;
     int iter;
@@ -214,7 +214,7 @@
     fjac_dim1 = ldfjac;
     fjac_offset = 1 + fjac_dim1 * 1;
     fjac -= fjac_offset;
-    --r__;
+    --r;
 
     /* Function Body */
 
@@ -254,8 +254,8 @@
 /*     the jacobian matrix. */
 
 /* Computing MIN */
-    i__1 = ml + mu + 1;
-    msum = min(i__1,n);
+    i1 = ml + mu + 1;
+    msum = min(i1,n);
 
 /*     initialize iteration counter and monitors. */
 
@@ -312,18 +312,18 @@
 
 /*        form (q transpose)*fvec and store in qtf. */
 
-        for (i__ = 1; i__ <= n; ++i__) {
-            qtf[i__] = fvec[i__];
+        for (i = 1; i <= n; ++i) {
+            qtf[i] = fvec[i];
         }
         for (j = 1; j <= n; ++j) {
             if (fjac[j + j * fjac_dim1] != 0.) {
                 sum = 0.;
-                for (i__ = j; i__ <= n; ++i__) {
-                    sum += fjac[i__ + j * fjac_dim1] * qtf[i__];
+                for (i = j; i <= n; ++i) {
+                    sum += fjac[i + j * fjac_dim1] * qtf[i];
                 }
                 temp = -sum / fjac[j + j * fjac_dim1];
-                for (i__ = j; i__ <= n; ++i__) {
-                    qtf[i__] += fjac[i__ + j * fjac_dim1] * temp;
+                for (i = j; i <= n; ++i) {
+                    qtf[i] += fjac[i + j * fjac_dim1] * temp;
                 }
             }
         }
@@ -335,12 +335,12 @@
             l = j;
             jm1 = j - 1;
             if (jm1 >= 1) {
-                for (i__ = 1; i__ <= jm1; ++i__) {
-                    r__[l] = fjac[i__ + j * fjac_dim1];
-                    l = l + n - i__;
+                for (i = 1; i <= jm1; ++i) {
+                    r[l] = fjac[i + j * fjac_dim1];
+                    l = l + n - i;
                 }
             }
-            r__[l] = wa1[j];
+            r[l] = wa1[j];
             if (wa1[j] == 0.) {
                 sing = TRUE_;
             }
@@ -355,8 +355,8 @@
         if (mode != 2) {
             for (j = 1; j <= n; ++j) {
                 /* Computing MAX */
-                d__1 = diag[j], d__2 = wa2[j];
-                diag[j] = max(d__1,d__2);
+                d1 = diag[j], d2 = wa2[j];
+                diag[j] = max(d1,d2);
             }
         }
 
@@ -378,7 +378,7 @@
 
 /*           determine the direction p. */
 
-            dogleg(n, &r__[1], lr, &diag[1], &qtf[1], delta, &wa1[1], &wa2[1], &wa3[1]);
+            dogleg(n, &r[1], lr, &diag[1], &qtf[1], delta, &wa1[1], &wa2[1], &wa3[1]);
 
 /*           store the direction p and x + p. calculate the norm of p. */
 
@@ -409,27 +409,27 @@
             actred = -1.;
             if (fnorm1 < fnorm) {
                 /* Computing 2nd power */
-                d__1 = fnorm1 / fnorm;
-                actred = 1. - d__1 * d__1;
+                d1 = fnorm1 / fnorm;
+                actred = 1. - d1 * d1;
             }
 
 /*           compute the scaled predicted reduction. */
 
             l = 1;
-            for (i__ = 1; i__ <= n; ++i__) {
+            for (i = 1; i <= n; ++i) {
                 sum = 0.;
-                for (j = i__; j <= n; ++j) {
-                    sum += r__[l] * wa1[j];
+                for (j = i; j <= n; ++j) {
+                    sum += r[l] * wa1[j];
                     ++l;
                 }
-                wa3[i__] = qtf[i__] + sum;
+                wa3[i] = qtf[i] + sum;
             }
             temp = enorm(n, &wa3[1]);
             prered = 0.;
             if (temp < fnorm) {
                 /* Computing 2nd power */
-                d__1 = temp / fnorm;
-                prered = 1. - d__1 * d__1;
+                d1 = temp / fnorm;
+                prered = 1. - d1 * d1;
             }
 
 /*           compute the ratio of the actual to the predicted */
@@ -451,8 +451,8 @@
                 ++ncsuc;
                 if (ratio >= p5 || ncsuc > 1) {
                     /* Computing MAX */
-                    d__1 = pnorm / p5;
-                    delta = max(delta,d__1);
+                    d1 = pnorm / p5;
+                    delta = max(delta,d1);
                 }
                 if (fabs(ratio - 1.) <= p1) {
                     delta = pnorm / p5;
@@ -503,8 +503,8 @@
                 info = 2;
             }
             /* Computing MAX */
-            d__1 = p1 * delta;
-            if (p1 * max(d__1,pnorm) <= epsmch * xnorm) {
+            d1 = p1 * delta;
+            if (p1 * max(d1,pnorm) <= epsmch * xnorm) {
                 info = 3;
             }
             if (nslow2 == 5) {
@@ -529,8 +529,8 @@
 
             for (j = 1; j <= n; ++j) {
                 sum = 0.;
-                for (i__ = 1; i__ <= n; ++i__) {
-                    sum += fjac[i__ + j * fjac_dim1] * wa4[i__];
+                for (i = 1; i <= n; ++i) {
+                    sum += fjac[i + j * fjac_dim1] * wa4[i];
                 }
                 wa2[j] = (sum - wa3[j]) / pnorm;
                 wa1[j] = diag[j] * (diag[j] * wa1[j] / pnorm);
@@ -541,7 +541,7 @@
 
 /*           compute the qr factorization of the updated jacobian. */
 
-            r1updt(n, n, &r__[1], lr, &wa1[1], &wa2[1], &wa3[1], &sing);
+            r1updt(n, n, &r[1], lr, &wa1[1], &wa2[1], &wa3[1], &sing);
             r1mpyq(n, n, &fjac[fjac_offset], ldfjac, &wa2[1], &wa3[1]);
             r1mpyq(1, n, &qtf[1], 1, &wa2[1], &wa3[1]);
 

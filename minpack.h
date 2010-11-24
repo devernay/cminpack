@@ -130,13 +130,13 @@ void fdjac1_(void (*fcn)(const int *n, const double *x, double *fvec, int *iflag
 	     double *wa2);
 
 /* internal MINPACK subroutines */
-void dogleg_(const int *n, const double *r__, const int *lr, 
+void dogleg_(const int *n, const double *r, const int *lr, 
              const double *diag, const double *qtb, const double *delta, double *x, 
              double *wa1, double *wa2);
 void qrfac_(const int *m, const int *n, double *a, const int *
             lda, const int *pivot, int *ipvt, const int *lipvt, double *rdiag,
             double *acnorm, double *wa);
-void qrsolv_(const int *n, double *r__, const int *ldr, 
+void qrsolv_(const int *n, double *r, const int *ldr, 
              const int *ipvt, const double *diag, const double *qtb, double *x, 
              double *sdiag, double *wa);
 void qform_(const int *m, const int *n, double *q, const int *
@@ -145,14 +145,14 @@ void r1updt_(const int *m, const int *n, double *s, const int *
              ls, const double *u, double *v, double *w, int *sing);
 void r1mpyq_(const int *m, const int *n, double *a, const int *
              lda, const double *v, const double *w);
-void lmpar_(const int *n, double *r__, const int *ldr, 
+void lmpar_(const int *n, double *r, const int *ldr, 
             const int *ipvt, const double *diag, const double *qtb, const double *delta, 
             double *par, double *x, double *sdiag, double *wa1, 
             double *wa2);
-void rwupdt_(const int *n, double *r__, const int *ldr, 
-             const double *w, double *b, double *alpha, double *cos__, 
-             double *sin__);
-void covar_(const int *n, double *r__, const int *ldr, 
+void rwupdt_(const int *n, double *r, const int *ldr, 
+             const double *w, double *b, double *alpha, double *cos, 
+             double *sin);
+void covar_(const int *n, double *r, const int *ldr, 
            const int *ipvt, const double *tol, double *wa);
 #ifdef __cplusplus
 }

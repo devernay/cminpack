@@ -18,10 +18,10 @@
 #define p25 .25
 
     /* Local variables */
-    int i__, j, l, jj, nm1;
-    double tan__;
+    int i, j, l, jj, nm1;
+    double tan;
     int nmj;
-    double cos__, sin__, tau, temp, giant, cotan;
+    double cos, sin, tau, temp, giant, cotan;
 
 /*     ********** */
 
@@ -110,8 +110,8 @@
 /*     move the nontrivial part of the last column of s into w. */
 
     l = jj;
-    for (i__ = n; i__ <= m; ++i__) {
-	w[i__] = s[l];
+    for (i = n; i <= m; ++i) {
+	w[i] = s[l];
 	++l;
     }
 
@@ -131,31 +131,31 @@
 
                 if (fabs(v[n]) < fabs(v[j])) {
                     cotan = v[n] / v[j];
-                    sin__ = p5 / sqrt(p25 + p25 * (cotan * cotan));
-                    cos__ = sin__ * cotan;
+                    sin = p5 / sqrt(p25 + p25 * (cotan * cotan));
+                    cos = sin * cotan;
                     tau = 1.;
-                    if (abs(cos__) * giant > 1.) {
-                        tau = 1. / cos__;
+                    if (abs(cos) * giant > 1.) {
+                        tau = 1. / cos;
                     }
                 } else {
-                    tan__ = v[j] / v[n];
-                    cos__ = p5 / sqrt(p25 + p25 * (tan__ * tan__));
-                    sin__ = cos__ * tan__;
-                    tau = sin__;
+                    tan = v[j] / v[n];
+                    cos = p5 / sqrt(p25 + p25 * (tan * tan));
+                    sin = cos * tan;
+                    tau = sin;
                 }
 
 /*        apply the transformation to v and store the information */
 /*        necessary to recover the givens rotation. */
 
-                v[n] = sin__ * v[j] + cos__ * v[n];
+                v[n] = sin * v[j] + cos * v[n];
                 v[j] = tau;
 
 /*        apply the transformation to s and extend the spike in w. */
 
                 l = jj;
-                for (i__ = j; i__ <= m; ++i__) {
-                    temp = cos__ * s[l] - sin__ * w[i__];
-                    w[i__] = sin__ * s[l] + cos__ * w[i__];
+                for (i = j; i <= m; ++i) {
+                    temp = cos * s[l] - sin * w[i];
+                    w[i] = sin * s[l] + cos * w[i];
                     s[l] = temp;
                     ++l;
                 }
@@ -165,8 +165,8 @@
 
 /*     add the spike from the rank 1 update to w. */
 
-    for (i__ = 1; i__ <= m; ++i__) {
-	w[i__] += v[n] * u[i__];
+    for (i = 1; i <= m; ++i) {
+	w[i] += v[n] * u[i];
     }
 
 /*     eliminate the spike. */
@@ -181,25 +181,25 @@
 
                 if (fabs(s[jj]) < fabs(w[j])) {
                     cotan = s[jj] / w[j];
-                    sin__ = p5 / sqrt(p25 + p25 * (cotan * cotan));
-                    cos__ = sin__ * cotan;
+                    sin = p5 / sqrt(p25 + p25 * (cotan * cotan));
+                    cos = sin * cotan;
                     tau = 1.;
-                    if (fabs(cos__) * giant > 1.) {
-                        tau = 1. / cos__;
+                    if (fabs(cos) * giant > 1.) {
+                        tau = 1. / cos;
                     }
                 } else {
-                    tan__ = w[j] / s[jj];
-                    cos__ = p5 / sqrt(p25 + p25 * (tan__ * tan__));
-                    sin__ = cos__ * tan__;
-                    tau = sin__;
+                    tan = w[j] / s[jj];
+                    cos = p5 / sqrt(p25 + p25 * (tan * tan));
+                    sin = cos * tan;
+                    tau = sin;
                 }
 
 /*        apply the transformation to s and reduce the spike in w. */
 
                 l = jj;
-                for (i__ = j; i__ <= m; ++i__) {
-                    temp = cos__ * s[l] + sin__ * w[i__];
-                    w[i__] = -sin__ * s[l] + cos__ * w[i__];
+                for (i = j; i <= m; ++i) {
+                    temp = cos * s[l] + sin * w[i];
+                    w[i] = -sin * s[l] + cos * w[i];
                     s[l] = temp;
                     ++l;
                 }
@@ -222,8 +222,8 @@
 /*     move w back into the last column of the output s. */
 
     l = jj;
-    for (i__ = n; i__ <= m; ++i__) {
-	s[l] = w[i__];
+    for (i = n; i <= m; ++i) {
+	s[l] = w[i];
 	++l;
     }
     if (s[jj] == 0.) {

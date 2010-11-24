@@ -181,13 +181,13 @@ int fdjac1(minpack_func_nn fcn,
 	     double *wa2);
 
 /* internal MINPACK subroutines */
-void dogleg(int n, const double *r__, int lr, 
+void dogleg(int n, const double *r, int lr, 
              const double *diag, const double *qtb, double delta, double *x, 
              double *wa1, double *wa2);
 void qrfac(int m, int n, double *a, int
             lda, int pivot, int *ipvt, int lipvt, double *rdiag,
             double *acnorm, double *wa);
-void qrsolv(int n, double *r__, int ldr, 
+void qrsolv(int n, double *r, int ldr, 
              const int *ipvt, const double *diag, const double *qtb, double *x, 
              double *sdiag, double *wa);
 void qform(int m, int n, double *q, int
@@ -196,14 +196,14 @@ void r1updt(int m, int n, double *s, int
              ls, const double *u, double *v, double *w, int *sing);
 void r1mpyq(int m, int n, double *a, int
              lda, const double *v, const double *w);
-void lmpar(int n, double *r__, int ldr, 
+void lmpar(int n, double *r, int ldr, 
             const int *ipvt, const double *diag, const double *qtb, double delta, 
             double *par, double *x, double *sdiag, double *wa1, 
             double *wa2);
-void rwupdt(int n, double *r__, int ldr, 
-             const double *w, double *b, double *alpha, double *cos__, 
-             double *sin__);
-void covar(int n, double *r__, int ldr, 
+void rwupdt(int n, double *r, int ldr, 
+             const double *w, double *b, double *alpha, double *cos, 
+             double *sin);
+void covar(int n, double *r, int ldr, 
            const int *ipvt, double tol, double *wa);
 #ifdef __cplusplus
 }

@@ -13,14 +13,14 @@
 #include <math.h>
 #include "minpack.h"
 
-/* Subroutine */ void covar(int n, double *r__, int ldr, 
+/* Subroutine */ void covar(int n, double *r, int ldr, 
 	const int *ipvt, double tol, double *wa)
 {
     /* System generated locals */
     int r_dim1, r_offset;
 
     /* Local variables */
-    int i__, j, k, l, ii, jj, km1;
+    int i, j, k, l, ii, jj, km1;
     int sing;
     double temp, tolr;
 
@@ -92,10 +92,10 @@
     /* Parameter adjustments */
     --wa;
     --ipvt;
-    tolr = tol * fabs(r__[0]);
+    tolr = tol * fabs(r[0]);
     r_dim1 = ldr;
     r_offset = 1 + r_dim1;
-    r__ -= r_offset;
+    r -= r_offset;
 
     /* Function Body */
 
@@ -103,17 +103,17 @@
 
     l = 0;
     for (k = 1; k <= n; ++k) {
-	if (fabs(r__[k + k * r_dim1]) <= tolr) {
+	if (fabs(r[k + k * r_dim1]) <= tolr) {
 	    goto TERMINATE_INVERSE;
 	}
-	r__[k + k * r_dim1] = 1. / r__[k + k * r_dim1];
+	r[k + k * r_dim1] = 1. / r[k + k * r_dim1];
 	km1 = k - 1;
 	if (km1 >= 1) {
             for (j = 1; j <= km1; ++j) {
-                temp = r__[k + k * r_dim1] * r__[j + k * r_dim1];
-                r__[j + k * r_dim1] = 0.;
-                for (i__ = 1; i__ <= j; ++i__) {
-                    r__[i__ + k * r_dim1] -= temp * r__[i__ + j * r_dim1];
+                temp = r[k + k * r_dim1] * r[j + k * r_dim1];
+                r[j + k * r_dim1] = 0.;
+                for (i = 1; i <= j; ++i) {
+                    r[i + k * r_dim1] -= temp * r[i + j * r_dim1];
                 }
             }
         }
@@ -129,15 +129,15 @@ TERMINATE_INVERSE:
             km1 = k - 1;
             if (km1 >= 1) {
                 for (j = 1; j <= km1; ++j) {
-                    temp = r__[j + k * r_dim1];
-                    for (i__ = 1; i__ <= j; ++i__) {
-                        r__[i__ + j * r_dim1] += temp * r__[i__ + k * r_dim1];
+                    temp = r[j + k * r_dim1];
+                    for (i = 1; i <= j; ++i) {
+                        r[i + j * r_dim1] += temp * r[i + k * r_dim1];
                     }
                 }
             }
-            temp = r__[k + k * r_dim1];
-            for (i__ = 1; i__ <= k; ++i__) {
-                r__[i__ + k * r_dim1] = temp * r__[i__ + k * r_dim1];
+            temp = r[k + k * r_dim1];
+            for (i = 1; i <= k; ++i) {
+                r[i + k * r_dim1] = temp * r[i + k * r_dim1];
             }
         }
     }
@@ -148,28 +148,28 @@ TERMINATE_INVERSE:
     for (j = 1; j <= n; ++j) {
 	jj = ipvt[j];
 	sing = j > l;
-	for (i__ = 1; i__ <= j; ++i__) {
+	for (i = 1; i <= j; ++i) {
 	    if (sing) {
-		r__[i__ + j * r_dim1] = 0.;
+		r[i + j * r_dim1] = 0.;
 	    }
-	    ii = ipvt[i__];
+	    ii = ipvt[i];
 	    if (ii > jj) {
-		r__[ii + jj * r_dim1] = r__[i__ + j * r_dim1];
+		r[ii + jj * r_dim1] = r[i + j * r_dim1];
 	    }
 	    if (ii < jj) {
-		r__[jj + ii * r_dim1] = r__[i__ + j * r_dim1];
+		r[jj + ii * r_dim1] = r[i + j * r_dim1];
 	    }
 	}
-	wa[jj] = r__[j + j * r_dim1];
+	wa[jj] = r[j + j * r_dim1];
     }
 
 /*     symmetrize the covariance matrix in r. */
 
     for (j = 1; j <= n; ++j) {
-	for (i__ = 1; i__ <= j; ++i__) {
-	    r__[i__ + j * r_dim1] = r__[j + i__ * r_dim1];
+	for (i = 1; i <= j; ++i) {
+	    r[i + j * r_dim1] = r[j + i * r_dim1];
 	}
-	r__[j + j * r_dim1] = wa[j];
+	r[j + j * r_dim1] = wa[j];
     }
 
 /*     last card of subroutine covar. */

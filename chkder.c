@@ -19,7 +19,7 @@
     int fjac_dim1, fjac_offset;
 
     /* Local variables */
-    int i__, j;
+    int i, j;
     double eps, epsf, temp, epsmch;
     double epslog;
 
@@ -140,33 +140,33 @@
 
     epsf = factor * epsmch;
     epslog = log10e * log(eps);
-    for (i__ = 1; i__ <= m; ++i__) {
-	err[i__] = 0.;
+    for (i = 1; i <= m; ++i) {
+	err[i] = 0.;
     }
     for (j = 1; j <= n; ++j) {
 	temp = fabs(x[j]);
 	if (temp == 0.) {
 	    temp = 1.;
 	}
-	for (i__ = 1; i__ <= m; ++i__) {
-	    err[i__] += temp * fjac[i__ + j * fjac_dim1];
+	for (i = 1; i <= m; ++i) {
+	    err[i] += temp * fjac[i + j * fjac_dim1];
 	}
     }
-    for (i__ = 1; i__ <= m; ++i__) {
+    for (i = 1; i <= m; ++i) {
 	temp = 1.;
-	if (fvec[i__] != 0. && fvecp[i__] != 0. &&
-            fabs(fvecp[i__] - fvec[i__]) >= epsf * fabs(fvec[i__]))
+	if (fvec[i] != 0. && fvecp[i] != 0. &&
+            fabs(fvecp[i] - fvec[i]) >= epsf * fabs(fvec[i]))
 		 {
-	    temp = eps * fabs((fvecp[i__] - fvec[i__]) / eps - err[i__]) 
-		    / (fabs(fvec[i__]) +
-                       fabs(fvecp[i__]));
+	    temp = eps * fabs((fvecp[i] - fvec[i]) / eps - err[i]) 
+		    / (fabs(fvec[i]) +
+                       fabs(fvecp[i]));
 	}
-	err[i__] = 1.;
+	err[i] = 1.;
 	if (temp > epsmch && temp < eps) {
-	    err[i__] = (log10e * log(temp) - epslog) / epslog;
+	    err[i] = (log10e * log(temp) - epslog) / epslog;
 	}
 	if (temp >= eps) {
-	    err[i__] = 0.;
+	    err[i] = 0.;
 	}
     }
 

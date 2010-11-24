@@ -14,10 +14,10 @@ double enorm(int n, const double *x)
 #define rgiant 1.304e19
 
     /* System generated locals */
-    double ret_val, d__1;
+    double ret_val, d1;
 
     /* Local variables */
-    int i__;
+    int i;
     double s1, s2, s3, xabs, x1max, x3max, agiant, floatn;
 
 /*     ********** */
@@ -67,8 +67,8 @@ double enorm(int n, const double *x)
     x3max = 0.;
     floatn = (double) (n);
     agiant = rgiant / floatn;
-    for (i__ = 0; i__ < n; ++i__) {
-	xabs = fabs(x[i__]);
+    for (i = 0; i < n; ++i) {
+	xabs = fabs(x[i]);
 	if (xabs <= rdwarf || xabs >= agiant) {
             if (xabs > rdwarf) {
 
@@ -76,13 +76,13 @@ double enorm(int n, const double *x)
 
                 if (xabs > x1max) {
                     /* Computing 2nd power */
-                    d__1 = x1max / xabs;
-                    s1 = 1. + s1 * (d__1 * d__1);
+                    d1 = x1max / xabs;
+                    s1 = 1. + s1 * (d1 * d1);
                     x1max = xabs;
                 } else {
                     /* Computing 2nd power */
-                    d__1 = xabs / x1max;
-                    s1 += d__1 * d__1;
+                    d1 = xabs / x1max;
+                    s1 += d1 * d1;
                 }
             } else {
 
@@ -90,14 +90,14 @@ double enorm(int n, const double *x)
 
                 if (xabs > x3max) {
                     /* Computing 2nd power */
-                    d__1 = x3max / xabs;
-                    s3 = 1. + s3 * (d__1 * d__1);
+                    d1 = x3max / xabs;
+                    s3 = 1. + s3 * (d1 * d1);
                     x3max = xabs;
                 } else {
                     if (xabs != 0.) {
                         /* Computing 2nd power */
-                        d__1 = xabs / x3max;
-                        s3 += d__1 * d__1;
+                        d1 = xabs / x3max;
+                        s3 += d1 * d1;
                     }
                 }
             }

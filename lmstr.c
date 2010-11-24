@@ -27,10 +27,10 @@
 
     /* System generated locals */
     int fjac_dim1, fjac_offset;
-    double d__1, d__2;
+    double d1, d2;
 
     /* Local variables */
-    int i__, j, l;
+    int i, j, l;
     double par, sum;
     int sing;
     int iter;
@@ -295,16 +295,16 @@
 
         for (j = 1; j <= n; ++j) {
             qtf[j] = 0.;
-            for (i__ = 1; i__ <= n; ++i__) {
-                fjac[i__ + j * fjac_dim1] = 0.;
+            for (i = 1; i <= n; ++i) {
+                fjac[i + j * fjac_dim1] = 0.;
             }
         }
         iflag = 2;
-        for (i__ = 1; i__ <= m; ++i__) {
+        for (i = 1; i <= m; ++i) {
             if ((*fcn)(p, m, n, &x[1], &fvec[1], &wa3[1], iflag) < 0) {
                 goto TERMINATE;
             }
-            temp = fvec[i__];
+            temp = fvec[i];
             rwupdt(n, &fjac[fjac_offset], ldfjac, &wa3[1], &qtf[1], &temp,
                    &wa1[1], &wa2[1]);
             ++iflag;
@@ -328,12 +328,12 @@
             for (j = 1; j <= n; ++j) {
                 if (fjac[j + j * fjac_dim1] != 0.) {
                     sum = 0.;
-                    for (i__ = j; i__ <= n; ++i__) {
-                        sum += fjac[i__ + j * fjac_dim1] * qtf[i__];
+                    for (i = j; i <= n; ++i) {
+                        sum += fjac[i + j * fjac_dim1] * qtf[i];
                     }
                     temp = -sum / fjac[j + j * fjac_dim1];
-                    for (i__ = j; i__ <= n; ++i__) {
-                        qtf[i__] += fjac[i__ + j * fjac_dim1] * temp;
+                    for (i = j; i <= n; ++i) {
+                        qtf[i] += fjac[i + j * fjac_dim1] * temp;
                     }
                 }
                 fjac[j + j * fjac_dim1] = wa1[j];
@@ -374,12 +374,12 @@
                 l = ipvt[j];
                 if (wa2[l] != 0.) {
                     sum = 0.;
-                    for (i__ = 1; i__ <= j; ++i__) {
-                        sum += fjac[i__ + j * fjac_dim1] * (qtf[i__] / fnorm);
+                    for (i = 1; i <= j; ++i) {
+                        sum += fjac[i + j * fjac_dim1] * (qtf[i] / fnorm);
                     }
                     /* Computing MAX */
-                    d__1 = fabs(sum / wa2[l]);
-                    gnorm = max(gnorm,d__1);
+                    d1 = fabs(sum / wa2[l]);
+                    gnorm = max(gnorm,d1);
                 }
             }
         }
@@ -398,8 +398,8 @@
         if (mode != 2) {
             for (j = 1; j <= n; ++j) {
                 /* Computing MAX */
-                d__1 = diag[j], d__2 = wa2[j];
-                diag[j] = max(d__1,d__2);
+                d1 = diag[j], d2 = wa2[j];
+                diag[j] = max(d1,d2);
             }
         }
 
@@ -441,8 +441,8 @@
             actred = -1.;
             if (p1 * fnorm1 < fnorm) {
                 /* Computing 2nd power */
-                d__1 = fnorm1 / fnorm;
-                actred = 1. - d__1 * d__1;
+                d1 = fnorm1 / fnorm;
+                actred = 1. - d1 * d1;
             }
 
 /*           compute the scaled predicted reduction and */
@@ -452,8 +452,8 @@
                 wa3[j] = 0.;
                 l = ipvt[j];
                 temp = wa1[l];
-                for (i__ = 1; i__ <= j; ++i__) {
-                    wa3[i__] += fjac[i__ + j * fjac_dim1] * temp;
+                for (i = 1; i <= j; ++i) {
+                    wa3[i] += fjac[i + j * fjac_dim1] * temp;
                 }
             }
             temp1 = enorm(n, &wa3[1]) / fnorm;
@@ -481,8 +481,8 @@
                     temp = p1;
                 }
                 /* Computing MIN */
-                d__1 = pnorm / p1;
-                delta = temp * min(delta,d__1);
+                d1 = pnorm / p1;
+                delta = temp * min(delta,d1);
                 par /= temp;
             } else {
                 if (par == 0. || ratio >= p75) {
@@ -501,8 +501,8 @@
                     x[j] = wa2[j];
                     wa2[j] = diag[j] * x[j];
                 }
-                for (i__ = 1; i__ <= m; ++i__) {
-                    fvec[i__] = wa4[i__];
+                for (i = 1; i <= m; ++i) {
+                    fvec[i] = wa4[i];
                 }
                 xnorm = enorm(n, &wa2[1]);
                 fnorm = fnorm1;

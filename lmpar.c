@@ -9,7 +9,7 @@
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 
 
-/* Subroutine */ void lmpar(int n, double *r__, int ldr, 
+/* Subroutine */ void lmpar(int n, double *r, int ldr, 
 	const int *ipvt, const double *diag, const double *qtb, double delta, 
 	double *par, double *x, double *sdiag, double *wa1, 
 	double *wa2)
@@ -21,10 +21,10 @@
 
     /* System generated locals */
     int r_dim1, r_offset;
-    double d__1, d__2;
+    double d1, d2;
 
     /* Local variables */
-    int i__, j, k, l;
+    int i, j, k, l;
     double fp;
     int jm1, jp1;
     double sum, parc, parl;
@@ -138,7 +138,7 @@
     --ipvt;
     r_dim1 = ldr;
     r_offset = 1 + r_dim1 * 1;
-    r__ -= r_offset;
+    r -= r_offset;
 
     /* Function Body */
 
@@ -152,7 +152,7 @@
     nsing = n;
     for (j = 1; j <= n; ++j) {
 	wa1[j] = qtb[j];
-	if (r__[j + j * r_dim1] == 0. && nsing == n) {
+	if (r[j + j * r_dim1] == 0. && nsing == n) {
 	    nsing = j - 1;
 	}
 	if (nsing < n) {
@@ -163,12 +163,12 @@
     if (nsing >= 1) {
         for (k = 1; k <= nsing; ++k) {
             j = nsing - k + 1;
-            wa1[j] /= r__[j + j * r_dim1];
+            wa1[j] /= r[j + j * r_dim1];
             temp = wa1[j];
             jm1 = j - 1;
             if (jm1 >= 1) {
-                for (i__ = 1; i__ <= jm1; ++i__) {
-                    wa1[i__] -= r__[i__ + j * r_dim1] * temp;
+                for (i = 1; i <= jm1; ++i) {
+                    wa1[i] -= r[i + j * r_dim1] * temp;
                 }
             }
         }
@@ -206,11 +206,11 @@
             sum = 0.;
             jm1 = j - 1;
             if (jm1 >= 1) {
-                for (i__ = 1; i__ <= jm1; ++i__) {
-                    sum += r__[i__ + j * r_dim1] * wa1[i__];
+                for (i = 1; i <= jm1; ++i) {
+                    sum += r[i + j * r_dim1] * wa1[i];
                 }
             }
-            wa1[j] = (wa1[j] - sum) / r__[j + j * r_dim1];
+            wa1[j] = (wa1[j] - sum) / r[j + j * r_dim1];
         }
         temp = enorm(n, &wa1[1]);
         parl = fp / delta / temp / temp;
@@ -220,8 +220,8 @@
 
     for (j = 1; j <= n; ++j) {
 	sum = 0.;
-	for (i__ = 1; i__ <= j; ++i__) {
-	    sum += r__[i__ + j * r_dim1] * qtb[i__];
+	for (i = 1; i <= j; ++i) {
+	    sum += r[i + j * r_dim1] * qtb[i];
 	}
 	l = ipvt[j];
 	wa1[j] = sum / diag[l];
@@ -250,14 +250,14 @@
 
         if (*par == 0.) {
             /* Computing MAX */
-            d__1 = dwarf, d__2 = p001 * paru;
-            *par = max(d__1,d__2);
+            d1 = dwarf, d2 = p001 * paru;
+            *par = max(d1,d2);
         }
         temp = sqrt(*par);
         for (j = 1; j <= n; ++j) {
             wa1[j] = temp * diag[j];
         }
-        qrsolv(n, &r__[r_offset], ldr, &ipvt[1], &wa1[1], &qtb[1], &x[1], &sdiag[1], &wa2[1]);
+        qrsolv(n, &r[r_offset], ldr, &ipvt[1], &wa1[1], &qtb[1], &x[1], &sdiag[1], &wa2[1]);
         for (j = 1; j <= n; ++j) {
             wa2[j] = diag[j] * x[j];
         }
@@ -284,8 +284,8 @@
             temp = wa1[j];
             jp1 = j + 1;
             if (n >= jp1) {
-                for (i__ = jp1; i__ <= n; ++i__) {
-                    wa1[i__] -= r__[i__ + j * r_dim1] * temp;
+                for (i = jp1; i <= n; ++i) {
+                    wa1[i] -= r[i + j * r_dim1] * temp;
                 }
             }
         }
@@ -304,8 +304,8 @@
 /*        compute an improved estimate for par. */
 
         /* Computing MAX */
-        d__1 = parl, d__2 = *par + parc;
-        *par = max(d__1,d__2);
+        d1 = parl, d2 = *par + parc;
+        *par = max(d1,d2);
 
 /*        end of an iteration. */
 

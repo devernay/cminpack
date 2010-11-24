@@ -15,8 +15,8 @@
     int fjac_dim1, fjac_offset;
 
     /* Local variables */
-    double h__;
-    int i__, j;
+    double h;
+    int i, j;
     double eps, temp, epsmch;
     int iflag;
 
@@ -112,18 +112,18 @@
     eps = sqrt((max(epsfcn,epsmch)));
     for (j = 1; j <= n; ++j) {
 	temp = x[j];
-	h__ = eps * fabs(temp);
-	if (h__ == 0.) {
-	    h__ = eps;
+	h = eps * fabs(temp);
+	if (h == 0.) {
+	    h = eps;
 	}
-	x[j] = temp + h__;
+	x[j] = temp + h;
 	iflag = (*fcn)(p, m, n, &x[1], &wa[1], 1);
 	if (iflag < 0) {
             return iflag;
 	}
 	x[j] = temp;
-	for (i__ = 1; i__ <= m; ++i__) {
-	    fjac[i__ + j * fjac_dim1] = (wa[i__] - fvec[i__]) / h__;
+	for (i = 1; i <= m; ++i) {
+	    fjac[i + j * fjac_dim1] = (wa[i] - fvec[i]) / h;
 	}
     }
     return 0;

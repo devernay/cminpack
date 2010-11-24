@@ -13,8 +13,8 @@
     int a_dim1, a_offset;
 
     /* Local variables */
-    int i__, j, nm1, nmj;
-    double cos__, sin__, temp;
+    int i, j, nm1, nmj;
+    double cos, sin, temp;
 
 /*     ********** */
 
@@ -83,17 +83,17 @@
     for (nmj = 1; nmj <= nm1; ++nmj) {
 	j = n - nmj;
 	if (fabs(v[j]) > 1.) {
-	    cos__ = 1. / v[j];
-	    sin__ = sqrt(1. - cos__ * cos__);
+	    cos = 1. / v[j];
+	    sin = sqrt(1. - cos * cos);
 	} else {
-	    sin__ = v[j];
-	    cos__ = sqrt(1. - sin__ * sin__);
+	    sin = v[j];
+	    cos = sqrt(1. - sin * sin);
 	}
-	for (i__ = 1; i__ <= m; ++i__) {
-	    temp = cos__ * a[i__ + j * a_dim1] - sin__ * a[i__ + n * a_dim1];
-	    a[i__ + n * a_dim1] = sin__ * a[i__ + j * a_dim1] + cos__ * a[
-		    i__ + n * a_dim1];
-	    a[i__ + j * a_dim1] = temp;
+	for (i = 1; i <= m; ++i) {
+	    temp = cos * a[i + j * a_dim1] - sin * a[i + n * a_dim1];
+	    a[i + n * a_dim1] = sin * a[i + j * a_dim1] + cos * a[
+		    i + n * a_dim1];
+	    a[i + j * a_dim1] = temp;
 	}
     }
 
@@ -101,16 +101,16 @@
 
     for (j = 1; j <= nm1; ++j) {
 	if (fabs(w[j]) > 1.) {
-	    cos__ = 1. / w[j];
-	    sin__ = sqrt(1. - cos__ * cos__);
+	    cos = 1. / w[j];
+	    sin = sqrt(1. - cos * cos);
 	} else {
-	    sin__ = w[j];
-	    cos__ = sqrt(1. - sin__ * sin__);
+	    sin = w[j];
+	    cos = sqrt(1. - sin * sin);
 	}
-	for (i__ = 1; i__ <= m; ++i__) {
-	    temp = cos__ * a[i__ + j * a_dim1] + sin__ * a[i__ + n * a_dim1];
-	    a[i__ + n * a_dim1] = -sin__ * a[i__ + j * a_dim1] + cos__ * a[i__ + n * a_dim1];
-	    a[i__ + j * a_dim1] = temp;
+	for (i = 1; i <= m; ++i) {
+	    temp = cos * a[i + j * a_dim1] + sin * a[i + n * a_dim1];
+	    a[i + n * a_dim1] = -sin * a[i + j * a_dim1] + cos * a[i + n * a_dim1];
+	    a[i + j * a_dim1] = temp;
 	}
     }
 
