@@ -153,14 +153,11 @@
     --wa;
 
     /* Function Body */
-    info = 0;
 
 /*     check the input parameters for errors. */
 
-    if (n <= 0 || m < n || ldfjac < m || tol < 0. || lwa < n * 5 +
-	    m) {
-	/* goto L10; */
-        return info;
+    if (n <= 0 || m < n || ldfjac < m || tol < 0. || lwa < n * 5 + m) {
+        return 0;
     }
 
 /*     call lmder. */
@@ -178,7 +175,6 @@
     if (info == 8) {
 	info = 4;
     }
-/* L10: */
     return info;
 
 /*     last card of subroutine lmder1. */

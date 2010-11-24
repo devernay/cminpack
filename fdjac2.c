@@ -12,7 +12,7 @@
 	double epsfcn, double *wa)
 {
     /* System generated locals */
-    int fjac_dim1, fjac_offset, i__1, i__2;
+    int fjac_dim1, fjac_offset;
 
     /* Local variables */
     double h__;
@@ -110,8 +110,7 @@
     epsmch = dpmpar(1);
 
     eps = sqrt((max(epsfcn,epsmch)));
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j) {
+    for (j = 1; j <= n; ++j) {
 	temp = x[j];
 	h__ = eps * fabs(temp);
 	if (h__ == 0.) {
@@ -120,19 +119,14 @@
 	x[j] = temp + h__;
 	iflag = (*fcn)(p, m, n, &x[1], &wa[1], 1);
 	if (iflag < 0) {
-	    /* goto L30; */
             return iflag;
 	}
 	x[j] = temp;
-	i__2 = m;
-	for (i__ = 1; i__ <= i__2; ++i__) {
+	for (i__ = 1; i__ <= m; ++i__) {
 	    fjac[i__ + j * fjac_dim1] = (wa[i__] - fvec[i__]) / h__;
-/* L10: */
 	}
-/* L20: */
     }
-/* L30: */
-    return iflag;
+    return 0;
 
 /*     last card of subroutine fdjac2. */
 

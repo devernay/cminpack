@@ -7,7 +7,6 @@
 #include "cminpack.h"
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
-#define abs(x) ((x) >= 0 ? (x) : -(x))
 
 
 /* Subroutine */ void lmpar(int n, double *r__, int ldr, 
@@ -21,7 +20,7 @@
 #define p001 .001
 
     /* System generated locals */
-    int r_dim1, r_offset, i__1, i__2;
+    int r_dim1, r_offset;
     double d__1, d__2;
 
     /* Local variables */
@@ -151,8 +150,7 @@
 /*     jacobian is rank-deficient, obtain a least squares solution. */
 
     nsing = n;
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j) {
+    for (j = 1; j <= n; ++j) {
 	wa1[j] = qtb[j];
 	if (r__[j + j * r_dim1] == 0. && nsing == n) {
 	    nsing = j - 1;
@@ -162,33 +160,22 @@
 	}
 /* L10: */
     }
-    if (nsing < 1) {
-	goto L50;
+    if (nsing >= 1) {
+        for (k = 1; k <= nsing; ++k) {
+            j = nsing - k + 1;
+            wa1[j] /= r__[j + j * r_dim1];
+            temp = wa1[j];
+            jm1 = j - 1;
+            if (jm1 >= 1) {
+                for (i__ = 1; i__ <= jm1; ++i__) {
+                    wa1[i__] -= r__[i__ + j * r_dim1] * temp;
+                }
+            }
+        }
     }
-    i__1 = nsing;
-    for (k = 1; k <= i__1; ++k) {
-	j = nsing - k + 1;
-	wa1[j] /= r__[j + j * r_dim1];
-	temp = wa1[j];
-	jm1 = j - 1;
-	if (jm1 < 1) {
-	    goto L30;
-	}
-	i__2 = jm1;
-	for (i__ = 1; i__ <= i__2; ++i__) {
-	    wa1[i__] -= r__[i__ + j * r_dim1] * temp;
-/* L20: */
-	}
-L30:
-/* L40: */
-	;
-    }
-L50:
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j) {
+    for (j = 1; j <= n; ++j) {
 	l = ipvt[j];
 	x[l] = wa1[j];
-/* L60: */
     }
 
 /*     initialize the iteration counter. */
@@ -196,15 +183,13 @@ L50:
 /*     for acceptance of the gauss-newton direction. */
 
     iter = 0;
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j) {
+    for (j = 1; j <= n; ++j) {
 	wa2[j] = diag[j] * x[j];
-/* L70: */
     }
     dxnorm = enorm(n, &wa2[1]);
     fp = dxnorm - delta;
     if (fp <= p1 * delta) {
-	goto L220;
+	goto TERMINATE;
     }
 
 /*     if the jacobian is not rank deficient, the newton */
@@ -212,48 +197,34 @@ L50:
 /*     the function. otherwise set this bound to zero. */
 
     parl = 0.;
-    if (nsing < n) {
-	goto L120;
+    if (nsing >= n) {
+        for (j = 1; j <= n; ++j) {
+            l = ipvt[j];
+            wa1[j] = diag[l] * (wa2[l] / dxnorm);
+        }
+        for (j = 1; j <= n; ++j) {
+            sum = 0.;
+            jm1 = j - 1;
+            if (jm1 >= 1) {
+                for (i__ = 1; i__ <= jm1; ++i__) {
+                    sum += r__[i__ + j * r_dim1] * wa1[i__];
+                }
+            }
+            wa1[j] = (wa1[j] - sum) / r__[j + j * r_dim1];
+        }
+        temp = enorm(n, &wa1[1]);
+        parl = fp / delta / temp / temp;
     }
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j) {
-	l = ipvt[j];
-	wa1[j] = diag[l] * (wa2[l] / dxnorm);
-/* L80: */
-    }
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j) {
-	sum = 0.;
-	jm1 = j - 1;
-	if (jm1 < 1) {
-	    goto L100;
-	}
-	i__2 = jm1;
-	for (i__ = 1; i__ <= i__2; ++i__) {
-	    sum += r__[i__ + j * r_dim1] * wa1[i__];
-/* L90: */
-	}
-L100:
-	wa1[j] = (wa1[j] - sum) / r__[j + j * r_dim1];
-/* L110: */
-    }
-    temp = enorm(n, &wa1[1]);
-    parl = fp / delta / temp / temp;
-L120:
 
 /*     calculate an upper bound, paru, for the zero of the function. */
 
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j) {
+    for (j = 1; j <= n; ++j) {
 	sum = 0.;
-	i__2 = j;
-	for (i__ = 1; i__ <= i__2; ++i__) {
+	for (i__ = 1; i__ <= j; ++i__) {
 	    sum += r__[i__ + j * r_dim1] * qtb[i__];
-/* L130: */
 	}
 	l = ipvt[j];
 	wa1[j] = sum / diag[l];
-/* L140: */
     }
     gnorm = enorm(n, &wa1[1]);
     paru = gnorm / delta;
@@ -272,96 +243,80 @@ L120:
 
 /*     beginning of an iteration. */
 
-L150:
-    ++iter;
+    for (;;) {
+        ++iter;
 
 /*        evaluate the function at the current value of par. */
 
-    if (*par == 0.) {
-/* Computing MAX */
-	d__1 = dwarf, d__2 = p001 * paru;
-	*par = max(d__1,d__2);
-    }
-    temp = sqrt(*par);
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j) {
-	wa1[j] = temp * diag[j];
-/* L160: */
-    }
-    qrsolv(n, &r__[r_offset], ldr, &ipvt[1], &wa1[1], &qtb[1], &x[1], &sdiag[
-	    1], &wa2[1]);
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j) {
-	wa2[j] = diag[j] * x[j];
-/* L170: */
-    }
-    dxnorm = enorm(n, &wa2[1]);
-    temp = fp;
-    fp = dxnorm - delta;
+        if (*par == 0.) {
+            /* Computing MAX */
+            d__1 = dwarf, d__2 = p001 * paru;
+            *par = max(d__1,d__2);
+        }
+        temp = sqrt(*par);
+        for (j = 1; j <= n; ++j) {
+            wa1[j] = temp * diag[j];
+        }
+        qrsolv(n, &r__[r_offset], ldr, &ipvt[1], &wa1[1], &qtb[1], &x[1], &sdiag[1], &wa2[1]);
+        for (j = 1; j <= n; ++j) {
+            wa2[j] = diag[j] * x[j];
+        }
+        dxnorm = enorm(n, &wa2[1]);
+        temp = fp;
+        fp = dxnorm - delta;
 
 /*        if the function is small enough, accept the current value */
 /*        of par. also test for the exceptional cases where parl */
 /*        is zero or the number of iterations has reached 10. */
 
-    if (abs(fp) <= p1 * delta || (parl == 0. && fp <= temp && temp < 0.) ||
-	     iter == 10) {
-	goto L220;
-    }
+        if (fabs(fp) <= p1 * delta || (parl == 0. && fp <= temp && temp < 0.) || iter == 10) {
+            goto TERMINATE;
+        }
 
 /*        compute the newton correction. */
 
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j) {
-	l = ipvt[j];
-	wa1[j] = diag[l] * (wa2[l] / dxnorm);
-/* L180: */
-    }
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j) {
-	wa1[j] /= sdiag[j];
-	temp = wa1[j];
-	jp1 = j + 1;
-	if (n < jp1) {
-	    goto L200;
-	}
-	i__2 = n;
-	for (i__ = jp1; i__ <= i__2; ++i__) {
-	    wa1[i__] -= r__[i__ + j * r_dim1] * temp;
-/* L190: */
-	}
-L200:
-/* L210: */
-	;
-    }
-    temp = enorm(n, &wa1[1]);
-    parc = fp / delta / temp / temp;
+        for (j = 1; j <= n; ++j) {
+            l = ipvt[j];
+            wa1[j] = diag[l] * (wa2[l] / dxnorm);
+        }
+        for (j = 1; j <= n; ++j) {
+            wa1[j] /= sdiag[j];
+            temp = wa1[j];
+            jp1 = j + 1;
+            if (n >= jp1) {
+                for (i__ = jp1; i__ <= n; ++i__) {
+                    wa1[i__] -= r__[i__ + j * r_dim1] * temp;
+                }
+            }
+        }
+        temp = enorm(n, &wa1[1]);
+        parc = fp / delta / temp / temp;
 
 /*        depending on the sign of the function, update parl or paru. */
 
-    if (fp > 0.) {
-	parl = max(parl,*par);
-    }
-    if (fp < 0.) {
-	paru = min(paru,*par);
-    }
+        if (fp > 0.) {
+            parl = max(parl,*par);
+        }
+        if (fp < 0.) {
+            paru = min(paru,*par);
+        }
 
 /*        compute an improved estimate for par. */
 
-/* Computing MAX */
-    d__1 = parl, d__2 = *par + parc;
-    *par = max(d__1,d__2);
+        /* Computing MAX */
+        d__1 = parl, d__2 = *par + parc;
+        *par = max(d__1,d__2);
 
 /*        end of an iteration. */
 
-    goto L150;
-L220:
+    }
+TERMINATE:
 
 /*     termination. */
 
     if (iter == 0) {
 	*par = 0.;
     }
-    return;
 
 /*     last card of subroutine lmpar. */
 

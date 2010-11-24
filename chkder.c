@@ -16,7 +16,7 @@
 	double *fvecp, int mode, double *err)
 {
     /* System generated locals */
-    int fjac_dim1, fjac_offset, i__1, i__2;
+    int fjac_dim1, fjac_offset;
 
     /* Local variables */
     int i__, j;
@@ -122,52 +122,40 @@
 
     eps = sqrt(epsmch);
 
-    if (mode == 2) {
-	goto L20;
-    }
+    if (mode != 2) {
 
 /*        mode = 1. */
 
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j) {
-	temp = eps * fabs(x[j]);
-	if (temp == 0.) {
-	    temp = eps;
-	}
-	xp[j] = x[j] + temp;
-/* L10: */
+        for (j = 1; j <= n; ++j) {
+            temp = eps * fabs(x[j]);
+            if (temp == 0.) {
+                temp = eps;
+            }
+            xp[j] = x[j] + temp;
+        }
+        return;
     }
-    /* goto L70; */
-    return;
-L20:
 
 /*        mode = 2. */
 
     epsf = factor * epsmch;
     epslog = log10e * log(eps);
-    i__1 = m;
-    for (i__ = 1; i__ <= i__1; ++i__) {
+    for (i__ = 1; i__ <= m; ++i__) {
 	err[i__] = 0.;
-/* L30: */
     }
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j) {
+    for (j = 1; j <= n; ++j) {
 	temp = fabs(x[j]);
 	if (temp == 0.) {
 	    temp = 1.;
 	}
-	i__2 = m;
-	for (i__ = 1; i__ <= i__2; ++i__) {
+	for (i__ = 1; i__ <= m; ++i__) {
 	    err[i__] += temp * fjac[i__ + j * fjac_dim1];
-/* L40: */
 	}
-/* L50: */
     }
-    i__1 = m;
-    for (i__ = 1; i__ <= i__1; ++i__) {
+    for (i__ = 1; i__ <= m; ++i__) {
 	temp = 1.;
-	if (fvec[i__] != 0. && fvecp[i__] != 0. && fabs(fvecp[i__] - 
-		fvec[i__]) >= epsf * fabs(fvec[i__]))
+	if (fvec[i__] != 0. && fvecp[i__] != 0. &&
+            fabs(fvecp[i__] - fvec[i__]) >= epsf * fabs(fvec[i__]))
 		 {
 	    temp = eps * fabs((fvecp[i__] - fvec[i__]) / eps - err[i__]) 
 		    / (fabs(fvec[i__]) +
@@ -180,11 +168,7 @@ L20:
 	if (temp >= eps) {
 	    err[i__] = 0.;
 	}
-/* L60: */
     }
-/* L70: */
-
-    /* return 0; */
 
 /*     last card of subroutine chkder. */
 

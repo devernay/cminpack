@@ -14,7 +14,6 @@ double enorm(int n, const double *x)
 #define rgiant 1.304e19
 
     /* System generated locals */
-    int i__1;
     double ret_val, d__1;
 
     /* Local variables */
@@ -59,7 +58,6 @@ double enorm(int n, const double *x)
 
 /*     ********** */
     /* Parameter adjustments */
-    --x;
 
     /* Function Body */
     s1 = 0.;
@@ -69,87 +67,64 @@ double enorm(int n, const double *x)
     x3max = 0.;
     floatn = (double) (n);
     agiant = rgiant / floatn;
-    i__1 = n;
-    for (i__ = 1; i__ <= i__1; ++i__) {
+    for (i__ = 0; i__ < n; ++i__) {
 	xabs = fabs(x[i__]);
-	if (xabs > rdwarf && xabs < agiant) {
-	    goto L70;
-	}
-	if (xabs <= rdwarf) {
-	    goto L30;
-	}
+	if (xabs <= rdwarf || xabs >= agiant) {
+            if (xabs > rdwarf) {
 
 /*              sum for large components. */
 
-	if (xabs <= x1max) {
-	    goto L10;
-	}
-/* Computing 2nd power */
-	d__1 = x1max / xabs;
-	s1 = 1. + s1 * (d__1 * d__1);
-	x1max = xabs;
-	goto L20;
-L10:
-/* Computing 2nd power */
-	d__1 = xabs / x1max;
-	s1 += d__1 * d__1;
-L20:
-	goto L60;
-L30:
+                if (xabs > x1max) {
+                    /* Computing 2nd power */
+                    d__1 = x1max / xabs;
+                    s1 = 1. + s1 * (d__1 * d__1);
+                    x1max = xabs;
+                } else {
+                    /* Computing 2nd power */
+                    d__1 = xabs / x1max;
+                    s1 += d__1 * d__1;
+                }
+            } else {
 
 /*              sum for small components. */
 
-	if (xabs <= x3max) {
-	    goto L40;
-	}
-/* Computing 2nd power */
-	d__1 = x3max / xabs;
-	s3 = 1. + s3 * (d__1 * d__1);
-	x3max = xabs;
-	goto L50;
-L40:
-	if (xabs != 0.) {
-/* Computing 2nd power */
-	    d__1 = xabs / x3max;
-	    s3 += d__1 * d__1;
-	}
-L50:
-L60:
-	goto L80;
-L70:
+                if (xabs > x3max) {
+                    /* Computing 2nd power */
+                    d__1 = x3max / xabs;
+                    s3 = 1. + s3 * (d__1 * d__1);
+                    x3max = xabs;
+                } else {
+                    if (xabs != 0.) {
+                        /* Computing 2nd power */
+                        d__1 = xabs / x3max;
+                        s3 += d__1 * d__1;
+                    }
+                }
+            }
+	} else {
 
 /*           sum for intermediate components. */
 
-/* Computing 2nd power */
-	d__1 = xabs;
-	s2 += d__1 * d__1;
-L80:
-/* L90: */
-	;
+            /* Computing 2nd power */
+            s2 += xabs * xabs;
+        }
     }
 
 /*     calculation of norm. */
 
-    if (s1 == 0.) {
-	goto L100;
+    if (s1 != 0.) {
+        ret_val = x1max * sqrt(s1 + (s2 / x1max) / x1max);
+    } else {
+        if (s2 != 0.) {
+            if (s2 >= x3max) {
+                ret_val = sqrt(s2 * (1. + (x3max / s2) * (x3max * s3)));
+            } else {
+                ret_val = sqrt(x3max * ((s2 / x3max) + (x3max * s3)));
+            }
+        } else {
+            ret_val = x3max * sqrt(s3);
+        }
     }
-    ret_val = x1max * sqrt(s1 + s2 / x1max / x1max);
-    goto L130;
-L100:
-    if (s2 == 0.) {
-	goto L110;
-    }
-    if (s2 >= x3max) {
-	ret_val = sqrt(s2 * (1. + x3max / s2 * (x3max * s3)));
-    }
-    if (s2 < x3max) {
-	ret_val = sqrt(x3max * (s2 / x3max + x3max * s3));
-    }
-    goto L120;
-L110:
-    ret_val = x3max * sqrt(s3);
-L120:
-L130:
     return ret_val;
 
 /*     last card of function enorm. */

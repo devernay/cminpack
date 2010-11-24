@@ -14,7 +14,7 @@
     const double factor = 100.;
 
     /* System generated locals */
-    int fjac_dim1, fjac_offset, i__1;
+    int fjac_dim1, fjac_offset;
 
     /* Local variables */
     int j, lr, mode, nfev, njev;
@@ -123,13 +123,11 @@
     --wa;
 
     /* Function Body */
-    info = 0;
 
 /*     check the input parameters for errors. */
 
     if (n <= 0 || ldfjac < n || tol < 0. || lwa < n * (n + 13) / 2) {
-	/* goto L20; */
-        return info;
+        return 0;
     }
 
 /*     call hybrj. */
@@ -137,8 +135,7 @@
     maxfev = (n + 1) * 100;
     xtol = tol;
     mode = 2;
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j) {
+    for (j = 1; j <= n; ++j) {
 	wa[j] = 1.;
 /* L10: */
     }
@@ -151,7 +148,6 @@
     if (info == 5) {
 	info = 4;
     }
-/* L20: */
     return info;
 
 /*     last card of subroutine hybrj1. */

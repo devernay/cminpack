@@ -125,13 +125,11 @@
     --wa;
 
     /* Function Body */
-    info = 0;
 
 /*     check the input parameters for errors. */
 
     if (n <= 0 || m < n || tol < 0. || lwa < m * n + n * 5 + m) {
-	/* goto L10; */
-        return info;
+        return 0;
     }
 
 /*     call lmdif. */
@@ -151,7 +149,6 @@
     if (info == 8) {
 	info = 4;
     }
-/* L10: */
     return info;
 
 /*     last card of subroutine lmdif1. */

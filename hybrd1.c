@@ -12,9 +12,6 @@
 
     const double factor = 100.;
 
-    /* System generated locals */
-    int i__1;
-
     /* Local variables */
     int j, ml, lr, mu, mode, nfev;
     double xtol;
@@ -113,13 +110,11 @@
     --wa;
 
     /* Function Body */
-    info = 0;
 
 /*     check the input parameters for errors. */
 
     if (n <= 0 || tol < 0. || lwa < n * (n * 3 + 13) / 2) {
-	/* goto L20; */
-        return info;
+        return 0;
     }
 
 /*     call hybrd. */
@@ -130,10 +125,8 @@
     mu = n - 1;
     epsfcn = 0.;
     mode = 2;
-    i__1 = n;
-    for (j = 1; j <= i__1; ++j) {
+    for (j = 1; j <= n; ++j) {
 	wa[j] = 1.;
-/* L10: */
     }
     nprint = 0;
     lr = n * (n + 1) / 2;
@@ -145,7 +138,6 @@
     if (info == 5) {
 	info = 4;
     }
-/* L20: */
     return info;
 
 /*     last card of subroutine hybrd1. */
