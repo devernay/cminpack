@@ -1,5 +1,5 @@
 PACKAGE=cminpack
-VERSION=1.0.5
+VERSION=1.0.90
 
 #CC=cc
 CC=gcc
