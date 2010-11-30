@@ -117,7 +117,7 @@
 	    h = eps;
 	}
 	x[j] = temp + h;
-	iflag = (*fcn)(p, m, n, &x[1], &wa[1], 1);
+	iflag = (*fcn)(p, m, n, &x[1], &wa[1], 2);
 	if (iflag < 0) {
             return iflag;
 	}
