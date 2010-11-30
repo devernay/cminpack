@@ -33,7 +33,8 @@ FSRC=tchkder.f thybrd.f thybrd1.f thybrj.f thybrj1.f tlmder.f tlmder1.f \
 SRC=tchkder_.c thybrd_.c thybrd1_.c thybrj_.c thybrj1_.c tlmder_.c tlmder1_.c \
 	tlmdif_.c tlmdif1_.c tlmstr_.c tlmstr1_.c tfdjac2_.c
 CSRC=tchkderc.c thybrdc.c thybrd1c.c thybrjc.c thybrj1c.c tlmderc.c tlmder1c.c \
-	tlmdifc.c tlmdif1c.c tlmstrc.c tlmstr1c.c tfdjac2c.c
+	tlmdifc.c tlmdif1c.c tlmstrc.c tlmstr1c.c tfdjac2c.c \
+	lmddrv.c lmdipt.c ssqfcn.c ssqjac.c lmfdrv.c
 REF=test.ref ctest.ref ftest.ref
 
 all:
@@ -46,10 +47,11 @@ all:
 test: ${PGM}
 	for x in ${PGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
-ctest: ${CPGM}
+ctest: ${CPGM} lmddrvc lmfdrvc
+	for x in lmddrvc lmfdrvc; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 	for x in ${CPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
-ftest: ${FPGM} 
+ftest: ${FPGM}
 	for x in ${FPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 clean:
@@ -76,3 +78,12 @@ ${FSRC}: ../doc/minpack-documentation.txt
 
 .c:
 	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
+
+.c.o:
+	$(F77C) $(F77CFLAGS) -c -o $@ $<
+
+lmddrvc: lmddrv.o lmdipt.o ssqfcn.o ssqjac.o
+	$(F77C) $(F77CFLAGS) -o $@ $^ $(MINPACK) -lm
+
+lmfdrvc: lmfdrv.o lmdipt.o ssqfcn.o
+	$(F77C) $(F77CFLAGS) -o $@ $^ $(MINPACK) -lm

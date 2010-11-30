@@ -1,0 +1,1094 @@
+
+
+
+
+      problem    1      dimension    2
+
+
+      initial l2 norm of the residuals  0.4919350D+01
+
+      final l2 norm of the residuals    0.0000000D+00
+
+      number of function evaluations          22
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.1000000D+01  0.1000000D+01
+
+
+
+
+      problem    1      dimension    2
+
+
+      initial l2 norm of the residuals  0.1340063D+04
+
+      final l2 norm of the residuals    0.2886580D-13
+
+      number of function evaluations           9
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.1000000D+01  0.1000000D+01
+
+
+
+
+      problem    1      dimension    2
+
+
+      initial l2 norm of the residuals  0.1430001D+06
+
+      final l2 norm of the residuals    0.5373479D-12
+
+      number of function evaluations           9
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.1000000D+01  0.1000000D+01
+
+
+
+
+      problem    2      dimension    4
+
+
+      initial l2 norm of the residuals  0.1466288D+02
+
+      final l2 norm of the residuals    0.6918030D-33
+
+      number of function evaluations         106
+
+      exit parameter                           4
+
+      final approximate solution
+
+      -0.3343271D-17  0.3343271D-18  0.9512138D-17  0.9512138D-17
+
+
+
+
+      problem    2      dimension    4
+
+
+      initial l2 norm of the residuals  0.1270984D+04
+
+      final l2 norm of the residuals    0.1997460D-32
+
+      number of function evaluations         111
+
+      exit parameter                           4
+
+      final approximate solution
+
+       0.8353406D-17 -0.8353406D-18  0.1108483D-16  0.1108483D-16
+
+
+
+
+      problem    2      dimension    4
+
+
+      initial l2 norm of the residuals  0.1268879D+06
+
+      final l2 norm of the residuals    0.8682069D-33
+
+      number of function evaluations         116
+
+      exit parameter                           4
+
+      final approximate solution
+
+       0.1054320D-17 -0.1054320D-18 -0.1194419D-16 -0.1194419D-16
+
+
+
+
+      problem    3      dimension    2
+
+
+      initial l2 norm of the residuals  0.1065487D+01
+
+      final l2 norm of the residuals    0.1712611D-08
+
+      number of function evaluations         181
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.1098159D-04  0.9106147D+01
+
+
+
+
+      problem    3      dimension    2
+
+
+      initial l2 norm of the residuals  0.1000000D+01
+
+      final l2 norm of the residuals    0.3744040D-07
+
+      number of function evaluations          11
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.1098159D-04  0.9106147D+01
+
+
+
+
+      problem    4      dimension    4
+
+
+      initial l2 norm of the residuals  0.8550557D+04
+
+      final l2 norm of the residuals    0.3991298D-10
+
+      number of function evaluations          94
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.9679740D+00  0.9471391D+00 -0.9695163D+00  0.9512477D+00
+
+
+
+
+      problem    4      dimension    4
+
+
+      initial l2 norm of the residuals  0.7349823D+07
+
+      final l2 norm of the residuals    0.4895367D-09
+
+      number of function evaluations         234
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.9679740D+00  0.9471391D+00 -0.9695163D+00  0.9512477D+00
+
+
+
+
+      problem    4      dimension    4
+
+
+      initial l2 norm of the residuals  0.7273070D+10
+
+      final l2 norm of the residuals    0.4756894D-09
+
+      number of function evaluations         508
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.9679740D+00  0.9471391D+00 -0.9695163D+00  0.9512477D+00
+
+
+
+
+      problem    5      dimension    3
+
+
+      initial l2 norm of the residuals  0.5000000D+02
+
+      final l2 norm of the residuals    0.2753473D-12
+
+      number of function evaluations          27
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.1000000D+01 -0.1612125D-13  0.2842139D-33
+
+
+
+
+      problem    5      dimension    3
+
+
+      initial l2 norm of the residuals  0.1029563D+03
+
+      final l2 norm of the residuals    0.4427905D-13
+
+      number of function evaluations          31
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.1000000D+01  0.2222027D-14 -0.6282342D-44
+
+
+
+
+      problem    5      dimension    3
+
+
+      initial l2 norm of the residuals  0.9912618D+03
+
+      final l2 norm of the residuals    0.1610825D-12
+
+      number of function evaluations          40
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.1000000D+01  0.1238431D-14 -0.2711713D-48
+
+
+
+
+      problem    6      dimension    6
+
+
+      initial l2 norm of the residuals  0.6848587D+02
+
+      final l2 norm of the residuals    0.3018523D-12
+
+      number of function evaluations          96
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.1572509D-01  0.1012435D+01 -0.2329916D+00  0.1260430D+01 -0.1513729D+01
+       0.9929964D+00
+
+
+
+
+      problem    6      dimension    6
+
+
+      initial l2 norm of the residuals  0.3531259D+07
+
+      final l2 norm of the residuals    0.2143052D-11
+
+      number of function evaluations         238
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.1572509D-01  0.1012435D+01 -0.2329916D+00  0.1260430D+01 -0.1513729D+01
+       0.9929964D+00
+
+
+
+
+      problem    6      dimension    9
+
+
+      initial l2 norm of the residuals  0.8878955D+02
+
+      final l2 norm of the residuals    0.3939092D-12
+
+      number of function evaluations         132
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.1530704D-04  0.9997897D+00  0.1476396D-01  0.1463423D+00  0.1000821D+01
+      -0.2617731D+01  0.4104403D+01 -0.3143612D+01  0.1052626D+01
+
+
+
+
+      problem    6      dimension    9
+
+
+      initial l2 norm of the residuals  0.1015108D+08
+
+      final l2 norm of the residuals    0.3710753D-01
+
+      number of function evaluations         402
+
+      exit parameter                           4
+
+      final approximate solution
+
+       0.3079480D+00  0.1087763D+01  0.1313023D+01 -0.1101816D+02  0.5885433D+02
+      -0.1536283D+03  0.2185381D+03 -0.1595839D+03  0.4777012D+02
+
+
+
+
+      problem    7      dimension    5
+
+
+      initial l2 norm of the residuals  0.2257066D+00
+
+      final l2 norm of the residuals    0.3733992D-11
+
+      number of function evaluations          17
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.8375126D-01  0.3127293D+00  0.5000000D+00  0.6872707D+00  0.9162487D+00
+
+
+
+
+      problem    7      dimension    5
+
+
+      initial l2 norm of the residuals  0.4117243D+07
+
+      final l2 norm of the residuals    0.3173140D-11
+
+      number of function evaluations         267
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.6872707D+00  0.8375126D-01  0.5000000D+00  0.3127293D+00  0.9162487D+00
+
+
+
+
+      problem    7      dimension    5
+
+
+      initial l2 norm of the residuals  0.5636130D+12
+
+      final l2 norm of the residuals    0.7582859D-10
+
+      number of function evaluations         476
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.9162487D+00  0.3127293D+00  0.6872707D+00  0.8375126D-01  0.5000000D+00
+
+
+
+
+      problem    7      dimension    6
+
+
+      initial l2 norm of the residuals  0.2154720D+00
+
+      final l2 norm of the residuals    0.5554699D-09
+
+      number of function evaluations          25
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.6687659D-01  0.3666823D+00  0.2887407D+00  0.7112593D+00  0.6333177D+00
+       0.9331234D+00
+
+
+
+
+      problem    7      dimension    6
+
+
+      initial l2 norm of the residuals  0.1307925D+09
+
+      final l2 norm of the residuals    0.3293115D-10
+
+      number of function evaluations         171
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.9331234D+00  0.3666823D+00  0.6687659D-01  0.7112593D+00  0.2887407D+00
+       0.6333177D+00
+
+
+
+
+      problem    7      dimension    6
+
+
+      initial l2 norm of the residuals  0.1875579D+15
+
+      final l2 norm of the residuals    0.1712803D-10
+
+      number of function evaluations         286
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.6687659D-01  0.3666823D+00  0.7112593D+00  0.6333177D+00  0.2887407D+00
+       0.9331234D+00
+
+
+
+
+      problem    7      dimension    7
+
+
+      initial l2 norm of the residuals  0.1837679D+00
+
+      final l2 norm of the residuals    0.2223253D-08
+
+      number of function evaluations          20
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.5806915D-01  0.2351716D+00  0.3380441D+00  0.5000000D+00  0.6619559D+00
+       0.7648284D+00  0.9419309D+00
+
+
+
+
+      problem    7      dimension    7
+
+
+      initial l2 norm of the residuals  0.4269328D+10
+
+      final l2 norm of the residuals    0.5132116D-10
+
+      number of function evaluations         622
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.5806915D-01  0.6619559D+00  0.5000000D+00  0.2351716D+00  0.9419309D+00
+       0.3380441D+00  0.7648284D+00
+
+
+
+
+      problem    7      dimension    7
+
+
+      initial l2 norm of the residuals  0.6414317D+17
+
+      final l2 norm of the residuals    0.2619879D-09
+
+      number of function evaluations        1128
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.2351716D+00  0.5806915D-01  0.6619559D+00  0.7648284D+00  0.5000000D+00
+       0.3380441D+00  0.9419309D+00
+
+
+
+
+      problem    7      dimension    8
+
+
+      initial l2 norm of the residuals  0.1965139D+00
+
+      final l2 norm of the residuals    0.6440508D-01
+
+      number of function evaluations         120
+
+      exit parameter                           4
+
+      final approximate solution
+
+       0.4985639D-01  0.1986351D+00  0.2698288D+00  0.4992723D+00  0.5007277D+00
+       0.7301712D+00  0.8013649D+00  0.9501437D+00
+
+
+
+
+      problem    7      dimension    9
+
+
+      initial l2 norm of the residuals  0.1699499D+00
+
+      final l2 norm of the residuals    0.1274857D-10
+
+      number of function evaluations          43
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.4420535D-01  0.1994907D+00  0.2356191D+00  0.4160469D+00  0.5000000D+00
+       0.5839531D+00  0.7643809D+00  0.8005093D+00  0.9557947D+00
+
+
+
+
+      problem    8      dimension   10
+
+
+      initial l2 norm of the residuals  0.1653022D+02
+
+      final l2 norm of the residuals    0.1928084D-13
+
+      number of function evaluations          31
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+
+
+
+
+      problem    8      dimension   10
+
+
+      initial l2 norm of the residuals  0.9765624D+07
+
+      final l2 norm of the residuals    0.8386410D-14
+
+      number of function evaluations          31
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+
+
+
+
+      problem    8      dimension   10
+
+
+      initial l2 norm of the residuals  0.9765625D+17
+
+      final l2 norm of the residuals    0.5883072D-12
+
+      number of function evaluations          40
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+
+
+
+
+      problem    8      dimension   30
+
+
+      initial l2 norm of the residuals  0.8347604D+02
+
+      final l2 norm of the residuals    0.8347604D+02
+
+      number of function evaluations          85
+
+      exit parameter                           4
+
+      final approximate solution
+
+       0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00
+       0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00
+       0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00
+       0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00
+       0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00
+       0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00
+
+
+
+
+      problem    8      dimension   40
+
+
+      initial l2 norm of the residuals  0.1280264D+03
+
+      final l2 norm of the residuals    0.1280264D+03
+
+      number of function evaluations         105
+
+      exit parameter                           4
+
+      final approximate solution
+
+       0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00
+       0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00
+       0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00
+       0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00
+       0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00
+       0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00
+       0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00
+       0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00  0.5000000D+00
+
+
+
+
+      problem    9      dimension   10
+
+
+      initial l2 norm of the residuals  0.2808058D-01
+
+      final l2 norm of the residuals    0.2502058D-14
+
+      number of function evaluations          16
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.4316498D-01 -0.8157716D-01 -0.1144857D+00 -0.1409736D+00 -0.1599087D+00
+      -0.1698772D+00 -0.1690900D+00 -0.1552495D+00 -0.1253559D+00 -0.7541653D-01
+
+
+
+
+      problem    9      dimension   10
+
+
+      initial l2 norm of the residuals  0.5255526D+00
+
+      final l2 norm of the residuals    0.1725838D-12
+
+      number of function evaluations          19
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.4316498D-01 -0.8157716D-01 -0.1144857D+00 -0.1409736D+00 -0.1599087D+00
+      -0.1698772D+00 -0.1690900D+00 -0.1552495D+00 -0.1253559D+00 -0.7541653D-01
+
+
+
+
+      problem    9      dimension   10
+
+
+      initial l2 norm of the residuals  0.1065739D+03
+
+      final l2 norm of the residuals    0.4177953D-09
+
+      number of function evaluations          52
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.4316498D-01 -0.8157716D-01 -0.1144857D+00 -0.1409736D+00 -0.1599087D+00
+      -0.1698772D+00 -0.1690900D+00 -0.1552495D+00 -0.1253559D+00 -0.7541653D-01
+
+
+
+
+      problem   10      dimension    1
+
+
+      initial l2 norm of the residuals  0.1279297D+00
+
+      final l2 norm of the residuals    0.0000000D+00
+
+      number of function evaluations           7
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.1528139D+00
+
+
+
+
+      problem   10      dimension    1
+
+
+      initial l2 norm of the residuals  0.2562500D+01
+
+      final l2 norm of the residuals    0.0000000D+00
+
+      number of function evaluations           9
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.1528139D+00
+
+
+
+
+      problem   10      dimension    1
+
+
+      initial l2 norm of the residuals  0.8361172D+03
+
+      final l2 norm of the residuals    0.0000000D+00
+
+      number of function evaluations          16
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.1528139D+00
+
+
+
+
+      problem   10      dimension   10
+
+
+      initial l2 norm of the residuals  0.2518270D+00
+
+      final l2 norm of the residuals    0.5058934D-14
+
+      number of function evaluations          16
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.4316498D-01 -0.8157716D-01 -0.1144857D+00 -0.1409736D+00 -0.1599087D+00
+      -0.1698772D+00 -0.1690900D+00 -0.1552495D+00 -0.1253559D+00 -0.7541653D-01
+
+
+
+
+      problem   10      dimension   10
+
+
+      initial l2 norm of the residuals  0.6116833D+01
+
+      final l2 norm of the residuals    0.2188088D-12
+
+      number of function evaluations          19
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.4316498D-01 -0.8157716D-01 -0.1144857D+00 -0.1409736D+00 -0.1599087D+00
+      -0.1698772D+00 -0.1690900D+00 -0.1552495D+00 -0.1253559D+00 -0.7541653D-01
+
+
+
+
+      problem   10      dimension   10
+
+
+      initial l2 norm of the residuals  0.1269309D+04
+
+      final l2 norm of the residuals    0.3037309D-14
+
+      number of function evaluations          39
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.4316498D-01 -0.8157716D-01 -0.1144857D+00 -0.1409736D+00 -0.1599087D+00
+      -0.1698772D+00 -0.1690900D+00 -0.1552495D+00 -0.1253559D+00 -0.7541653D-01
+
+
+
+
+      problem   11      dimension   10
+
+
+      initial l2 norm of the residuals  0.8411753D-01
+
+      final l2 norm of the residuals    0.5296380D-02
+
+      number of function evaluations         130
+
+      exit parameter                           4
+
+      final approximate solution
+
+       0.5526136D-01  0.5695735D-01  0.5889044D-01  0.6113581D-01  0.6377828D-01
+       0.6700449D-01  0.2079414D+00  0.1642676D+00  0.8643810D-01  0.9133378D-01
+
+
+
+
+      problem   11      dimension   10
+
+
+      initial l2 norm of the residuals  0.2030519D+02
+
+      final l2 norm of the residuals    0.5915619D-10
+
+      number of function evaluations          84
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.3439629D-01  0.3503232D-01  0.3571920D-01  0.3646522D-01  0.3728091D-01
+       0.3817986D-01  0.3918014D-01  0.4030650D-01  0.1797202D+00  0.1562409D+00
+
+
+
+
+      problem   11      dimension   10
+
+
+      initial l2 norm of the residuals  0.9336937D+02
+
+      final l2 norm of the residuals    0.1764156D-07
+
+      number of function evaluations          81
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.1888395D+02  0.2516777D+02  0.1888528D+02  0.1888602D+02  0.1888684D+02
+       0.1888774D+02  0.1888874D+02  0.1888986D+02  0.1902928D+02  0.1900580D+02
+
+
+
+
+      problem   12      dimension   10
+
+
+      initial l2 norm of the residuals  0.2240213D+07
+
+      final l2 norm of the residuals    0.3648863D-12
+
+      number of function evaluations          52
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+
+
+
+
+      problem   12      dimension   10
+
+
+      initial l2 norm of the residuals  0.5223438D+08
+
+      final l2 norm of the residuals    0.1048355D-10
+
+      number of function evaluations          46
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+
+
+
+
+      problem   12      dimension   10
+
+
+      initial l2 norm of the residuals  0.1592365D+12
+
+      final l2 norm of the residuals    0.3105752D-11
+
+      number of function evaluations          91
+
+      exit parameter                           1
+
+      final approximate solution
+
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+
+
+
+
+      problem   13      dimension   10
+
+
+      initial l2 norm of the residuals  0.4582576D+01
+
+      final l2 norm of the residuals    0.1493879D-07
+
+      number of function evaluations          21
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.5707221D+00 -0.6818070D+00 -0.7022101D+00 -0.7055106D+00 -0.7049062D+00
+      -0.7014966D+00 -0.6918893D+00 -0.6657965D+00 -0.5960351D+00 -0.4164123D+00
+
+
+
+
+      problem   13      dimension   10
+
+
+      initial l2 norm of the residuals  0.6391009D+03
+
+      final l2 norm of the residuals    0.5010934D-08
+
+      number of function evaluations          59
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.5707221D+00 -0.6818069D+00 -0.7022101D+00 -0.7055106D+00 -0.7049062D+00
+      -0.7014966D+00 -0.6918893D+00 -0.6657965D+00 -0.5960351D+00 -0.4164123D+00
+
+
+
+
+      problem   13      dimension   10
+
+
+      initial l2 norm of the residuals  0.6333758D+05
+
+      final l2 norm of the residuals    0.9878849D-10
+
+      number of function evaluations          42
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.5707221D+00 -0.6818069D+00 -0.7022101D+00 -0.7055106D+00 -0.7049062D+00
+      -0.7014966D+00 -0.6918893D+00 -0.6657965D+00 -0.5960351D+00 -0.4164123D+00
+
+
+
+
+      problem   14      dimension   10
+
+
+      initial l2 norm of the residuals  0.1897367D+02
+
+      final l2 norm of the residuals    0.2057902D-08
+
+      number of function evaluations          30
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.4283029D+00 -0.4765964D+00 -0.5196525D+00 -0.5580993D+00 -0.5925062D+00
+      -0.6245037D+00 -0.6232395D+00 -0.6213938D+00 -0.6204536D+00 -0.5864693D+00
+
+
+
+
+      problem   14      dimension   10
+
+
+      initial l2 norm of the residuals  0.1713092D+05
+
+      final l2 norm of the residuals    0.7953615D-08
+
+      number of function evaluations          45
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.4283029D+00 -0.4765964D+00 -0.5196525D+00 -0.5580993D+00 -0.5925062D+00
+      -0.6245037D+00 -0.6232395D+00 -0.6213938D+00 -0.6204536D+00 -0.5864693D+00
+
+
+
+
+      problem   14      dimension   10
+
+
+      initial l2 norm of the residuals  0.1594986D+08
+
+      final l2 norm of the residuals    0.4526422D-09
+
+      number of function evaluations          58
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -0.4283029D+00 -0.4765964D+00 -0.5196525D+00 -0.5580993D+00 -0.5925062D+00
+      -0.6245037D+00 -0.6232395D+00 -0.6213938D+00 -0.6204536D+00 -0.5864693D+00
+1summary of  55 calls to hybrd1
+
+ nprob   n    nfev  info  final l2 norm
+
+   1     2     22     1   0.0000000D+00
+   1     2      9     1   0.2886580D-13
+   1     2      9     1   0.5373479D-12
+   2     4    106     4   0.6918030D-33
+   2     4    111     4   0.1997460D-32
+   2     4    116     4   0.8682069D-33
+   3     2    181     1   0.1712611D-08
+   3     2     11     1   0.3744040D-07
+   4     4     94     1   0.3991298D-10
+   4     4    234     1   0.4895367D-09
+   4     4    508     1   0.4756894D-09
+   5     3     27     1   0.2753473D-12
+   5     3     31     1   0.4427905D-13
+   5     3     40     1   0.1610825D-12
+   6     6     96     1   0.3018523D-12
+   6     6    238     1   0.2143052D-11
+   6     9    132     1   0.3939092D-12
+   6     9    402     4   0.3710753D-01
+   7     5     17     1   0.3733992D-11
+   7     5    267     1   0.3173140D-11
+   7     5    476     1   0.7582859D-10
+   7     6     25     1   0.5554699D-09
+   7     6    171     1   0.3293115D-10
+   7     6    286     1   0.1712803D-10
+   7     7     20     1   0.2223253D-08
+   7     7    622     1   0.5132116D-10
+   7     7   1128     1   0.2619879D-09
+   7     8    120     4   0.6440508D-01
+   7     9     43     1   0.1274857D-10
+   8    10     31     1   0.1928084D-13
+   8    10     31     1   0.8386410D-14
+   8    10     40     1   0.5883072D-12
+   8    30     85     4   0.8347604D+02
+   8    40    105     4   0.1280264D+03
+   9    10     16     1   0.2502058D-14
+   9    10     19     1   0.1725838D-12
+   9    10     52     1   0.4177953D-09
+  10     1      7     1   0.0000000D+00
+  10     1      9     1   0.0000000D+00
+  10     1     16     1   0.0000000D+00
+  10    10     16     1   0.5058934D-14
+  10    10     19     1   0.2188088D-12
+  10    10     39     1   0.3037309D-14
+  11    10    130     4   0.5296380D-02
+  11    10     84     1   0.5915619D-10
+  11    10     81     1   0.1764156D-07
+  12    10     52     1   0.3648863D-12
+  12    10     46     1   0.1048355D-10
+  12    10     91     1   0.3105752D-11
+  13    10     21     1   0.1493879D-07
+  13    10     59     1   0.5010934D-08
+  13    10     42     1   0.9878849D-10
+  14    10     30     1   0.2057902D-08
+  14    10     45     1   0.7953615D-08
+  14    10     58     1   0.4526422D-09
