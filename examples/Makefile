@@ -44,12 +44,13 @@ all:
 	@echo "make ftest: calling FORTRAN MINPACK from FORTRAN"
 	@echo "make ctest: calling C MINPACK from C"
 
+.PHONY: test ctest ftest
 test: ${PGM}
 	for x in ${PGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 ctest: ${CPGM} lmddrvc lmfdrvc
-	for x in lmddrvc lmfdrvc; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 	for x in ${CPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in lmddrvc lmfdrvc; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 ftest: ${FPGM}
 	for x in ${FPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
