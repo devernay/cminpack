@@ -79,7 +79,14 @@ which came from the FORTRAN version:</p>
 
 <p>It is distributed under the original Minpack license (see the file CopyrightMINPACK.txt in the distribution).</p>
 
-<p>Download: <a href="cminpack-1.0.4.tar.gz">cminpack-1.0.4.tar.gz</a></p>
+<h3>Download</h3>
+<ul>
+  <li><a href="cminpack-1.1.0.tar.gz">cminpack-1.1.0.tar.gz</a> (latest version)</li>
+  <li><a href="cminpack-1.0.4.tar.gz">cminpack-1.0.4.tar.gz</a></li>
+  <li><a href="cminpack-1.0.3.tar.gz">cminpack-1.0.3.tar.gz</a></li>
+  <li><a href="cminpack-1.0.2.tar.gz">cminpack-1.0.2.tar.gz</a></li>
+  <li><a href="cminpack-1.0.1.tar.gz">cminpack-1.0.1.tar.gz</a></li>
+</ul>
 
 <h2>Documentation</h2>
 <ul>
@@ -91,11 +98,12 @@ which came from the FORTRAN version:</p>
 
 <h2>History</h2>
 <ul>
-  <li>1.0.0 (24/04/2007): Initial revision.</li>
-  <li>1.0.1 (17/12/2007): bug fix in covar() and covar_(), the computation of tolr caused a segfault (signaled by Timo Hartmann).</li>
-  <li>1.0.2 (27/02/2009): Added Xcode and Visual Studio project files</li>
-  <li>1.0.3 (18/03/2010): Added CMake support. XCode build is now Universal (i386+ppc). Added tfdjac2_ and tfdjac2c examples, which test the accuracy of a finite-differences approximation of the Jacobian. Bug fix in tlmstr1 (signaled by Thomas Capricelli).</li>
+  <li>1.1.0 (30/11/2010): Complete rewrite of the C functions (without trailing underscore in the function name). Using the original FORTRAN code, the original algorithms structure was recovered, and many goto's were converted to if...then...else. The code should now be both more readable and easier to optimize, both for humans and for compilers. Also added the pkg-config files to the cmake build, as well as an "uninstall" target, contributed by Geoffrey Biggs.
   <li>1.0.4 (18/10/2010): Support for shared library building using CMake, thanks to Goeffrey Biggs from AIST and Radu Bogdan Rusu from Willow Garage. Shared libraries can be enabled using cmake options, as in: <code>cmake -DUSE_FPIC=ON -DSHARED_LIBS=ON -DBUILD_EXAMPLES=OFF path_to_sources</code></li>
+  <li>1.0.3 (18/03/2010): Added CMake support. XCode build is now Universal (i386+ppc). Added tfdjac2_ and tfdjac2c examples, which test the accuracy of a finite-differences approximation of the Jacobian. Bug fix in tlmstr1 (signaled by Thomas Capricelli).</li>
+  <li>1.0.2 (27/02/2009): Added Xcode and Visual Studio project files</li>
+  <li>1.0.1 (17/12/2007): bug fix in covar() and covar_(), the computation of tolr caused a segfault (signaled by Timo Hartmann).</li>
+  <li>1.0.0 (24/04/2007): Initial revision.</li>
 </ul>
 
 
