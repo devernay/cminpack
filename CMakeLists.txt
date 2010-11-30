@@ -3,21 +3,19 @@
 # to the root binary directory of the project as ${CMINPACK_BINARY_DIR}.
 cmake_minimum_required (VERSION 2.6)
 project (CMINPACK)
+string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
-string (REGEX MATCH "Linux" OS_LINUX ${CMAKE_SYSTEM_NAME})
-string (REGEX MATCH "BSD" OS_BSD ${CMAKE_SYSTEM_NAME})
-if (WIN32)
-  SET (OS_WIN TRUE BOOL INTERNAL)
-endif (WIN32)
-if (OS_LINUX)
-  message (STATUS "Operating system is Linux")
-elseif (OS_BSD)
-  message (STATUS "Operating system is BSD")
-elseif (OS_WIN)
-  message (STATUS "Operating system is Windows")
-else (OS_LINUX)
-  message (STATUS "Operating system is generic Unix")
-endif (OS_LINUX)
+include(${PROJECT_SOURCE_DIR}/cmake/cminpack_utils.cmake)
+# Set version and OS-specific settings
+set(CMINPACK_VERSION 1.0.90 CACHE STRING "CMinpack version")
+DISSECT_VERSION()
+GET_OS_INFO()
+
+# Add an "uninstall" target
+CONFIGURE_FILE ("${PROJECT_SOURCE_DIR}/cmake/uninstall_target.cmake.in"
+    "${PROJECT_BINARY_DIR}/uninstall_target.cmake" IMMEDIATE @ONLY)
+ADD_CUSTOM_TARGET (uninstall "${CMAKE_COMMAND}" -P
+    "${PROJECT_BINARY_DIR}/uninstall_target.cmake")
 
 enable_testing()
 
@@ -38,11 +36,8 @@ endif (SHARED_LIBS)
 
 #set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../build)
 
-# Recurse into the "Hello" and "Demo" subdirectories. This does not actually
-# cause another cmake executable to run. The same process will walk through
-# the project's entire directory structure.
+add_subdirectory (cmake)
 add_subdirectory (examples)
-#add_subdirectory (Demo) 
 
 set (cminpack_srcs
   cminpack.h
@@ -54,10 +49,15 @@ set (cminpack_srcs
   dogleg_.c fdjac1_.c hybrd_.c  lmder1_.c lmdif_.c  lmstr_.c  qrsolv_.c rwupdt_.c
   dpmpar_.c fdjac2_.c hybrj1_.c lmder_.c  lmpar_.c  qform_.c  r1mpyq_.c covar_.c
   )
+set (cminpack_hdrs
+    cminpack.h f2c.h minpack.h)
 
-# Create a library called "cminpack" which includes the source file "hello.cxx".
-# The extension is already found. Any number of sources could be listed here.
 add_library (cminpack ${LIB_TYPE} ${cminpack_srcs})
+
+install (TARGETS cminpack LIBRARY DESTINATION ${CMINPACK_LIB_INSTALL_DIR}
+    ARCHIVE DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library)
+install (FILES ${cminpack_hdrs} DESTINATION ${CMINPACK_INCLUDE_INSTALL_DIR}
+    COMPONENT cminpack_hdrs)
 
 if (USE_FPIC AND NOT SHARED_LIBS)
   set_target_properties (cminpack PROPERTIES COMPILE_FLAGS -fPIC)
