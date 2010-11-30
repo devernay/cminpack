@@ -43,13 +43,17 @@ all:
 	@echo "make test: calling FORTRAN MINPACK from C"
 	@echo "make ftest: calling FORTRAN MINPACK from FORTRAN"
 	@echo "make ctest: calling C MINPACK from C"
+	@echo "Intensive (driver) tests:"
+	@echo "make ctestdrv: calling C MINPACK from C"
 
-.PHONY: test ctest ftest
+.PHONY: test ctest ctestdrv ftest
 test: ${PGM}
 	for x in ${PGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
-ctest: ${CPGM} lmddrvc lmfdrvc
+ctest: ${CPGM}
 	for x in ${CPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+
+ctestdrv: lmddrvc lmfdrvc
 	for x in lmddrvc lmfdrvc; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 ftest: ${FPGM}
