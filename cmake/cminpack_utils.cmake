@@ -4,6 +4,8 @@ macro(GET_OS_INFO)
     if(WIN32)
         set(OS_WIN TRUE)
     endif(WIN32)
+
+    set(CMINPACK_LIB_INSTALL_DIR "lib")
     if(OS_LINUX)
         if(${CMAKE_SYSTEM_PROCESSOR} STREQUAL "x86_64")
             set(CMINPACK_LIB_INSTALL_DIR "lib64")
