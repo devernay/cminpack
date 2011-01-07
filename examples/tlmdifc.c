@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 #include <cminpack.h>
 
 int fcn(void *p, int m, int n, const double *x, double *fvec, int iflag);
@@ -13,7 +14,7 @@ int main()
   double ftol, xtol, gtol, epsfcn, factor, fnorm;
   double x[3], fvec[15], diag[3], fjac[15*3], qtf[3], 
     wa1[3], wa2[3], wa3[3], wa4[15];
-  double covfac;
+  int k;
 
   m = 15;
   n = 3;
@@ -53,14 +54,28 @@ int main()
   for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n     ":"", x[j-1]);
   printf("\n");
   ftol = dpmpar(1);
-  covfac = fnorm*fnorm/(m-n);
-  covar(n, fjac, ldfjac, ipvt, ftol, wa1);
-  printf("      covariance\n");
+  {
+      /* test the original covar from MINPACK */
+      double covfac = fnorm*fnorm/(m-n);
+      double fjac1[15*3];
+      memcpy(fjac1, fjac, sizeof(fjac));
+      covar(n, fjac1, ldfjac, ipvt, ftol, wa1);
+      printf("      covariance (using covar)\n");
+      for (i=1; i<=n; i++) {
+          for (j=1; j<=n; j++)
+              printf("%s%15.7g", j%3==1?"\n     ":"", fjac1[(i-1)*ldfjac+j-1]*covfac);
+      }
+      printf("\n");
+  }
+  /* test covar1, which also estimates the rank of the Jacobian */
+  k = covar1(m, n, fnorm*fnorm, fjac, ldfjac, ipvt, ftol, wa1);
+  printf("      covariance (using covar1)\n");
   for (i=1; i<=n; i++) {
     for (j=1; j<=n; j++)
-      printf("%s%15.7g", j%3==1?"\n     ":"", fjac[(i-1)*ldfjac+j-1]*covfac);
+      printf("%s%15.7g", j%3==1?"\n     ":"", fjac[(i-1)*ldfjac+j-1]);
   }
   printf("\n");
+  printf("      rank(J) = %d\n", k != 0 ? k : n);
   return 0;
 }
 

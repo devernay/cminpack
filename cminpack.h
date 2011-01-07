@@ -219,6 +219,16 @@ int CMINPACK_EXPORT fdjac1(minpack_func_nn fcn,
 void CMINPACK_EXPORT covar(int n, double *r, int ldr, 
            const int *ipvt, double tol, double *wa);
 
+/* covar1 estimates the variance-covariance matrix:
+   C = sigma**2 (JtJ)**+
+   where (JtJ)**+ is the inverse of JtJ or the pseudo-inverse of JtJ (in case J does not have full rank),
+   and sigma**2 = fsumsq / (m - k)
+   where fsumsq is the residual sum of squares and k is the rank of J.
+   The function returns 0 if J has full rank, else the rank of J.
+*/
+int CMINPACK_EXPORT covar1(int m, int n, double fsumsq, double *r, int ldr, 
+                           const int *ipvt, double tol, double *wa);
+
 /* internal MINPACK subroutines */
 void dogleg(int n, const double *r, int lr, 
              const double *diag, const double *qtb, double delta, double *x, 
