@@ -99,19 +99,31 @@ which came from the FORTRAN version:</p>
 <h2>Equivalence table with other libraries</h2>
 <p>The following table may be useful if you need to switch to or from another library.</p>
 <table>
-<caption>Equivalence table between MINPACK and NAG, NPL, SLATEC and levmar</caption>
-<tr><th>MINPACK</th> <th>NAG          </th> <th>NPL   </th> <th>SLATEC</th> <th>levmar     </th></tr>
-<tr><td>lmdif  </td> <td>E04FCF       </td> <td>LSQNDN</td> <td>DNLS1 </td> <td>dlevmar_dif</td></tr>
-<tr><td>lmdif1 </td> <td>E04FYF       </td> <td>LSNDN1</td> <td>DNLS1E</td> <td>dlevmar_dif</td></tr>
-<tr><td>lmder  </td> <td>E04GDF/E04GBF</td> <td>LSQFDN</td> <td>DNLS1 </td> <td>dlevmar_der</td></tr>
-<tr><td>lmder1 </td> <td>E04GZF       </td> <td>LSFDN2</td> <td>DNLS1E</td> <td>dlevmar_der</td></tr>
-<tr><td>lmstr  </td> <td>*            </td> <td>*     </td> <td>DNLS1 </td> <td>           </td></tr>
-<tr><td>hybrd  </td> <td>C05NCF       </td> <td>*     </td> <td>DNSQ  </td> <td>           </td></tr>
-<tr><td>hybrd1 </td> <td>C05NBF       </td> <td>*     </td> <td>DNSQE </td> <td>           </td></tr>
-<tr><td>hybrj  </td> <td>C05PCF       </td> <td>*     </td> <td>DNSQ  </td> <td>           </td></tr>
-<tr><td>hybrj1 </td> <td>C05PBF       </td> <td>*     </td> <td>DNSQE </td> <td>           </td></tr>
-<tr><td>covar  </td> <td>E04YCF       </td> <td>*     </td> <td>DCOV  </td> <td>           </td></tr>
+<caption>Equivalence table between MINPACK and NAG, NPL, SLATEC, levmar and <a href="http://www.gnu.org/software/gsl/">GSL</a></caption>
+<tr><th>MINPACK</th> <th>NAG          </th> <th>NPL   </th> <th>SLATEC</th> <th>levmar     </th> <th>GSL                           </th></tr>
+<tr><td>lmdif  </td> <td>E04FCF       </td> <td>LSQNDN</td> <td>DNLS1 </td> <td>dlevmar_dif</td> <td>                              </td></tr>
+<tr><td>lmdif1 </td> <td>E04FYF       </td> <td>LSNDN1</td> <td>DNLS1E</td> <td>dlevmar_dif</td> <td>                              </td></tr>
+<tr><td>lmder  </td> <td>E04GDF/E04GBF</td> <td>LSQFDN</td> <td>DNLS1 </td> <td>dlevmar_der</td> <td>gsl_multifit_fdfsolver_lmsder</td></tr>
+<tr><td>lmder1 </td> <td>E04GZF       </td> <td>LSFDN2</td> <td>DNLS1E</td> <td>dlevmar_der</td> <td>                              </td></tr>
+<tr><td>lmstr  </td> <td>*            </td> <td>*     </td> <td>DNLS1 </td> <td>           </td> <td>                              </td></tr>
+<tr><td>hybrd  </td> <td>C05NCF       </td> <td>*     </td> <td>DNSQ  </td> <td>           </td> <td>                              </td></tr>
+<tr><td>hybrd1 </td> <td>C05NBF       </td> <td>*     </td> <td>DNSQE </td> <td>           </td> <td>                              </td></tr>
+<tr><td>hybrj  </td> <td>C05PCF       </td> <td>*     </td> <td>DNSQ  </td> <td>           </td> <td>                              </td></tr>
+<tr><td>hybrj1 </td> <td>C05PBF       </td> <td>*     </td> <td>DNSQE </td> <td>           </td> <td>                              </td></tr>
+<tr><td>covar  </td> <td>E04YCF       </td> <td>*     </td> <td>DCOV  </td> <td>           </td> <td>gsl_multifit_covar            </td></tr>
 </table>
+
+<h2>Other MINPACK implementations</h2>
+<ul>
+  <li>by John Burkardt: <a href="http://people.sc.fsu.edu/~jburkardt/cpp_src/minpack/minpack.html">C++</a>, <a href="http://people.sc.fsu.edu/~jburkardt/f77_src/minpack/minpack.html">FORTRAN77</a>, <a href="http://people.sc.fsu.edu/~jburkardt/f_src/minpack/minpack.html">FORTRAN90</a>.</li>
+  <li>by Steve Verrill: <a href="http://www1.fpl.fs.fed.us/Minpack_f77.java">Java</a> (<a href="http://www1.fpl.fs.fed.us/optimization/Minpack_f77.html">documentation</a>, <a href="http://www1.fpl.fs.fed.us/minpack.prob.html">problems</a>).</li>
+  <li>by Alan Miller: <a href="http://jblevins.org/mirror/amiller/lm.zip">FORTRAN90</a>.</li>
+  <li><a href="http://quantlib.org/">Quantlib</a> has a C++ MINPACK hidden deep inside (<a href="http://quantlib.svn.sourceforge.net/viewvc/quantlib/trunk/QuantLib/ql/math/optimization/lmdif.cpp">C++</a>, <a href="http://quantlib.svn.sourceforge.net/viewvc/quantlib/trunk/QuantLib/ql/math/optimization/lmdif.hpp">header</a>, <a href="http://www.quantcode.com/modules/mydownloads/singlefile.php?cid=10&lid=436">tutorial</a>).</li>
+  <li>GPL-licensed implementations of MINPACK algorithms in C are availaible from the <a href="http://www.gnu.org/software/gsl/">GNU Scientific Library</a>.</li>
+  <li>Python library scipy, module <code>scipy.optimize.leastsq</code>,</li>
+  <li><a href="http://www.ittvis.com/">IDL</a>, add-on <a href="http://cow.physics.wisc.edu/~craigm/idl/fitting.html">MPFIT</a>.</li>
+  <li><a href="http://www.r-project.org/">R</a> has the <a href="http://cran.r-project.org/web/packages/minpack.lm/index.html"">minpack.lm</a> package.</li>
+</ul>
 
 <h2>History</h2>
 <ul>
