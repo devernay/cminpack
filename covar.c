@@ -16,11 +16,8 @@
 /* Subroutine */ void covar(int n, double *r, int ldr, 
 	const int *ipvt, double tol, double *wa)
 {
-    /* System generated locals */
-    int r_dim1, r_offset;
-
     /* Local variables */
-    int i, j, k, l, ii, jj, km1;
+    int i, j, k, l, ii, jj;
     int sing;
     double temp, tolr;
 
@@ -89,55 +86,46 @@
 /*     burton s. garbow, kenneth e. hillstrom, jorge j. more */
 
 /*     ********** */
-    /* Parameter adjustments */
-    --wa;
-    --ipvt;
     tolr = tol * fabs(r[0]);
-    r_dim1 = ldr;
-    r_offset = 1 + r_dim1;
-    r -= r_offset;
 
     /* Function Body */
 
 /*     form the inverse of r in the full upper triangle of r. */
 
-    l = 0;
-    for (k = 1; k <= n; ++k) {
-	if (fabs(r[k + k * r_dim1]) <= tolr) {
-	    goto TERMINATE_INVERSE;
+    l = -1;
+    for (k = 0; k < n; ++k) {
+	if (fabs(r[k + k * ldr]) <= tolr) {
+	    break;
 	}
-	r[k + k * r_dim1] = 1. / r[k + k * r_dim1];
-	km1 = k - 1;
-	if (km1 >= 1) {
-            for (j = 1; j <= km1; ++j) {
-                temp = r[k + k * r_dim1] * r[j + k * r_dim1];
-                r[j + k * r_dim1] = 0.;
-                for (i = 1; i <= j; ++i) {
-                    r[i + k * r_dim1] -= temp * r[i + j * r_dim1];
+	r[k + k * ldr] = 1. / r[k + k * ldr];
+	if (k > 0) {
+            for (j = 0; j < k; ++j) {
+                temp = r[k + k * ldr] * r[j + k * ldr];
+                r[j + k * ldr] = 0.;
+                for (i = 0; i <= j; ++i) {
+                    r[i + k * ldr] -= temp * r[i + j * ldr];
                 }
             }
         }
 	l = k;
     }
-TERMINATE_INVERSE:
 
 /*     form the full upper triangle of the inverse of (r transpose)*r */
 /*     in the full upper triangle of r. */
 
-    if (l >= 1) {
-        for (k = 1; k <= l; ++k) {
-            km1 = k - 1;
-            if (km1 >= 1) {
-                for (j = 1; j <= km1; ++j) {
-                    temp = r[j + k * r_dim1];
-                    for (i = 1; i <= j; ++i) {
-                        r[i + j * r_dim1] += temp * r[i + k * r_dim1];
+    if (l >= 0) {
+        for (k = 0; k <= l; ++k) {
+            if (k > 0) {
+                for (j = 0; j < k; ++j) {
+                    temp = r[j + k * ldr];
+                    for (i = 0; i <= j; ++i) {
+                        r[i + j * ldr] += temp * r[i + k * ldr];
                     }
                 }
             }
-            temp = r[k + k * r_dim1];
-            for (i = 1; i <= k; ++i) {
-                r[i + k * r_dim1] = temp * r[i + k * r_dim1];
+            temp = r[k + k * ldr];
+            for (i = 0; i <= k; ++i) {
+                r[i + k * ldr] *= temp;
             }
         }
     }
@@ -145,31 +133,31 @@ TERMINATE_INVERSE:
 /*     form the full lower triangle of the covariance matrix */
 /*     in the strict lower triangle of r and in wa. */
 
-    for (j = 1; j <= n; ++j) {
-	jj = ipvt[j];
+    for (j = 0; j < n; ++j) {
+	jj = ipvt[j]-1;
 	sing = j > l;
-	for (i = 1; i <= j; ++i) {
+	for (i = 0; i <= j; ++i) {
 	    if (sing) {
-		r[i + j * r_dim1] = 0.;
+		r[i + j * ldr] = 0.;
 	    }
-	    ii = ipvt[i];
+	    ii = ipvt[i]-1;
 	    if (ii > jj) {
-		r[ii + jj * r_dim1] = r[i + j * r_dim1];
+		r[ii + jj * ldr] = r[i + j * ldr];
 	    }
-	    if (ii < jj) {
-		r[jj + ii * r_dim1] = r[i + j * r_dim1];
+	    else if (ii < jj) {
+		r[jj + ii * ldr] = r[i + j * ldr];
 	    }
 	}
-	wa[jj] = r[j + j * r_dim1];
+	wa[jj] = r[j + j * ldr];
     }
 
 /*     symmetrize the covariance matrix in r. */
 
-    for (j = 1; j <= n; ++j) {
-	for (i = 1; i <= j; ++i) {
-	    r[i + j * r_dim1] = r[j + i * r_dim1];
+    for (j = 0; j < n; ++j) {
+	for (i = 0; i < j; ++i) {
+	    r[i + j * ldr] = r[j + i * ldr];
 	}
-	r[j + j * r_dim1] = wa[j];
+	r[j + j * ldr] = wa[j];
     }
 
 /*     last card of subroutine covar. */
