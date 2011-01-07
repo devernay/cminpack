@@ -74,7 +74,7 @@ which came from the FORTRAN version:</p>
 <li>The C/C++ Minpack code (reentrant and MT-Safe).</li>
 <li>C and C++-compatible include files for Minpack or CMinpack (minpack.h) and C/C++ Minpack (cminpack.h), and Unix Makefiles.</li>
 <li>Full original documentation, translated to HTML, and all the examples, tests, and reference test results, so that you can check if the code runs properly on your machine before really using it.</li>
-<li>The extra covariance function "covar", with sample uses in the tlmder and tlmdir examples.</li>
+<li>The extra covariance function "covar", with sample uses in the tlmder and tlmdir examples. Note that the result of covar has to be scaled by some factor, as shown in the source file examples/tlmderc.c (look for the documentation of the NAG function E04YCF for further explanations).</li>
 </ul>
 
 <p>It is distributed under the original Minpack license (see the file CopyrightMINPACK.txt in the distribution).</p>
@@ -95,6 +95,23 @@ which came from the FORTRAN version:</p>
   <li><a href="http://en.wikipedia.org/wiki/MINPACK">MINPACK on Wikipedia</a></li>
   <li>User Guide for MINPACK-1 : <a href="http://www-unix.mcs.anl.gov/~more/ANL8074a.pdf">Chapters 1-3</a>, <a href="http://www-unix.mcs.anl.gov/~more/ANL8074b.pdf">Chapter 4</a></li>
 </ul>
+
+<h2>Equivalence table with other libraries</h2>
+<p>The following table may be useful if you need to switch to or from another library.</p>
+<table>
+<caption>Equivalence table between MINPACK and NAG, NPL, SLATEC and levmar</caption>
+<tr><th>MINPACK</th> <th>NAG          </th> <th>NPL   </th> <th>SLATEC</th> <th>levmar     </th></tr>
+<tr><td>lmdif  </td> <td>E04FCF       </td> <td>LSQNDN</td> <td>DNLS1 </td> <td>dlevmar_dif</td></tr>
+<tr><td>lmdif1 </td> <td>E04FYF       </td> <td>LSNDN1</td> <td>DNLS1E</td> <td>dlevmar_dif</td></tr>
+<tr><td>lmder  </td> <td>E04GDF/E04GBF</td> <td>LSQFDN</td> <td>DNLS1 </td> <td>dlevmar_der</td></tr>
+<tr><td>lmder1 </td> <td>E04GZF       </td> <td>LSFDN2</td> <td>DNLS1E</td> <td>dlevmar_der</td></tr>
+<tr><td>lmstr  </td> <td>*            </td> <td>*     </td> <td>DNLS1 </td> <td>           </td></tr>
+<tr><td>hybrd  </td> <td>C05NCF       </td> <td>*     </td> <td>DNSQ  </td> <td>           </td></tr>
+<tr><td>hybrd1 </td> <td>C05NBF       </td> <td>*     </td> <td>DNSQE </td> <td>           </td></tr>
+<tr><td>hybrj  </td> <td>C05PCF       </td> <td>*     </td> <td>DNSQ  </td> <td>           </td></tr>
+<tr><td>hybrj1 </td> <td>C05PBF       </td> <td>*     </td> <td>DNSQE </td> <td>           </td></tr>
+<tr><td>covar  </td> <td>E04YCF       </td> <td>*     </td> <td>DCOV  </td> <td>           </td></tr>
+</table>
 
 <h2>History</h2>
 <ul>
