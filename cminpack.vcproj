@@ -237,6 +237,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\covar1.c"
+				>
+			</File>
+			<File
 				RelativePath=".\covar_.c"
 				>
 			</File>
