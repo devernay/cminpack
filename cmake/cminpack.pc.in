@@ -2,11 +2,11 @@
 prefix=@CMAKE_INSTALL_PREFIX@
 exec_prefix=${prefix}
 libdir=${prefix}/@CMINPACK_LIB_INSTALL_DIR@
-includedir=${prefix}/include
+includedir=${prefix}/@CMINPACK_INCLUDE_INSTALL_DIR@
 
 Name: @PROJECT_NAME@
 Description: @PKG_DESC@
-Version: @RTC_VERSION@
+Version: @CMINPACK_VERSION@
 Requires: @PKG_EXTERNAL_DEPS@
 Libs: -L${libdir} -lcminpack -lm
 Cflags: -I${includedir}

@@ -50,13 +50,12 @@ set (cminpack_srcs
   dpmpar_.c fdjac2_.c hybrj1_.c lmder_.c  lmpar_.c  qform_.c  r1mpyq_.c covar_.c
   )
 set (cminpack_hdrs
-    cminpack.h f2c.h minpack.h)
+    cminpack.h minpack.h)
 
 add_library (cminpack ${LIB_TYPE} ${cminpack_srcs})
 
 install (TARGETS cminpack LIBRARY DESTINATION ${CMINPACK_LIB_INSTALL_DIR}
-    ARCHIVE DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library)
-install (TARGETS cminpack LIBRARY DESTINATION ${CMINPACK_LIB_INSTALL_DIR}
+    ARCHIVE DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
     RUNTIME DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library)
 install (FILES ${cminpack_hdrs} DESTINATION ${CMINPACK_INCLUDE_INSTALL_DIR}
     COMPONENT cminpack_hdrs)
@@ -64,4 +63,6 @@ install (FILES ${cminpack_hdrs} DESTINATION ${CMINPACK_INCLUDE_INSTALL_DIR}
 if (USE_FPIC AND NOT SHARED_LIBS)
   set_target_properties (cminpack PROPERTIES COMPILE_FLAGS -fPIC)
 endif (USE_FPIC AND NOT SHARED_LIBS)
+
+set_target_properties(cminpack PROPERTIES VERSION ${CMINPACK_VERSION})
 

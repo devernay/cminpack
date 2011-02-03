@@ -278,7 +278,6 @@
 		35C3D6D30DB79E4800A4BB4B /* rwupdt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rwupdt.c; sourceTree = "<group>"; };
 		35C3D7020DB79E5600A4BB4B /* cminpack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cminpack.h; sourceTree = "<group>"; };
 		35C3D7030DB79E5600A4BB4B /* minpack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = minpack.h; sourceTree = "<group>"; };
-		35C3D7050DB79E5600A4BB4B /* f2c.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = f2c.h; sourceTree = "<group>"; };
 		7F8F63931148F51A0013EA0C /* tchkder_.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tchkder_.c; path = examples/tchkder_.c; sourceTree = "<group>"; };
 		7F8F63941148F51A0013EA0C /* tchkderc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tchkderc.c; path = examples/tchkderc.c; sourceTree = "<group>"; };
 		7F8F63951148F51A0013EA0C /* tfdjac2_.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tfdjac2_.c; path = examples/tfdjac2_.c; sourceTree = "<group>"; };
@@ -420,7 +419,6 @@
 			children = (
 				35C3D7020DB79E5600A4BB4B /* cminpack.h */,
 				35C3D7030DB79E5600A4BB4B /* minpack.h */,
-				35C3D7050DB79E5600A4BB4B /* f2c.h */,
 				1E548DD10F83DFAA0015F022 /* examples */,
 				35C3D6BC0DB79E4800A4BB4B /* lmdif.c */,
 				35C3D6BD0DB79E4800A4BB4B /* chkder.c */,
