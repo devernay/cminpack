@@ -54,6 +54,7 @@ int main()
   for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n     ":"", x[j-1]);
   printf("\n");
   ftol = dpmpar(1);
+#ifdef TEST_COVAR
   {
       /* test the original covar from MINPACK */
       double covfac = fnorm*fnorm/(m-n);
@@ -67,15 +68,16 @@ int main()
       }
       printf("\n");
   }
+#endif
   /* test covar1, which also estimates the rank of the Jacobian */
   k = covar1(m, n, fnorm*fnorm, fjac, ldfjac, ipvt, ftol, wa1);
-  printf("      covariance (using covar1)\n");
+  printf("      covariance\n");
   for (i=1; i<=n; i++) {
     for (j=1; j<=n; j++)
       printf("%s%15.7g", j%3==1?"\n     ":"", fjac[(i-1)*ldfjac+j-1]);
   }
   printf("\n");
-  printf("      rank(J) = %d\n", k != 0 ? k : n);
+  /* printf("      rank(J) = %d\n", k != 0 ? k : n); */
   return 0;
 }
 
