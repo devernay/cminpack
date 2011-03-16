@@ -40,7 +40,7 @@ main(int argc, char **argv)
     {
         const char *head = "DRIVER FOR";
         char *pos;
-        pos = strnstr(buf, head, sizeof(buf));
+        pos = strstr(buf, head); /* fgets() always returns a NUL-terminated buffer, so there's no buffer over-read risk */
         if (pos != NULL) {
             FILE *f_src;
             /* we found a test source */
@@ -82,7 +82,7 @@ main(int argc, char **argv)
                 }
                 else {
                     /* test for end of function */
-                    finished = (strnstr(buf, "LAST CARD OF SUBROUTINE FCN", sizeof(buf)) != NULL);
+                    finished = (strstr(buf, "LAST CARD OF SUBROUTINE FCN") != NULL);
                     fputs(buf+2, f_src);
                 }
             }
