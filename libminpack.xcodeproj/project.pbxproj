@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -724,7 +724,7 @@
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = 1DEB91EF08733DB70010E9CD /* Build configuration list for PBXProject "libminpack" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -996,6 +996,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../local/lib\"",
 				);
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = minpack;
 			};
 			name = Debug;
@@ -1021,14 +1022,13 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_ENABLE_SSE3_EXTENSIONS = YES;
 				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
 				GCC_FAST_MATH = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = cminpack;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
@@ -1045,7 +1045,7 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
 				PRODUCT_NAME = cminpack;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
@@ -1095,7 +1095,6 @@
 		1E548E530F83E2DF0015F022 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				PRODUCT_NAME = thybrd;
 			};
 			name = Debug;
@@ -1103,7 +1102,6 @@
 		1E548E540F83E2DF0015F022 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PRODUCT_NAME = thybrd;
 			};
 			name = Release;
@@ -1111,7 +1109,6 @@
 		1E548E670F83E2F90015F022 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				PRODUCT_NAME = thybrd1;
 			};
 			name = Debug;
@@ -1119,7 +1116,6 @@
 		1E548E680F83E2F90015F022 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				PRODUCT_NAME = thybrd1;
 			};
 			name = Release;
@@ -1217,7 +1213,6 @@
 		1E548EEE0F83E3F10015F022 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 			};
 			name = Release;
 		};
