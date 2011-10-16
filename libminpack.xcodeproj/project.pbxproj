@@ -32,6 +32,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		1E20CA5214486BB40084559B /* covar1.c in Sources */ = {isa = PBXBuildFile; fileRef = 1E20CA5114486BB40084559B /* covar1.c */; };
 		1E548DCD0F83DF710015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
 		1E548E0A0F83E1C10015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
 		1E548E1C0F83E2050015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
@@ -234,6 +235,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1E20CA5114486BB40084559B /* covar1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = covar1.c; sourceTree = "<group>"; };
 		1E548DC60F83DF460015F022 /* tlmdif */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmdif; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E548DDC0F83E0960015F022 /* hybrd_.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = hybrd_.html; path = doc/hybrd_.html; sourceTree = "<group>"; };
 		1E548DDD0F83E0960015F022 /* hybrj_.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = hybrj_.html; path = doc/hybrj_.html; sourceTree = "<group>"; };
@@ -417,6 +419,7 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				1E20CA5114486BB40084559B /* covar1.c */,
 				35C3D7020DB79E5600A4BB4B /* cminpack.h */,
 				35C3D7030DB79E5600A4BB4B /* minpack.h */,
 				1E548DD10F83DFAA0015F022 /* examples */,
@@ -863,6 +866,7 @@
 				35C3D6F40DB79E4800A4BB4B /* r1mpyq.c in Sources */,
 				35C3D6F50DB79E4800A4BB4B /* r1updt.c in Sources */,
 				35C3D6F60DB79E4800A4BB4B /* rwupdt.c in Sources */,
+				1E20CA5214486BB40084559B /* covar1.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1027,6 +1031,7 @@
 				GCC_ENABLE_SSE3_EXTENSIONS = YES;
 				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
 				GCC_FAST_MATH = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = cminpack;
