@@ -25,11 +25,21 @@ int main()
 
   ldfjac = 15;
 
-  chkder(m, n, x, fvec, fjac, ldfjac, xp, fvecp, 1, err);
-  fcn(0, m, n, x, fvec, fjac, ldfjac, 1);
-  fcn(0, m, n, x, fvec, fjac, ldfjac, 2);
-  fcn(0, m, n, xp, fvecp, fjac, ldfjac, 1);
-  chkder(m, n, x, fvec, fjac, ldfjac, xp, fvecp, 2, err);
+  /* compute xp from x */
+  chkder(m, n, x, NULL, NULL, ldfjac, xp, NULL, 1, NULL);
+  /* compute fvec at x (all components of fvec should be != 0).*/
+  fcn(0, m, n, x, fvec, NULL, ldfjac, 1);
+  /* compute fjac at x */
+  fcn(0, m, n, x, NULL, fjac, ldfjac, 2);
+  /* compute fvecp at xp (all components of fvecp should be != 0)*/
+  fcn(0, m, n, xp, fvecp, NULL, ldfjac, 1);
+  /* check Jacobian, put the result in err */
+  chkder(m, n, x, fvec, fjac, ldfjac, NULL, fvecp, 2, err);
+  /* Output values:
+     err[i] = 1.: i-th gradient is correct
+     err[i] = 0.: i-th gradient is incorrect
+     err[I] > 0.5: i-th gradient is probably correct
+  */
 
   for (i=1; i<=m; i++)
     {

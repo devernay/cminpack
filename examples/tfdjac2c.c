@@ -30,13 +30,25 @@ int main()
 
   epsfcn = 0.;
 
-  chkder(m, n, x, fvec, fjac, ldfjac, xp, fvecp, 1, err);
+  /* compute xp from x */
+  chkder(m, n, x, NULL, NULL, ldfjac, xp, NULL, 1, NULL);
+  /* compute fvec at x (all components of fvec should be != 0).*/
   fcn(0, m, n, x, fvec, 1);
+  /* compute fdjac (Jacobian using finite differences) at x */
   fdjac2(fcn, 0, m, n, x, fvec, fdjac, ldfjac, epsfcn, wa);
+  /* compute fjac (real Jacobian) at x */
   fcnjac(m, n, x, fjac, ldfjac);
+  /* compute fvecp at xp (all components of fvecp should be != 0)*/
   fcn(0, m, n, xp, fvecp, 1);
-  chkder(m, n, x, fvec, fdjac, ldfjac, xp, fvecp, 2, errd);
-  chkder(m, n, x, fvec, fjac, ldfjac, xp, fvecp, 2, err);
+  /* check Jacobian fdjac, put the result in errd */
+  chkder(m, n, x, fvec, fdjac, ldfjac, NULL, fvecp, 2, errd);
+  /* check Jacobian fjac, put the result in err */
+  chkder(m, n, x, fvec, fjac, ldfjac, NULL, fvecp, 2, err);
+  /* Output values:
+     err[i] = 1.: i-th gradient is correct
+     err[i] = 0.: i-th gradient is incorrect
+     err[I] > 0.5: i-th gradient is probably correct
+  */
 
   for (i=1; i<=m; i++)
     {
