@@ -66,6 +66,9 @@ typedef int (*minpack_funcder_nn)(void *p, int n, const double *x, double *fvec,
 /* for lmdif1 and lmdif */
 /*         calculate the functions at x and */
 /*         return this vector in fvec. */
+/*         if iflag = 1 the result is used to compute the residuals. */
+/*         if iflag = 2 the result is used to compute the Jacobian by finite differences. */
+/*         Jacobian computation requires exactly n function calls with iflag = 2. */
 /* return a negative value to terminate lmdif1/lmdif */
 typedef int (*minpack_func_mn)(void *p, int m, int n, const double *x, double *fvec,
                                int iflag );
