@@ -20,13 +20,11 @@
 #define p001 .001
 
     /* System generated locals */
-    int r_dim1, r_offset;
     double d1, d2;
 
     /* Local variables */
     int i, j, k, l;
     double fp;
-    int jm1, jp1;
     double sum, parc, parl;
     int iter;
     double temp, paru, dwarf;
@@ -128,19 +126,6 @@
 /*     burton s. garbow, kenneth e. hillstrom, jorge j. more */
 
 /*     ********** */
-    /* Parameter adjustments */
-    --wa2;
-    --wa1;
-    --sdiag;
-    --x;
-    --qtb;
-    --diag;
-    --ipvt;
-    r_dim1 = ldr;
-    r_offset = 1 + r_dim1 * 1;
-    r -= r_offset;
-
-    /* Function Body */
 
 /*     dwarf is the smallest positive magnitude. */
 
@@ -150,10 +135,10 @@
 /*     jacobian is rank-deficient, obtain a least squares solution. */
 
     nsing = n;
-    for (j = 1; j <= n; ++j) {
+    for (j = 0; j < n; ++j) {
 	wa1[j] = qtb[j];
-	if (r[j + j * r_dim1] == 0. && nsing == n) {
-	    nsing = j - 1;
+	if (r[j + j * ldr] == 0. && nsing == n) {
+	    nsing = j;
 	}
 	if (nsing < n) {
 	    wa1[j] = 0.;
@@ -162,19 +147,18 @@
     }
     if (nsing >= 1) {
         for (k = 1; k <= nsing; ++k) {
-            j = nsing - k + 1;
-            wa1[j] /= r[j + j * r_dim1];
+            j = nsing - k;
+            wa1[j] /= r[j + j * ldr];
             temp = wa1[j];
-            jm1 = j - 1;
-            if (jm1 >= 1) {
-                for (i = 1; i <= jm1; ++i) {
-                    wa1[i] -= r[i + j * r_dim1] * temp;
+            if (j >= 1) {
+                for (i = 0; i < j; ++i) {
+                    wa1[i] -= r[i + j * ldr] * temp;
                 }
             }
         }
     }
-    for (j = 1; j <= n; ++j) {
-	l = ipvt[j];
+    for (j = 0; j < n; ++j) {
+	l = ipvt[j]-1;
 	x[l] = wa1[j];
     }
 
@@ -183,10 +167,10 @@
 /*     for acceptance of the gauss-newton direction. */
 
     iter = 0;
-    for (j = 1; j <= n; ++j) {
+    for (j = 0; j < n; ++j) {
 	wa2[j] = diag[j] * x[j];
     }
-    dxnorm = enorm(n, &wa2[1]);
+    dxnorm = enorm(n, wa2);
     fp = dxnorm - delta;
     if (fp <= p1 * delta) {
 	goto TERMINATE;
@@ -198,35 +182,34 @@
 
     parl = 0.;
     if (nsing >= n) {
-        for (j = 1; j <= n; ++j) {
-            l = ipvt[j];
+        for (j = 0; j < n; ++j) {
+            l = ipvt[j]-1;
             wa1[j] = diag[l] * (wa2[l] / dxnorm);
         }
-        for (j = 1; j <= n; ++j) {
+        for (j = 0; j < n; ++j) {
             sum = 0.;
-            jm1 = j - 1;
-            if (jm1 >= 1) {
-                for (i = 1; i <= jm1; ++i) {
-                    sum += r[i + j * r_dim1] * wa1[i];
+            if (j >= 1) {
+                for (i = 0; i < j; ++i) {
+                    sum += r[i + j * ldr] * wa1[i];
                 }
             }
-            wa1[j] = (wa1[j] - sum) / r[j + j * r_dim1];
+            wa1[j] = (wa1[j] - sum) / r[j + j * ldr];
         }
-        temp = enorm(n, &wa1[1]);
+        temp = enorm(n, wa1);
         parl = fp / delta / temp / temp;
     }
 
 /*     calculate an upper bound, paru, for the zero of the function. */
 
-    for (j = 1; j <= n; ++j) {
+    for (j = 0; j < n; ++j) {
 	sum = 0.;
-	for (i = 1; i <= j; ++i) {
-	    sum += r[i + j * r_dim1] * qtb[i];
+	for (i = 0; i <= j; ++i) {
+	    sum += r[i + j * ldr] * qtb[i];
 	}
-	l = ipvt[j];
+	l = ipvt[j]-1;
 	wa1[j] = sum / diag[l];
     }
-    gnorm = enorm(n, &wa1[1]);
+    gnorm = enorm(n, wa1);
     paru = gnorm / delta;
     if (paru == 0.) {
 	paru = dwarf / min(delta,p1);
@@ -254,14 +237,14 @@
             *par = max(d1,d2);
         }
         temp = sqrt(*par);
-        for (j = 1; j <= n; ++j) {
+        for (j = 0; j < n; ++j) {
             wa1[j] = temp * diag[j];
         }
-        qrsolv(n, &r[r_offset], ldr, &ipvt[1], &wa1[1], &qtb[1], &x[1], &sdiag[1], &wa2[1]);
-        for (j = 1; j <= n; ++j) {
+        qrsolv(n, r, ldr, ipvt, wa1, qtb, x, sdiag, wa2);
+        for (j = 0; j < n; ++j) {
             wa2[j] = diag[j] * x[j];
         }
-        dxnorm = enorm(n, &wa2[1]);
+        dxnorm = enorm(n, wa2);
         temp = fp;
         fp = dxnorm - delta;
 
@@ -275,21 +258,20 @@
 
 /*        compute the newton correction. */
 
-        for (j = 1; j <= n; ++j) {
-            l = ipvt[j];
+        for (j = 0; j < n; ++j) {
+            l = ipvt[j]-1;
             wa1[j] = diag[l] * (wa2[l] / dxnorm);
         }
-        for (j = 1; j <= n; ++j) {
+        for (j = 0; j < n; ++j) {
             wa1[j] /= sdiag[j];
             temp = wa1[j];
-            jp1 = j + 1;
-            if (n >= jp1) {
-                for (i = jp1; i <= n; ++i) {
-                    wa1[i] -= r[i + j * r_dim1] * temp;
+            if (n > j+1) {
+                for (i = j+1; i < n; ++i) {
+                    wa1[i] -= r[i + j * ldr] * temp;
                 }
             }
         }
-        temp = enorm(n, &wa1[1]);
+        temp = enorm(n, wa1);
         parc = fp / delta / temp / temp;
 
 /*        depending on the sign of the function, update parl or paru. */

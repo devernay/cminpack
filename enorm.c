@@ -57,9 +57,7 @@ double enorm(int n, const double *x)
 /*     burton s. garbow, kenneth e. hillstrom, jorge j. more */
 
 /*     ********** */
-    /* Parameter adjustments */
 
-    /* Function Body */
     s1 = 0.;
     s2 = 0.;
     s3 = 0.;

@@ -26,7 +26,6 @@
 #define p0001 1e-4
 
     /* System generated locals */
-    int fjac_dim1, fjac_offset;
     double d1, d2;
 
     /* Local variables */
@@ -218,21 +217,6 @@
 /*     burton s. garbow, kenneth e. hillstrom, jorge j. more */
 
 /*     ********** */
-    /* Parameter adjustments */
-    --wa4;
-    --fvec;
-    --wa3;
-    --wa2;
-    --wa1;
-    --qtf;
-    --ipvt;
-    --diag;
-    --x;
-    fjac_dim1 = ldfjac;
-    fjac_offset = 1 + fjac_dim1 * 1;
-    fjac -= fjac_offset;
-
-    /* Function Body */
 
 /*     epsmch is the machine precision. */
 
@@ -250,7 +234,7 @@
 	goto TERMINATE;
     }
     if (mode == 2) {
-        for (j = 1; j <= n; ++j) {
+        for (j = 0; j < n; ++j) {
             if (diag[j] <= 0.) {
                 goto TERMINATE;
             }
@@ -260,12 +244,12 @@
 /*     evaluate the function at the starting point */
 /*     and calculate its norm. */
 
-    iflag = (*fcn)(p, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, 1);
+    iflag = (*fcn)(p, m, n, x, fvec, fjac, ldfjac, 1);
     *nfev = 1;
     if (iflag < 0) {
 	goto TERMINATE;
     }
-    fnorm = enorm(m, &fvec[1]);
+    fnorm = enorm(m, fvec);
 
 /*     initialize levenberg-marquardt parameter and iteration counter. */
 
@@ -278,7 +262,7 @@
 
 /*        calculate the jacobian matrix. */
 
-        iflag = (*fcn)(p, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, 2);
+        iflag = (*fcn)(p, m, n, x, fvec, fjac, ldfjac, 2);
         ++(*njev);
         if (iflag < 0) {
             goto TERMINATE;
@@ -289,7 +273,7 @@
         if (nprint > 0) {
             iflag = 0;
             if ((iter - 1) % nprint == 0) {
-                iflag = (*fcn)(p, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, 0);
+                iflag = (*fcn)(p, m, n, x, fvec, fjac, ldfjac, 0);
             }
             if (iflag < 0) {
                 goto TERMINATE;
@@ -298,15 +282,15 @@
 
 /*        compute the qr factorization of the jacobian. */
 
-        qrfac(m, n, &fjac[fjac_offset], ldfjac, TRUE_, &ipvt[1], n,
-              &wa1[1], &wa2[1], &wa3[1]);
+        qrfac(m, n, fjac, ldfjac, TRUE_, ipvt, n,
+              wa1, wa2, wa3);
 
 /*        on the first iteration and if mode is 1, scale according */
 /*        to the norms of the columns of the initial jacobian. */
 
         if (iter == 1) {
             if (mode != 2) {
-                for (j = 1; j <= n; ++j) {
+                for (j = 0; j < n; ++j) {
                     diag[j] = wa2[j];
                     if (wa2[j] == 0.) {
                         diag[j] = 1.;
@@ -317,10 +301,10 @@
 /*        on the first iteration, calculate the norm of the scaled x */
 /*        and initialize the step bound delta. */
 
-            for (j = 1; j <= n; ++j) {
+            for (j = 0; j < n; ++j) {
                 wa3[j] = diag[j] * x[j];
             }
-            xnorm = enorm(n, &wa3[1]);
+            xnorm = enorm(n, wa3);
             delta = factor * xnorm;
             if (delta == 0.) {
                 delta = factor;
@@ -330,21 +314,21 @@
 /*        form (q transpose)*fvec and store the first n components in */
 /*        qtf. */
 
-        for (i = 1; i <= m; ++i) {
+        for (i = 0; i < m; ++i) {
             wa4[i] = fvec[i];
         }
-        for (j = 1; j <= n; ++j) {
-            if (fjac[j + j * fjac_dim1] != 0.) {
+        for (j = 0; j < n; ++j) {
+            if (fjac[j + j * ldfjac] != 0.) {
                 sum = 0.;
-                for (i = j; i <= m; ++i) {
-                    sum += fjac[i + j * fjac_dim1] * wa4[i];
+                for (i = j; i < m; ++i) {
+                    sum += fjac[i + j * ldfjac] * wa4[i];
                 }
-                temp = -sum / fjac[j + j * fjac_dim1];
-                for (i = j; i <= m; ++i) {
-                    wa4[i] += fjac[i + j * fjac_dim1] * temp;
+                temp = -sum / fjac[j + j * ldfjac];
+                for (i = j; i < m; ++i) {
+                    wa4[i] += fjac[i + j * ldfjac] * temp;
                 }
             }
-            fjac[j + j * fjac_dim1] = wa1[j];
+            fjac[j + j * ldfjac] = wa1[j];
             qtf[j] = wa4[j];
         }
 
@@ -352,12 +336,12 @@
 
         gnorm = 0.;
         if (fnorm != 0.) {
-            for (j = 1; j <= n; ++j) {
-                l = ipvt[j];
+            for (j = 0; j < n; ++j) {
+                l = ipvt[j]-1;
                 if (wa2[l] != 0.) {
                     sum = 0.;
-                    for (i = 1; i <= j; ++i) {
-                        sum += fjac[i + j * fjac_dim1] * (qtf[i] / fnorm);
+                    for (i = 0; i <= j; ++i) {
+                        sum += fjac[i + j * ldfjac] * (qtf[i] / fnorm);
                     }
                     /* Computing MAX */
                     d1 = fabs(sum / wa2[l]);
@@ -378,7 +362,7 @@
 /*        rescale if necessary. */
 
         if (mode != 2) {
-            for (j = 1; j <= n; ++j) {
+            for (j = 0; j < n; ++j) {
                 /* Computing MAX */
                 d1 = diag[j], d2 = wa2[j];
                 diag[j] = max(d1,d2);
@@ -391,17 +375,17 @@
 
 /*           determine the levenberg-marquardt parameter. */
 
-            lmpar(n, &fjac[fjac_offset], ldfjac, &ipvt[1], &diag[1], &qtf[1], delta,
-                  &par, &wa1[1], &wa2[1], &wa3[1], &wa4[1]);
+            lmpar(n, fjac, ldfjac, ipvt, diag, qtf, delta,
+                  &par, wa1, wa2, wa3, wa4);
 
 /*           store the direction p and x + p. calculate the norm of p. */
 
-            for (j = 1; j <= n; ++j) {
+            for (j = 0; j < n; ++j) {
                 wa1[j] = -wa1[j];
                 wa2[j] = x[j] + wa1[j];
                 wa3[j] = diag[j] * wa1[j];
             }
-            pnorm = enorm(n, &wa3[1]);
+            pnorm = enorm(n, wa3);
 
 /*           on the first iteration, adjust the initial step bound. */
 
@@ -411,12 +395,12 @@
 
 /*           evaluate the function at x + p and calculate its norm. */
 
-            iflag = (*fcn)(p, m, n, &wa2[1], &wa4[1], &fjac[fjac_offset], ldfjac, 1);
+            iflag = (*fcn)(p, m, n, wa2, wa4, fjac, ldfjac, 1);
             ++(*nfev);
             if (iflag < 0) {
                 goto TERMINATE;
             }
-            fnorm1 = enorm(m, &wa4[1]);
+            fnorm1 = enorm(m, wa4);
 
 /*           compute the scaled actual reduction. */
 
@@ -430,15 +414,15 @@
 /*           compute the scaled predicted reduction and */
 /*           the scaled directional derivative. */
 
-            for (j = 1; j <= n; ++j) {
+            for (j = 0; j < n; ++j) {
                 wa3[j] = 0.;
-                l = ipvt[j];
+                l = ipvt[j]-1;
                 temp = wa1[l];
-                for (i = 1; i <= j; ++i) {
-                    wa3[i] += fjac[i + j * fjac_dim1] * temp;
+                for (i = 0; i <= j; ++i) {
+                    wa3[i] += fjac[i + j * ldfjac] * temp;
                 }
             }
-            temp1 = enorm(n, &wa3[1]) / fnorm;
+            temp1 = enorm(n, wa3) / fnorm;
             temp2 = (sqrt(par) * pnorm) / fnorm;
             prered = temp1 * temp1 + temp2 * temp2 / p5;
             dirder = -(temp1 * temp1 + temp2 * temp2);
@@ -479,14 +463,14 @@
 
 /*           successful iteration. update x, fvec, and their norms. */
 
-                for (j = 1; j <= n; ++j) {
+                for (j = 0; j < n; ++j) {
                     x[j] = wa2[j];
                     wa2[j] = diag[j] * x[j];
                 }
-                for (i = 1; i <= m; ++i) {
+                for (i = 0; i < m; ++i) {
                     fvec[i] = wa4[i];
                 }
-                xnorm = enorm(n, &wa2[1]);
+                xnorm = enorm(n, wa2);
                 fnorm = fnorm1;
                 ++iter;
             }
@@ -539,7 +523,7 @@ TERMINATE:
 	info = iflag;
     }
     if (nprint > 0) {
-	(*fcn)(p, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, 0);
+	(*fcn)(p, m, n, x, fvec, fjac, ldfjac, 0);
     }
     return info;
 

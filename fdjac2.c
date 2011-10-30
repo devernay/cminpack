@@ -11,9 +11,6 @@
 	const double *fvec, double *fjac, int ldfjac,
 	double epsfcn, double *wa)
 {
-    /* System generated locals */
-    int fjac_dim1, fjac_offset;
-
     /* Local variables */
     double h;
     int i, j;
@@ -95,35 +92,26 @@
 /*     burton s. garbow, kenneth e. hillstrom, jorge j. more */
 
 /*     ********** */
-    /* Parameter adjustments */
-    --wa;
-    --fvec;
-    --x;
-    fjac_dim1 = ldfjac;
-    fjac_offset = 1 + fjac_dim1 * 1;
-    fjac -= fjac_offset;
-
-    /* Function Body */
 
 /*     epsmch is the machine precision. */
 
     epsmch = dpmpar(1);
 
     eps = sqrt((max(epsfcn,epsmch)));
-    for (j = 1; j <= n; ++j) {
+    for (j = 0; j < n; ++j) {
 	temp = x[j];
 	h = eps * fabs(temp);
 	if (h == 0.) {
 	    h = eps;
 	}
 	x[j] = temp + h;
-	iflag = (*fcn)(p, m, n, &x[1], &wa[1], 2);
+	iflag = (*fcn)(p, m, n, x, wa, 2);
 	if (iflag < 0) {
             return iflag;
 	}
 	x[j] = temp;
-	for (i = 1; i <= m; ++i) {
-	    fjac[i + j * fjac_dim1] = (wa[i] - fvec[i]) / h;
+	for (i = 0; i < m; ++i) {
+	    fjac[i + j * ldfjac] = (wa[i] - fvec[i]) / h;
 	}
     }
     return 0;

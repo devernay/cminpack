@@ -17,13 +17,11 @@
 #define p05 .05
 
     /* System generated locals */
-    int a_dim1, a_offset;
     double d1;
 
     /* Local variables */
     int i, j, k, jp1;
     double sum;
-    int kmax;
     double temp;
     int minmn;
     double epsmch;
@@ -104,16 +102,6 @@
 /*     burton s. garbow, kenneth e. hillstrom, jorge j. more */
 
 /*     ********** */
-    /* Parameter adjustments */
-    --wa;
-    --acnorm;
-    --rdiag;
-    a_dim1 = lda;
-    a_offset = 1 + a_dim1 * 1;
-    a -= a_offset;
-    --ipvt;
-
-    /* Function Body */
 
 /*     epsmch is the machine precision. */
 
@@ -121,34 +109,34 @@
 
 /*     compute the initial column norms and initialize several arrays. */
 
-    for (j = 1; j <= n; ++j) {
-	acnorm[j] = enorm(m, &a[j * a_dim1 + 1]);
+    for (j = 0; j < n; ++j) {
+	acnorm[j] = enorm(m, &a[j * lda + 0]);
 	rdiag[j] = acnorm[j];
 	wa[j] = rdiag[j];
 	if (pivot) {
-	    ipvt[j] = j;
+	    ipvt[j] = j+1;
 	}
     }
 
 /*     reduce a to r with householder transformations. */
 
     minmn = min(m,n);
-    for (j = 1; j <= minmn; ++j) {
+    for (j = 0; j < minmn; ++j) {
 	if (pivot) {
 
 /*        bring the column of largest norm into the pivot position. */
 
-            kmax = j;
-            for (k = j; k <= n; ++k) {
+            int kmax = j;
+            for (k = j; k < n; ++k) {
                 if (rdiag[k] > rdiag[kmax]) {
                     kmax = k;
                 }
             }
             if (kmax != j) {
-                for (i = 1; i <= m; ++i) {
-                    temp = a[i + j * a_dim1];
-                    a[i + j * a_dim1] = a[i + kmax * a_dim1];
-                    a[i + kmax * a_dim1] = temp;
+                for (i = 0; i < m; ++i) {
+                    temp = a[i + j * lda];
+                    a[i + j * lda] = a[i + kmax * lda];
+                    a[i + kmax * lda] = temp;
                 }
                 rdiag[kmax] = rdiag[j];
                 wa[kmax] = wa[j];
@@ -161,39 +149,39 @@
 /*        compute the householder transformation to reduce the */
 /*        j-th column of a to a multiple of the j-th unit vector. */
 
-	ajnorm = enorm(m - j + 1, &a[j + j * a_dim1]);
+	ajnorm = enorm(m - (j+1) + 1, &a[j + j * lda]);
 	if (ajnorm != 0.) {
-            if (a[j + j * a_dim1] < 0.) {
+            if (a[j + j * lda] < 0.) {
                 ajnorm = -ajnorm;
             }
-            for (i = j; i <= m; ++i) {
-                a[i + j * a_dim1] /= ajnorm;
+            for (i = j; i < m; ++i) {
+                a[i + j * lda] /= ajnorm;
             }
-            a[j + j * a_dim1] += 1.;
+            a[j + j * lda] += 1.;
 
 /*        apply the transformation to the remaining columns */
 /*        and update the norms. */
 
             jp1 = j + 1;
-            if (n >= jp1) {
-                for (k = jp1; k <= n; ++k) {
+            if (n > jp1) {
+                for (k = jp1; k < n; ++k) {
                     sum = 0.;
-                    for (i = j; i <= m; ++i) {
-                        sum += a[i + j * a_dim1] * a[i + k * a_dim1];
+                    for (i = j; i < m; ++i) {
+                        sum += a[i + j * lda] * a[i + k * lda];
                     }
-                    temp = sum / a[j + j * a_dim1];
-                    for (i = j; i <= m; ++i) {
-                        a[i + k * a_dim1] -= temp * a[i + j * a_dim1];
+                    temp = sum / a[j + j * lda];
+                    for (i = j; i < m; ++i) {
+                        a[i + k * lda] -= temp * a[i + j * lda];
                     }
                     if (pivot && rdiag[k] != 0.) {
-                        temp = a[j + k * a_dim1] / rdiag[k];
+                        temp = a[j + k * lda] / rdiag[k];
                         /* Computing MAX */
                         d1 = 1. - temp * temp;
                         rdiag[k] *= sqrt((max(0.,d1)));
                         /* Computing 2nd power */
                         d1 = rdiag[k] / wa[k];
                         if (p05 * (d1 * d1) <= epsmch) {
-                            rdiag[k] = enorm(m - j, &a[jp1 + k * a_dim1]);
+                            rdiag[k] = enorm(m - (j+1), &a[jp1 + k * lda]);
                             wa[k] = rdiag[k];
                         }
                     }
