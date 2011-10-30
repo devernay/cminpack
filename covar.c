@@ -88,8 +88,6 @@
 /*     ********** */
     tolr = tol * fabs(r[0]);
 
-    /* Function Body */
-
 /*     form the inverse of r in the full upper triangle of r. */
 
     l = -1;

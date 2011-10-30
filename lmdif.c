@@ -222,8 +222,6 @@
 
 /*     ********** */
 
-    /* Function Body */
-
 /*     epsmch is the machine precision. */
 
     epsmch = dpmpar(1);

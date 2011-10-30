@@ -13,9 +13,6 @@
 
     const double factor = 100.;
 
-    /* System generated locals */
-    int fjac_dim1, fjac_offset;
-
     /* Local variables */
     int mode, nfev, njev;
     double ftol, gtol, xtol;
@@ -143,16 +140,6 @@
 /*     jorge j. more */
 
 /*     ********** */
-    /* Parameter adjustments */
-    --fvec;
-    --ipvt;
-    --x;
-    fjac_dim1 = ldfjac;
-    fjac_offset = 1 + fjac_dim1 * 1;
-    fjac -= fjac_offset;
-    --wa;
-
-    /* Function Body */
 
 /*     check the input parameters for errors. */
 
@@ -168,10 +155,10 @@
     gtol = 0.;
     mode = 1;
     nprint = 0;
-    info = lmstr(fcn, p, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac,
-	    ftol, xtol, gtol, maxfev, &wa[1], mode, factor, nprint, 
-	    &nfev, &njev, &ipvt[1], &wa[n + 1], &wa[(n << 1) + 1], &
-	    wa[n * 3 + 1], &wa[(n << 2) + 1], &wa[n * 5 + 1]);
+    info = lmstr(fcn, p, m, n, x, fvec, fjac, ldfjac,
+	    ftol, xtol, gtol, maxfev, wa, mode, factor, nprint, 
+	    &nfev, &njev, ipvt, &wa[n], &wa[(n << 1)], &
+	    wa[n * 3], &wa[(n << 2)], &wa[n * 5]);
     if (info == 8) {
 	info = 4;
     }
