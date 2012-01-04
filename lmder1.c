@@ -4,18 +4,20 @@
 */
 
 #include "cminpack.h"
+#define real __cminpack_real__
 
-/* Subroutine */ int lmder1(minpack_funcder_mn fcn, void *p, int m, int n, double *x, 
-	double *fvec, double *fjac, int ldfjac, double tol, 
-	int *ipvt, double *wa, int lwa)
+__cminpack_function__
+int lmder1(__cminpack_decl_fcnder_mn__ void *p, int m, int n, real *x, 
+	real *fvec, real *fjac, int ldfjac, real tol, 
+	int *ipvt, real *wa, int lwa)
 {
     /* Initialized data */
 
-    const double factor = 100.;
+    const real factor = 100.;
 
     /* Local variables */
     int mode, nfev, njev;
-    double ftol, gtol, xtol;
+    real ftol, gtol, xtol;
     int maxfev, nprint;
     int info;
 
@@ -155,7 +157,7 @@
     gtol = 0.;
     mode = 1;
     nprint = 0;
-    info = lmder(fcn, p, m, n, x, fvec, fjac, ldfjac,
+    info = lmder(__cminpack_param_fcnder_mn__ p, m, n, x, fvec, fjac, ldfjac,
 	    ftol, xtol, gtol, maxfev, wa, mode, factor, nprint, 
 	    &nfev, &njev, ipvt, &wa[n], &wa[(n << 1)], &
 	    wa[n * 3], &wa[(n << 2)], &wa[n * 5]);

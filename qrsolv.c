@@ -3,13 +3,15 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "cminpack.h"
+#include <math.h>
+#define real __cminpack_real__
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-/* Subroutine */ void qrsolv(int n, double *r, int ldr, 
-	const int *ipvt, const double *diag, const double *qtb, double *x, 
-	double *sdiag, double *wa)
+__cminpack_function__
+void qrsolv(int n, real *r, int ldr, 
+	const int *ipvt, const real *diag, const real *qtb, real *x, 
+	real *sdiag, real *wa)
 {
     /* Initialized data */
 
@@ -18,9 +20,9 @@
 
     /* Local variables */
     int i, j, k, l, jp1, kp1;
-    double tan, cos, sin, sum, temp, cotan;
+    real tan, cos, sin, sum, temp, cotan;
     int nsing;
-    double qtbpj;
+    real qtbpj;
 
 /*     ********** */
 

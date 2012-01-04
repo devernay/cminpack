@@ -1,22 +1,23 @@
 #include <math.h>
 #include "cminpack.h"
 #include "ssq.h"
+#define real __cminpack_real__
 
-void ssqfcn(int m, int n, const double *x, double *fvec, int nprob)
+void ssqfcn(int m, int n, const real *x, real *fvec, int nprob)
 {
     /* Initialized data */
 
-    const double v[11] = { 4.,2.,1.,.5,.25,.167,.125,.1,.0833,.0714, .0625 };
-    const double y1[15] = { .14,.18,.22,.25,.29,.32,.35,.39,.37,.58,.73,
+    const real v[11] = { 4.,2.,1.,.5,.25,.167,.125,.1,.0833,.0714, .0625 };
+    const real y1[15] = { .14,.18,.22,.25,.29,.32,.35,.39,.37,.58,.73,
 	    .96,1.34,2.1,4.39 };
-    const double y2[11] = { .1957,.1947,.1735,.16,.0844,.0627,.0456,
+    const real y2[11] = { .1957,.1947,.1735,.16,.0844,.0627,.0456,
 	    .0342,.0323,.0235,.0246 };
-    const double y3[16] = { 34780.,28610.,23650.,19630.,16370.,13720.,
+    const real y3[16] = { 34780.,28610.,23650.,19630.,16370.,13720.,
 	    11540.,9744.,8261.,7030.,6005.,5147.,4427.,3820.,3307.,2872. };
-    const double y4[33] = { .844,.908,.932,.936,.925,.908,.881,.85,.818,
+    const real y4[33] = { .844,.908,.932,.936,.925,.908,.881,.85,.818,
 	    .784,.751,.718,.685,.658,.628,.603,.58,.558,.538,.522,.506,.49,
 	    .478,.467,.457,.448,.438,.431,.424,.42,.414,.411,.406 };
-    const double y5[65] = { 1.366,1.191,1.112,1.013,.991,.885,.831,.847,
+    const real y5[65] = { 1.366,1.191,1.112,1.013,.991,.885,.831,.847,
 	    .786,.725,.746,.679,.608,.655,.616,.606,.602,.626,.651,.724,.649,
 	    .649,.694,.644,.624,.661,.612,.558,.533,.495,.5,.423,.395,.375,
 	    .372,.391,.396,.405,.428,.429,.523,.562,.607,.653,.672,.708,.633,
@@ -24,15 +25,15 @@ void ssqfcn(int m, int n, const double *x, double *fvec, int nprob)
 	    .428,.292,.162,.098,.054 };
 
     /* System generated locals */
-    double d__1, d__2;
+    real d__1, d__2;
 
     /* Local variables */
     static int i, j;
-    static double s1, s2, dx, ti;
+    static real s1, s2, dx, ti;
     static int nm1;
-    static double div;
+    static real div;
     static int iev;
-    static double tpi, sum, tmp1, tmp2, tmp3, tmp4, prod, temp;
+    static real tpi, sum, tmp1, tmp2, tmp3, tmp4, prod, temp;
 
 /*     ********** */
 
@@ -94,7 +95,7 @@ void ssqfcn(int m, int n, const double *x, double *fvec, int nprob)
             for (j = 1; j <= n; ++j) {
                 sum += x[j];
             }
-            temp = 2. * sum / (double) (m) + 1.;
+            temp = 2. * sum / (real) (m) + 1.;
             for (i = 1; i <= m; ++i) {
                 fvec[i] = -temp;
                 if (i <= n) {
@@ -108,10 +109,10 @@ void ssqfcn(int m, int n, const double *x, double *fvec, int nprob)
         case 2:
             sum = 0.;
             for (j = 1; j <= n; ++j) {
-                sum += (double) j * x[j];
+                sum += (real) j * x[j];
             }
             for (i = 1; i <= m; ++i) {
-                fvec[i] = (double) i * sum - 1.;
+                fvec[i] = (real) i * sum - 1.;
             }
             break;
 
@@ -122,11 +123,11 @@ void ssqfcn(int m, int n, const double *x, double *fvec, int nprob)
             nm1 = n - 1;
             if (nm1 >= 2) {
                 for (j = 2; j <= nm1; ++j) {
-                    sum += (double) j * x[j];
+                    sum += (real) j * x[j];
                 }
             }
             for (i = 1; i <= m; ++i) {
-                fvec[i] = (double) (i - 1) * sum - 1.;
+                fvec[i] = (real) (i - 1) * sum - 1.;
             }
             fvec[m] = -1.;
             break;
@@ -179,8 +180,8 @@ void ssqfcn(int m, int n, const double *x, double *fvec, int nprob)
 
         case 8:
             for (i = 1; i <= 15; ++i) {
-                tmp1 = (double) i;
-                tmp2 = (double) (16 - i);
+                tmp1 = (real) i;
+                tmp2 = (real) (16 - i);
                 tmp3 = tmp1;
                 if (i > 8) {
                     tmp3 = tmp2;
@@ -203,7 +204,7 @@ void ssqfcn(int m, int n, const double *x, double *fvec, int nprob)
 
         case 10:
             for (i = 1; i <= 16; ++i) {
-                temp = 5. * (double) i + 45. + x[3];
+                temp = 5. * (real) i + 45. + x[3];
                 tmp1 = x[2] / temp;
                 tmp2 = exp(tmp1);
                 fvec[i] = x[1] * tmp2 - y3[i - 1];
@@ -214,11 +215,11 @@ void ssqfcn(int m, int n, const double *x, double *fvec, int nprob)
 
         case 11:
             for (i = 1; i <= 29; ++i) {
-                div = (double) i / 29.;
+                div = (real) i / 29.;
                 s1 = 0.;
                 dx = 1.;
                 for (j = 2; j <= n; ++j) {
-                    s1 += (double) (j - 1) * dx * x[j];
+                    s1 += (real) (j - 1) * dx * x[j];
                     dx = div * dx;
                 }
                 s2 = 0.;
@@ -237,7 +238,7 @@ void ssqfcn(int m, int n, const double *x, double *fvec, int nprob)
 
         case 12:
             for (i = 1; i <= m; ++i) {
-                temp = (double) i;
+                temp = (real) i;
                 tmp1 = temp / 10.;
                 fvec[i] = exp(-tmp1 * x[1]) - exp(-tmp1 * x[2]) + (exp(-temp) - exp(-tmp1)) * x[3];
             }
@@ -247,7 +248,7 @@ void ssqfcn(int m, int n, const double *x, double *fvec, int nprob)
 
         case 13:
             for (i = 1; i <= m; ++i) {
-                temp = (double) i;
+                temp = (real) i;
                 fvec[i] = 2. + 2. * temp - exp(temp * x[1]) - exp(temp * x[2]);
             }
             break;
@@ -256,7 +257,7 @@ void ssqfcn(int m, int n, const double *x, double *fvec, int nprob)
 
         case 14:
             for (i = 1; i <= m; ++i) {
-                temp = (double) i / 5.;
+                temp = (real) i / 5.;
                 tmp1 = x[1] + temp * x[2] - exp(temp);
                 tmp2 = x[3] + sin(temp) * x[4] - cos(temp);
                 fvec[i] = tmp1 * tmp1 + tmp2 * tmp2;
@@ -280,7 +281,7 @@ void ssqfcn(int m, int n, const double *x, double *fvec, int nprob)
                     tmp2 = ti;
                 }
             }
-            dx = 1. / (double) (n);
+            dx = 1. / (real) (n);
             iev = -1;
             for (i = 1; i <= m; ++i) {
                 fvec[i] = dx * fvec[i];
@@ -294,7 +295,7 @@ void ssqfcn(int m, int n, const double *x, double *fvec, int nprob)
 /*     brown almost-linear function. */
 
         case 16:
-            sum = -((double) (n + 1));
+            sum = -((real) (n + 1));
             prod = 1.;
             for (j = 1; j <= n; ++j) {
                 sum += x[j];
@@ -310,7 +311,7 @@ void ssqfcn(int m, int n, const double *x, double *fvec, int nprob)
 
         case 17:
             for (i = 1; i <= 33; ++i) {
-                temp = 10. * (double) (i - 1);
+                temp = 10. * (real) (i - 1);
                 tmp1 = exp(-x[4] * temp);
                 tmp2 = exp(-x[5] * temp);
                 fvec[i] = y4[i - 1] - (x[1] + x[2] * tmp1 + x[3] * tmp2);
@@ -321,7 +322,7 @@ void ssqfcn(int m, int n, const double *x, double *fvec, int nprob)
 
         case 18:
             for (i = 1; i <= 65; ++i) {
-                temp = (double) (i - 1) / 10.;
+                temp = (real) (i - 1) / 10.;
                 tmp1 = exp(-x[5] * temp);
                 /* Computing 2nd power */
                 d__1 = temp - x[9];

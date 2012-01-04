@@ -4,19 +4,21 @@
 */
 
 #include "cminpack.h"
+#define real __cminpack_real__
 
-/* Subroutine */ int hybrd1(minpack_func_nn fcn, void *p, int n, double *x, double *
-	fvec, double tol, double *wa, int lwa)
+__cminpack_function__
+int hybrd1(__cminpack_decl_fcn_nn__ void *p, int n, real *x, real *
+	fvec, real tol, real *wa, int lwa)
 {
     /* Initialized data */
 
-    const double factor = 100.;
+    const real factor = 100.;
 
     /* Local variables */
     int j, ml, lr, mu, mode, nfev;
-    double xtol;
+    real xtol;
     int index;
-    double epsfcn;
+    real epsfcn;
     int maxfev, nprint;
     int info;
 
@@ -131,7 +133,7 @@
     nprint = 0;
     lr = n * (n + 1) / 2;
     index = n * 6 + lr;
-    info = hybrd(fcn, p, n, &x[1], &fvec[1], xtol, maxfev, ml, mu, epsfcn, &
+    info = hybrd(__cminpack_param_fcn_nn__ p, n, &x[1], &fvec[1], xtol, maxfev, ml, mu, epsfcn, &
 	    wa[1], mode, factor, nprint, &nfev, &wa[index + 1], n, &
 	    wa[n * 6 + 1], lr, &wa[n + 1], &wa[(n << 1) + 1], &wa[n * 3 
 	    + 1], &wa[(n << 2) + 1], &wa[n * 5 + 1]);

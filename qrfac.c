@@ -3,29 +3,31 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "cminpack.h"
+#include <math.h>
+#define real __cminpack_real__
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 
-/* Subroutine */ void qrfac(int m, int n, double *a, int
-	lda, int pivot, int *ipvt, int lipvt, double *rdiag,
-	 double *acnorm, double *wa)
+__cminpack_function__
+void qrfac(int m, int n, real *a, int
+	lda, int pivot, int *ipvt, int lipvt, real *rdiag,
+	 real *acnorm, real *wa)
 {
     /* Initialized data */
 
 #define p05 .05
 
     /* System generated locals */
-    double d1;
+    real d1;
 
     /* Local variables */
     int i, j, k, jp1;
-    double sum;
-    double temp;
+    real sum;
+    real temp;
     int minmn;
-    double epsmch;
-    double ajnorm;
+    real epsmch;
+    real ajnorm;
 
 /*     ********** */
 

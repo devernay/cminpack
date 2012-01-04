@@ -1,21 +1,22 @@
 #include <math.h>
 #include "cminpack.h"
 #include "ssq.h"
+#define real __cminpack_real__
 
-void ssqjac(int m, int n, const double *x, double *fjac, int ldfjac, int nprob)
+void ssqjac(int m, int n, const real *x, real *fjac, int ldfjac, int nprob)
 {
     /* Initialized data */
 
-    const double v[11] = { 4.,2.,1.,.5,.25,.167,.125,.1,.0833,.0714, .0625 };
+    const real v[11] = { 4.,2.,1.,.5,.25,.167,.125,.1,.0833,.0714, .0625 };
 
     /* System generated locals */
-    double d__1;
+    real d__1;
 
     /* Local variables */
     int i, j, k;
-    double s2, dx, ti;
+    real s2, dx, ti;
     int mm1, nm1;
-    double div, tpi, tmp1, tmp2, tmp3, tmp4, prod, temp;
+    real div, tpi, tmp1, tmp2, tmp3, tmp4, prod, temp;
 
 /*     ********** */
 
@@ -66,7 +67,7 @@ void ssqjac(int m, int n, const double *x, double *fjac, int ldfjac, int nprob)
 /*     linear function - full rank. */
 
         case 1:
-            temp = 2. / (double) m;
+            temp = 2. / (real) m;
             for (j = 1; j <= n; ++j) {
                 for (i = 1; i <= m; ++i) {
                     fjac[i + j * ldfjac] = -temp;
@@ -80,7 +81,7 @@ void ssqjac(int m, int n, const double *x, double *fjac, int ldfjac, int nprob)
         case 2:
             for (j = 1; j <= n; ++j) {
                 for (i = 1; i <= m; ++i) {
-                    fjac[i + j * ldfjac] = (double) i * (double) j;
+                    fjac[i + j * ldfjac] = (real) i * (real) j;
                 }
             }
             break;
@@ -98,7 +99,7 @@ void ssqjac(int m, int n, const double *x, double *fjac, int ldfjac, int nprob)
             if (nm1 >= 2) {
                 for (j = 2; j <= nm1; ++j) {
                     for (i = 2; i <= nm1; ++i) {
-                        fjac[i + j * ldfjac] = (double) (i - 1) * (double) j;
+                        fjac[i + j * ldfjac] = (real) (i - 1) * (real) j;
                     }
                 }
             }
@@ -162,8 +163,8 @@ void ssqjac(int m, int n, const double *x, double *fjac, int ldfjac, int nprob)
 
         case 8:
             for (i = 1; i <= 15; ++i) {
-                tmp1 = (double) i;
-                tmp2 = (double) (16 - i);
+                tmp1 = (real) i;
+                tmp2 = (real) (16 - i);
                 tmp3 = tmp1;
                 if (i > 8) {
                     tmp3 = tmp2;
@@ -194,7 +195,7 @@ void ssqjac(int m, int n, const double *x, double *fjac, int ldfjac, int nprob)
 
         case 10:
             for (i = 1; i <= 16; ++i) {
-                temp = 5. * (double) i + 45. + x[3];
+                temp = 5. * (real) i + 45. + x[3];
                 tmp1 = x[2] / temp;
                 tmp2 = exp(tmp1);
                 fjac[i + 1 * ldfjac] = tmp2;
@@ -207,7 +208,7 @@ void ssqjac(int m, int n, const double *x, double *fjac, int ldfjac, int nprob)
 
         case 11:
             for (i = 1; i <= 29; ++i) {
-                div = (double) i / 29.;
+                div = (real) i / 29.;
                 s2 = 0.;
                 dx = 1.;
                 for (j = 1; j <= n; ++j) {
@@ -217,7 +218,7 @@ void ssqjac(int m, int n, const double *x, double *fjac, int ldfjac, int nprob)
                 temp = 2. * div * s2;
                 dx = 1. / div;
                 for (j = 1; j <= n; ++j) {
-                    fjac[i + j * ldfjac] = dx * ((double) (j - 1) - temp);
+                    fjac[i + j * ldfjac] = dx * ((real) (j - 1) - temp);
                     dx = div * dx;
                 }
             }
@@ -235,7 +236,7 @@ void ssqjac(int m, int n, const double *x, double *fjac, int ldfjac, int nprob)
 
         case 12:
             for (i = 1; i <= m; ++i) {
-                temp = (double) i;
+                temp = (real) i;
                 tmp1 = temp / 10.;
                 fjac[i + 1 * ldfjac] = -tmp1 * exp(-tmp1 * x[1]);
                 fjac[i + 2 * ldfjac] = tmp1 * exp(-tmp1 * x[2]);
@@ -247,7 +248,7 @@ void ssqjac(int m, int n, const double *x, double *fjac, int ldfjac, int nprob)
 
         case 13:
             for (i = 1; i <= m; ++i) {
-                temp = (double) i;
+                temp = (real) i;
                 fjac[i + 1 * ldfjac] = -temp * exp(temp * x[1]);
                 fjac[i + 2 * ldfjac] = -temp * exp(temp * x[2]);
             }
@@ -257,7 +258,7 @@ void ssqjac(int m, int n, const double *x, double *fjac, int ldfjac, int nprob)
 
         case 14:
             for (i = 1; i <= m; ++i) {
-                temp = (double) i / 5.;
+                temp = (real) i / 5.;
                 ti = sin(temp);
                 tmp1 = x[1] + temp * x[2] - exp(temp);
                 tmp2 = x[3] + ti * x[4] - cos(temp);
@@ -271,7 +272,7 @@ void ssqjac(int m, int n, const double *x, double *fjac, int ldfjac, int nprob)
 /*     chebyquad function. */
 
         case 15:
-            dx = 1. / (double) (n);
+            dx = 1. / (real) (n);
             for (j = 1; j <= n; ++j) {
                 tmp1 = 1.;
                 tmp2 = 2. * x[j] - 1.;
@@ -320,7 +321,7 @@ void ssqjac(int m, int n, const double *x, double *fjac, int ldfjac, int nprob)
 
         case 17:
             for (i = 1; i <= 33; ++i) {
-                temp = 10. * (double) (i - 1);
+                temp = 10. * (real) (i - 1);
                 tmp1 = exp(-x[4] * temp);
                 tmp2 = exp(-x[5] * temp);
                 fjac[i + 1 * ldfjac] = -1.;
@@ -335,7 +336,7 @@ void ssqjac(int m, int n, const double *x, double *fjac, int ldfjac, int nprob)
 
         case 18:
             for (i = 1; i <= 65; ++i) {
-                temp = (double) (i - 1) / 10.;
+                temp = (real) (i - 1) / 10.;
                 tmp1 = exp(-x[5] * temp);
                 /* Computing 2nd power */
                 d__1 = temp - x[9];

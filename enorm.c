@@ -3,10 +3,12 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "cminpack.h"
+#include <math.h>
+#define real __cminpack_real__
 
-double enorm(int n, const double *x)
+__cminpack_function__
+real enorm(int n, const real *x)
 {
     /* Initialized data */
 
@@ -14,11 +16,11 @@ double enorm(int n, const double *x)
 #define rgiant 1.304e19
 
     /* System generated locals */
-    double ret_val, d1;
+    real ret_val, d1;
 
     /* Local variables */
     int i;
-    double s1, s2, s3, xabs, x1max, x3max, agiant, floatn;
+    real s1, s2, s3, xabs, x1max, x3max, agiant, floatn;
 
 /*     ********** */
 
@@ -63,7 +65,7 @@ double enorm(int n, const double *x)
     s3 = 0.;
     x1max = 0.;
     x3max = 0.;
-    floatn = (double) (n);
+    floatn = (real) (n);
     agiant = rgiant / floatn;
     for (i = 0; i < n; ++i) {
 	xabs = fabs(x[i]);

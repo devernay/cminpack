@@ -3,19 +3,21 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "cminpack.h"
+#include <math.h>
+#define real __cminpack_real__
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-/* Subroutine */ int lmdif(minpack_func_mn fcn, void *p, int m, int n, double *x, 
-	double *fvec, double ftol, double xtol, double
-	gtol, int maxfev, double epsfcn, double *diag, int
-	mode, double factor, int nprint, int *
-	nfev, double *fjac, int ldfjac, int *ipvt, double *
-	qtf, double *wa1, double *wa2, double *wa3, double *
+__cminpack_function__
+int lmdif(__cminpack_decl_fcn_mn__ void *p, int m, int n, real *x, 
+	real *fvec, real ftol, real xtol, real
+	gtol, int maxfev, real epsfcn, real *diag, int
+	mode, real factor, int nprint, int *
+	nfev, real *fjac, int ldfjac, int *ipvt, real *
+	qtf, real *wa1, real *wa2, real *wa3, real *
 	wa4)
 {
     /* Initialized data */
@@ -27,18 +29,18 @@
 #define p0001 1e-4
 
     /* System generated locals */
-    double d1, d2;
+    real d1, d2;
 
     /* Local variables */
     int i, j, l;
-    double par, sum;
+    real par, sum;
     int iter;
-    double temp, temp1, temp2;
+    real temp, temp1, temp2;
     int iflag;
-    double delta = 0.;
-    double ratio;
-    double fnorm, gnorm;
-    double pnorm, xnorm = 0., fnorm1, actred, dirder, epsmch, prered;
+    real delta = 0.;
+    real ratio;
+    real fnorm, gnorm;
+    real pnorm, xnorm = 0., fnorm1, actred, dirder, epsmch, prered;
     int info;
 
 /*     ********** */
@@ -247,7 +249,7 @@
 /*     evaluate the function at the starting point */
 /*     and calculate its norm. */
 
-    iflag = (*fcn)(p, m, n, x, fvec, 1);
+    iflag = fcn_mn(p, m, n, x, fvec, 1);
     *nfev = 1;
     if (iflag < 0) {
 	goto TERMINATE;
@@ -265,7 +267,7 @@
 
 /*        calculate the jacobian matrix. */
 
-        iflag = fdjac2(fcn, p, m, n, x, fvec, fjac, ldfjac,
+        iflag = fdjac2(__cminpack_param_fcn_mn__ p, m, n, x, fvec, fjac, ldfjac,
                        epsfcn, wa4);
         *nfev += n;
         if (iflag < 0) {
@@ -277,7 +279,7 @@
         if (nprint > 0) {
             iflag = 0;
             if ((iter - 1) % nprint == 0) {
-                iflag = (*fcn)(p, m, n, x, fvec, 0);
+                iflag = fcn_mn(p, m, n, x, fvec, 0);
             }
             if (iflag < 0) {
                 goto TERMINATE;
@@ -399,7 +401,7 @@
 
 /*           evaluate the function at x + p and calculate its norm. */
 
-            iflag = (*fcn)(p, m, n, wa2, wa4, 1);
+            iflag = fcn_mn(p, m, n, wa2, wa4, 1);
             ++(*nfev);
             if (iflag < 0) {
                 goto TERMINATE;
@@ -527,7 +529,7 @@ TERMINATE:
 	info = iflag;
     }
     if (nprint > 0) {
-	(*fcn)(p, m, n, x, fvec, 0);
+	fcn_mn(p, m, n, x, fvec, 0);
     }
     return info;
 

@@ -10,8 +10,9 @@
 		http://www.netlib.org/f2c/libf2c.zip
 */
 
-#include <math.h>
 #include "cminpack.h"
+#include <math.h>
+#define real __cminpack_real__
 
 /* covar1 estimates the variance-covariance matrix:
    C = sigma**2 (JtJ)**+
@@ -19,13 +20,14 @@
    and sigma**2 = fsumsq / (m - k)
    where fsumsq is the residual sum of squares and k is the rank of J.
 */
-/* Subroutine */ int covar1(int m, int n, double fsumsq, double *r, int ldr, 
-	const int *ipvt, double tol, double *wa)
+__cminpack_function__
+int covar1(int m, int n, real fsumsq, real *r, int ldr, 
+	const int *ipvt, real tol, real *wa)
 {
     /* Local variables */
     int i, j, k, l, ii, jj;
     int sing;
-    double temp, tolr;
+    real temp, tolr;
 
 /*     ********** */
 

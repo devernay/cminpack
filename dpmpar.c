@@ -4,27 +4,22 @@
 */
 
 #include "cminpack.h"
+#include <float.h>
+#define real __cminpack_real__
 
-double dpmpar(int i)
+#define double_EPSILON DBL_EPSILON
+#define double_MIN DBL_MIN
+#define double_MAX DBL_MAX
+#define float_EPSILON FLT_EPSILON
+#define float_MIN FLT_MIN
+#define float_MAX FLT_MAX
+
+#define DPMPAR(type,X) _DPMPAR(type,X)
+#define _DPMPAR(type,X) type ## _ ## X
+
+__cminpack_function__
+real dpmpar(int i)
 {
-    /* Initialized data */
-
-    static struct {
-	double e_1[3];
-	double fill_2[1];
-	} equiv_2 = { { 2.22044604926e-16, 2.22507385852e-308, 
-                        1.79769313485e308 }, { 0. } };
-
-
-    /* System generated locals */
-    double ret_val;
-
-    /* Local variables */
-#define dmach ((double *)&equiv_2)
-#define minmag ((int *)&equiv_2 + 2)
-#define maxmag ((int *)&equiv_2 + 4)
-#define mcheps ((int *)&equiv_2)
-
 /*     ********** */
 
 /*     Function dpmpar */
@@ -183,9 +178,18 @@ double dpmpar(int i)
 
 /*     Machine constants for IEEE machines. */
 
+/*    data dmach(1) /2.22044604926d-16/ */
+/*    data dmach(2) /2.22507385852d-308/ */
+/*    data dmach(3) /1.79769313485d+308/ */
 
-    ret_val = dmach[(0 + (0 + ((i - 1) << 3))) / 8];
-    return ret_val;
+    switch(i) {
+        case 1:
+            return DPMPAR(real,EPSILON);
+        case 2:
+            return DPMPAR(real,MIN);
+        default:
+            return DPMPAR(real,MAX);
+    }
 
 /*     Last card of function dpmpar. */
 

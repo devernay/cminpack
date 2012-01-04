@@ -34,9 +34,9 @@ int main()
 
   fnorm = enorm(m, fvec);
 
-  printf("      FINAL L2 NORM OF THE RESIDUALS%15.7f\n\n",fnorm);
-  printf("      EXIT PARAMETER                %10i\n\n", info);
-  printf("      FINAL APPROXIMATE SOLUTION\n\n %15.7f%15.7f%15.7f\n",
+  printf("      final l2 norm of the residuals%15.7g\n\n",fnorm);
+  printf("      exit parameter                %10i\n\n", info);
+  printf("      final approximate solution\n\n %15.7g%15.7g%15.7g\n",
 	 x[0], x[1], x[2]);
   return 0;
 }

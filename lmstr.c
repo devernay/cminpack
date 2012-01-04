@@ -3,19 +3,21 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "cminpack.h"
+#include <math.h>
+#define real __cminpack_real__
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-/* Subroutine */ int lmstr(minpack_funcderstr_mn fcn, void *p, int m, int n, double *x, 
-	double *fvec, double *fjac, int ldfjac, double ftol,
-	double xtol, double gtol, int maxfev, double *
-	diag, int mode, double factor, int nprint,
-	int *nfev, int *njev, int *ipvt, double *qtf, 
-	double *wa1, double *wa2, double *wa3, double *wa4)
+__cminpack_function__
+int lmstr(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x, 
+	real *fvec, real *fjac, int ldfjac, real ftol,
+	real xtol, real gtol, int maxfev, real *
+	diag, int mode, real factor, int nprint,
+	int *nfev, int *njev, int *ipvt, real *qtf, 
+	real *wa1, real *wa2, real *wa3, real *wa4)
 {
     /* Initialized data */
 
@@ -26,18 +28,18 @@
 #define p0001 1e-4
 
     /* System generated locals */
-    double d1, d2;
+    real d1, d2;
 
     /* Local variables */
     int i, j, l;
-    double par, sum;
+    real par, sum;
     int sing;
     int iter;
-    double temp, temp1, temp2;
+    real temp, temp1, temp2;
     int iflag;
-    double delta = 0.;
-    double ratio;
-    double fnorm, gnorm, pnorm, xnorm = 0., fnorm1, actred, dirder, 
+    real delta = 0.;
+    real ratio;
+    real fnorm, gnorm, pnorm, xnorm = 0., fnorm1, actred, dirder, 
 	    epsmch, prered;
     int info;
 
@@ -244,7 +246,7 @@
 /*     evaluate the function at the starting point */
 /*     and calculate its norm. */
 
-    iflag = (*fcn)(p, m, n, x, fvec, wa3, 1);
+    iflag = fcnderstr_mn(p, m, n, x, fvec, wa3, 1);
     *nfev = 1;
     if (iflag < 0) {
 	goto TERMINATE;
@@ -265,7 +267,7 @@
         if (nprint > 0) {
             iflag = 0;
             if ((iter - 1) % nprint == 0) {
-                iflag = (*fcn)(p, m, n, x, fvec, wa3, 0);
+                iflag = fcnderstr_mn(p, m, n, x, fvec, wa3, 0);
             }
             if (iflag < 0) {
                 goto TERMINATE;
@@ -285,7 +287,7 @@
         }
         iflag = 2;
         for (i = 0; i < m; ++i) {
-            if ((*fcn)(p, m, n, x, fvec, wa3, iflag) < 0) {
+            if (fcnderstr_mn(p, m, n, x, fvec, wa3, iflag) < 0) {
                 goto TERMINATE;
             }
             temp = fvec[i];
@@ -413,7 +415,7 @@
 
 /*           evaluate the function at x + p and calculate its norm. */
 
-            iflag = (*fcn)(p, m, n, wa2, wa4, wa3, 1);
+            iflag = fcnderstr_mn(p, m, n, wa2, wa4, wa3, 1);
             ++(*nfev);
             if (iflag < 0) {
                 goto TERMINATE;
@@ -541,7 +543,7 @@ TERMINATE:
 	info = iflag;
     }
     if (nprint > 0) {
-	(*fcn)(p, m, n, x, fvec, wa3, 0);
+	fcnderstr_mn(p, m, n, x, fvec, wa3, 0);
     }
     return info;
 

@@ -10,16 +10,18 @@
 		http://www.netlib.org/f2c/libf2c.zip
 */
 
-#include <math.h>
 #include "cminpack.h"
+#include <math.h>
+#define real __cminpack_real__
 
-/* Subroutine */ void covar(int n, double *r, int ldr, 
-	const int *ipvt, double tol, double *wa)
+__cminpack_function__
+void covar(int n, real *r, int ldr, 
+	const int *ipvt, real tol, real *wa)
 {
     /* Local variables */
     int i, j, k, l, ii, jj;
     int sing;
-    double temp, tolr;
+    real temp, tolr;
 
 /*     ********** */
 

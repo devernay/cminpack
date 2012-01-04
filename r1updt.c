@@ -3,14 +3,16 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "cminpack.h"
+#include <math.h>
+#define real __cminpack_real__
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-/* Subroutine */ void r1updt(int m, int n, double *s, int
-	ls, const double *u, double *v, double *w, int *sing)
+__cminpack_function__
+void r1updt(int m, int n, real *s, int
+	ls, const real *u, real *v, real *w, int *sing)
 {
     /* Initialized data */
 
@@ -19,9 +21,9 @@
 
     /* Local variables */
     int i, j, l, jj, nm1;
-    double tan;
+    real tan;
     int nmj;
-    double cos, sin, tau, temp, giant, cotan;
+    real cos, sin, tau, temp, giant, cotan;
 
 /*     ********** */
 

@@ -3,22 +3,24 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "cminpack.h"
+#include <math.h>
+#define real __cminpack_real__
 
 #define log10e 0.43429448190325182765
 #define factor 100.
 
 /* Table of constant values */
 
-/* Subroutine */ void chkder(int m, int n, const double *x, 
-	double *fvec, double *fjac, int ldfjac, double *xp, 
-	double *fvecp, int mode, double *err)
+__cminpack_function__
+void chkder(int m, int n, const real *x, 
+	real *fvec, real *fjac, int ldfjac, real *xp, 
+	real *fvecp, int mode, real *err)
 {
     /* Local variables */
     int i, j;
-    double eps, epsf, temp, epsmch;
-    double epslog;
+    real eps, epsf, temp, epsmch;
+    real epslog;
 
 /*     ********** */
 

@@ -1,11 +1,12 @@
 #include <math.h>
 #include "cminpack.h"
 #include "ssq.h"
+#define real __cminpack_real__
 
-void initpt(int n, double *x, int nprob, double factor)
+void initpt(int n, real *x, int nprob, real factor)
 {
     /* Local variables */
-    static double h;
+    static real h;
     static int j;
 
 /*     ********** */
@@ -152,9 +153,9 @@ void initpt(int n, double *x, int nprob, double factor)
 /*     chebyquad function. */
 
         case 15:
-            h = 1. / (double) (n + 1);
+            h = 1. / (real) (n + 1);
             for (j = 1; j <= n; ++j) {
-                x[j] = (double) j * h;
+                x[j] = (real) j * h;
             }
             break;
 

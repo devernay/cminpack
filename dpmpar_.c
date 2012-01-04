@@ -183,6 +183,9 @@ double dpmpar_(const int *i__)
 
 /*     Machine constants for IEEE machines. */
 
+/*    data dmach(1) /2.22044604926d-16/ */
+/*    data dmach(2) /2.22507385852d-308/ */
+/*    data dmach(3) /1.79769313485d+308/ */
 
     ret_val = dmach[(0 + (0 + ((*i__ - 1) << 3))) / 8];
     return ret_val;

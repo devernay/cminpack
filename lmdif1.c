@@ -4,18 +4,20 @@
 */
 
 #include "cminpack.h"
+#define real __cminpack_real__
 
-/* Subroutine */ int lmdif1(minpack_func_mn fcn, void *p, int m, int n, double *x, 
-	double *fvec, double tol, int *iwa, 
-	double *wa, int lwa)
+__cminpack_function__
+int lmdif1(__cminpack_decl_fcn_mn__ void *p, int m, int n, real *x, 
+	real *fvec, real tol, int *iwa, 
+	real *wa, int lwa)
 {
     /* Initialized data */
 
-    const double factor = 100.;
+    const real factor = 100.;
 
     int mp5n, mode, nfev;
-    double ftol, gtol, xtol;
-    double epsfcn;
+    real ftol, gtol, xtol;
+    real epsfcn;
     int maxfev, nprint;
     int info;
 
@@ -135,7 +137,7 @@
     mode = 1;
     nprint = 0;
     mp5n = m + n * 5;
-    info = lmdif(fcn, p, m, n, x, fvec, ftol, xtol, gtol, maxfev,
+    info = lmdif(__cminpack_param_fcn_mn__ p, m, n, x, fvec, ftol, xtol, gtol, maxfev,
 	    epsfcn, wa, mode, factor, nprint, &nfev, &wa[mp5n],
             m, iwa, &wa[n], &wa[(n << 1)], &wa[n * 3], 
 	    &wa[(n << 2)], &wa[n * 5]);

@@ -4,6 +4,7 @@
 #include <math.h>
 #include "cminpack.h"
 #include "ssq.h"
+#define real __cminpack_real__
 
 /*     ********** */
 
@@ -30,7 +31,7 @@
 
 /*     ********** */
 
-int fcn(void *p, int m, int n, const double *x, double *fvec, int iflag);
+int fcn(void *p, int m, int n, const real *x, real *fvec, int iflag);
 
 struct refnum {
     int nprob, nfev, njev;
@@ -51,16 +52,16 @@ int main(int argc, char **argv)
     int np[60];
     int nx[60];
 
-    double factor,fnorm1,fnorm2,tol;
+    real factor,fnorm1,fnorm2,tol;
 
-    double fnm[60];
-    double fvec[65];
-    double x[40];
+    real fnm[60];
+    real fvec[65];
+    real x[40];
 
     int ipvt[40];
 
     int iwa[40];
-    double wa[65*40+5*40+65];
+    real wa[65*40+5*40+65];
     const int lwa = 65*40+5*40+65;
 
     int num5, ilow, numleft;
@@ -189,7 +190,7 @@ int main(int argc, char **argv)
 }
 
 
-int fcn(void *p, int m, int n, const double *x, double *fvec, int iflag)
+int fcn(void *p, int m, int n, const real *x, real *fvec, int iflag)
 {
 /*     ********** */
 
