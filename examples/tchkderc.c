@@ -52,28 +52,6 @@ int main()
   printf("\n      err\n");  
   for (i=1; i<=m; i++) printf("%s%15.7g",i%3==1?"\n     ":"", err[i-1]);
   printf("\n");
-
-  {
-      int k;
-      int ipvt[n];
-      double wa1[n];
-      double fnorm = enorm(m, fvec);
-      double ftol = sqrt(dpmpar(1));
-      int j;
-      /* test covar1, which also estimates the rank of the Jacobian */
-      for (i=1; i<=n; i++) {
-          ipvt[i-1] = i;
-      }
-      k = covar1(m, n, fnorm*fnorm, fjac, ldfjac, ipvt, ftol, wa1);
-      printf("      covariance\n");
-      for (i=1; i<=n; i++) {
-          for (j=1; j<=n; j++)
-              printf("%s%15.7g", j%3==1?"\n     ":"", fjac[(i-1)*ldfjac+j-1]);
-      }
-      printf("\n");
-      /* printf("      rank(J) = %d\n", k != 0 ? k : n); */
-  }
-
   return 0;
 }
 
