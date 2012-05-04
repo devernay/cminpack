@@ -7,14 +7,40 @@
 #include <math.h>
 #define real __cminpack_real__
 
+/*
+  About the values for rdwarf and rgiant.
+
+  The original values, both in signe-precision FORTRAN source code and in double-precision code were:
+#define rdwarf 3.834e-20
+#define rgiant 1.304e19
+  See for example:
+    http://www.netlib.org/slatec/src/denorm.f
+    http://www.netlib.org/slatec/src/enorm.f
+  However, rdwarf is smaller than sqrt(FLT_MIN) = 1.0842021724855044e-19, so that rdwarf**2 will
+  underflow. This contradicts the constraints expressed in the comments below.
+
+  We changed these constants to be sqrt(dpmpar(2))*0.9 and sqrt(dpmpar(3))*0.9, as proposed by the
+  implementation found in MPFIT http://cow.physics.wisc.edu/~craigm/idl/fitting.html
+*/
+
+#define double_dwarf (1.4916681462400413e-154*0.9)
+#define double_giant (1.3407807929942596e+154*0.9)
+#define float_dwarf (1.0842021724855044e-19f*0.9f)
+#define float_giant (1.8446743523953730e+19f*0.9f)
+#define half_dwarf (2.4414062505039999e-4f*0.9f)
+#define half_giant (255.93749236874225497222f*0.9f)
+
+#define dwarf(type) _dwarf(type)
+#define _dwarf(type) type ## _dwarf
+#define giant(type) _giant(type)
+#define _giant(type) type ## _giant
+
+#define rdwarf dwarf(real)
+#define rgiant giant(real)
+
 __cminpack_function__
 real enorm(int n, const real *x)
 {
-    /* Initialized data */
-
-#define rdwarf 3.834e-20
-#define rgiant 1.304e19
-
     /* System generated locals */
     real ret_val, d1;
 
