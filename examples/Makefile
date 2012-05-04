@@ -11,8 +11,9 @@ F77=gfortran
 
 # uncomment the following for C MINPACK
 MINPACK=../libminpack.a
-F77C=gcc
-F77CFLAGS=-I .. -g -Wall
+CC=gcc
+CFLAGS=-g -Wall
+CPPFLAGS=-I..
 
 # uncomment the following to debug using valgrind
 #VALGRIND=valgrind --tool=memcheck
@@ -62,7 +63,8 @@ ftest: ${FPGM}
 	for x in ${FPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 clean:
-	-rm $(PGM) $(CPGM) $(CDRVPGM) $(FPGM) $(FSRC) $(PGM:=.out) $(CPGM:=.out) $(CDRVPGM:=.out) $(FPGM:=.out) *~ #*#
+	-rm -f $(PGM) $(CPGM) $(CDRVPGM) $(CSRC:.c=.o) $(FPGM) $(FSRC) $(FSRC:.f=.o) $(PGM:=.out) $(CPGM:=.out) $(CDRVPGM:=.out) $(FPGM:=.out) *~ #*#
+	-rm -rf $(PGM:=.dSYM) $(CPGM:=.dSYM) $(CDRVPGM:=.dSYM) $(FPGM:=.dSYM)
 
 ${FSRC}: ../doc/minpack-documentation.txt
 	cat $< | awk  '					\
@@ -84,13 +86,13 @@ ${FSRC}: ../doc/minpack-documentation.txt
 	$(F77) -o $@ $< $(MINPACK)
 
 .c:
-	$(F77C) $(F77CFLAGS) -o $@ $< $(MINPACK) -lm
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $< $(MINPACK) -lm
 
 .c.o:
-	$(F77C) $(F77CFLAGS) -c -o $@ $<
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
 lmddrvc: lmddrv.o lmdipt.o ssqfcn.o ssqjac.o
-	$(F77C) $(F77CFLAGS) -o $@ $^ $(MINPACK) -lm
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
 
 lmfdrvc: lmfdrv.o lmdipt.o ssqfcn.o
-	$(F77C) $(F77CFLAGS) -o $@ $^ $(MINPACK) -lm
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
