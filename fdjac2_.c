@@ -3,14 +3,16 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "minpack.h"
+#include <math.h>
+#define real __minpack_real__
+
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 
-/* Subroutine */ void fdjac2_(void (*fcn)(const int *m, const int *n, const double *x, double *fvec,
-			 int *iflag ), const int *m, const int *n, double *x, 
-	const double *fvec, double *fjac, const int *ldfjac, int *iflag, 
-	const double *epsfcn, double *wa)
+__minpack_function__
+void fdjac2_(__minpack_decl_fcn_mn__ const int *m, const int *n, real *x, 
+	const real *fvec, real *fjac, const int *ldfjac, int *iflag, 
+	const real *epsfcn, real *wa)
 {
     /* Table of constant values */
 
@@ -20,9 +22,9 @@
     int fjac_dim1, fjac_offset, i__1, i__2;
 
     /* Local variables */
-    double h__;
+    real h__;
     int i__, j;
-    double eps, temp, epsmch;
+    real eps, temp, epsmch;
 
 /*     ********** */
 
@@ -123,7 +125,7 @@
 	    h__ = eps;
 	}
 	x[j] = temp + h__;
-	(*fcn)(m, n, &x[1], &wa[1], iflag);
+	fcn_mn(m, n, &x[1], &wa[1], iflag);
 	if (*iflag < 0) {
 	    /* goto L30; */
             return;

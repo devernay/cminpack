@@ -4,19 +4,21 @@
 */
 
 #include "minpack.h"
+#include <math.h>
+#define real __minpack_real__
 
-/* Subroutine */ void lmdif1_( void (*fcn)(const int *m, const int *n, const double *x, double *fvec,
-			   int *iflag ), const int *m, const int *n, double *x, 
-	double *fvec, const double *tol, int *info, int *iwa, 
-	double *wa, const int *lwa)
+__minpack_function__
+void lmdif1_(__minpack_decl_fcn_mn__  const int *m, const int *n, real *x, 
+	real *fvec, const real *tol, int *info, int *iwa, 
+	real *wa, const int *lwa)
 {
     /* Initialized data */
 
-    const double factor = 100.;
+    const real factor = 100.;
 
     int mp5n, mode, nfev;
-    double ftol, gtol, xtol;
-    double epsfcn;
+    real ftol, gtol, xtol;
+    real epsfcn;
     int maxfev, nprint;
 
 /*     ********** */
@@ -144,7 +146,7 @@
     mode = 1;
     nprint = 0;
     mp5n = *m + *n * 5;
-    lmdif_(fcn, m, n, &x[1], &fvec[1], &ftol, &xtol, &gtol, &maxfev, &
+    lmdif_(__minpack_param_fcn_mn__ m, n, &x[1], &fvec[1], &ftol, &xtol, &gtol, &maxfev, &
 	    epsfcn, &wa[1], &mode, &factor, &nprint, info, &nfev, &wa[mp5n + 
 	    1], m, &iwa[1], &wa[*n + 1], &wa[(*n << 1) + 1], &wa[*n * 3 + 1], 
 	    &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);

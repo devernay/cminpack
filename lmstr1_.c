@@ -4,22 +4,24 @@
 */
 
 #include "minpack.h"
+#include <math.h>
+#define real __minpack_real__
 
-/* Subroutine */ void lmstr1_(void (*fcn)(const int *m, const int *n, const double *x, double *fvec,
-			   double *fjrow, int *iflag ), const int *m, const int *n, double *x, 
-	double *fvec, double *fjac, const int *ldfjac, const double *tol, 
-	int *info, int *ipvt, double *wa, const int *lwa)
+__minpack_function__
+void lmstr1_(__minpack_decl_fcnderstr_mn__  const int *m, const int *n, real *x, 
+	real *fvec, real *fjac, const int *ldfjac, const real *tol, 
+	int *info, int *ipvt, real *wa, const int *lwa)
 {
     /* Initialized data */
 
-    const double factor = 100.;
+    const real factor = 100.;
 
     /* System generated locals */
     int fjac_dim1, fjac_offset;
 
     /* Local variables */
     int mode, nfev, njev;
-    double ftol, gtol, xtol;
+    real ftol, gtol, xtol;
     int maxfev, nprint;
 
 /*     ********** */
@@ -171,7 +173,7 @@
     gtol = 0.;
     mode = 1;
     nprint = 0;
-    lmstr_(fcn, m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &
+    lmstr_(__minpack_param_fcnderstr_mn__ m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &
 	    ftol, &xtol, &gtol, &maxfev, &wa[1], &mode, &factor, &nprint, 
 	    info, &nfev, &njev, &ipvt[1], &wa[*n + 1], &wa[(*n << 1) + 1], &
 	    wa[*n * 3 + 1], &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);

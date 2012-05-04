@@ -3,13 +3,16 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "minpack.h"
+#include <math.h>
+#define real __minpack_real__
+
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 
-/* Subroutine */ void fdjac1_(void (*fcn)(const int *n, const double *x, double *fvec, int *iflag ), const int *n, double *x, const double *
-	fvec, double *fjac, const int *ldfjac, int *iflag, const int *ml, 
-	const int *mu, const double *epsfcn, double *wa1, double *wa2)
+__minpack_function__
+void fdjac1_(__minpack_decl_fcn_nn__ const int *n, real *x, const real *
+	fvec, real *fjac, const int *ldfjac, int *iflag, const int *ml, 
+	const int *mu, const real *epsfcn, real *wa1, real *wa2)
 {
     /* Table of constant values */
 
@@ -19,11 +22,11 @@
     int fjac_dim1, fjac_offset, i__1, i__2, i__3, i__4;
 
     /* Local variables */
-    double h__;
+    real h__;
     int i__, j, k;
-    double eps, temp;
+    real eps, temp;
     int msum;
-    double epsmch;
+    real epsmch;
 
 /*     ********** */
 
@@ -142,7 +145,7 @@
 	    h__ = eps;
 	}
 	x[j] = temp + h__;
-	(*fcn)(n, &x[1], &wa1[1], iflag);
+	fcn_nn(n, &x[1], &wa1[1], iflag);
 	if (*iflag < 0) {
 	    goto L30;
 	}
@@ -174,7 +177,7 @@ L40:
 	    x[j] = wa2[j] + h__;
 /* L60: */
 	}
-	(*fcn)(n, &x[1], &wa1[1], iflag);
+	fcn_nn(n, &x[1], &wa1[1], iflag);
 	if (*iflag < 0) {
 	    /* goto L100; */
             return;

@@ -1,162 +1,281 @@
 #ifndef __MINPACK_H__
 #define __MINPACK_H__
 
+#include "cminpack.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
+#define MINPACK_EXPORT CMINPACK_EXPORT
+
+#define __minpack_function__ __cminpack_function__
+#define __minpack_real__  __cminpack_real__
+#if defined(__CUDA_ARCH__) || defined(__CUDACC__)
+#define __minpack_type_fcn_nn__        __minpack_function__ int fcn_nn
+#define __minpack_type_fcnder_nn__     __minpack_function__ int fcnder_nn
+#define __minpack_type_fcn_mn__        __minpack_function__ int fcn_mn
+#define __minpack_type_fcnder_mn__     __minpack_function__ int fcnder_mn
+#define __minpack_type_fcnderstr_mn__  __minpack_function__ int fcnderstr_mn
+#define __minpack_decl_fcn_nn__
+#define __minpack_decl_fcnder_nn__
+#define __minpack_decl_fcn_mn__
+#define __minpack_decl_fcnder_mn__
+#define __minpack_decl_fcnderstr_mn__
+#define __minpack_param_fcn_nn__
+#define __minpack_param_fcnder_nn__
+#define __minpack_param_fcn_mn__
+#define __minpack_param_fcnder_mn__
+#define __minpack_param_fcnderstr_mn__
+#else
+#define __minpack_type_fcn_nn__        typedef int (*minpack_func_nn)
+#define __minpack_type_fcnder_nn__     typedef int (*minpack_funcder_nn)
+#define __minpack_type_fcn_mn__        typedef int (*minpack_func_mn)
+#define __minpack_type_fcnder_mn__     typedef int (*minpack_funcder_mn)
+#define __minpack_type_fcnderstr_mn__  typedef int (*minpack_funcderstr_mn)
+#define __minpack_decl_fcn_nn__        minpack_func_nn fcn_nn,
+#define __minpack_decl_fcnder_nn__     minpack_funcder_nn fcnder_nn,
+#define __minpack_decl_fcn_mn__        minpack_func_mn fcn_mn,
+#define __minpack_decl_fcnder_mn__     minpack_funcder_mn fcnder_mn,
+#define __minpack_decl_fcnderstr_mn__  minpack_funcderstr_mn fcnderstr_mn,
+#define __minpack_param_fcn_nn__       fcn_nn,
+#define __minpack_param_fcnder_nn__    fcnder_nn,
+#define __minpack_param_fcn_mn__       fcn_mn,
+#define __minpack_param_fcnder_mn__    fcnder_mn,
+#define __minpack_param_fcnderstr_mn__ fcnderstr_mn,
+#endif
+#undef __cminpack_type_fcn_nn__
+#undef __cminpack_type_fcnder_nn__
+#undef __cminpack_type_fcn_mn__
+#undef __cminpack_type_fcnder_mn__
+#undef __cminpack_type_fcnderstr_mn__
+#undef __cminpack_decl_fcn_nn__
+#undef __cminpack_decl_fcnder_nn__
+#undef __cminpack_decl_fcn_mn__
+#undef __cminpack_decl_fcnder_mn__
+#undef __cminpack_decl_fcnderstr_mn__
+#undef __cminpack_param_fcn_nn__
+#undef __cminpack_param_fcnder_nn__
+#undef __cminpack_param_fcn_mn__
+#undef __cminpack_param_fcnder_mn__
+#undef __cminpack_param_fcnderstr_mn__
+
 /* Declarations for minpack */
+
+/* Function types: */
+/* the iflag parameter is input-only (with respect to the FORTRAN */
+/*  version), the output iflag value is the return value of the function. */
+/* If iflag=0, the function shoulkd just print the current values (see */
+/* the nprint parameters below). */
+  
+/* for hybrd1 and hybrd: */
+/*         calculate the functions at x and */
+/*         return this vector in fvec. */
+/* return a negative value to terminate hybrd1/hybrd */
+__minpack_type_fcn_nn__(const int *n, const __minpack_real__ *x, __minpack_real__ *fvec, int *iflag );
+
+/* for hybrj1 and hybrj */
+/*         if iflag = 1 calculate the functions at x and */
+/*         return this vector in fvec. do not alter fjac. */
+/*         if iflag = 2 calculate the jacobian at x and */
+/*         return this matrix in fjac. do not alter fvec. */
+/* return a negative value to terminate hybrj1/hybrj */
+__minpack_type_fcnder_nn__(const int *n, const __minpack_real__ *x, __minpack_real__ *fvec, __minpack_real__ *fjac,
+                                  const int *ldfjac, int *iflag );
+
+/* for lmdif1 and lmdif */
+/*         calculate the functions at x and */
+/*         return this vector in fvec. */
+/*         if iflag = 1 the result is used to compute the residuals. */
+/*         if iflag = 2 the result is used to compute the Jacobian by finite differences. */
+/*         Jacobian computation requires exactly n function calls with iflag = 2. */
+/* return a negative value to terminate lmdif1/lmdif */
+__minpack_type_fcn_mn__(const int *m, const int *n, const __minpack_real__ *x, __minpack_real__ *fvec,
+                               int *iflag );
+
+/* for lmder1 and lmder */
+/*         if iflag = 1 calculate the functions at x and */
+/*         return this vector in fvec. do not alter fjac. */
+/*         if iflag = 2 calculate the jacobian at x and */
+/*         return this matrix in fjac. do not alter fvec. */
+/* return a negative value to terminate lmder1/lmder */
+__minpack_type_fcnder_mn__(const int *m, const int *n, const __minpack_real__ *x, __minpack_real__ *fvec,
+                                  __minpack_real__ *fjac, const int *ldfjac, int *iflag );
+
+/* for lmstr1 and lmstr */
+/*         if iflag = 1 calculate the functions at x and */
+/*         return this vector in fvec. */
+/*         if iflag = i calculate the (i-1)-st row of the */
+/*         jacobian at x and return this vector in fjrow. */
+/* return a negative value to terminate lmstr1/lmstr */
+__minpack_type_fcnderstr_mn__(const int *m, const int *n, const __minpack_real__ *x, __minpack_real__ *fvec,
+                                     __minpack_real__ *fjrow, int *iflag );
 
 /* find a zero of a system of N nonlinear functions in N variables by
    a modification of the Powell hybrid method (Jacobian calculated by
    a forward-difference approximation) */
-void hybrd1_ ( void (*fcn)(const int *n, const double *x, double *fvec, int *iflag ), 
-	       const int *n, double *x, double *fvec, const double *tol, int *info,
-	       double *wa, const int *lwa );
+__minpack_function__
+void MINPACK_EXPORT hybrd1_ (  __minpack_decl_fcn_nn__
+	       const int *n, __minpack_real__ *x, __minpack_real__ *fvec, const __minpack_real__ *tol, int *info,
+	       __minpack_real__ *wa, const int *lwa );
 
 /* find a zero of a system of N nonlinear functions in N variables by
    a modification of the Powell hybrid method (Jacobian calculated by
    a forward-difference approximation, more general). */
-void hybrd_ ( void (*fcn)(const int *n, const double *x, double *fvec, int *iflag ), 
-	      const int *n, double *x, double *fvec, const double *xtol, const int *maxfev,
-	      const int *ml, const int *mu, const double *epsfcn, double *diag, const int *mode,
-	      const double *factor, const int *nprint, int *info, int *nfev,
-	      double *fjac, const int *ldfjac, double *r, const int *lr, double *qtf,
-	      double *wa1, double *wa2, double *wa3, double *wa4);
+__minpack_function__
+void MINPACK_EXPORT hybrd_ ( __minpack_decl_fcn_nn__
+	      const int *n, __minpack_real__ *x, __minpack_real__ *fvec, const __minpack_real__ *xtol, const int *maxfev,
+	      const int *ml, const int *mu, const __minpack_real__ *epsfcn, __minpack_real__ *diag, const int *mode,
+	      const __minpack_real__ *factor, const int *nprint, int *info, int *nfev,
+	      __minpack_real__ *fjac, const int *ldfjac, __minpack_real__ *r, const int *lr, __minpack_real__ *qtf,
+	      __minpack_real__ *wa1, __minpack_real__ *wa2, __minpack_real__ *wa3, __minpack_real__ *wa4);
   
 /* find a zero of a system of N nonlinear functions in N variables by
    a modification of the Powell hybrid method (user-supplied Jacobian) */
-void hybrj1_ ( void (*fcn)(const int *n, const double *x, double *fvec, double *fjec,
-			   const int *ldfjac, int *iflag ), const int *n, double *x,
-	       double *fvec, double *fjec, const int *ldfjac, const double *tol,
-	       int *info, double *wa, const int *lwa );
+__minpack_function__
+void MINPACK_EXPORT hybrj1_ ( __minpack_decl_fcnder_nn__ const int *n, __minpack_real__ *x,
+	       __minpack_real__ *fvec, __minpack_real__ *fjec, const int *ldfjac, const __minpack_real__ *tol,
+	       int *info, __minpack_real__ *wa, const int *lwa );
           
 /* find a zero of a system of N nonlinear functions in N variables by
    a modification of the Powell hybrid method (user-supplied Jacobian,
    more general) */
-void hybrj_ ( void (*fcn)(const int *n, const double *x, double *fvec, double *fjec,
-			  const int *ldfjac, int *iflag ), const int *n, double *x,
-	      double *fvec, double *fjec, const int *ldfjac, const double *xtol,
-	      const int *maxfev, double *diag, const int *mode, const double *factor,
-	      const int *nprint, int *info, int *nfev, int *njev, double *r,
-	      const int *lr, double *qtf, double *wa1, double *wa2,
-	      double *wa3, double *wa4 );
+__minpack_function__
+void MINPACK_EXPORT hybrj_ ( __minpack_decl_fcnder_nn__ const int *n, __minpack_real__ *x,
+	      __minpack_real__ *fvec, __minpack_real__ *fjec, const int *ldfjac, const __minpack_real__ *xtol,
+	      const int *maxfev, __minpack_real__ *diag, const int *mode, const __minpack_real__ *factor,
+	      const int *nprint, int *info, int *nfev, int *njev, __minpack_real__ *r,
+	      const int *lr, __minpack_real__ *qtf, __minpack_real__ *wa1, __minpack_real__ *wa2,
+	      __minpack_real__ *wa3, __minpack_real__ *wa4 );
 
 /* minimize the sum of the squares of nonlinear functions in N
    variables by a modification of the Levenberg-Marquardt algorithm
    (Jacobian calculated by a forward-difference approximation) */
-void lmdif1_ ( void (*fcn)(const int *m, const int *n, const double *x, double *fvec,
-			   int *iflag ),
-	       const int *m, const int *n, double *x, double *fvec, const double *tol,
-	       int *info, int *iwa, double *wa, const int *lwa );
+__minpack_function__
+void MINPACK_EXPORT lmdif1_ ( __minpack_decl_fcn_mn__
+	       const int *m, const int *n, __minpack_real__ *x, __minpack_real__ *fvec, const __minpack_real__ *tol,
+	       int *info, int *iwa, __minpack_real__ *wa, const int *lwa );
 
 /* minimize the sum of the squares of nonlinear functions in N
    variables by a modification of the Levenberg-Marquardt algorithm
    (Jacobian calculated by a forward-difference approximation, more
    general) */
-void lmdif_ ( void (*fcn)(const int *m, const int *n, const double *x, double *fvec,
-			  int *iflag ),
-	      const int *m, const int *n, double *x, double *fvec, const double *ftol,
-	      const double *xtol, const double *gtol, const int *maxfev, const double *epsfcn,
-	      double *diag, const int *mode, const double *factor, const int *nprint,
-	      int *info, int *nfev, double *fjac, const int *ldfjac, int *ipvt,
-	      double *qtf, double *wa1, double *wa2, double *wa3,
-	      double *wa4 );
+__minpack_function__
+void MINPACK_EXPORT lmdif_ ( __minpack_decl_fcn_mn__
+	      const int *m, const int *n, __minpack_real__ *x, __minpack_real__ *fvec, const __minpack_real__ *ftol,
+	      const __minpack_real__ *xtol, const __minpack_real__ *gtol, const int *maxfev, const __minpack_real__ *epsfcn,
+	      __minpack_real__ *diag, const int *mode, const __minpack_real__ *factor, const int *nprint,
+	      int *info, int *nfev, __minpack_real__ *fjac, const int *ldfjac, int *ipvt,
+	      __minpack_real__ *qtf, __minpack_real__ *wa1, __minpack_real__ *wa2, __minpack_real__ *wa3,
+	      __minpack_real__ *wa4 );
 
 /* minimize the sum of the squares of nonlinear functions in N
    variables by a modification of the Levenberg-Marquardt algorithm
    (user-supplied Jacobian) */
-void lmder1_ ( void (*fcn)(const int *m, const int *n, const double *x, double *fvec,
-			   double *fjec, const int *ldfjac, int *iflag ),
-	       const int *m, const int *n, double *x, double *fvec, double *fjac,
-	       const int *ldfjac, const double *tol, int *info, int *ipvt,
-	       double *wa, const int *lwa );
+__minpack_function__
+void MINPACK_EXPORT lmder1_ ( __minpack_decl_fcnder_mn__
+	       const int *m, const int *n, __minpack_real__ *x, __minpack_real__ *fvec, __minpack_real__ *fjac,
+	       const int *ldfjac, const __minpack_real__ *tol, int *info, int *ipvt,
+	       __minpack_real__ *wa, const int *lwa );
 
 /* minimize the sum of the squares of nonlinear functions in N
    variables by a modification of the Levenberg-Marquardt algorithm
    (user-supplied Jacobian, more general) */
-void lmder_ ( void (*fcn)(const int *m, const int *n, const double *x, double *fvec,
-			  double *fjec, const int *ldfjac, int *iflag ),
-	      const int *m, const int *n, double *x, double *fvec, double *fjac,
-	      const int *ldfjac, const double *ftol, const double *xtol, const double *gtol,
-	      const int *maxfev, double *diag, const int *mode, const double *factor,
+__minpack_function__
+void MINPACK_EXPORT lmder_ ( __minpack_decl_fcnder_mn__
+	      const int *m, const int *n, __minpack_real__ *x, __minpack_real__ *fvec, __minpack_real__ *fjac,
+	      const int *ldfjac, const __minpack_real__ *ftol, const __minpack_real__ *xtol, const __minpack_real__ *gtol,
+	      const int *maxfev, __minpack_real__ *diag, const int *mode, const __minpack_real__ *factor,
 	      const int *nprint, int *info, int *nfev, int *njev, int *ipvt,
-	      double *qtf, double *wa1, double *wa2, double *wa3,
-	      double *wa4 );
+	      __minpack_real__ *qtf, __minpack_real__ *wa1, __minpack_real__ *wa2, __minpack_real__ *wa3,
+	      __minpack_real__ *wa4 );
 
 /* minimize the sum of the squares of nonlinear functions in N
    variables by a modification of the Levenberg-Marquardt algorithm
    (user-supplied Jacobian, minimal storage) */
-void lmstr1_ ( void (*fcn)(const int *m, const int *n, const double *x, double *fvec,
-			   double *fjrow, int *iflag ), const int *m, const int *n,
-	       double *x, double *fvec, double *fjac, const int *ldfjac,
-	       const double *tol, int *info, int *ipvt, double *wa, const int *lwa );
+__minpack_function__
+void MINPACK_EXPORT lmstr1_ ( __minpack_decl_fcnderstr_mn__ const int *m, const int *n,
+	       __minpack_real__ *x, __minpack_real__ *fvec, __minpack_real__ *fjac, const int *ldfjac,
+	       const __minpack_real__ *tol, int *info, int *ipvt, __minpack_real__ *wa, const int *lwa );
 
 /* minimize the sum of the squares of nonlinear functions in N
    variables by a modification of the Levenberg-Marquardt algorithm
    (user-supplied Jacobian, minimal storage, more general) */
-void lmstr_ ( void (*fcn)(const int *m, const int *n, const double *x, double *fvec,
-			  double *fjrow, int *iflag ), const int *m,
-	      const int *n, double *x, double *fvec, double *fjac,
-	      const int *ldfjac, const double *ftol, const double *xtol, const double *gtol,
-	      const int *maxfev, double *diag, const int *mode, const double *factor,
+__minpack_function__
+void MINPACK_EXPORT lmstr_ ( __minpack_decl_fcnderstr_mn__ const int *m,
+	      const int *n, __minpack_real__ *x, __minpack_real__ *fvec, __minpack_real__ *fjac,
+	      const int *ldfjac, const __minpack_real__ *ftol, const __minpack_real__ *xtol, const __minpack_real__ *gtol,
+	      const int *maxfev, __minpack_real__ *diag, const int *mode, const __minpack_real__ *factor,
 	      const int *nprint, int *info, int *nfev, int *njev, int *ipvt,
-	      double *qtf, double *wa1, double *wa2, double *wa3,
-	      double *wa4 );
+	      __minpack_real__ *qtf, __minpack_real__ *wa1, __minpack_real__ *wa2, __minpack_real__ *wa3,
+	      __minpack_real__ *wa4 );
  
-void chkder_ ( const int *m, const int *n, const double *x, double *fvec, double *fjec,
-	       const int *ldfjac, double *xp, double *fvecp, const int *mode,
-	       double *err  );
+__minpack_function__
+void MINPACK_EXPORT chkder_ ( const int *m, const int *n, const __minpack_real__ *x, __minpack_real__ *fvec, __minpack_real__ *fjec,
+	       const int *ldfjac, __minpack_real__ *xp, __minpack_real__ *fvecp, const int *mode,
+	       __minpack_real__ *err  );
 
-double dpmpar_ ( const int *i );
+__minpack_function__
+__minpack_real__ MINPACK_EXPORT dpmpar_ ( const int *i );
 
-double enorm_ ( const int *n, const double *x );
+__minpack_function__
+__minpack_real__ MINPACK_EXPORT enorm_ ( const int *n, const __minpack_real__ *x );
 
 /* compute a forward-difference approximation to the m by n jacobian
    matrix associated with a specified problem of m functions in n
    variables. */
-void fdjac2_(void (*fcn)(const int *m, const int *n, const double *x, double *fvec,
-			 int *iflag ),
-	     const int *m, const int *n, double *x, const double *fvec, double *fjac,
-	     const int *ldfjac, int *iflag, const double *epsfcn, double *wa);
+__minpack_function__
+void MINPACK_EXPORT fdjac2_(__minpack_decl_fcn_mn__
+	     const int *m, const int *n, __minpack_real__ *x, const __minpack_real__ *fvec, __minpack_real__ *fjac,
+	     const int *ldfjac, int *iflag, const __minpack_real__ *epsfcn, __minpack_real__ *wa);
 
 /* compute a forward-difference approximation to the n by n jacobian
    matrix associated with a specified problem of n functions in n
    variables. if the jacobian has a banded form, then function
    evaluations are saved by only approximating the nonzero terms. */
-void fdjac1_(void (*fcn)(const int *n, const double *x, double *fvec, int *iflag ),
-	     const int *n, double *x, const double *fvec, double *fjac, const int *ldfjac,
-	     int *iflag, const int *ml, const int *mu, const double *epsfcn, double *wa1,
-	     double *wa2);
+__minpack_function__
+void MINPACK_EXPORT fdjac1_(__minpack_decl_fcn_nn__
+	     const int *n, __minpack_real__ *x, const __minpack_real__ *fvec, __minpack_real__ *fjac, const int *ldfjac,
+	     int *iflag, const int *ml, const int *mu, const __minpack_real__ *epsfcn, __minpack_real__ *wa1,
+	     __minpack_real__ *wa2);
 
 /* internal MINPACK subroutines */
-void dogleg_(const int *n, const double *r, const int *lr, 
-             const double *diag, const double *qtb, const double *delta, double *x, 
-             double *wa1, double *wa2);
-void qrfac_(const int *m, const int *n, double *a, const int *
-            lda, const int *pivot, int *ipvt, const int *lipvt, double *rdiag,
-            double *acnorm, double *wa);
-void qrsolv_(const int *n, double *r, const int *ldr, 
-             const int *ipvt, const double *diag, const double *qtb, double *x, 
-             double *sdiag, double *wa);
-void qform_(const int *m, const int *n, double *q, const int *
-            ldq, double *wa);
-void r1updt_(const int *m, const int *n, double *s, const int *
-             ls, const double *u, double *v, double *w, int *sing);
-void r1mpyq_(const int *m, const int *n, double *a, const int *
-             lda, const double *v, const double *w);
-void lmpar_(const int *n, double *r, const int *ldr, 
-            const int *ipvt, const double *diag, const double *qtb, const double *delta, 
-            double *par, double *x, double *sdiag, double *wa1, 
-            double *wa2);
-void rwupdt_(const int *n, double *r, const int *ldr, 
-             const double *w, double *b, double *alpha, double *cos, 
-             double *sin);
-void covar_(const int *n, double *r, const int *ldr, 
-           const int *ipvt, const double *tol, double *wa);
+__minpack_function__
+void dogleg_(const int *n, const __minpack_real__ *r, const int *lr, 
+             const __minpack_real__ *diag, const __minpack_real__ *qtb, const __minpack_real__ *delta, __minpack_real__ *x, 
+             __minpack_real__ *wa1, __minpack_real__ *wa2);
+__minpack_function__
+void qrfac_(const int *m, const int *n, __minpack_real__ *a, const int *
+            lda, const int *pivot, int *ipvt, const int *lipvt, __minpack_real__ *rdiag,
+            __minpack_real__ *acnorm, __minpack_real__ *wa);
+__minpack_function__
+void qrsolv_(const int *n, __minpack_real__ *r, const int *ldr, 
+             const int *ipvt, const __minpack_real__ *diag, const __minpack_real__ *qtb, __minpack_real__ *x, 
+             __minpack_real__ *sdiag, __minpack_real__ *wa);
+__minpack_function__
+void qform_(const int *m, const int *n, __minpack_real__ *q, const int *
+            ldq, __minpack_real__ *wa);
+__minpack_function__
+void r1updt_(const int *m, const int *n, __minpack_real__ *s, const int *
+             ls, const __minpack_real__ *u, __minpack_real__ *v, __minpack_real__ *w, int *sing);
+__minpack_function__
+void r1mpyq_(const int *m, const int *n, __minpack_real__ *a, const int *
+             lda, const __minpack_real__ *v, const __minpack_real__ *w);
+__minpack_function__
+void lmpar_(const int *n, __minpack_real__ *r, const int *ldr, 
+            const int *ipvt, const __minpack_real__ *diag, const __minpack_real__ *qtb, const __minpack_real__ *delta, 
+            __minpack_real__ *par, __minpack_real__ *x, __minpack_real__ *sdiag, __minpack_real__ *wa1, 
+            __minpack_real__ *wa2);
+__minpack_function__
+void rwupdt_(const int *n, __minpack_real__ *r, const int *ldr, 
+             const __minpack_real__ *w, __minpack_real__ *b, __minpack_real__ *alpha, __minpack_real__ *cos, 
+             __minpack_real__ *sin);
+__minpack_function__
+void covar_(const int *n, __minpack_real__ *r, const int *ldr, 
+           const int *ipvt, const __minpack_real__ *tol, __minpack_real__ *wa);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
 
-#endif /* __CMINPACK_H__ */
+#endif /* __MINPACK_H__ */

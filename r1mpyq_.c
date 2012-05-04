@@ -3,20 +3,23 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "minpack.h"
+#include <math.h>
+#define real __minpack_real__
+
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-/* Subroutine */ void r1mpyq_(const int *m, const int *n, double *a, const int *
-	lda, const double *v, const double *w)
+__minpack_function__
+void r1mpyq_(const int *m, const int *n, real *a, const int *
+	lda, const real *v, const real *w)
 {
     /* System generated locals */
     int a_dim1, a_offset, i__1, i__2;
-    double d__1, d__2;
+    real d__1, d__2;
 
     /* Local variables */
     int i__, j, nm1, nmj;
-    double cos__, sin__, temp;
+    real cos__, sin__, temp;
 
 /*     ********** */
 

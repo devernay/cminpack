@@ -3,14 +3,17 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "minpack.h"
+#include <math.h>
+#define real __minpack_real__
+
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-/* Subroutine */ void r1updt_(const int *m, const int *n, double *s, const int *
-	ls, const double *u, double *v, double *w, int *sing)
+__minpack_function__
+void r1updt_(const int *m, const int *n, real *s, const int *
+	ls, const real *u, real *v, real *w, int *sing)
 {
     /* Initialized data */
 
@@ -20,13 +23,13 @@
 
     /* System generated locals */
     int i__1, i__2;
-    double d__1, d__2;
+    real d__1, d__2;
 
     /* Local variables */
     int i__, j, l, jj, nm1;
-    double tan__;
+    real tan__;
     int nmj;
-    double cos__, sin__, tau, temp, giant, cotan;
+    real cos__, sin__, tau, temp, giant, cotan;
 
 /*     ********** */
 

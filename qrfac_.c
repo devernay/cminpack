@@ -3,14 +3,17 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "minpack.h"
+#include <math.h>
+#define real __minpack_real__
+
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 
-/* Subroutine */ void qrfac_(const int *m, const int *n, double *a, const int *
-	lda, const int *pivot, int *ipvt, const int *lipvt, double *rdiag,
-	 double *acnorm, double *wa)
+__minpack_function__
+void qrfac_(const int *m, const int *n, real *a, const int *
+	lda, const int *pivot, int *ipvt, const int *lipvt, real *rdiag,
+	 real *acnorm, real *wa)
 {
     /* Initialized data */
 
@@ -19,16 +22,16 @@
 
     /* System generated locals */
     int a_dim1, a_offset, i__1, i__2, i__3;
-    double d__1, d__2, d__3;
+    real d__1, d__2, d__3;
 
     /* Local variables */
     int i__, j, k, jp1;
-    double sum;
+    real sum;
     int kmax;
-    double temp;
+    real temp;
     int minmn;
-    double epsmch;
-    double ajnorm;
+    real epsmch;
+    real ajnorm;
 
 /*     ********** */
 

@@ -3,17 +3,20 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "minpack.h"
+#include <math.h>
+#define real __minpack_real__
+
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
 
-/* Subroutine */ void lmpar_(const int *n, double *r__, const int *ldr, 
-	const int *ipvt, const double *diag, const double *qtb, const double *delta, 
-	double *par, double *x, double *sdiag, double *wa1, 
-	double *wa2)
+__minpack_function__
+void lmpar_(const int *n, real *r__, const int *ldr, 
+	const int *ipvt, const real *diag, const real *qtb, const real *delta, 
+	real *par, real *x, real *sdiag, real *wa1, 
+	real *wa2)
 {
     /* Table of constant values */
 
@@ -26,18 +29,18 @@
 
     /* System generated locals */
     int r_dim1, r_offset, i__1, i__2;
-    double d__1, d__2;
+    real d__1, d__2;
 
     /* Local variables */
     int i__, j, k, l;
-    double fp;
+    real fp;
     int jm1, jp1;
-    double sum, parc, parl;
+    real sum, parc, parl;
     int iter;
-    double temp, paru, dwarf;
+    real temp, paru, dwarf;
     int nsing;
-    double gnorm;
-    double dxnorm;
+    real gnorm;
+    real dxnorm;
 
 /*     ********** */
 

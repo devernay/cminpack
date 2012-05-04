@@ -4,22 +4,24 @@
 */
 
 #include "minpack.h"
+#include <math.h>
+#define real __minpack_real__
 
-/* Subroutine */ void hybrj1_(void (*fcn)(const int *n, const double *x, double *fvec, double *fjec,
-			   const int *ldfjac, int *iflag ), const int *n, double *x, double *
-	fvec, double *fjac, const int *ldfjac, const double *tol, int *
-	info, double *wa, const int *lwa)
+__minpack_function__
+void hybrj1_(__minpack_decl_fcnder_nn__ const int *n, real *x, real *
+	fvec, real *fjac, const int *ldfjac, const real *tol, int *
+	info, real *wa, const int *lwa)
 {
     /* Initialized data */
 
-    const double factor = 100.;
+    const real factor = 100.;
 
     /* System generated locals */
     int fjac_dim1, fjac_offset, i__1;
 
     /* Local variables */
     int j, lr, mode, nfev, njev;
-    double xtol;
+    real xtol;
     int maxfev, nprint;
 
 /*     ********** */
@@ -144,7 +146,7 @@
     }
     nprint = 0;
     lr = *n * (*n + 1) / 2;
-    hybrj_(fcn, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &xtol, &
+    hybrj_(__minpack_param_fcnder_nn__ n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &xtol, &
 	    maxfev, &wa[1], &mode, &factor, &nprint, info, &nfev, &njev, &wa[*
 	    n * 6 + 1], &lr, &wa[*n + 1], &wa[(*n << 1) + 1], &wa[*n * 3 + 1],
 	     &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);

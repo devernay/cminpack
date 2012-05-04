@@ -3,20 +3,22 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "minpack.h"
+#include <math.h>
+#define real __minpack_real__
+
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-/* Subroutine */ void hybrj_(void (*fcn)(const int *n, const double *x, double *fvec, double *fjec,
-			  const int *ldfjac, int *iflag ), const int *n, double *x, double *
-	fvec, double *fjac, const int *ldfjac, const double *xtol, const int *
-	maxfev, double *diag, const int *mode, const double *factor, const int *
-	nprint, int *info, int *nfev, int *njev, double *r__, 
-	const int *lr, double *qtf, double *wa1, double *wa2, 
-	double *wa3, double *wa4)
+__minpack_function__
+void hybrj_(__minpack_decl_fcnder_nn__  const int *n, real *x, real *
+	fvec, real *fjac, const int *ldfjac, const real *xtol, const int *
+	maxfev, real *diag, const int *mode, const real *factor, const int *
+	nprint, int *info, int *nfev, int *njev, real *r__, 
+	const int *lr, real *qtf, real *wa1, real *wa2, 
+	real *wa3, real *wa4)
 {
     /* Initialized data */
 
@@ -29,24 +31,24 @@
 
     /* System generated locals */
     int fjac_dim1, fjac_offset, i__1, i__2;
-    double d__1, d__2;
+    real d__1, d__2;
 
     /* Local variables */
     int i__, j, l, jm1, iwa[1];
-    double sum;
+    real sum;
     int sing;
     int iter;
-    double temp;
+    real temp;
     int iflag;
-    double delta;
+    real delta;
     int jeval;
     int ncsuc;
-    double ratio;
-    double fnorm;
-    double pnorm, xnorm, fnorm1;
+    real ratio;
+    real fnorm;
+    real pnorm, xnorm, fnorm1;
     int nslow1, nslow2;
     int ncfail;
-    double actred, epsmch, prered;
+    real actred, epsmch, prered;
 
 /*     ********** */
 
@@ -238,7 +240,7 @@ L20:
 /*     and calculate its norm. */
 
     iflag = 1;
-    (*fcn)(n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag);
+    fcnder_nn(n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag);
     *nfev = 1;
     if (iflag < 0) {
 	goto L300;
@@ -261,7 +263,7 @@ L30:
 /*        calculate the jacobian matrix. */
 
     iflag = 2;
-    (*fcn)(n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag);
+    fcnder_nn(n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag);
     ++(*njev);
     if (iflag < 0) {
 	goto L300;
@@ -388,7 +390,7 @@ L180:
     }
     iflag = 0;
     if ((iter - 1) % *nprint == 0) {
-	(*fcn)(n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag);
+	fcnder_nn(n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag);
     }
     if (iflag < 0) {
 	goto L300;
@@ -420,7 +422,7 @@ L190:
 /*           evaluate the function at x + p and calculate its norm. */
 
     iflag = 1;
-    (*fcn)(n, &wa2[1], &wa4[1], &fjac[fjac_offset], ldfjac, &iflag);
+    fcnder_nn(n, &wa2[1], &wa4[1], &fjac[fjac_offset], ldfjac, &iflag);
     ++(*nfev);
     if (iflag < 0) {
 	goto L300;
@@ -600,7 +602,7 @@ L300:
     }
     iflag = 0;
     if (*nprint > 0) {
-	(*fcn)(n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag);
+	fcnder_nn(n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag);
     }
     return;
 

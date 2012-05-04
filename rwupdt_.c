@@ -3,13 +3,16 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "minpack.h"
+#include <math.h>
+#define real __minpack_real__
+
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-/* Subroutine */ void rwupdt_(const int *n, double *r__, const int *ldr, 
-	const double *w, double *b, double *alpha, double *cos__, 
-	double *sin__)
+__minpack_function__
+void rwupdt_(const int *n, real *r__, const int *ldr, 
+	const real *w, real *b, real *alpha, real *cos__, 
+	real *sin__)
 {
     /* Initialized data */
 
@@ -18,11 +21,11 @@
 
     /* System generated locals */
     int r_dim1, r_offset, i__1, i__2;
-    double d__1;
+    real d__1;
 
     /* Local variables */
     int i__, j, jm1;
-    double tan__, temp, rowj, cotan;
+    real tan__, temp, rowj, cotan;
 
 /*     ********** */
 

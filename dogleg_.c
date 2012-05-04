@@ -3,26 +3,29 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "minpack.h"
+#include <math.h>
+#define real __minpack_real__
+
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 
 /* Table of constant values */
 
-/* Subroutine */ void dogleg_(const int *n, const double *r__, const int *lr, 
-	const double *diag, const double *qtb, const double *delta, double *x, 
-	double *wa1, double *wa2)
+__minpack_function__
+void dogleg_(const int *n, const real *r__, const int *lr, 
+	const real *diag, const real *qtb, const real *delta, real *x, 
+	real *wa1, real *wa2)
 {
     /* System generated locals */
     int i__1, i__2;
-    double d__1, d__2, d__3, d__4;
+    real d__1, d__2, d__3, d__4;
 
     /* Local variables */
     int i__, j, k, l, jj, jp1;
-    double sum, temp, alpha, bnorm;
-    double gnorm, qnorm, epsmch;
-    double sgnorm;
+    real sum, temp, alpha, bnorm;
+    real gnorm, qnorm, epsmch;
+    real sgnorm;
     const int c__1 = 1;
 
 /*     ********** */

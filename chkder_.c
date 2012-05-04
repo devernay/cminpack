@@ -3,17 +3,19 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "minpack.h"
+#include <math.h>
+#define real __minpack_real__
 
 #define log10e 0.43429448190325182765
 #define factor 100.
 
 /* Table of constant values */
 
-/* Subroutine */ void chkder_(const int *m, const int *n, const double *x, 
-	double *fvec, double *fjac, const int *ldfjac, double *xp, 
-	double *fvecp, const int *mode, double *err)
+__minpack_function__
+void chkder_(const int *m, const int *n, const real *x, 
+	real *fvec, real *fjac, const int *ldfjac, real *xp, 
+	real *fvecp, const int *mode, real *err)
 {
     /* Initialized data */
 
@@ -24,8 +26,8 @@
 
     /* Local variables */
     int i__, j;
-    double eps, epsf, temp, epsmch;
-    double epslog;
+    real eps, epsf, temp, epsmch;
+    real epslog;
 
 /*     ********** */
 

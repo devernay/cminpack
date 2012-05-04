@@ -3,13 +3,16 @@
 	-lf2c -lm   (in that order)
 */
 
-#include <math.h>
 #include "minpack.h"
+#include <math.h>
+#define real __minpack_real__
+
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-/* Subroutine */ void qrsolv_(const int *n, double *r__, const int *ldr, 
-	const int *ipvt, const double *diag, const double *qtb, double *x, 
-	double *sdiag, double *wa)
+__minpack_function__
+void qrsolv_(const int *n, real *r__, const int *ldr, 
+	const int *ipvt, const real *diag, const real *qtb, real *x, 
+	real *sdiag, real *wa)
 {
     /* Initialized data */
 
@@ -18,13 +21,13 @@
 
     /* System generated locals */
     int r_dim1, r_offset, i__1, i__2, i__3;
-    double d__1, d__2;
+    real d__1, d__2;
 
     /* Local variables */
     int i__, j, k, l, jp1, kp1;
-    double tan__, cos__, sin__, sum, temp, cotan;
+    real tan__, cos__, sin__, sum, temp, cotan;
     int nsing;
-    double qtbpj;
+    real qtbpj;
 
 /*     ********** */
 

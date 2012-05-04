@@ -63,16 +63,16 @@ building a DLL on windows.
 #ifndef __cminpack_real__
 #define __cminpack_real__ double
 #endif
-#define __cminpack_type_fcn_nn__        typedef int (*minpack_func_nn)
-#define __cminpack_type_fcnder_nn__     typedef int (*minpack_funcder_nn)
-#define __cminpack_type_fcn_mn__        typedef int (*minpack_func_mn)
-#define __cminpack_type_fcnder_mn__     typedef int (*minpack_funcder_mn)
-#define __cminpack_type_fcnderstr_mn__  typedef int (*minpack_funcderstr_mn)
-#define __cminpack_decl_fcn_nn__        minpack_func_nn fcn_nn,
-#define __cminpack_decl_fcnder_nn__     minpack_funcder_nn fcnder_nn,
-#define __cminpack_decl_fcn_mn__        minpack_func_mn fcn_mn,
-#define __cminpack_decl_fcnder_mn__     minpack_funcder_mn fcnder_mn,
-#define __cminpack_decl_fcnderstr_mn__  minpack_funcderstr_mn fcnderstr_mn,
+#define __cminpack_type_fcn_nn__        typedef int (*cminpack_func_nn)
+#define __cminpack_type_fcnder_nn__     typedef int (*cminpack_funcder_nn)
+#define __cminpack_type_fcn_mn__        typedef int (*cminpack_func_mn)
+#define __cminpack_type_fcnder_mn__     typedef int (*cminpack_funcder_mn)
+#define __cminpack_type_fcnderstr_mn__  typedef int (*cminpack_funcderstr_mn)
+#define __cminpack_decl_fcn_nn__        cminpack_func_nn fcn_nn,
+#define __cminpack_decl_fcnder_nn__     cminpack_funcder_nn fcnder_nn,
+#define __cminpack_decl_fcn_mn__        cminpack_func_mn fcn_mn,
+#define __cminpack_decl_fcnder_mn__     cminpack_funcder_mn fcnder_mn,
+#define __cminpack_decl_fcnderstr_mn__  cminpack_funcderstr_mn fcnderstr_mn,
 #define __cminpack_param_fcn_nn__       fcn_nn,
 #define __cminpack_param_fcnder_nn__    fcnder_nn,
 #define __cminpack_param_fcn_mn__       fcn_mn,

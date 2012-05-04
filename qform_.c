@@ -4,17 +4,21 @@
 */
 
 #include "minpack.h"
+#include <math.h>
+#define real __minpack_real__
+
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 
-/* Subroutine */ void qform_(const int *m, const int *n, double *q, const int *
-	ldq, double *wa)
+__minpack_function__
+void qform_(const int *m, const int *n, real *q, const int *
+	ldq, real *wa)
 {
     /* System generated locals */
     int q_dim1, q_offset, i__1, i__2, i__3;
 
     /* Local variables */
     int i__, j, k, l, jm1, np1;
-    double sum, temp;
+    real sum, temp;
     int minmn;
 
 /*     ********** */
