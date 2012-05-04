@@ -40,7 +40,9 @@ building a DLL on windows.
 
 #if defined(__CUDA_ARCH__) || defined(__CUDACC__)
 #define __cminpack_function__ __device__
+#ifndef __cminpack_real__
 #define __cminpack_real__ float
+#endif
 #define __cminpack_type_fcn_nn__        __cminpack_function__ int fcn_nn
 #define __cminpack_type_fcnder_nn__     __cminpack_function__ int fcnder_nn
 #define __cminpack_type_fcn_mn__        __cminpack_function__ int fcn_mn
@@ -58,7 +60,9 @@ building a DLL on windows.
 #define __cminpack_param_fcnderstr_mn__
 #else
 #define __cminpack_function__
+#ifndef __cminpack_real__
 #define __cminpack_real__ double
+#endif
 #define __cminpack_type_fcn_nn__        typedef int (*minpack_func_nn)
 #define __cminpack_type_fcnder_nn__     typedef int (*minpack_funcder_nn)
 #define __cminpack_type_fcn_mn__        typedef int (*minpack_func_mn)
