@@ -4,35 +4,46 @@
 #include <math.h>
 #include <cminpack.h>
 
+/* the following struct defines the data points */
+typedef struct  {
+    int m;
+    double *y;
+} fcndata_t;
+
 int fcn(void *p, int m, int n, const double *x, double *fvec,
 	 double *fjac, int ldfjac, int iflag);
 
 int main()
 {
-  int i, m, n, ldfjac;
+  int i, ldfjac;
   double x[3], fvec[15], fjac[15*3], xp[3], fvecp[15], 
     err[15];
-
-  m = 15;
-  n = 3;
+  const int m = 15;
+  const int n = 3;
+  /* auxiliary data (e.g. measurements) */
+  double y[15] = {1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
+                  3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
+  fcndata_t data;
+  data.m = m;
+  data.y = y;
 
   /*      the following values should be suitable for */
   /*      checking the jacobian matrix. */
 
-  x[1-1] = 9.2e-1;
-  x[2-1] = 1.3e-1;
-  x[3-1] = 5.4e-1;
+  x[0] = 9.2e-1;
+  x[1] = 1.3e-1;
+  x[2] = 5.4e-1;
 
   ldfjac = 15;
 
   /* compute xp from x */
   chkder(m, n, x, NULL, NULL, ldfjac, xp, NULL, 1, NULL);
   /* compute fvec at x (all components of fvec should be != 0).*/
-  fcn(0, m, n, x, fvec, NULL, ldfjac, 1);
+  fcn(&data, m, n, x, fvec, NULL, ldfjac, 1);
   /* compute fjac at x */
-  fcn(0, m, n, x, NULL, fjac, ldfjac, 2);
+  fcn(&data, m, n, x, NULL, fjac, ldfjac, 2);
   /* compute fvecp at xp (all components of fvecp should be != 0)*/
-  fcn(0, m, n, xp, fvecp, NULL, ldfjac, 1);
+  fcn(&data, m, n, xp, fvecp, NULL, ldfjac, 1);
   /* check Jacobian, put the result in err */
   chkder(m, n, x, fvec, fjac, ldfjac, NULL, fvecp, 2, err);
   /* Output values:
@@ -41,16 +52,16 @@ int main()
      err[I] > 0.5: i-th gradient is probably correct
   */
 
-  for (i=1; i<=m; i++)
+  for (i=0; i<m; ++i)
     {
-      fvecp[i-1] = fvecp[i-1] - fvec[i-1];
+      fvecp[i] = fvecp[i] - fvec[i];
     }
   printf("\n      fvec\n");  
-  for (i=1; i<=m; i++) printf("%s%15.7g",i%3==1?"\n     ":"", fvec[i-1]);
+  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", fvec[i]);
   printf("\n      fvecp - fvec\n");  
-  for (i=1; i<=m; i++) printf("%s%15.7g",i%3==1?"\n     ":"", fvecp[i-1]);
+  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", fvecp[i]);
   printf("\n      err\n");  
-  for (i=1; i<=m; i++) printf("%s%15.7g",i%3==1?"\n     ":"", err[i-1]);
+  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", err[i]);
   printf("\n");
   return 0;
 }
@@ -62,10 +73,8 @@ int fcn(void *p, int m, int n, const double *x, double *fvec,
 
   int i;
   double tmp1, tmp2, tmp3, tmp4;
-  double y[15]={1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
-		3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
+  const double *y = ((fcndata_t*)p)->y;
 
-  
   if (iflag == 0) 
     {
       /*      insert print statements here when nprint is positive. */
@@ -73,32 +82,29 @@ int fcn(void *p, int m, int n, const double *x, double *fvec,
     }
 
   if (iflag != 2) 
-
-    for (i=1; i<=15; i++)
-      {
-	tmp1 = i;
-	tmp2 = 16 - i;
-	tmp3 = tmp1;
-	if (i > 8) tmp3 = tmp2;
-	fvec[i-1] = y[i-1] - (x[1-1] + tmp1/(x[2-1]*tmp2 + x[3-1]*tmp3));
-      }
+    {
+      for (i=0; i < 15; ++i)
+	{
+	  tmp1 = i + 1;
+	  tmp2 = 15 - i;
+	  tmp3 = (i > 7) ? tmp2 : tmp1;
+	  fvec[i] = y[i] - (x[0] + tmp1/(x[1]*tmp2 + x[2]*tmp3));
+	}
+    }
   else
     {
-      for (i = 1; i <= 15; i++)
+      for (i=0; i<15; ++i)
 	{
-	  tmp1 = i;
-	  tmp2 = 16 - i;
-	  
+	  tmp1 = i + 1;
+	  tmp2 = 15 - i;
 	  /* error introduced into next statement for illustration. */
-	  /* corrected statement should read    tmp3 = tmp1 . */
-	  
-	  tmp3 = tmp2;
-	  if (i > 8) tmp3 = tmp2;
-	  tmp4 = (x[2-1]*tmp2 + x[3-1]*tmp3); tmp4=tmp4*tmp4;
-	  fjac[i-1+ ldfjac*(1-1)] = -1.;
-	  fjac[i-1+ ldfjac*(2-1)] = tmp1*tmp2/tmp4;
-	  fjac[i-1+ ldfjac*(3-1)] = tmp1*tmp3/tmp4;
-	}
+	  /* corrected statement should read    tmp3 = (i > 7) ? tmp2 : tmp1 . */
+	  tmp3 = (i > 7) ? tmp2 : tmp2;
+	  tmp4 = (x[1]*tmp2 + x[2]*tmp3); tmp4 = tmp4*tmp4;
+	  fjac[i + ldfjac*0] = -1.;
+	  fjac[i + ldfjac*1] = tmp1*tmp2/tmp4;
+	  fjac[i + ldfjac*2] = tmp1*tmp3/tmp4;
+	};
     }
   return 0;
 }

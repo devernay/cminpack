@@ -6,21 +6,32 @@
 #include <math.h>
 #include <cminpack.h>
 
+/* the following struct defines the data points */
+typedef struct  {
+    int m;
+    double *y;
+} fcndata_t;
+
 int fcn(void *p, int m, int n, const double *x, double *fvec, int iflag);
 
 int main()
 {
-  int m, n, info, lwa, iwa[3];
+  int info, lwa, iwa[3];
   double tol, fnorm, x[3], fvec[15], wa[75];
-
-  m = 15;
-  n = 3;
+  const int m = 15;
+  const int n = 3;
+  /* auxiliary data (e.g. measurements) */
+  double y[15] = {1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
+                  3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
+  fcndata_t data;
+  data.m = m;
+  data.y = y;
 
   /* the following starting values provide a rough fit. */
 
-  x[0] = 1.e0;
-  x[1] = 1.e0;
-  x[2] = 1.e0;
+  x[0] = 1.;
+  x[1] = 1.;
+  x[2] = 1.;
 
   lwa = 75;
 
@@ -30,7 +41,7 @@ int main()
 
   tol = sqrt(dpmpar(1));
 
-  info = lmdif1(fcn, 0, m, n, x, fvec, tol, iwa, wa, lwa);
+  info = lmdif1(fcn, &data, m, n, x, fvec, tol, iwa, wa, lwa);
 
   fnorm = enorm(m, fvec);
 
@@ -47,16 +58,13 @@ int fcn(void *p, int m, int n, const double *x, double *fvec, int iflag)
 
   int i;
   double tmp1,tmp2,tmp3;
-  double y[15]={1.4e-1,1.8e-1,2.2e-1,2.5e-1,2.9e-1,3.2e-1,3.5e-1,3.9e-1,
-		3.7e-1,5.8e-1,7.3e-1,9.6e-1,1.34e0,2.1e0,4.39e0};
+  const double *y = ((fcndata_t*)p)->y;
 
-  for (i=0; i<15; i++)
+  for (i = 0; i < 15; ++i)
     {
-      tmp1 = i+1;
+      tmp1 = i + 1;
       tmp2 = 15 - i;
-      tmp3 = tmp1;
-      
-      if (i >= 8) tmp3 = tmp2;
+      tmp3 = (i > 7) ? tmp2 : tmp1;
       fvec[i] = y[i] - (x[0] + tmp1/(x[1]*tmp2 + x[2]*tmp3));
     }
   return 0;

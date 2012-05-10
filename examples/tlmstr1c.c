@@ -4,16 +4,27 @@
 #include <math.h>
 #include <cminpack.h>
 
+/* the following struct defines the data points */
+typedef struct  {
+    int m;
+    double *y;
+} fcndata_t;
+
 int  fcn(void *p, int m, int n, const double *x, double *fvec, double *fjrow, int iflag);
 
 int main()
 {
-  int m, n, ldfjac, info, lwa, ipvt[3];
+  int ldfjac, info, lwa, ipvt[3];
   double tol, fnorm;
   double x[3], fvec[15], fjac[9], wa[30];
-
-  m = 15;
-  n = 3;
+  const int m = 15;
+  const int n = 3;
+  /* auxiliary data (e.g. measurements) */
+  double y[15] = {1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
+                  3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
+  fcndata_t data;
+  data.m = m;
+  data.y = y;
 
   /*     the following starting values provide a rough fit. */
 
@@ -30,7 +41,7 @@ int main()
 
   tol = sqrt(dpmpar(1));
 
-  info = lmstr1(fcn, 0, m, n, 
+  info = lmstr1(fcn, &data, m, n, 
 	  x, fvec, fjac, ldfjac, 
 	  tol, ipvt, wa, lwa);
 
@@ -49,31 +60,28 @@ int  fcn(void *p, int m, int n, const double *x, double *fvec, double *fjrow, in
   /*  subroutine fcn for lmstr1 example. */
   int i;
   double tmp1, tmp2, tmp3, tmp4;
-  double y[15]={1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
-		3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
+  const double *y = ((fcndata_t*)p)->y;
 
   if (iflag < 2)
     {
-      for (i=1; i<=15; i++)
+      for (i=0; i < 15; ++i)
 	{
-	  tmp1=i;
-	  tmp2 = 16-i;
-	  tmp3 = tmp1;
-	  if (i > 8) tmp3 = tmp2;
-	  fvec[i-1] = y[i-1] - (x[1-1] + tmp1/(x[2-1]*tmp2 + x[3-1]*tmp3));
+	  tmp1 = i + 1;
+	  tmp2 = 15 - i;
+	  tmp3 = (i > 7) ? tmp2 : tmp1;
+	  fvec[i] = y[i] - (x[0] + tmp1/(x[1]*tmp2 + x[2]*tmp3));
 	}
     }
   else
     {
-      i = iflag - 1;
-      tmp1 = i;
-      tmp2 = 16 - i;
-      tmp3 = tmp1;
-      if (i > 8) tmp3 = tmp2;
-      tmp4 = (x[2-1]*tmp2 + x[3-1]*tmp3); tmp4=tmp4*tmp4;
-      fjrow[1-1] = -1;
-      fjrow[2-1] = tmp1*tmp2/tmp4;
-      fjrow[3-1] = tmp1*tmp3/tmp4;
+      i = iflag - 2;
+      tmp1 = i + 1;
+      tmp2 = 15 - i;
+      tmp3 = (i > 7) ? tmp2 : tmp1;
+      tmp4 = (x[1]*tmp2 + x[2]*tmp3); tmp4 = tmp4*tmp4;
+      fjrow[0] = -1.;
+      fjrow[1] = tmp1*tmp2/tmp4;
+      fjrow[2] = tmp1*tmp3/tmp4;
     }
   return 0;
 }

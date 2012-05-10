@@ -6,18 +6,29 @@
 #include <math.h>
 #include <cminpack.h>
 
+/* the following struct defines the data points */
+typedef struct  {
+    int m;
+    double *y;
+} fcndata_t;
+
 int fcn(void *p, int m, int n, const double *x, double *fvec, int iflag);
 void fcnjac(int m, int n, const double *x, double *fjac, int ldfjac);
 
 int main()
 {
-  int i, m, n, ldfjac;
+  int i, ldfjac;
   double epsfcn;
   double x[3], fvec[15], fjac[15*3], fdjac[15*3], xp[3], fvecp[15], 
       err[15], errd[15], wa[15];
-
-  m = 15;
-  n = 3;
+  const int m = 15;
+  const int n = 3;
+  /* auxiliary data (e.g. measurements) */
+  double y[15] = {1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
+                  3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
+  fcndata_t data;
+  data.m = m;
+  data.y = y;
 
   /*      the following values should be suitable for */
   /*      checking the jacobian matrix. */
@@ -33,13 +44,13 @@ int main()
   /* compute xp from x */
   chkder(m, n, x, NULL, NULL, ldfjac, xp, NULL, 1, NULL);
   /* compute fvec at x (all components of fvec should be != 0).*/
-  fcn(0, m, n, x, fvec, 1);
+  fcn(&data, m, n, x, fvec, 1);
   /* compute fdjac (Jacobian using finite differences) at x */
-  fdjac2(fcn, 0, m, n, x, fvec, fdjac, ldfjac, epsfcn, wa);
+  fdjac2(fcn, &data, m, n, x, fvec, fdjac, ldfjac, epsfcn, wa);
   /* compute fjac (real Jacobian) at x */
   fcnjac(m, n, x, fjac, ldfjac);
   /* compute fvecp at xp (all components of fvecp should be != 0)*/
-  fcn(0, m, n, xp, fvecp, 1);
+  fcn(&data, m, n, xp, fvecp, 1);
   /* check Jacobian fdjac, put the result in errd */
   chkder(m, n, x, fvec, fdjac, ldfjac, NULL, fvecp, 2, errd);
   /* check Jacobian fjac, put the result in err */
@@ -50,18 +61,18 @@ int main()
      err[I] > 0.5: i-th gradient is probably correct
   */
 
-  for (i=1; i<=m; i++)
+  for (i=0; i<m; ++i)
     {
-      fvecp[i-1] = fvecp[i-1] - fvec[i-1];
+      fvecp[i] = fvecp[i] - fvec[i];
     }
   printf("\n      fvec\n");  
-  for (i=1; i<=m; i++) printf("%s%15.7g",i%3==1?"\n     ":"", fvec[i-1]);
+  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", fvec[i]);
   printf("\n      fvecp - fvec\n");  
-  for (i=1; i<=m; i++) printf("%s%15.7g",i%3==1?"\n     ":"", fvecp[i-1]);
+  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", fvecp[i]);
   printf("\n      errd\n");  
-  for (i=1; i<=m; i++) printf("%s%15.7g",i%3==1?"\n     ":"", errd[i-1]);
+  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", errd[i]);
   printf("\n      err\n");  
-  for (i=1; i<=m; i++) printf("%s%15.7g",i%3==1?"\n     ":"", err[i-1]);
+  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", err[i]);
   printf("\n");
   return 0;
 }
