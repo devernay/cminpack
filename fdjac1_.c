@@ -129,7 +129,6 @@ void fdjac1_(__minpack_decl_fcn_nn__ const int *n, real *x, const real *
     epsmch = dpmpar_(&c__1);
 
     eps = sqrt((max(*epsfcn,epsmch)));
-    *iflag = 1;
     msum = *ml + *mu + 1;
     if (msum < *n) {
 	goto L40;

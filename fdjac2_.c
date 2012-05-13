@@ -114,7 +114,6 @@ void fdjac2_(__minpack_decl_fcn_mn__ const int *m, const int *n, real *x,
 /*     epsmch is the machine precision. */
 
     epsmch = dpmpar_(&c__1);
-    *iflag = 1;
 
     eps = sqrt((max(*epsfcn,epsmch)));
     i__1 = *n;
