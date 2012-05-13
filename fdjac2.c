@@ -107,6 +107,9 @@ int fdjac2(__cminpack_decl_fcn_mn__ void *p, int m, int n, real *x,
 	    h = eps;
 	}
 	x[j] = temp + h;
+        /* the last parameter of fcn_mn() is set to 2 to tell calls
+           made to compute the function from calls made to compute
+           the Jacobian (see fcn() in tlmfdrv.c) */
 	iflag = fcn_mn(p, m, n, x, wa, 2);
 	if (iflag < 0) {
             return iflag;
