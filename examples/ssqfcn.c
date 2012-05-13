@@ -25,7 +25,7 @@ void ssqfcn(int m, int n, const real *x, real *fvec, int nprob)
 	    .428,.292,.162,.098,.054 };
 
     /* System generated locals */
-    real d__1, d__2;
+    real d__1;
 
     /* Local variables */
     static int i, j;

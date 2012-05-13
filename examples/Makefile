@@ -29,9 +29,14 @@ PGM=tchkder_ thybrd_ thybrd1_ thybrj_ thybrj1_ tlmder_ tlmder1_ tlmdif_ \
 	tlmdif1_ tlmstr_ tlmstr1_ tfdjac2_
 CPGM=tchkderc thybrdc thybrd1c thybrjc thybrj1c tlmderc tlmder1c tlmdifc \
 	tlmdif1c tlmstrc tlmstr1c tfdjac2c
+DRVPGM=lmddrv lmfdrv lmsdrv hyjdrv hybdrv chkdrv
 CDRVPGM=lmddrvc lmfdrvc lmsdrvc hyjdrvc hybdrvc chkdrvc
-FSRC=tchkder.f thybrd.f thybrd1.f thybrj.f thybrj1.f tlmder.f tlmder1.f \
+FSRCGEN=tchkder.f thybrd.f thybrd1.f thybrj.f thybrj1.f tlmder.f tlmder1.f \
 	tlmdif.f tlmdif1.f tlmstr.f tlmstr1.f
+FSRC=$(FSRCGEN) \
+	lmddrv.f lmdipt.f ssqfcn.f ssqjac.f lmfdrv.f lmsdrv.f \
+	hyjdrv.f hybipt.f vecfcn.f vecjac.f hybdrv.f \
+	errjac.f chkdrv.f
 SRC=tchkder_.c thybrd_.c thybrd1_.c thybrj_.c thybrj1_.c tlmder_.c tlmder1_.c \
 	tlmdif_.c tlmdif1_.c tlmstr_.c tlmstr1_.c tfdjac2_.c
 CSRC=tchkderc.c thybrdc.c thybrd1c.c thybrjc.c thybrj1c.c tlmderc.c tlmder1c.c \
@@ -51,8 +56,9 @@ all:
 	@echo "make ctest: calling C MINPACK from C"
 	@echo "Intensive (driver) tests:"
 	@echo "make ctestdrv: calling C MINPACK from C"
+	@echo "make ftestdrv: calling FORTRAN MINPACK from FORTRAN"
 
-.PHONY: test ctest ctestdrv ftest
+.PHONY: test ctest ctestdrv ftest ftestdrv
 test: ${PGM}
 	for x in ${PGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/`echo $$x.ref|sed -e s/_.ref/c.ref/` $$x.out ; done
 
@@ -62,22 +68,34 @@ ctest: ${CPGM}
 ctestdrv: ${CDRVPGM} ctestlmdrv ctesthydrv ctestchkdrv
 
 ctestlmdrv: lmddrvc lmfdrvc lmsdrvc
-	for x in lmddrvc lmfdrvc lmsdrvc; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 ctesthydrv: hyjdrvc hybdrvc
-	for x in hyjdrvc hybdrvc; do echo $$x; $(VALGRIND) ./$$x < testdata/hybrd.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/hybrd.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 ctestchkdrv: chkdrvc
-	for x in chkdrvc; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 ftest: ${FPGM}
 	for x in ${FPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
+ftestdrv: ${DRVPGM} ftestlmdrv ftesthydrv ftestchkdrv
+
+ftestlmdrv: lmddrv lmfdrv lmsdrv
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+
+ftesthydrv: hyjdrv hybdrv
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/hybrd.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+
+ftestchkdrv: chkdrv
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+
+
 clean:
-	-rm -f $(PGM) $(CPGM) $(CDRVPGM) $(CSRC:.c=.o) $(FPGM) $(FSRC) $(FSRC:.f=.o) $(PGM:=.out) $(CPGM:=.out) $(CDRVPGM:=.out) $(FPGM:=.out) *~ #*#
+	-rm -f $(PGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(CSRC:.c=.o) $(FPGM) $(FSRCGEN) $(FSRC:.f=.o) $(PGM:=.out) $(CPGM:=.out) $(CDRVPGM:=.out) $(FPGM:=.out) *~ #*#
 	-rm -rf $(PGM:=.dSYM) $(CPGM:=.dSYM) $(CDRVPGM:=.dSYM) $(FPGM:=.dSYM)
 
-${FSRC}: ../doc/minpack-documentation.txt
+${FSRCGEN}: ../doc/minpack-documentation.txt
 	cat $< | awk  '					\
 	/DRIVER FOR [A-Z1]+ EXAMPLE/{				\
 	    pgm=tolower($$4);					\
@@ -119,3 +137,21 @@ hybdrvc: hybdrv.o hybipt.o vecfcn.o
 
 chkdrvc: chkdrv.o hybipt.o vecfcn.o errjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
+
+lmddrv: lmddrv.f lmdipt.f ssqfcn.f ssqjac.f
+	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
+
+lmfdrv: lmfdrv.f lmdipt.f ssqfcn.f
+	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
+
+lmsdrv: lmsdrv.f lmdipt.f ssqfcn.f ssqjac.f
+	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
+
+hyjdrv: hyjdrv.f hybipt.f vecfcn.f vecjac.f
+	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
+
+hybdrv: hybdrv.f hybipt.f vecfcn.f
+	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
+
+chkdrv: chkdrv.f hybipt.f vecfcn.f errjac.f
+	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
