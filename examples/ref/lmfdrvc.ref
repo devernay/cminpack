@@ -247,17 +247,17 @@
 
       initial l2 norm of the residuals  1.4662878e+01
 
-      final l2 norm of the residuals    3.8725889e-21
+      final l2 norm of the residuals    1.1138530e-23
 
-      number of function evaluations         241
+      number of function evaluations         235
 
-      number of Jacobian evaluations         190
+      number of Jacobian evaluations         192
 
       exit parameter                           5
 
       final approximate solution
 
-       5.2630544e-11 -5.2630544e-12  2.4659816e-11  2.4659816e-11
+       2.5434075e-12 -2.5434075e-13  6.9489054e-13  6.9489054e-13
 
 
 
@@ -267,17 +267,17 @@
 
       initial l2 norm of the residuals  1.2709839e+03
 
-      final l2 norm of the residuals    2.7169438e-21
+      final l2 norm of the residuals    2.6976056e-21
 
-      number of function evaluations         239
+      number of function evaluations         236
 
-      number of Jacobian evaluations         191
+      number of Jacobian evaluations         192
 
       exit parameter                           5
 
       final approximate solution
 
-       4.4170183e-11 -4.4170183e-12  2.0438528e-11  2.0438528e-11
+       4.4007789e-11 -4.4007789e-12  2.0384062e-11  2.0384062e-11
 
 
 
@@ -287,9 +287,9 @@
 
       initial l2 norm of the residuals  1.2688790e+05
 
-      final l2 norm of the residuals    7.1003240e-21
+      final l2 norm of the residuals    1.5238485e-22
 
-      number of function evaluations         237
+      number of function evaluations         239
 
       number of Jacobian evaluations         191
 
@@ -297,7 +297,7 @@
 
       final approximate solution
 
-       7.1144780e-11 -7.1144780e-12  3.3638319e-11  3.3638319e-11
+       1.0422573e-11 -1.0422573e-12  4.9279439e-12  4.9279439e-12
 
 
 
@@ -1090,10 +1090,7 @@
        1.3099766e+00  4.3155248e-01  6.3366126e-01  5.9942855e-01  7.5417976e-01
        9.0430010e-01  1.3657995e+00  4.8237321e+00  2.3986847e+00  4.5688756e+00
        5.6753421e+00
-
-
-
- Summary of 53 calls to lmdif1: 
+ summary of 53 calls to lmdif1: 
 
 
 
@@ -1111,9 +1108,9 @@
     5    3    3    11     8     2   2.2689445e-16
     5    3    3    20    15     2   1.1296851e-17
     5    3    3    19    16     2   4.3371437e-22
-    6    4    4   241   190     5   3.8725889e-21
-    6    4    4   239   191     5   2.7169438e-21
-    6    4    4   237   191     5   7.1003240e-21
+    6    4    4   235   192     5   1.1138530e-23
+    6    4    4   236   192     5   2.6976056e-21
+    6    4    4   239   191     5   1.5238485e-22
     7    2    2    14     8     1   6.9988752e+00
     7    2    2    19    12     1   6.9988752e+00
     7    2    2    24    17     1   6.9988752e+00
