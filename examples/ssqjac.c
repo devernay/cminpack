@@ -94,15 +94,31 @@ void ssqjac(int m, int n, const real *x, real *fjac, int ldfjac, int nprob)
                     fjac[i + j * ldfjac] = 0.;
                 }
             }
+#if 0
+    if (nm1 < 2) {
+	goto L120;
+    }
+    for (j = 2; j <= nm1; ++j) {
+	i__2 = mm1;
+	for (i__ = 2; i__ <= mm1; ++i__) {
+	    i__3 = i__ - 1;
+	    fjac[i__ + j * fjac_dim1] = (doublereal) i__3 * (doublereal) j;
+/* L100: */
+	}
+/* L110: */
+    }
+L120:
+#else
             nm1 = n - 1;
             mm1 = m - 1;
             if (nm1 >= 2) {
                 for (j = 2; j <= nm1; ++j) {
-                    for (i = 2; i <= nm1; ++i) {
+                    for (i = 2; i <= mm1; ++i) {
                         fjac[i + j * ldfjac] = (real) (i - 1) * (real) j;
                     }
                 }
             }
+#endif
             break;
 
 /*     rosenbrock function. */

@@ -14,11 +14,12 @@ int fcn(void *p, int m, int n, const double *x, double *fvec, double *fjrow, int
 
 int main()
 {
-  int j, ldfjac, maxfev, mode, nprint, info, nfev, njev;
+  int i, j, ldfjac, maxfev, mode, nprint, info, nfev, njev;
   int ipvt[3];
   double ftol, xtol, gtol, factor, fnorm;
   double x[3], fvec[15], fjac[3*3], diag[3], qtf[3], 
     wa1[3], wa2[3], wa3[3], wa4[15];
+  int k;
   const int m = 15;
   const int n = 3;
   /* auxiliary data (e.g. measurements) */
@@ -61,6 +62,31 @@ int main()
   printf("      final approximate solution\n");
   for (j=0; j<n; ++j) printf("%s%15.7g", j%3==0?"\n     ":"", x[j]);
   printf("\n");
+  ftol = dpmpar(1);
+#ifdef TEST_COVAR
+  {
+      /* test the original covar from MINPACK */
+      double covfac = fnorm*fnorm/(m-n);
+      double fjac1[15*3];
+      memcpy(fjac1, fjac, sizeof(fjac));
+      covar(n, fjac1, ldfjac, ipvt, ftol, wa1);
+      printf("      covariance (using covar)\n");
+      for (i=0; i<n; ++i) {
+          for (j=0; j<n; ++j)
+              printf("%s%15.7g", j%3==0?"\n     ":"", fjac1[i*ldfjac+j]*covfac);
+      }
+      printf("\n");
+  }
+#endif
+  /* test covar1, which also estimates the rank of the Jacobian */
+  k = covar1(m, n, fnorm*fnorm, fjac, ldfjac, ipvt, ftol, wa1);
+  printf("      covariance\n");
+  for (i=0; i<n; ++i) {
+    for (j=0; j<n; ++j)
+      printf("%s%15.7g", j%3==0?"\n     ":"", fjac[i*ldfjac+j]);
+  }
+  printf("\n");
+  /* printf("      rank(J) = %d\n", k != 0 ? k : n); */
 
   return 0;
 }

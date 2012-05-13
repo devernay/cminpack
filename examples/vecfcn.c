@@ -117,7 +117,7 @@ L20:
 /*     powell badly scaled function. */
 
 L30:
-    fvec[1] = 1e-4 * x[1] * x[2] - 1.;
+    fvec[1] = 1e4 * x[1] * x[2] - 1.;
     fvec[2] = exp(-x[1]) + exp(-x[2]) - 1.0001;
     goto L380;
 

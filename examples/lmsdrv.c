@@ -1,4 +1,4 @@
-/* Usage: lmfdrv < lm.data */
+/* Usage: lmddrv < lm.data */
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -22,7 +22,7 @@
 
 /*       user-supplied ...... fcn */
 
-/*       minpack-supplied ... dpmpar,enorm,initpt,lmdif1,ssqfcn */
+/*       minpack-supplied ... dpmpar,enorm,initpt,lmstr1,ssqfcn */
 
 /*       fortran-supplied ... dsqrt */
 
@@ -31,7 +31,7 @@
 
 /*     ********** */
 
-int fcn(void *p, int m, int n, const real *x, real *fvec, int iflag);
+int fcn(void *p, int m, int n, const real *x, real *fvec, real *fjrow, int iflag);
 
 struct refnum {
     int nprob, nfev, njev;
@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 {
 
     int i,ic,k,m,n,ntries;
-    struct refnum lmdiftest;
+    struct refnum lmstrtest;
     int info;
 
     int ma[60];
@@ -54,13 +54,17 @@ int main(int argc, char **argv)
 
     real factor,fnorm1,fnorm2,tol;
 
+    real fjac[40*40];
+    const int ldfjac = 40;
+
     real fnm[60];
     real fvec[65];
     real x[40];
 
-    int iwa[40];
-    real wa[65*40+5*40+65];
-    const int lwa = 65*40+5*40+65;
+    int ipvt[40];
+
+    real wa[5*40+65];
+    const int lwa = 5*40+65;
 
     int num5, ilow, numleft;
 
@@ -69,44 +73,43 @@ int main(int argc, char **argv)
     ic = 0;
 
     for (;;) {
-        scanf("%5d%5d%5d%5d\n", &lmdiftest.nprob, &n, &m, &ntries);
+        scanf("%5d%5d%5d%5d\n", &lmstrtest.nprob, &n, &m, &ntries);
 /*
          read (nread,50) nprob,n,m,ntries
    50 format (4i5)
 */
-        if (lmdiftest.nprob <= 0.)
+        if (lmstrtest.nprob <= 0.)
             break;
         factor = 1.;
 
         for (k = 0; k < ntries; ++k, ++ic) {
-            lmdipt(n,x,lmdiftest.nprob,factor);
+            lmdipt(n,x,lmstrtest.nprob,factor);
 
-            ssqfcn(m,n,x,fvec,lmdiftest.nprob);
+            ssqfcn(m,n,x,fvec,lmstrtest.nprob);
 
             fnorm1 = enorm(m,fvec);
 
-            printf("\n\n\n\n      problem%5d      dimensions%5d%5d\n\n", lmdiftest.nprob, n, m);
+            printf("\n\n\n\n      problem%5d      dimensions%5d%5d\n\n", lmstrtest.nprob, n, m);
 /*
             write (nwrite,60) nprob,n,m
    60 format ( //// 5x, 8h problem, i5, 5x, 11h dimensions, 2i5, 5x //
      *         )
 */
 
-            lmdiftest.nfev = 0;
-            lmdiftest.njev = 0;
+            lmstrtest.nfev = 0;
+            lmstrtest.njev = 0;
 
-            info = lmdif1(fcn,&lmdiftest,m,n,x,fvec,tol,iwa,wa,lwa);
+            info = lmstr1(fcn,&lmstrtest,m,n,x,fvec,fjac,ldfjac,tol,ipvt,wa,lwa);
 
-            ssqfcn(m,n,x,fvec,lmdiftest.nprob);
+            ssqfcn(m,n,x,fvec,lmstrtest.nprob);
 
             fnorm2 = enorm(m,fvec);
 
-            np[ic] = lmdiftest.nprob;
+            np[ic] = lmstrtest.nprob;
             na[ic] = n;
             ma[ic] = m;
-            nf[ic] = lmdiftest.nfev;
-            lmdiftest.njev /= n;
-            nj[ic] = lmdiftest.njev;
+            nf[ic] = lmstrtest.nfev;
+            nj[ic] = lmstrtest.njev;
             nx[ic] = info;
 
             fnm[ic] = fnorm2;
@@ -114,10 +117,10 @@ int main(int argc, char **argv)
             printf("\n      initial l2 norm of the residuals%15.7e\n"
                    "\n      final l2 norm of the residuals  %15.7e\n"
                    "\n      number of function evaluations  %10d\n"
-                   "\n      number of Jacobian evaluations  %10d\n"
+                   "\n      number of jacobian evaluations  %10d\n"
                    "\n      exit parameter                  %10d\n"
                    "\n      final approximate solution\n\n",
-                   fnorm1, fnorm2, lmdiftest.nfev, lmdiftest.njev, info);
+                   fnorm1, fnorm2, lmstrtest.nfev, lmstrtest.njev, info);
             num5 = n/5;
 
             for (i = 0; i < num5; ++i) {
@@ -166,12 +169,12 @@ int main(int argc, char **argv)
 
     }
 
-    printf("\f summary of %d calls to lmdif1: \n\n", ic);
+    printf("\f summary of %d calls to lmstr1\n", ic);
 /*
       write (nwrite,80) ic
-   80 format (12h1summary of , i3, 16h calls to lmdif1 /)
+   80 format (12h1summary of , i3, 16h calls to lmstr1 /)
 */
-    printf("\n\n nprob   n    m   nfev  njev  info  final L2 norm \n\n");
+    printf(" nprob   n    m   nfev  njev  info  final L2 norm \n\n");
 /*
       write (nwrite,90)
    90 format (49h nprob   n    m   nfev  njev  info  final l2 norm /)
@@ -189,16 +192,25 @@ int main(int argc, char **argv)
     exit(0);
 }
 
-
-int fcn(void *p, int m, int n, const real *x, real *fvec, int iflag)
+real temp[65*40];
+int fcn(void *p, int m, int n, const real *x, real *fvec, real *fjrow, int iflag)
 {
+    /* Local variables */
+    int j;
+    //static real temp[65*40];
+
 /*     ********** */
 
 /*     the calling sequence of fcn should be identical to the */
 /*     calling sequence of the function subroutine in the nonlinear */
-/*     least-squares solver. fcn should only call the testing */
-/*     function and jacobian subroutines ssqfcn and ssqjac with */
-/*     the appropriate value of problem number (nprob). */
+/*     least squares solver. if iflag = 1, fcn should only call the */
+/*     testing function subroutine ssqfcn. if iflag = i, i .ge. 2, */
+/*     fcn should only call subroutine ssqjac to calculate the */
+/*     (i-1)-st row of the jacobian. (the ssqjac subroutine provided */
+/*     here for testing purposes calculates the entire jacobian */
+/*     matrix and is therefore called only when iflag = 2.) each */
+/*     call to ssqfcn or ssqjac should specify the appropriate */
+/*     value of problem number (nprob). */
 
 /*     subprograms called */
 
@@ -208,13 +220,19 @@ int fcn(void *p, int m, int n, const real *x, real *fvec, int iflag)
 /*     burton s. garbow, kenneth e. hillstrom, jorge j. more */
 
 /*     ********** */
-    struct refnum *lmdiftest = (struct refnum *)p;
-    ssqfcn(m,n,x,fvec,lmdiftest->nprob);
+    struct refnum *lmstrtest = (struct refnum *)p;
     if (iflag == 1) {
-        lmdiftest->nfev++;
+        ssqfcn(m,n,x,fvec,lmstrtest->nprob);
+        lmstrtest->nfev++;
     }
-    if (iflag == 2) {
-        lmdiftest->njev++;
+    if (iflag >= 2) {
+        if (iflag == 2) {
+            ssqjac(m,n,x,temp,65,lmstrtest->nprob);
+            lmstrtest->njev++;
+        }
+        for (j = 0; j < n; ++j) {
+            fjrow[j] = temp[(iflag - 2) + j * 65];
+        }
     }
 
     return 0;

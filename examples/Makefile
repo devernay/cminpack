@@ -29,15 +29,18 @@ PGM=tchkder_ thybrd_ thybrd1_ thybrj_ thybrj1_ tlmder_ tlmder1_ tlmdif_ \
 	tlmdif1_ tlmstr_ tlmstr1_ tfdjac2_
 CPGM=tchkderc thybrdc thybrd1c thybrjc thybrj1c tlmderc tlmder1c tlmdifc \
 	tlmdif1c tlmstrc tlmstr1c tfdjac2c
-CDRVPGM=lmddrvc lmfdrvc
+CDRVPGM=lmddrvc lmfdrvc lmsdrvc hyjdrvc hybdrvc chkdrvc
 FSRC=tchkder.f thybrd.f thybrd1.f thybrj.f thybrj1.f tlmder.f tlmder1.f \
 	tlmdif.f tlmdif1.f tlmstr.f tlmstr1.f
 SRC=tchkder_.c thybrd_.c thybrd1_.c thybrj_.c thybrj1_.c tlmder_.c tlmder1_.c \
 	tlmdif_.c tlmdif1_.c tlmstr_.c tlmstr1_.c tfdjac2_.c
 CSRC=tchkderc.c thybrdc.c thybrd1c.c thybrjc.c thybrj1c.c tlmderc.c tlmder1c.c \
 	tlmdifc.c tlmdif1c.c tlmstrc.c tlmstr1c.c tfdjac2c.c \
-	lmddrv.c lmdipt.c ssqfcn.c ssqjac.c lmfdrv.c
-CDRVSRC=lmddrvc. lmfdrvc.
+	lmddrv.c lmdipt.c ssqfcn.c ssqjac.c lmfdrv.c lmsdrv.c \
+	hyjdrv.c hybipt.c vecfcn.c vecjac.c hybdrv.c \
+	errjac.c chkdrv.c
+
+CDRVSRC=lmddrv.c lmfdrv.c lmsdrv.c hyjdrv.c hybdrv.c
 REF=test.ref ctest.ref ftest.ref
 
 all:
@@ -56,8 +59,16 @@ test: ${PGM}
 ctest: ${CPGM}
 	for x in ${CPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
-ctestdrv: ${CDRVPGM}
-	for x in lmddrvc lmfdrvc; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+ctestdrv: ${CDRVPGM} ctestlmdrv ctesthydrv ctestchkdrv
+
+ctestlmdrv: lmddrvc lmfdrvc lmsdrvc
+	for x in lmddrvc lmfdrvc lmsdrvc; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+
+ctesthydrv: hyjdrvc hybdrvc
+	for x in hyjdrvc hybdrvc; do echo $$x; $(VALGRIND) ./$$x < testdata/hybrd.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+
+ctestchkdrv: chkdrvc
+	for x in chkdrvc; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 ftest: ${FPGM}
 	for x in ${FPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
@@ -95,4 +106,16 @@ lmddrvc: lmddrv.o lmdipt.o ssqfcn.o ssqjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
 
 lmfdrvc: lmfdrv.o lmdipt.o ssqfcn.o
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
+
+lmsdrvc: lmsdrv.o lmdipt.o ssqfcn.o ssqjac.o
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
+
+hyjdrvc: hyjdrv.o hybipt.o vecfcn.o vecjac.o
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
+
+hybdrvc: hybdrv.o hybipt.o vecfcn.o
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
+
+chkdrvc: chkdrv.o hybipt.o vecfcn.o errjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm

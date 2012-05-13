@@ -3,7 +3,7 @@
 #include "ssq.h"
 #define real __cminpack_real__
 
-void initpt(int n, real *x, int nprob, real factor)
+void lmdipt(int n, real *x, int nprob, real factor)
 {
     /* Local variables */
     static real h;

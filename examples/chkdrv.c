@@ -121,8 +121,8 @@ int main(int argc, char **argv)
         printvec(n, err);
     }
 
-    printf(" Summary of %3d tests of chkder \n\n", lnp);
-    printf("\n\n nprob   n    status     errmin         errmax\n\n");
+    printf("\f summary of %3d tests of chkder\n", lnp);
+    printf("\n nprob   n    status     errmin         errmax\n\n");
 
     for (i = 0; i < lnp; ++i) {
         printf("%4d%6d      %c   %15.7e%15.7e\n",

@@ -5,11 +5,11 @@
 extern "C" {
 #endif /* __cplusplus */
 
-void initpt(int n, double *x, int nprob, double factor);
+void lmdipt(int n, __cminpack_real__ *x, int nprob, __cminpack_real__ factor);
 
-void ssqfcn(int m, int n, const double *x, double *fvec, int nprob);
+void ssqfcn(int m, int n, const __cminpack_real__ *x, __cminpack_real__ *fvec, int nprob);
 
-void ssqjac(int m, int n, const double *x, double *fjac, int ldfjac, int nprob);
+void ssqjac(int m, int n, const __cminpack_real__ *x, __cminpack_real__ *fjac, int ldfjac, int nprob);
 
 #ifdef __cplusplus
 }

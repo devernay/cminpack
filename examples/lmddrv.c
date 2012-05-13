@@ -42,7 +42,7 @@ struct refnum {
 int main(int argc, char **argv)
 {
 
-    int iii,i,ic,k,m,n,ntries;
+    int i,ic,k,m,n,ntries;
     struct refnum lmdertest;
     int info;
 
@@ -72,16 +72,18 @@ int main(int argc, char **argv)
 
     ic = 0;
 
-    for (iii = 0; iii < 28; iii++) {
+    for (;;) {
         scanf("%5d%5d%5d%5d\n", &lmdertest.nprob, &n, &m, &ntries);
 /*
          read (nread,50) nprob,n,m,ntries
    50 format (4i5)
 */
-               factor = 1.;
+        if (lmdertest.nprob <= 0.)
+            break;
+        factor = 1.;
 
         for (k = 0; k < ntries; ++k, ++ic) {
-            initpt(n,x,lmdertest.nprob,factor);
+            lmdipt(n,x,lmdertest.nprob,factor);
 
             ssqfcn(m,n,x,fvec,lmdertest.nprob);
 
@@ -115,7 +117,7 @@ int main(int argc, char **argv)
             printf("\n      initial l2 norm of the residuals%15.7e\n"
                    "\n      final l2 norm of the residuals  %15.7e\n"
                    "\n      number of function evaluations  %10d\n"
-                   "\n      number of Jacobian evaluations  %10d\n"
+                   "\n      number of jacobian evaluations  %10d\n"
                    "\n      exit parameter                  %10d\n"
                    "\n      final approximate solution\n\n",
                    fnorm1, fnorm2, lmdertest.nfev, lmdertest.njev, info);
@@ -167,7 +169,7 @@ int main(int argc, char **argv)
 
     }
 
-    printf("\n\n\n Summary of %d calls to lmder1: \n\n", ic);
+    printf("\f summary of %d calls to lmder1: \n\n", ic);
 /*
       write (nwrite,80) ic
    80 format (12h1summary of , i3, 16h calls to lmder1 /)
