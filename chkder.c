@@ -1,8 +1,3 @@
-/* chkder.f -- translated by f2c (version 20020621).
-   You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
-*/
-
 #include "cminpack.h"
 #include <math.h>
 #define real __cminpack_real__
