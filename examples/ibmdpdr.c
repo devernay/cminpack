@@ -73,21 +73,21 @@ int main(int argc, char **argv)
     printf(" iexp =%6i\n\n", iexp);
     printf(" minexp =%6i\n\n", minexp);
     printf(" maxexp =%6i\n\n", maxexp);
-    printf(" eps =%15.7e\n\n", eps);
-    printf(" epsneg =%15.7e\n\n", epsneg);
-    printf(" xmin =%15.7e\n\n", xmin);
-    printf(" xmax =%15.7e\n\n", xmax);
+    printf(" eps =%15.7e\n\n", (double)eps);
+    printf(" epsneg =%15.7e\n\n", (double)epsneg);
+    printf(" xmin =%15.7e\n\n", (double)xmin);
+    printf(" xmax =%15.7e\n\n", (double)xmax);
 
 
 /*     write the dpmpar constants and the relative differences. */
 
     printf("\n\n dpmpar constants and relative differences\n\n\n");
-    printf(" epsmch =%15.7e\n", epsmch);
-    printf(" rerr(1) =%15.7e\n\n", rerr[0]);
-    printf(" dwarf =%15.7e\n", dwarf);
-    printf(" rerr(2) =%15.7e\n\n", rerr[1]);
-    printf(" giant =%15.7e\n", giant);
-    printf(" rerr(3) =%15.7e\n", rerr[2]);
+    printf(" epsmch =%15.7e\n", (double)epsmch);
+    printf(" rerr(1) =%15.7e\n\n", (double)rerr[0]);
+    printf(" dwarf =%15.7e\n", (double)dwarf);
+    printf(" rerr(2) =%15.7e\n\n", (double)rerr[1]);
+    printf(" giant =%15.7e\n", (double)giant);
+    printf(" rerr(3) =%15.7e\n", (double)rerr[2]);
 
     return 0;
 } /* MAIN__ */

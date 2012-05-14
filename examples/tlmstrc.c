@@ -3,27 +3,28 @@
 #include <stdio.h>
 #include <math.h>
 #include <cminpack.h>
+#define real __cminpack_real__
 
 /* the following struct defines the data points */
 typedef struct  {
     int m;
-    double *y;
+    real *y;
 } fcndata_t;
 
-int fcn(void *p, int m, int n, const double *x, double *fvec, double *fjrow, int iflag);
+int fcn(void *p, int m, int n, const real *x, real *fvec, real *fjrow, int iflag);
 
 int main()
 {
   int i, j, ldfjac, maxfev, mode, nprint, info, nfev, njev;
   int ipvt[3];
-  double ftol, xtol, gtol, factor, fnorm;
-  double x[3], fvec[15], fjac[3*3], diag[3], qtf[3], 
+  real ftol, xtol, gtol, factor, fnorm;
+  real x[3], fvec[15], fjac[3*3], diag[3], qtf[3], 
     wa1[3], wa2[3], wa3[3], wa4[15];
   int k;
   const int m = 15;
   const int n = 3;
   /* auxiliary data (e.g. measurements) */
-  double y[15] = {1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
+  real y[15] = {1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
                   3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
   fcndata_t data;
   data.m = m;
@@ -55,25 +56,25 @@ int main()
 	ipvt, qtf, wa1, wa2, wa3, wa4);
   fnorm = enorm(m, fvec);
 
-  printf("      final l2 norm of the residuals%15.7g\n\n", fnorm);
+  printf("      final l2 norm of the residuals%15.7g\n\n", (double)fnorm);
   printf("      number of function evaluations%10i\n\n", nfev);
   printf("      number of Jacobian evaluations%10i\n\n", njev);
   printf("      exit parameter                %10i\n\n", info);
   printf("      final approximate solution\n");
-  for (j=0; j<n; ++j) printf("%s%15.7g", j%3==0?"\n     ":"", x[j]);
+  for (j=0; j<n; ++j) printf("%s%15.7g", j%3==0?"\n     ":"", (double)x[j]);
   printf("\n");
   ftol = dpmpar(1);
 #ifdef TEST_COVAR
   {
       /* test the original covar from MINPACK */
-      double covfac = fnorm*fnorm/(m-n);
-      double fjac1[15*3];
+      real covfac = fnorm*fnorm/(m-n);
+      real fjac1[3*3];
       memcpy(fjac1, fjac, sizeof(fjac));
       covar(n, fjac1, ldfjac, ipvt, ftol, wa1);
       printf("      covariance (using covar)\n");
       for (i=0; i<n; ++i) {
           for (j=0; j<n; ++j)
-              printf("%s%15.7g", j%3==0?"\n     ":"", fjac1[i*ldfjac+j]*covfac);
+              printf("%s%15.7g", j%3==0?"\n     ":"", (double)fjac1[i*ldfjac+j]*covfac);
       }
       printf("\n");
   }
@@ -83,7 +84,7 @@ int main()
   printf("      covariance\n");
   for (i=0; i<n; ++i) {
     for (j=0; j<n; ++j)
-      printf("%s%15.7g", j%3==0?"\n     ":"", fjac[i*ldfjac+j]);
+        printf("%s%15.7g", j%3==0?"\n     ":"", (double)fjac[i*ldfjac+j]);
   }
   printf("\n");
   /* printf("      rank(J) = %d\n", k != 0 ? k : n); */
@@ -91,14 +92,14 @@ int main()
   return 0;
 }
 
-int fcn(void *p, int m, int n, const double *x, double *fvec, double *fjrow, int iflag)
+int fcn(void *p, int m, int n, const real *x, real *fvec, real *fjrow, int iflag)
 {
 
   /*      subroutine fcn for lmstr example. */
 
   int i;
-  double tmp1, tmp2, tmp3, tmp4;
-  const double *y = ((fcndata_t*)p)->y;
+  real tmp1, tmp2, tmp3, tmp4;
+  const real *y = ((fcndata_t*)p)->y;
 
   if (iflag == 0)
     {

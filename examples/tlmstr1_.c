@@ -3,14 +3,15 @@
 #include <stdio.h>
 #include <math.h>
 #include <minpack.h>
+#define real __minpack_real__
 
-void  fcn(const int *m, const int *n, const double *x, double *fvec, double *fjrow, int *iflag);
+void  fcn(const int *m, const int *n, const real *x, real *fvec, real *fjrow, int *iflag);
 
 int main()
 {
   int j, m, n, ldfjac, info, lwa, ipvt[3], one=1;
-  double tol, fnorm;
-  double x[3], fvec[15], fjac[9], wa[30];
+  real tol, fnorm;
+  real x[3], fvec[15], fjac[9], wa[30];
 
   m = 15;
   n = 3;
@@ -36,21 +37,21 @@ int main()
 
   fnorm = enorm_(&m, fvec);
 
-  printf("      final l2 norm of the residuals%15.7g\n\n", fnorm);
+  printf("      final l2 norm of the residuals%15.7g\n\n", (double)fnorm);
   printf("      exit parameter                %10i\n\n", info);
   printf("      final approximate solution\n");
-  for (j=0; j<n; ++j) printf("%s%15.7g", j%3==0?"\n     ":"", x[j]);
+  for (j=0; j<n; ++j) printf("%s%15.7g", j%3==0?"\n     ":"", (double)x[j]);
   printf("\n");
 
   return 0;
 }
 
-void  fcn(const int *m, const int *n, const double *x, double *fvec, double *fjrow, int *iflag)
+void  fcn(const int *m, const int *n, const real *x, real *fvec, real *fjrow, int *iflag)
 {
   /*  subroutine fcn for lmstr1 example. */
   int i;
-  double tmp1, tmp2, tmp3, tmp4;
-  double y[15]={1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
+  real tmp1, tmp2, tmp3, tmp4;
+  real y[15]={1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
 		3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
 
   if (*iflag < 2)

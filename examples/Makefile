@@ -38,14 +38,14 @@ FSRCGEN=tchkder.f thybrd.f thybrd1.f thybrj.f thybrj1.f tlmder.f tlmder1.f \
 FSRC=$(FSRCGEN) \
 	lmddrv.f lmdipt.f ssqfcn.f ssqjac.f lmfdrv.f lmsdrv.f \
 	hyjdrv.f hybipt.f vecfcn.f vecjac.f hybdrv.f \
-	errjac.f chkdrv.f
+	errjac.f chkdrv.f ibmdpdr.f dmchar.f
 SRC=tchkder_.c thybrd_.c thybrd1_.c thybrj_.c thybrj1_.c tlmder_.c tlmder1_.c \
 	tlmdif_.c tlmdif1_.c tlmstr_.c tlmstr1_.c tfdjac2_.c
 CSRC=tchkderc.c thybrdc.c thybrd1c.c thybrjc.c thybrj1c.c tlmderc.c tlmder1c.c \
 	tlmdifc.c tlmdif1c.c tlmstrc.c tlmstr1c.c tfdjac2c.c \
 	lmddrv.c lmdipt.c ssqfcn.c ssqjac.c lmfdrv.c lmsdrv.c \
 	hyjdrv.c hybipt.c vecfcn.c vecjac.c hybdrv.c \
-	errjac.c chkdrv.c
+	errjac.c chkdrv.c ibmdpdr.c dmchar.c
 
 CDRVSRC=lmddrv.c lmfdrv.c lmsdrv.c hyjdrv.c hybdrv.c
 REF=test.ref ctest.ref ftest.ref

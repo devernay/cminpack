@@ -4,26 +4,27 @@
 #include <stdio.h>
 #include <math.h>
 #include <cminpack.h>
+#define real __cminpack_real__
 
 /* the following struct defines the data points */
 typedef struct  {
     int m;
-    double *y;
+    real *y;
 } fcndata_t;
 
-int fcn(void *p, int m, int n, const double *x, double *fvec, double *fjac, 
+int fcn(void *p, int m, int n, const real *x, real *fvec, real *fjac, 
 	 int ldfjac, int iflag);
 
 int main()
 {
   int j, ldfjac, info, lwa;
   int ipvt[3];
-  double tol, fnorm;
-  double x[3], fvec[15], fjac[15*3], wa[30];
+  real tol, fnorm;
+  real x[3], fvec[15], fjac[15*3], wa[30];
   const int m = 15;
   const int n = 3;
   /* auxiliary data (e.g. measurements) */
-  double y[15] = {1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
+  real y[15] = {1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
                   3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
   fcndata_t data;
   data.m = m;
@@ -47,24 +48,24 @@ int main()
   info = lmder1(fcn, &data, m, n, x, fvec, fjac, ldfjac, tol, 
 	  ipvt, wa, lwa);
   fnorm = enorm(m, fvec);
-  printf("      final l2 norm of the residuals%15.7g\n\n", fnorm);
+  printf("      final l2 norm of the residuals%15.7g\n\n", (double)fnorm);
   printf("      exit parameter                %10i\n\n", info);
   printf("      final approximate solution\n");
-  for (j=0; j<n; ++j) printf("%s%15.7g", j%3==0?"\n     ":"", x[j]);
+  for (j=0; j<n; ++j) printf("%s%15.7g", j%3==0?"\n     ":"", (double)x[j]);
   printf("\n");
 
   return 0;
 }
 
-int fcn(void *p, int m, int n, const double *x, double *fvec, double *fjac, 
+int fcn(void *p, int m, int n, const real *x, real *fvec, real *fjac, 
 	 int ldfjac, int iflag)
 {
 
 /*      subroutine fcn for lmder1 example. */
 
   int i;
-  double tmp1, tmp2, tmp3, tmp4;
-  const double *y = ((fcndata_t*)p)->y;
+  real tmp1, tmp2, tmp3, tmp4;
+  const real *y = ((fcndata_t*)p)->y;
 
   if (iflag != 2) 
     {

@@ -3,9 +3,9 @@
 #include "vec.h"
 #define real __cminpack_real__
 
-static inline double d_sign(double a, double b)
+static inline real d_sign(real a, real b)
 {
-    double x;
+    real x;
     x = (a >= 0 ? a : -a);
     return( b >= 0 ? x : -x);
 }

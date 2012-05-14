@@ -4,19 +4,20 @@
 #include <stdio.h>
 #include <math.h>
 #include <minpack.h>
+#define real __minpack_real__
 
-void fcn(const int *m, const int *n, const double *x, double *fvec, double *fjac, 
+void fcn(const int *m, const int *n, const real *x, real *fvec, real *fjac, 
 	 const int *ldfjac, int *iflag);
 
 int main()
 {
   int i, j, m, n, ldfjac, maxfev, mode, nprint, info, nfev, njev;
   int ipvt[3];
-  double ftol, xtol, gtol, factor, fnorm;
-  double x[3], fvec[15], fjac[15*3], diag[3], qtf[3], 
+  real ftol, xtol, gtol, factor, fnorm;
+  real x[3], fvec[15], fjac[15*3], diag[3], qtf[3], 
     wa1[3], wa2[3], wa3[3], wa4[15];
   int one=1;
-  double covfac;
+  real covfac;
 
   m = 15;
   n = 3;
@@ -46,12 +47,12 @@ int main()
 	&maxfev, diag, &mode, &factor, &nprint, &info, &nfev, &njev, 
 	ipvt, qtf, wa1, wa2, wa3, wa4);
   fnorm = enorm_(&m, fvec);
-  printf("      final l2 norm of the residuals%15.7g\n\n", fnorm);
+  printf("      final l2 norm of the residuals%15.7g\n\n", (double)fnorm);
   printf("      number of function evaluations%10i\n\n", nfev);
   printf("      number of Jacobian evaluations%10i\n\n", njev);
   printf("      exit parameter                %10i\n\n", info);
   printf("      final approximate solution\n");
-  for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n     ":"", x[j-1]);
+  for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n     ":"", (double)x[j-1]);
   printf("\n");
   ftol = dpmpar_(&one);
   covfac = fnorm*fnorm/(m-n);
@@ -59,21 +60,21 @@ int main()
   printf("      covariance\n");
   for (i=1; i<=n; i++) {
     for (j=1; j<=n; j++)
-      printf("%s%15.7g", j%3==1?"\n     ":"", fjac[(i-1)*ldfjac+j-1]*covfac);
+      printf("%s%15.7g", j%3==1?"\n     ":"", (double)fjac[(i-1)*ldfjac+j-1]*covfac);
   }
   printf("\n");
   return 0;
 }
 
-void fcn(const int *m, const int *n, const double *x, double *fvec, double *fjac, 
+void fcn(const int *m, const int *n, const real *x, real *fvec, real *fjac, 
 	 const int *ldfjac, int *iflag)
 {      
 
   /*      subroutine fcn for lmder example. */
 
   int i;
-  double tmp1, tmp2, tmp3, tmp4;
-  double y[15]={1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
+  real tmp1, tmp2, tmp3, tmp4;
+  real y[15]={1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
 		3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
 
   if (*iflag == 0) 

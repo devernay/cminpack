@@ -149,7 +149,7 @@ int main(int argc, char **argv)
                    "\n      number of Jacobian evaluations  %10d\n"
                    "\n      exit parameter                  %10d\n"
                    "\n      final approximate solution\n\n",
-                   fnorm1, fnorm2, lmdiftest.nfev, lmdiftest.njev, info);
+                   (double)fnorm1, (double)fnorm2, lmdiftest.nfev, lmdiftest.njev, info);
             printvec(n, x);
 /*
             write (nwrite,70)

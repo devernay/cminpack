@@ -5,23 +5,24 @@
 #include <stdio.h>
 #include <math.h>
 #include <cminpack.h>
+#define real __cminpack_real__
 
 /* the following struct defines the data points */
 typedef struct  {
     int m;
-    double *y;
+    real *y;
 } fcndata_t;
 
-int fcn(void *p, int m, int n, const double *x, double *fvec, int iflag);
+int fcn(void *p, int m, int n, const real *x, real *fvec, int iflag);
 
 int main()
 {
   int info, lwa, iwa[3];
-  double tol, fnorm, x[3], fvec[15], wa[75];
+  real tol, fnorm, x[3], fvec[15], wa[75];
   const int m = 15;
   const int n = 3;
   /* auxiliary data (e.g. measurements) */
-  double y[15] = {1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
+  real y[15] = {1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
                   3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
   fcndata_t data;
   data.m = m;
@@ -45,20 +46,20 @@ int main()
 
   fnorm = enorm(m, fvec);
 
-  printf("      final l2 norm of the residuals%15.7g\n\n",fnorm);
+  printf("      final l2 norm of the residuals%15.7g\n\n",(double)fnorm);
   printf("      exit parameter                %10i\n\n", info);
   printf("      final approximate solution\n\n %15.7g%15.7g%15.7g\n",
-	 x[0], x[1], x[2]);
+	 (double)x[0], (double)x[1], (double)x[2]);
   return 0;
 }
 
-int fcn(void *p, int m, int n, const double *x, double *fvec, int iflag)
+int fcn(void *p, int m, int n, const real *x, real *fvec, int iflag)
 {
   /* function fcn for lmdif1 example */
 
   int i;
-  double tmp1,tmp2,tmp3;
-  const double *y = ((fcndata_t*)p)->y;
+  real tmp1,tmp2,tmp3;
+  const real *y = ((fcndata_t*)p)->y;
 
   for (i = 0; i < 15; ++i)
     {

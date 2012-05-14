@@ -3,14 +3,15 @@
 #include <stdio.h>
 #include <math.h>
 #include <minpack.h>
+#define real __minpack_real__
 
-void fcn(const int *n, const double *x, double *fvec, int *iflag);
+void fcn(const int *n, const real *x, real *fvec, int *iflag);
 
 int main()
 {
   int j, n, maxfev, ml, mu, mode, nprint, info, nfev, ldfjac, lr;
-  double xtol, epsfcn, factor, fnorm;
-  double x[9], fvec[9], diag[9], fjac[9*9], r[45], qtf[9],
+  real xtol, epsfcn, factor, fnorm;
+  real x[9], fvec[9], diag[9], fjac[9*9], r[45], qtf[9],
     wa1[9], wa2[9], wa3[9], wa4[9];
   int one=1;
 
@@ -49,22 +50,22 @@ int main()
 	 diag, &mode, &factor, &nprint, &info, &nfev,
 	 fjac, &ldfjac, r, &lr, qtf, wa1, wa2, wa3, wa4);
   fnorm = enorm_(&n, fvec);
-  printf("     final l2 norm of the residuals %15.7g\n\n", fnorm);
+  printf("     final l2 norm of the residuals %15.7g\n\n", (double)fnorm);
   printf("     number of function evaluations  %10i\n\n", nfev);
   printf("     exit parameter                  %10i\n\n", info);
   printf("     final approximate solution\n");
-  for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n     ":"", x[j-1]);
+  for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n     ":"", (double)x[j-1]);
   printf("\n");
   return 0;
 }
 
 
-void fcn(const int *n, const double *x, double *fvec, int *iflag)
+void fcn(const int *n, const real *x, real *fvec, int *iflag)
 {
   /*      subroutine fcn for hybrd example. */
 
   int k;
-  double one=1, temp, temp1, temp2, three=3, two=2, zero=0;
+  real one=1, temp, temp1, temp2, three=3, two=2, zero=0;
 
   if (iflag == 0)
     {

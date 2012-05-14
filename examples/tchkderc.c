@@ -3,25 +3,26 @@
 #include <stdio.h>
 #include <math.h>
 #include <cminpack.h>
+#define real __cminpack_real__
 
 /* the following struct defines the data points */
 typedef struct  {
     int m;
-    double *y;
+    real *y;
 } fcndata_t;
 
-int fcn(void *p, int m, int n, const double *x, double *fvec,
-	 double *fjac, int ldfjac, int iflag);
+int fcn(void *p, int m, int n, const real *x, real *fvec,
+	 real *fjac, int ldfjac, int iflag);
 
 int main()
 {
   int i, ldfjac;
-  double x[3], fvec[15], fjac[15*3], xp[3], fvecp[15], 
+  real x[3], fvec[15], fjac[15*3], xp[3], fvecp[15], 
     err[15];
   const int m = 15;
   const int n = 3;
   /* auxiliary data (e.g. measurements) */
-  double y[15] = {1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
+  real y[15] = {1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
                   3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
   fcndata_t data;
   data.m = m;
@@ -57,23 +58,23 @@ int main()
       fvecp[i] = fvecp[i] - fvec[i];
     }
   printf("\n      fvec\n");  
-  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", fvec[i]);
+  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", (double)fvec[i]);
   printf("\n      fvecp - fvec\n");  
-  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", fvecp[i]);
+  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", (double)fvecp[i]);
   printf("\n      err\n");  
-  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", err[i]);
+  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", (double)err[i]);
   printf("\n");
   return 0;
 }
 
-int fcn(void *p, int m, int n, const double *x, double *fvec,
-	 double *fjac, int ldfjac, int iflag)
+int fcn(void *p, int m, int n, const real *x, real *fvec,
+	 real *fjac, int ldfjac, int iflag)
 {
   /*      subroutine fcn for chkder example. */
 
   int i;
-  double tmp1, tmp2, tmp3, tmp4;
-  const double *y = ((fcndata_t*)p)->y;
+  real tmp1, tmp2, tmp3, tmp4;
+  const real *y = ((fcndata_t*)p)->y;
 
   if (iflag == 0) 
     {

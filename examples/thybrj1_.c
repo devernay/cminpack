@@ -3,15 +3,16 @@
 #include <stdio.h>
 #include <math.h>
 #include <minpack.h>
+#define real __minpack_real__
 
-void fcn(const int *n, const double *x, double *fvec, double *fjac, const int *ldfjac, 
+void fcn(const int *n, const real *x, real *fvec, real *fjac, const int *ldfjac, 
 	 int *iflag);
 
 int main()
 {
   int j, n, ldfjac, info, lwa;
-  double tol, fnorm;
-  double x[9], fvec[9], fjac[9*9], wa[99];
+  real tol, fnorm;
+  real x[9], fvec[9], fjac[9*9], wa[99];
   int one=1;
 
   n = 9;
@@ -36,22 +37,22 @@ int main()
 
   fnorm = enorm_(&n, fvec);
 
-  printf("      final l2 norm of the residuals%15.7g\n\n", fnorm);
+  printf("      final l2 norm of the residuals%15.7g\n\n", (double)fnorm);
   printf("      exit parameter                %10i\n\n", info);
   printf("      final approximate solution\n");
-  for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n     ":"", x[j-1]);
+  for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n     ":"", (double)x[j-1]);
   printf("\n");
 
   return 0;
 }
 
-void fcn(const int *n, const double *x, double *fvec, double *fjac, const int *ldfjac, 
+void fcn(const int *n, const real *x, real *fvec, real *fjac, const int *ldfjac, 
 	 int *iflag)
 {
   /*      subroutine fcn for hybrj1 example. */
 
   int j, k;
-  double one=1, temp, temp1, temp2, three=3, two=2, zero=0, four=4;
+  real one=1, temp, temp1, temp2, three=3, two=2, zero=0, four=4;
 
   if (*iflag != 2)
     {
