@@ -55,7 +55,7 @@ int main()
 	ipvt, qtf, wa1, wa2, wa3, wa4);
   fnorm = enorm(m, fvec);
 
-  printf("      final L2 norm of the residuals%15.7g\n\n", fnorm);
+  printf("      final l2 norm of the residuals%15.7g\n\n", fnorm);
   printf("      number of function evaluations%10i\n\n", nfev);
   printf("      number of Jacobian evaluations%10i\n\n", njev);
   printf("      exit parameter                %10i\n\n", info);

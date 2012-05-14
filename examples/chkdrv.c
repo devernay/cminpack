@@ -34,7 +34,7 @@ static void printvec(int n, const real *x)
     for (i = 0; i < num5; ++i) {
         ilow = i*5;
         printf("     %15.7e%15.7e%15.7e%15.7e%15.7e\n",
-               x[ilow+0], x[ilow+1], x[ilow+2], x[ilow+3], x[ilow+4]);
+               (double)x[ilow+0], (double)x[ilow+1], (double)x[ilow+2], (double)x[ilow+3], (double)x[ilow+4]);
     }
     
     numleft = n%5;
@@ -43,19 +43,19 @@ static void printvec(int n, const real *x)
     switch (numleft) {
         case 1:
             printf("     %15.7e\n",
-                   x[ilow+0]);
+                   (double)x[ilow+0]);
             break;
         case 2:
             printf("     %15.7e%15.7e\n",
-                   x[ilow+0], x[ilow+1]);
+                   (double)x[ilow+0], (double)x[ilow+1]);
             break;
         case 3:
             printf("     %15.7e%15.7e%15.7e\n",
-                   x[ilow+0], x[ilow+1], x[ilow+2]);
+                   (double)x[ilow+0], (double)x[ilow+1], (double)x[ilow+2]);
             break;
         case 4:
             printf("     %15.7e%15.7e%15.7e%15.7e\n",
-                   x[ilow+0], x[ilow+1], x[ilow+2], x[ilow+3]);
+                   (double)x[ilow+0], (double)x[ilow+1], (double)x[ilow+2], (double)x[ilow+3]);
             break;
     }
 }
@@ -126,7 +126,7 @@ int main(int argc, char **argv)
 
     for (i = 0; i < lnp; ++i) {
         printf("%4d%6d      %c   %15.7e%15.7e\n",
-               np[i], na[i], a[i]?'T':'F', errmin[i], errmax[i]);
+               np[i], na[i], a[i]?'T':'F', (double)errmin[i], (double)errmax[i]);
     }
     exit(0);
 }

@@ -37,6 +37,40 @@ struct refnum {
     int nprob, nfev, njev;
 };
 
+static void printvec(int n, const real *x)
+{
+    int i, num5, ilow, numleft;
+    num5 = n/5;
+
+    for (i = 0; i < num5; ++i) {
+        ilow = i*5;
+        printf("     %15.7e%15.7e%15.7e%15.7e%15.7e\n",
+               (double)x[ilow+0], (double)x[ilow+1], (double)x[ilow+2], (double)x[ilow+3], (double)x[ilow+4]);
+    }
+    
+    numleft = n%5;
+    ilow = n - numleft;
+
+    switch (numleft) {
+        case 1:
+            printf("     %15.7e\n",
+                   (double)x[ilow+0]);
+            break;
+        case 2:
+            printf("     %15.7e%15.7e\n",
+                   (double)x[ilow+0], (double)x[ilow+1]);
+            break;
+        case 3:
+            printf("     %15.7e%15.7e%15.7e\n",
+                   (double)x[ilow+0], (double)x[ilow+1], (double)x[ilow+2]);
+            break;
+        case 4:
+            printf("     %15.7e%15.7e%15.7e%15.7e\n",
+                   (double)x[ilow+0], (double)x[ilow+1], (double)x[ilow+2], (double)x[ilow+3]);
+            break;
+    }
+}
+
 /* Main program */
 int main(int argc, char **argv)
 {
@@ -59,8 +93,6 @@ int main(int argc, char **argv)
 
     real wa[2660];
     const int lwa = 2660;
-
-    int num5, ilow, numleft;
 
     tol = sqrt(dpmpar(1));
 
@@ -104,38 +136,8 @@ int main(int argc, char **argv)
                    "\n      number of Jacobian evaluations  %10d\n"
                    "\n      exit parameter                  %10d\n"
                    "\n      final approximate solution\n\n",
-                   fnorm1, fnorm2, hybrdtest.nfev, hybrdtest.njev, info);
-            num5 = n/5;
-
-            for (i = 0; i < num5; ++i) {
-
-                ilow = i*5;
-                printf("     %15.7e%15.7e%15.7e%15.7e%15.7e\n",
-                       x[ilow+0], x[ilow+1], x[ilow+2], x[ilow+3], x[ilow+4]);
-
-            }
-
-            numleft = n%5;
-            ilow = n - numleft;
-
-            switch (numleft) {
-                case 1:
-                    printf("     %15.7e\n",
-                           x[ilow+0]);
-                    break;
-                case 2:
-                    printf("     %15.7e%15.7e\n",
-                           x[ilow+0], x[ilow+1]);
-                    break;
-                case 3:
-                    printf("     %15.7e%15.7e%15.7e\n",
-                           x[ilow+0], x[ilow+1], x[ilow+2]);
-                    break;
-                case 4:
-                    printf("     %15.7e%15.7e%15.7e%15.7e\n",
-                           x[ilow+0], x[ilow+1], x[ilow+2], x[ilow+3]);
-                    break;
-            }
+                   (double)fnorm1, (double)fnorm2, hybrdtest.nfev, hybrdtest.njev, info);
+            printvec(n, x);
 
             factor *= 10.;
 
@@ -147,7 +149,7 @@ int main(int argc, char **argv)
     printf("\n nprob   n    nfev   njev  info  final l2 norm\n\n");
     for (i = 0; i < ic; ++i) {
         printf("%4d%6d%7d%7d%6d%16.7e\n",
-               np[i], na[i], nf[i], nj[i], nx[i], fnm[i]);
+               np[i], na[i], nf[i], nj[i], nx[i], (double)fnm[i]);
     }
     exit(0);
 }

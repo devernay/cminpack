@@ -10,7 +10,7 @@ F77=gfortran
 #F77CFLAGS=-g
 
 # uncomment the following for C MINPACK
-MINPACK=../libminpack.a
+MINPACK=../libcminpack.a
 CC=gcc
 CFLAGS=-g -Wall
 CPPFLAGS=-I..
@@ -24,11 +24,11 @@ CPPFLAGS=-I..
 # with those in the same file.
 
 FPGM=tchkder thybrd thybrd1 thybrj thybrj1 tlmder tlmder1 tlmdif \
-	tlmdif1 tlmstr tlmstr1
+	tlmdif1 tlmstr tlmstr1 ibmdpdr
 PGM=tchkder_ thybrd_ thybrd1_ thybrj_ thybrj1_ tlmder_ tlmder1_ tlmdif_ \
 	tlmdif1_ tlmstr_ tlmstr1_ tfdjac2_
 CPGM=tchkderc thybrdc thybrd1c thybrjc thybrj1c tlmderc tlmder1c tlmdifc \
-	tlmdif1c tlmstrc tlmstr1c tfdjac2c
+	tlmdif1c tlmstrc tlmstr1c tfdjac2c ibmdpdrc
 DRVPGM=lmddrv lmfdrv lmsdrv hyjdrv hybdrv chkdrv
 CDRVPGM=lmddrvc lmfdrvc lmsdrvc hyjdrvc hybdrvc chkdrvc
 FSRCGEN=tchkder.f thybrd.f thybrd1.f thybrj.f thybrj1.f tlmder.f tlmder1.f \
@@ -51,12 +51,14 @@ REF=test.ref ctest.ref ftest.ref
 all:
 	@echo "*****************************************************"
 	@echo "Please type 'make test', 'make ctest' or 'make ftest'"
-	@echo "make test: calling FORTRAN MINPACK from C"
-	@echo "make ftest: calling FORTRAN MINPACK from FORTRAN"
-	@echo "make ctest: calling C MINPACK from C"
+	@echo "make test: calling FORTRAN CMINPACK from C"
+	@echo "make ctest: calling CMINPACK from C"
+	@echo "make ftest: calling FORTRAN CMINPACK from FORTRAN"
+	@echo "make ftest MINPACK=../fortran/libminpack.a: calling FORTRAN MINPACK from FORTRAN"
 	@echo "Intensive (driver) tests:"
-	@echo "make ctestdrv: calling C MINPACK from C"
-	@echo "make ftestdrv: calling FORTRAN MINPACK from FORTRAN"
+	@echo "make ctestdrv: calling CMINPACK from C"
+	@echo "make ftestdrv: calling FORTRAN CMINPACK from FORTRAN"
+	@echo "make ftestdrv MINPACK=../fortran/libminpack.a: calling FORTRAN MINPACK from FORTRAN"
 
 .PHONY: test ctest ctestdrv ftest ftestdrv
 test: ${PGM}
@@ -138,6 +140,9 @@ hybdrvc: hybdrv.o hybipt.o vecfcn.o
 chkdrvc: chkdrv.o hybipt.o vecfcn.o errjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
 
+ibmdpdrc: ibmdpdr.o dmchar.o
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
+
 lmddrv: lmddrv.f lmdipt.f ssqfcn.f ssqjac.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
 
@@ -154,4 +159,7 @@ hybdrv: hybdrv.f hybipt.f vecfcn.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
 
 chkdrv: chkdrv.f hybipt.f vecfcn.f errjac.f
+	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
+
+ibmdpdr: ibmdpdr.f dmchar.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)

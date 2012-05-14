@@ -1,0 +1,42 @@
+ dmchar constants
+
+
+ ibeta =     2
+
+ it    =    53
+
+ irnd  =     0
+
+ ngrd  =     1
+
+ machep =   -52
+
+ negep =   -53
+
+ iexp =    12
+
+ minexp = -1074
+
+ maxexp =  3021
+
+ eps =  2.2204460e-16
+
+ epsneg =  1.1102230e-16
+
+ xmin = 4.9406565e-324
+
+ xmax =            inf
+
+
+
+ dpmpar constants and relative differences
+
+
+ epsmch =  2.2204460e-16
+ rerr(1) =  0.0000000e+00
+
+ dwarf = 2.2250739e-308
+ rerr(2) =  1.0000000e+00
+
+ giant = 1.7976931e+308
+ rerr(3) =            inf

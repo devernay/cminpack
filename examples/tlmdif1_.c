@@ -10,7 +10,7 @@ void fcn(const int *m, const int *n, const double *x, double *fvec, int *iflag);
 
 int main()
 {
-  int m, n, info, lwa, iwa[3], one=1;
+    int j, m, n, info, lwa, iwa[3], one=1;
   double tol, fnorm, x[3], fvec[15], wa[75];
 
   m = 15;
@@ -34,10 +34,11 @@ int main()
 
   fnorm = enorm_(&m, fvec);
 
-  printf("      FINAL L2 NORM OF THE RESIDUALS%15.7f\n\n",fnorm);
-  printf("      EXIT PARAMETER                %10i\n\n", info);
-  printf("      FINAL APPROXIMATE SOLUTION\n\n %15.7f%15.7f%15.7f\n",
-	 x[0], x[1], x[2]);
+  printf("      final l2 norm of the residuals%15.7g\n\n", fnorm);
+  printf("      exit parameter                %10i\n\n", info);
+  printf("      final approximate solution\n");
+  for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n ":"", x[j-1]);
+  printf("\n");
   return 0;
 }
 

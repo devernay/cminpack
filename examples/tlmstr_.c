@@ -8,7 +8,7 @@ void fcn(const int *m, const int *n, const double *x, double *fvec, double *fjro
 
 int main()
 {
-  int j, m, n, ldfjac, maxfev, mode, nprint, info, nfev, njev;
+    int i, j, m, n, ldfjac, maxfev, mode, nprint, info, nfev, njev;
   int ipvt[3];
   double ftol, xtol, gtol, factor, fnorm;
   double x[3], fvec[15], fjac[3*3], diag[3], qtf[3], 
@@ -44,13 +44,25 @@ int main()
 	ipvt, qtf, wa1, wa2, wa3, wa4);
   fnorm = enorm_(&m, fvec);
 
-  printf("      final L2 norm of the residuals%15.7g\n\n", fnorm);
+  printf("      final l2 norm of the residuals%15.7g\n\n", fnorm);
   printf("      number of function evaluations%10i\n\n", nfev);
   printf("      number of Jacobian evaluations%10i\n\n", njev);
   printf("      exit parameter                %10i\n\n", info);
   printf("      final approximate solution\n");
   for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n     ":"", x[j-1]);
   printf("\n");
+  ftol = dpmpar_(&one);
+  {
+      /* test the original covar from MINPACK */
+      double covfac = fnorm*fnorm/(m-n);
+      covar_(&n, fjac, &ldfjac, ipvt, &ftol, wa1);
+      printf("      covariance\n");
+      for (i=0; i<n; ++i) {
+          for (j=0; j<n; ++j)
+              printf("%s%15.7g", j%3==0?"\n     ":"", fjac[i*ldfjac+j]*covfac);
+      }
+      printf("\n");
+  }
 
   return 0;
 }
