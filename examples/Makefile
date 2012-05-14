@@ -15,6 +15,8 @@ CC=gcc
 CFLAGS=-g -Wall
 CPPFLAGS=-I..
 
+FMINPACK=../fortran/libminpack.a
+
 # uncomment the following to debug using valgrind
 #VALGRIND=valgrind --tool=memcheck
 
@@ -50,8 +52,9 @@ REF=test.ref ctest.ref ftest.ref
 
 all:
 	@echo "*****************************************************"
-	@echo "Please type 'make test', 'make ctest' or 'make ftest'"
+	@echo "Please type 'make alltest' to run all tests at once, or:"
 	@echo "make test: calling FORTRAN CMINPACK from C"
+	@echo "make test MINPACK=../fortran/libminpack.a: calling FORTRAN MINPACK from C"
 	@echo "make ctest: calling CMINPACK from C"
 	@echo "make ftest: calling FORTRAN CMINPACK from FORTRAN"
 	@echo "make ftest MINPACK=../fortran/libminpack.a: calling FORTRAN MINPACK from FORTRAN"
@@ -60,7 +63,7 @@ all:
 	@echo "make ftestdrv: calling FORTRAN CMINPACK from FORTRAN"
 	@echo "make ftestdrv MINPACK=../fortran/libminpack.a: calling FORTRAN MINPACK from FORTRAN"
 
-.PHONY: test ctest ctestdrv ftest ftestdrv
+.PHONY: test ctest ctestdrv ctestlmdrv ctesthydrv ctestchkdrv ftest ftestdrv ftestlmdrv ftesthydrv ftestchkdrv alltest
 test: ${PGM}
 	for x in ${PGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/`echo $$x.ref|sed -e s/_.ref/c.ref/` $$x.out ; done
 
@@ -92,6 +95,30 @@ ftesthydrv: hyjdrv hybdrv
 ftestchkdrv: chkdrv
 	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
+alltest: ../libcminpack.a ../fortran/libminpack.a
+	$(MAKE) clean
+	-$(MAKE) test
+	$(MAKE) clean
+	-$(MAKE) test MINPACK=../fortran/libminpack.a
+	$(MAKE) clean
+	-$(MAKE) ctest
+	$(MAKE) clean
+	-$(MAKE) ftest
+	$(MAKE) clean
+	-$(MAKE) ftest MINPACK=../fortran/libminpack.a
+	$(MAKE) clean
+	-$(MAKE) -k ctestdrv
+	$(MAKE) clean
+	-$(MAKE) -k ftestdrv
+	$(MAKE) clean
+	-$(MAKE) -k ftestdrv MINPACK=../fortran/libminpack.a
+	$(MAKE) clean
+
+../libcminpack.a:
+	$(MAKE) -C ..
+
+ ../fortran/libminpack.a:
+	$(MAKE) -C ../fortran
 
 clean:
 	-rm -f $(PGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(CSRC:.c=.o) $(FPGM) $(FSRCGEN) $(FSRC:.f=.o) $(PGM:=.out) $(CPGM:=.out) $(CDRVPGM:=.out) $(FPGM:=.out) *~ #*#
@@ -113,7 +140,7 @@ ${FSRCGEN}: ../doc/minpack-documentation.txt
 	    getline; $$0 = substr($$0,3); print >>oname;	\
 	}'
 
-.f:
+.f: $(MINPACK)
 	$(F77) -o $@ $< $(MINPACK)
 
 .c:
@@ -122,44 +149,44 @@ ${FSRCGEN}: ../doc/minpack-documentation.txt
 .c.o:
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
-lmddrvc: lmddrv.o lmdipt.o ssqfcn.o ssqjac.o
+lmddrvc: $(MINPACK) lmddrv.o lmdipt.o ssqfcn.o ssqjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
 
-lmfdrvc: lmfdrv.o lmdipt.o ssqfcn.o
+lmfdrvc: $(MINPACK) lmfdrv.o lmdipt.o ssqfcn.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
 
-lmsdrvc: lmsdrv.o lmdipt.o ssqfcn.o ssqjac.o
+lmsdrvc: $(MINPACK) lmsdrv.o lmdipt.o ssqfcn.o ssqjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
 
-hyjdrvc: hyjdrv.o hybipt.o vecfcn.o vecjac.o
+hyjdrvc: $(MINPACK) hyjdrv.o hybipt.o vecfcn.o vecjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
 
-hybdrvc: hybdrv.o hybipt.o vecfcn.o
+hybdrvc: $(MINPACK) hybdrv.o hybipt.o vecfcn.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
 
-chkdrvc: chkdrv.o hybipt.o vecfcn.o errjac.o
+chkdrvc: $(MINPACK) chkdrv.o hybipt.o vecfcn.o errjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
 
-ibmdpdrc: ibmdpdr.o dmchar.o
+ibmdpdrc: $(MINPACK) ibmdpdr.o dmchar.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
 
-lmddrv: lmddrv.f lmdipt.f ssqfcn.f ssqjac.f
+lmddrv: $(MINPACK) lmddrv.f lmdipt.f ssqfcn.f ssqjac.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
 
-lmfdrv: lmfdrv.f lmdipt.f ssqfcn.f
+lmfdrv: $(MINPACK) lmfdrv.f lmdipt.f ssqfcn.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
 
-lmsdrv: lmsdrv.f lmdipt.f ssqfcn.f ssqjac.f
+lmsdrv: $(MINPACK) lmsdrv.f lmdipt.f ssqfcn.f ssqjac.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
 
-hyjdrv: hyjdrv.f hybipt.f vecfcn.f vecjac.f
+hyjdrv: $(MINPACK) hyjdrv.f hybipt.f vecfcn.f vecjac.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
 
-hybdrv: hybdrv.f hybipt.f vecfcn.f
+hybdrv: $(MINPACK) hybdrv.f hybipt.f vecfcn.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
 
-chkdrv: chkdrv.f hybipt.f vecfcn.f errjac.f
+chkdrv: $(MINPACK) chkdrv.f hybipt.f vecfcn.f errjac.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
 
-ibmdpdr: ibmdpdr.f dmchar.f
+ibmdpdr: $(MINPACK) ibmdpdr.f dmchar.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
