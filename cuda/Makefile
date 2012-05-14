@@ -4,9 +4,9 @@ CFLAGS= --compile  -I..
 SOURCES = $(wildcard *.cu)
 OBJECTS = $(SOURCES:.cu=.o)
 
-all: libminpack.a
+all: libcuminpack.a
 
-libminpack.a:  $(OBJECTS)
+libcuminpack.a:  $(OBJECTS)
 	@echo " **************************** "
 	@echo " making compiling and library for testing "
 	@echo " (cuda needs __device__ source code compiled inline with kernel) "
@@ -18,5 +18,5 @@ libminpack.a:  $(OBJECTS)
 	${CC} ${CFLAGS}  -o $@ $<
 
 clean:
-	rm -f *.o libminpack.a *~ #*#
+	rm -f *.o libcuminpack.a *~ #*#
 

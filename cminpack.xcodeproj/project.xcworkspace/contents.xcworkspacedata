@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:libminpack.xcodeproj">
+      location = "self:cminpack.xcodeproj">
    </FileRef>
 </Workspace>

@@ -19,25 +19,25 @@ DESTDIR=/usr/local
 #  Static library target
 #
 
-all: libminpack.a
+all: libcminpack.a
 
-libminpack.a:  $(OBJS)
+libcminpack.a:  $(OBJS)
 	ar r $@ $(OBJS); ranlib $@
 
 %.o: %.c
 	${CC} ${CFLAGS} -c -o $@ $<
 
-install: libminpack.a
-	cp libminpack.a ${DESTDIR}/lib
-	chmod 644 ${DESTDIR}/lib/libminpack.a
-	ranlib -t ${DESTDIR}/lib/libminpack.a # might be unnecessary
+install: libcminpack.a
+	cp libcminpack.a ${DESTDIR}/lib
+	chmod 644 ${DESTDIR}/lib/libcminpack.a
+	ranlib -t ${DESTDIR}/lib/libcminpack.a # might be unnecessary
 	cp minpack.h ${DESTDIR}/include
 	chmod 644 ${DESTDIR}/include/minpack.h
 	cp cminpack.h ${DESTDIR}/include
 	chmod 644 ${DESTDIR}/include/cminpack.h
 
 clean:
-	rm -f *.o libminpack.a *~ #*#
+	rm -f *.o libcminpack.a *~ #*#
 
 .PHONY: dist
 
