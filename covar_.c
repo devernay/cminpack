@@ -20,7 +20,6 @@ void covar_(const int *n, real *r__, const int *ldr,
 {
     /* System generated locals */
     int r_dim1, r_offset, i__1, i__2, i__3;
-    real d__1;
 
     /* Local variables */
     int i__, j, k, l, ii, jj, km1;
@@ -95,6 +94,7 @@ void covar_(const int *n, real *r__, const int *ldr,
     /* Parameter adjustments */
     --wa;
     --ipvt;
+    tolr = *tol * fabs(r__[0]);
     r_dim1 = *ldr;
     r_offset = 1 + r_dim1;
     r__ -= r_offset;
@@ -103,12 +103,10 @@ void covar_(const int *n, real *r__, const int *ldr,
 
 /*     form the inverse of r in the full upper triangle of r. */
 
-    tolr = *tol * (d__1 = r__[(0 + (0 + (1 + 1 * r_dim1 << 3))) / 8], abs(
-	    d__1));
     l = 0;
     i__1 = *n;
     for (k = 1; k <= i__1; ++k) {
-	if ((d__1 = r__[k + k * r_dim1], abs(d__1)) <= tolr) {
+	if (fabs(r__[k + k * r_dim1]) <= tolr) {
 	    goto L50;
 	}
 	r__[k + k * r_dim1] = 1. / r__[k + k * r_dim1];
