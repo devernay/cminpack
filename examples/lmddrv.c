@@ -184,7 +184,7 @@ int main(int argc, char **argv)
 
     for (i = 0; i < ic; ++i) {
         printf("%5d%5d%5d%6d%6d%6d%16.7e\n",
-               np[i], na[i], ma[i], nf[i], nj[i], nx[i], fnm[i]);
+               np[i], na[i], ma[i], nf[i], nj[i], nx[i], (double)fnm[i]);
 /*
          write (nwrite,100) np(i),na(i),ma(i),nf(i),nj(i),nx(i),fnm(i)
   100 format (3i5, 3i6, 1x, d15.7)
