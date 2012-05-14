@@ -214,7 +214,7 @@ void lmpar(int n, real *r, int ldr,
     gnorm = enorm(n, wa1);
     paru = gnorm / delta;
     if (paru == 0.) {
-	paru = dwarf / min(delta,p1);
+	paru = dwarf / min(delta,(real)p1);
     }
 
 /*     if the input par lies outside of the interval (parl,paru), */

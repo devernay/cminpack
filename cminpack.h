@@ -1,5 +1,31 @@
+/* Header file for cminpack, by Frederic Devernay.
+   The documentation for all functions can be found in the file
+   minpack-documentation.txt from the distribution, or in the source
+   code of each function. */
+
 #ifndef __CMINPACK_H__
 #define __CMINPACK_H__
+
+/* The default floating-point type is "double" for C/C++ and "float" for CUDA,
+   but you can change this by defining one of the following symbols when
+   compiling the library, and before including cminpack.h when using it:
+   __cminpack_double__ for double
+   __cminpack_float__ for float
+   __cminpack_half__ for half from the OpenEXR library (in this case, you must
+                     compile cminpack with a C++ compiler)
+*/
+#ifdef __cminpack_double__
+#define __cminpack_real__ double
+#endif
+
+#ifdef __cminpack_float__
+#define __cminpack_real__ float
+#endif
+
+#ifdef __cminpack_half__
+#include <OpenEXR/half.h>
+#define __cminpack_real__ half
+#endif
 
 #ifdef __cplusplus
 extern "C" {

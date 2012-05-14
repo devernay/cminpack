@@ -144,31 +144,31 @@ ${FSRCGEN}: ../doc/minpack-documentation.txt
 	$(F77) -o $@ $< $(MINPACK)
 
 .c:
-	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $< $(MINPACK) -lm
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $< $(MINPACK) $(LDADD) -lm
 
 .c.o:
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
 lmddrvc: $(MINPACK) lmddrv.o lmdipt.o ssqfcn.o ssqjac.o
-	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
 lmfdrvc: $(MINPACK) lmfdrv.o lmdipt.o ssqfcn.o
-	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
 lmsdrvc: $(MINPACK) lmsdrv.o lmdipt.o ssqfcn.o ssqjac.o
-	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
 hyjdrvc: $(MINPACK) hyjdrv.o hybipt.o vecfcn.o vecjac.o
-	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
 hybdrvc: $(MINPACK) hybdrv.o hybipt.o vecfcn.o
-	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
 chkdrvc: $(MINPACK) chkdrv.o hybipt.o vecfcn.o errjac.o
-	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
 ibmdpdrc: $(MINPACK) ibmdpdr.o dmchar.o
-	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) -lm
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
 lmddrv: $(MINPACK) lmddrv.f lmdipt.f ssqfcn.f ssqjac.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)

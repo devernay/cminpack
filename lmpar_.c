@@ -265,7 +265,7 @@ L120:
     gnorm = enorm_(n, &wa1[1]);
     paru = gnorm / *delta;
     if (paru == 0.) {
-	paru = dwarf / min(*delta,p1);
+	paru = dwarf / min(*delta,(real)p1);
     }
 
 /*     if the input par lies outside of the interval (parl,paru), */

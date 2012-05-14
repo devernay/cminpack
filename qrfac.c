@@ -179,7 +179,7 @@ void qrfac(int m, int n, real *a, int
                         temp = a[j + k * lda] / rdiag[k];
                         /* Computing MAX */
                         d1 = 1. - temp * temp;
-                        rdiag[k] *= sqrt((max(0.,d1)));
+                        rdiag[k] *= sqrt((max((real)0.,d1)));
                         /* Computing 2nd power */
                         d1 = rdiag[k] / wa[k];
                         if (p05 * (d1 * d1) <= epsmch) {
