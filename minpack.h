@@ -12,11 +12,11 @@ extern "C" {
 #define __minpack_function__ __cminpack_function__
 #define __minpack_real__  __cminpack_real__
 #if defined(__CUDA_ARCH__) || defined(__CUDACC__)
-#define __minpack_type_fcn_nn__        __minpack_function__ int fcn_nn
-#define __minpack_type_fcnder_nn__     __minpack_function__ int fcnder_nn
-#define __minpack_type_fcn_mn__        __minpack_function__ int fcn_mn
-#define __minpack_type_fcnder_mn__     __minpack_function__ int fcnder_mn
-#define __minpack_type_fcnderstr_mn__  __minpack_function__ int fcnderstr_mn
+#define __minpack_type_fcn_nn__        __minpack_function__ void fcn_nn
+#define __minpack_type_fcnder_nn__     __minpack_function__ void fcnder_nn
+#define __minpack_type_fcn_mn__        __minpack_function__ void fcn_mn
+#define __minpack_type_fcnder_mn__     __minpack_function__ void fcnder_mn
+#define __minpack_type_fcnderstr_mn__  __minpack_function__ void fcnderstr_mn
 #define __minpack_decl_fcn_nn__
 #define __minpack_decl_fcnder_nn__
 #define __minpack_decl_fcn_mn__
@@ -28,11 +28,11 @@ extern "C" {
 #define __minpack_param_fcnder_mn__
 #define __minpack_param_fcnderstr_mn__
 #else
-#define __minpack_type_fcn_nn__        typedef int (*minpack_func_nn)
-#define __minpack_type_fcnder_nn__     typedef int (*minpack_funcder_nn)
-#define __minpack_type_fcn_mn__        typedef int (*minpack_func_mn)
-#define __minpack_type_fcnder_mn__     typedef int (*minpack_funcder_mn)
-#define __minpack_type_fcnderstr_mn__  typedef int (*minpack_funcderstr_mn)
+#define __minpack_type_fcn_nn__        typedef void (*minpack_func_nn)
+#define __minpack_type_fcnder_nn__     typedef void (*minpack_funcder_nn)
+#define __minpack_type_fcn_mn__        typedef void (*minpack_func_mn)
+#define __minpack_type_fcnder_mn__     typedef void (*minpack_funcder_mn)
+#define __minpack_type_fcnderstr_mn__  typedef void (*minpack_funcderstr_mn)
 #define __minpack_decl_fcn_nn__        minpack_func_nn fcn_nn,
 #define __minpack_decl_fcnder_nn__     minpack_funcder_nn fcnder_nn,
 #define __minpack_decl_fcn_mn__        minpack_func_mn fcn_mn,
