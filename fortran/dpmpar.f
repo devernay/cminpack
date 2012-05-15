@@ -165,9 +165,13 @@ c     data maxmag(1),maxmag(2) / -32769, -1 /
 c
 c     Machine constants for IEEE machines.
 c
-      data dmach(1) /2.22044604926d-16/
-      data dmach(2) /2.22507385852d-308/
-      data dmach(3) /1.79769313485d+308/
+c     These values were not accurate enough, according to MACHAR
+c     data dmach(1) /2.22044604926d-16/
+c     data dmach(2) /2.22507385852d-308/
+c     data dmach(3) /1.79769313485d+308/
+      data dmach(1) /2.2204460492503131d-16/
+      data dmach(2) /2.2250738585072014d-308/
+      data dmach(3) /1.7976931348623158d+308/
 c
       dpmpar = dmach(i)
       return
