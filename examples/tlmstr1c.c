@@ -40,13 +40,13 @@ int main()
      unless high precision solutions are required,
      this is the recommended setting. */
 
-  tol = sqrt(dpmpar(1));
+  tol = sqrt(__cminpack_func__(dpmpar)(1));
 
-  info = lmstr1(fcn, &data, m, n, 
+  info = __cminpack_func__(lmstr1)(fcn, &data, m, n, 
 	  x, fvec, fjac, ldfjac, 
 	  tol, ipvt, wa, lwa);
 
-  fnorm = enorm(m, fvec);
+  fnorm = __cminpack_func__(enorm)(m, fvec);
 
   printf("      final l2 norm of the residuals%15.7g\n\n", (double)fnorm);
   printf("      exit parameter                %10i\n\n", info);

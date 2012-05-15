@@ -40,11 +40,11 @@ int main()
      precision solutions are required, this is the recommended
      setting. */
 
-  tol = sqrt(dpmpar(1));
+  tol = sqrt(__cminpack_func__(dpmpar)(1));
 
-  info = lmdif1(fcn, &data, m, n, x, fvec, tol, iwa, wa, lwa);
+  info = __cminpack_func__(lmdif1)(fcn, &data, m, n, x, fvec, tol, iwa, wa, lwa);
 
-  fnorm = enorm(m, fvec);
+  fnorm = __cminpack_func__(enorm)(m, fvec);
 
   printf("      final l2 norm of the residuals%15.7g\n\n",(double)fnorm);
   printf("      exit parameter                %10i\n\n", info);

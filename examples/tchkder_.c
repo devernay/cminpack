@@ -28,12 +28,12 @@ int main()
   ldfjac = 15;
 
   mode = 1;
-  chkder_(&m, &n, x, fvec, fjac, &ldfjac, xp, fvecp, &mode, err);
+  __minpack_func__(chkder)(&m, &n, x, NULL, NULL, &ldfjac, xp, NULL, &mode, NULL);
   mode = 2;
-  fcn(&m, &n, x, fvec, fjac, &ldfjac, &one);
-  fcn(&m, &n, x, fvec, fjac, &ldfjac, &two);
-  fcn(&m, &n, xp, fvecp, fjac, &ldfjac, &one);
-  chkder_(&m, &n, x, fvec, fjac, &ldfjac, xp, fvecp, &mode, err);
+  fcn(&m, &n, x, fvec, NULL, &ldfjac, &one);
+  fcn(&m, &n, x, NULL, fjac, &ldfjac, &two);
+  fcn(&m, &n, xp, fvecp, NULL, &ldfjac, &one);
+  __minpack_func__(chkder)(&m, &n, x, fvec, fjac, &ldfjac, NULL, fvecp, &mode, err);
 
   for (i=1; i<=m; i++)
     {

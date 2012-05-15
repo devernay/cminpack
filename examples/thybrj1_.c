@@ -31,11 +31,11 @@ int main()
 /*      unless high solutions are required, */
 /*      this is the recommended setting. */
 
-  tol = sqrt(dpmpar_(&one));
+  tol = sqrt(__minpack_func__(dpmpar)(&one));
 
-  hybrj1_(&fcn, &n, x, fvec, fjac, &ldfjac, &tol, &info, wa, &lwa);
+  __minpack_func__(hybrj1)(&fcn, &n, x, fvec, fjac, &ldfjac, &tol, &info, wa, &lwa);
 
-  fnorm = enorm_(&n, fvec);
+  fnorm = __minpack_func__(enorm)(&n, fvec);
 
   printf("      final l2 norm of the residuals%15.7g\n\n", (double)fnorm);
   printf("      exit parameter                %10i\n\n", info);

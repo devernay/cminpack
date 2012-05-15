@@ -34,14 +34,14 @@ int main()
   epsfcn = 0.;
 
   mode = 1;
-  chkder_(&m, &n, x, fvec, fdjac, &ldfjac, xp, fvecp, &mode, err);
+  __minpack_func__(chkder)(&m, &n, x, NULL, NULL, &ldfjac, xp, NULL, &mode, NULL);
   mode = 2;
   fcn(&m, &n, x, fvec, &one);
-  fdjac2_(fcn, &m, &n, x, fvec, fdjac, &ldfjac, &iflag, &epsfcn, wa);
+  __minpack_func__(fdjac2)(fcn, &m, &n, x, fvec, fdjac, &ldfjac, &iflag, &epsfcn, wa);
   fcnjac(m, n, x, fjac, ldfjac);
   fcn(&m, &n, xp, fvecp, &one);
-  chkder_(&m, &n, x, fvec, fdjac, &ldfjac, xp, fvecp, &mode, errd);
-  chkder_(&m, &n, x, fvec, fjac, &ldfjac, xp, fvecp, &mode, err);
+  __minpack_func__(chkder)(&m, &n, x, fvec, fdjac, &ldfjac, NULL, fvecp, &mode, errd);
+  __minpack_func__(chkder)(&m, &n, x, fvec, fjac, &ldfjac, NULL, fvecp, &mode, err);
 
   for (i=1; i<=m; i++)
     {

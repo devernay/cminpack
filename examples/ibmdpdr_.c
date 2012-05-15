@@ -55,9 +55,9 @@ int main(int argc, char **argv)
 /*     compare the dpmpar constants with their machar counterparts and */
 /*     store the relative differences in rerr. */
 
-    epsmch = dpmpar_(&i1);
-    dwarf = dpmpar_(&i2);
-    giant = dpmpar_(&i3);
+    epsmch = __minpack_func__(dpmpar)(&i1);
+    dwarf = __minpack_func__(dpmpar)(&i2);
+    giant = __minpack_func__(dpmpar)(&i3);
     rerr[0] = (epsmch - eps) / epsmch;
     rerr[1] = (dwarf - xmin) / dwarf;
     rerr[2] = (xmax - giant) / giant;

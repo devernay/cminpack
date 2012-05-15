@@ -29,9 +29,9 @@ int main()
 /*      unless high solutions are required, */
 /*      this is the recommended setting. */
 
-  tol = sqrt(dpmpar(1));
-  info = hybrd1(fcn, 0, n, x, fvec, tol, wa, lwa);
-  fnorm = enorm(n, fvec);
+  tol = sqrt(__cminpack_func__(dpmpar)(1));
+  info = __cminpack_func__(hybrd1)(fcn, 0, n, x, fvec, tol, wa, lwa);
+  fnorm = __cminpack_func__(enorm)(n, fvec);
 
   printf("     final L2 norm of the residuals %15.7g\n", (double)fnorm);
   printf("     exit parameter                 %10i\n", info);

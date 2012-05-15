@@ -10,7 +10,7 @@ F77=gfortran
 #F77CFLAGS=-g
 
 # uncomment the following for C MINPACK
-MINPACK=../libcminpack.a
+MINPACK=../libcminpack$(LIBSUFFIX).a
 CC=gcc
 CFLAGS=-g -Wall
 CPPFLAGS=-I..
@@ -20,10 +20,23 @@ FMINPACK=../fortran/libminpack.a
 # uncomment the following to debug using valgrind
 #VALGRIND=valgrind --tool=memcheck
 
-# Execute this script to extract the examples from the MINPACK
-# documentation (../doc/minpack-documentation.txt)
-# and compile and run them.  You may compare the numerical results
-# with those in the same file.
+### The default configuration is to compile the double precision version
+
+### configuration for the float (single precision) version:
+## make LIBSUFFIX=s CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_float__"
+#LIBSUFFIX=s
+#CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_float__"
+CFLAGS_F=$(CFLAGS) -D__cminpack_float__
+
+### configuration for the half (half precision) version:
+## make LIBSUFFIX=h CFLAGS="-O3 -g -Wall -Wextra -I/opt/local/include -D__cminpack_half__" LDADD="-L/opt/local/lib -lHalf" CC=g++
+#LIBSUFFIX=h
+#CFLAGS="-O3 -g -Wall -Wextra -I/opt/local/include -D__cminpack_half__"
+#LDADD="-L/opt/local/lib -lHalf"
+#CC=g++
+CFLAGS_H=$(CFLAGS) -I/opt/local/include -D__cminpack_half__
+LDADD_H=-L/opt/local/lib -lHalf
+CC_H=$(CXX)
 
 FPGM=tchkder thybrd thybrd1 thybrj thybrj1 tlmder tlmder1 tlmdif \
 	tlmdif1 tlmstr tlmstr1 ibmdpdr
@@ -41,7 +54,10 @@ FSRC=$(FSRCGEN) \
 	hyjdrv.f hybipt.f vecfcn.f vecjac.f hybdrv.f \
 	errjac.f chkdrv.f ibmdpdr.f machar.f
 SRC=tchkder_.c thybrd_.c thybrd1_.c thybrj_.c thybrj1_.c tlmder_.c tlmder1_.c \
-	tlmdif_.c tlmdif1_.c tlmstr_.c tlmstr1_.c tfdjac2_.c ibmdpdr_.c
+	tlmdif_.c tlmdif1_.c tlmstr_.c tlmstr1_.c tfdjac2_.c \
+	lmddrv_.c lmfdrv_.c lmsdrv_.c \
+	hyjdrv_.c hybdrv_.c \
+	chkdrv_.c ibmdpdr_.c
 CSRC=tchkderc.c thybrdc.c thybrd1c.c thybrjc.c thybrj1c.c tlmderc.c tlmder1c.c \
 	tlmdifc.c tlmdif1c.c tlmstrc.c tlmstr1c.c tfdjac2c.c \
 	lmddrv.c lmdipt.c ssqfcn.c ssqjac.c lmfdrv.c lmsdrv.c \
@@ -53,7 +69,8 @@ REF=test.ref ctest.ref ftest.ref
 
 all:
 	@echo "*****************************************************"
-	@echo "Please type 'make alltest' to run all tests at once, or:"
+	@echo "Please type 'make check' to run all tests at once, or:"
+	@echo "*****************************************************"
 	@echo "make test: calling FORTRAN CMINPACK from C"
 	@echo "make test MINPACK=../fortran/libminpack.a: calling FORTRAN MINPACK from C"
 	@echo "make ctest: calling CMINPACK from C"
@@ -66,92 +83,122 @@ all:
 	@echo "make ftestdrv: calling FORTRAN CMINPACK from FORTRAN"
 	@echo "make ftestdrv MINPACK=../fortran/libminpack.a: calling FORTRAN MINPACK from FORTRAN"
 
-.PHONY: test ctest ctestdrv ctestlmdrv ctesthydrv ctestchkdrv ftest ftestdrv ftestlmdrv ftesthydrv ftestchkdrv alltest
+.PHONY: test ctest ctestdrv ctestlmdrv ctesthydrv ctestchkdrv ftest ftestdrv ftestlmdrv ftesthydrv ftestchkdrv check checkhalf checkfail
 test: $(MINPACK) $(PGM)
 	@echo "*** Running standard tests (calling MINPACK from C using $(MINPACK))"
-	for x in $(PGM); do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/`echo $$x.ref|sed -e s/_.ref/c.ref/` $$x.out ; done
+	for x in $(PGM); do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$(LIBSUFFIX)`echo $$x.ref|sed -e s/_.ref/c.ref/` $$x.out ; done
 
 testdrv: $(MINPACK) $(FDRVPGM) testlmdrv testhydrv testchkdrv
 
 testlmdrv: lmddrv_ lmfdrv_ lmsdrv_
 	@echo "*** Running LM tests (calling MINPACK from C using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$(LIBSUFFIX)`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
 
 testhydrv: hyjdrv_ hybdrv_
 	@echo "*** Running HY tests (calling MINPACK from C using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/hybrd.data > $$x.out; diff -u ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/hybrd.data > $$x.out; diff -u ref/$(LIBSUFFIX)`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
 
 testchkdrv:chkdrv_
 	@echo "*** Running CHK tests (calling MINPACK from C using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$(LIBSUFFIX)`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
 
 ctest: $(MINPACK) $(CPGM)
 	@echo "*** Running standard tests (calling CMINPACK from C using $(MINPACK))"
-	for x in $(CPGM); do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $(CPGM); do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$(LIBSUFFIX)$$x.ref $$x.out ; done
 
 ctestdrv: $(MINPACK) $(CDRVPGM) ctestlmdrv ctesthydrv ctestchkdrv
 
 ctestlmdrv: lmddrvc lmfdrvc lmsdrvc
 	@echo "*** Running LM tests (calling CMINPACK from C using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$(LIBSUFFIX)$$x.ref $$x.out ; done
 
 ctesthydrv: hyjdrvc hybdrvc
 	@echo "*** Running HY tests (calling CMINPACK from C using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/hybrd.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/hybrd.data > $$x.out; diff -u ref/$(LIBSUFFIX)$$x.ref $$x.out ; done
 
 ctestchkdrv:chkdrvc
 	@echo "*** Running CHK tests (calling CMINPACK from C using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$(LIBSUFFIX)$$x.ref $$x.out ; done
 
 ftest: $(MINPACK) $(FPGM)
 	@echo "*** Running standard tests (calling MINPACK from FORTRAN using $(MINPACK))"
-	for x in ${FPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in ${FPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$(LIBSUFFIX)$$x.ref $$x.out ; done
 
 ftestdrv: $(MINPACK) $(DRVPGM) ftestlmdrv ftesthydrv ftestchkdrv
 
 ftestlmdrv: lmddrv lmfdrv lmsdrv
 	@echo "*** Running LM tests (calling MINPACK from FORTRAN using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$(LIBSUFFIX)$$x.ref $$x.out ; done
 
 ftesthydrv: hyjdrv hybdrv
 	@echo "*** Running HY tests (calling MINPACK from FORTRAN using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/hybrd.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/hybrd.data > $$x.out; diff -u ref/$(LIBSUFFIX)$$x.ref $$x.out ; done
 
 ftestchkdrv: chkdrv
 	@echo "*** Running CHK tests (calling MINPACK from FORTRAN using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$(LIBSUFFIX)$$x.ref $$x.out ; done
 
-alltest: ../libcminpack.a ../fortran/libminpack.a
-	$(MAKE) clean $(PGM) 2>&1 > /dev/null
-	-$(MAKE) test
-	$(MAKE) clean $(PGM) MINPACK=../fortran/libminpack.a 2>&1 > /dev/null
-	-$(MAKE) test MINPACK=../fortran/libminpack.a
-	$(MAKE) clean $(CPGM) 2>&1 > /dev/null
-	-$(MAKE) ctest
-	$(MAKE) clean $(FPGM) 2>&1 > /dev/null
-	-$(MAKE) ftest
-	$(MAKE) clean $(FPGM) MINPACK=../fortran/libminpack.a 2>&1 > /dev/null
-	-$(MAKE) ftest MINPACK=../fortran/libminpack.a
-	$(MAKE) clean $(FDRVPGM) 2>&1 > /dev/null
-	-$(MAKE) -k testdrv
-	$(MAKE) clean $(FDRVPGM) MINPACK=../fortran/libminpack.a 2>&1 > /dev/null
-	-$(MAKE) -k testdrv MINPACK=../fortran/libminpack.a
-	$(MAKE) clean $(CDRVPGM) 2>&1 > /dev/null
-	-$(MAKE) -k ctestdrv
-	$(MAKE) clean $(DRVPGM) 2>&1 > /dev/null
-	-$(MAKE) -k ftestdrv
-	$(MAKE) clean $(DRVPGM) MINPACK=../fortran/libminpack.a 2>&1 > /dev/null
-	-$(MAKE) -k ftestdrv MINPACK=../fortran/libminpack.a
+check: ../fortran/libminpack.a
+	$(MAKE) -C .. clean all LIBSUFFIX= 2>&1 > /dev/null
+	$(MAKE) clean $(PGM) LIBSUFFIX= 2>&1 > /dev/null
+	-$(MAKE) test LIBSUFFIX=
+	$(MAKE) clean $(PGM) LIBSUFFIX= MINPACK=../fortran/libminpack.a 2>&1 > /dev/null
+	-$(MAKE) test LIBSUFFIX= MINPACK=../fortran/libminpack.a
+	$(MAKE) clean $(CPGM) LIBSUFFIX= 2>&1 > /dev/null
+	-$(MAKE) ctest LIBSUFFIX=
+	$(MAKE) clean $(FPGM) LIBSUFFIX= 2>&1 > /dev/null
+	-$(MAKE) ftest LIBSUFFIX=
+	$(MAKE) clean $(FPGM) LIBSUFFIX= MINPACK=../fortran/libminpack.a 2>&1 > /dev/null
+	-$(MAKE) ftest LIBSUFFIX= MINPACK=../fortran/libminpack.a
+	$(MAKE) clean $(FDRVPGM) LIBSUFFIX= 2>&1 > /dev/null
+	-$(MAKE) -k testdrv LIBSUFFIX=
+	$(MAKE) clean $(CDRVPGM) LIBSUFFIX= 2>&1 > /dev/null
+	-$(MAKE) -k ctestdrv LIBSUFFIX=
 	$(MAKE) clean 2>&1 > /dev/null
+	$(MAKE) -C .. clean 2>&1 > /dev/null
+	$(MAKE) -C .. all LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 2>&1 > /dev/null
+	$(MAKE) clean $(PGM) LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 2>&1 > /dev/null
+	-$(MAKE) test LIBSUFFIX=s CFLAGS="$(CFLAGS_F)"
+	$(MAKE) clean $(CPGM) LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 2>&1 > /dev/null
+	-$(MAKE) ctest LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 
+	$(MAKE) clean $(FDRVPGM) LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 2>&1 > /dev/null
+	-$(MAKE) -k testdrv LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 
+	$(MAKE) clean $(CDRVPGM) LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 2>&1 > /dev/null
+	-$(MAKE) -k ctestdrv LIBSUFFIX=s CFLAGS="$(CFLAGS_F)"
+	$(MAKE) clean LIBSUFFIX=s 2>&1 > /dev/null
+	$(MAKE) -C .. clean LIBSUFFIX=s 2>&1 > /dev/null
 
-../libcminpack.a:
+checkhalf:
+	$(MAKE) -C .. clean all LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)" 2>&1 > /dev/null
+	$(MAKE) clean $(PGM) LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)" 2>&1 > /dev/null
+	-$(MAKE) test LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)"
+	$(MAKE) clean $(CPGM) LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)" 2>&1 > /dev/null
+	-$(MAKE) ctest LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)"
+	$(MAKE) clean $(FDRVPGM) LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)" 2>&1 > /dev/null
+	-$(MAKE) -k testdrv LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)"
+	$(MAKE) clean $(CDRVPGM) LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)" 2>&1 > /dev/null
+	-$(MAKE) -k ctestdrv LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)"
+#	$(MAKE) clean LIBSUFFIX=h 2>&1 > /dev/null
+#	$(MAKE) -C .. clean LIBSUFFIX=h 2>&1 > /dev/null
+
+checkfail: ../fortran/libminpack.a check
+	$(MAKE) -C .. clean LIBSUFFIX= 2>&1 > /dev/null
+	$(MAKE) clean $(FDRVPGM) LIBSUFFIX= MINPACK=../fortran/libminpack.a 2>&1 > /dev/null
+	-$(MAKE) -k testdrv LIBSUFFIX= MINPACK=../fortran/libminpack.a
+	$(MAKE) clean $(DRVPGM) LIBSUFFIX= 2>&1 > /dev/null
+	-$(MAKE) -k ftestdrv LIBSUFFIX=
+	$(MAKE) clean $(DRVPGM) LIBSUFFIX= MINPACK=../fortran/libminpack.a 2>&1 > /dev/null
+	-$(MAKE) -k ftestdrv LIBSUFFIX= MINPACK=../fortran/libminpack.a
+	$(MAKE) clean LIBSUFFIX= 2>&1 > /dev/null
+
+../libcminpack$(LIBSUFFIX).a:
 	$(MAKE) -C ..
 
 ../fortran/libminpack.a:
 	$(MAKE) -C ../fortran
 
 clean:
-	-rm -f $(PGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(SRC:.c=.o) $(CSRC:.c=.o) $(FPGM) $(FSRCGEN) $(FSRC:.f=.o) $(PGM:=.out) $(CPGM:=.out) $(CDRVPGM:=.out) $(FPGM:=.out) *~ #*#
+	-rm -f $(PGM) $(FDRVPGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(SRC:.c=.o) $(CSRC:.c=.o) $(FPGM) $(FSRCGEN) $(FSRC:.f=.o) $(PGM:=.out) $(CPGM:=.out) $(CDRVPGM:=.out) $(FPGM:=.out) *~ #*#
 	-rm -rf $(PGM:=.dSYM) $(CPGM:=.dSYM) $(CDRVPGM:=.dSYM) $(FPGM:=.dSYM)
 
 ${FSRCGEN}: ../doc/minpack-documentation.txt

@@ -33,11 +33,11 @@ int main()
 /*      unless high solutions are required, */
 /*      this is the recommended setting. */
 
-  tol = sqrt(dpmpar_(&one));
+  tol = sqrt(__minpack_func__(dpmpar)(&one));
 
-  lmder1_(&fcn, &m, &n, x, fvec, fjac, &ldfjac, &tol, 
+  __minpack_func__(lmder1)(&fcn, &m, &n, x, fvec, fjac, &ldfjac, &tol, 
 	  &info, ipvt, wa, &lwa);
-  fnorm = enorm_(&m, fvec);
+  fnorm = __minpack_func__(enorm)(&m, fvec);
   printf("      final l2 norm of the residuals%15.7g\n\n", (double)fnorm);
   printf("      exit parameter                %10i\n\n", info);
   printf("      final approximate solution\n");

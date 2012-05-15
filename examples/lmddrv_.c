@@ -102,7 +102,7 @@ int main(int argc, char **argv)
     const int lwa = 5*40+65;
     const int i1 = 1;
 
-    tol = sqrt(dpmpar_(&i1));
+    tol = sqrt(__minpack_func__(dpmpar)(&i1));
 
     ic = 0;
 
@@ -121,7 +121,7 @@ int main(int argc, char **argv)
 
             ssqfcn(m,n,x,fvec,lmdertest.nprob);
 
-            fnorm1 = enorm_(&m,fvec);
+            fnorm1 = __minpack_func__(enorm)(&m,fvec);
 
             printf("\n\n\n\n      problem%5d      dimensions%5d%5d\n\n", lmdertest.nprob, n, m);
 /*
@@ -133,11 +133,11 @@ int main(int argc, char **argv)
             lmdertest.nfev = 0;
             lmdertest.njev = 0;
 
-            lmder1_(fcn,&m,&n,x,fvec,fjac,&m,&tol,&info,ipvt,wa,&lwa);
+            __minpack_func__(lmder1)(fcn,&m,&n,x,fvec,fjac,&m,&tol,&info,ipvt,wa,&lwa);
 
             ssqfcn(m,n,x,fvec,lmdertest.nprob);
 
-            fnorm2 = enorm_(&m,fvec);
+            fnorm2 = __minpack_func__(enorm)(&m,fvec);
 
             np[ic] = lmdertest.nprob;
             na[ic] = n;

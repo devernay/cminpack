@@ -42,8 +42,8 @@ int main()
   /*      and gtol to zero. unless high solutions are */
   /*      required, these are the recommended settings. */
 
-  ftol = sqrt(dpmpar(1));
-  xtol = sqrt(dpmpar(1));
+  ftol = sqrt(__cminpack_func__(dpmpar)(1));
+  xtol = sqrt(__cminpack_func__(dpmpar)(1));
   gtol = 0.;
 
   maxfev = 400;
@@ -51,10 +51,10 @@ int main()
   factor = 1.e2;
   nprint = 0;
 
-  info = lmstr(fcn, &data, m, n, x, fvec, fjac, ldfjac, ftol, xtol, gtol, 
+  info = __cminpack_func__(lmstr)(fcn, &data, m, n, x, fvec, fjac, ldfjac, ftol, xtol, gtol, 
 	maxfev, diag, mode, factor, nprint, &nfev, &njev, 
 	ipvt, qtf, wa1, wa2, wa3, wa4);
-  fnorm = enorm(m, fvec);
+  fnorm = __cminpack_func__(enorm)(m, fvec);
 
   printf("      final l2 norm of the residuals%15.7g\n\n", (double)fnorm);
   printf("      number of function evaluations%10i\n\n", nfev);
@@ -63,7 +63,7 @@ int main()
   printf("      final approximate solution\n");
   for (j=0; j<n; ++j) printf("%s%15.7g", j%3==0?"\n     ":"", (double)x[j]);
   printf("\n");
-  ftol = dpmpar(1);
+  ftol = __cminpack_func__(dpmpar)(1);
 #ifdef TEST_COVAR
   {
       /* test the original covar from MINPACK */
@@ -80,7 +80,7 @@ int main()
   }
 #endif
   /* test covar1, which also estimates the rank of the Jacobian */
-  k = covar1(m, n, fnorm*fnorm, fjac, ldfjac, ipvt, ftol, wa1);
+  k = __cminpack_func__(covar1)(m, n, fnorm*fnorm, fjac, ldfjac, ipvt, ftol, wa1);
   printf("      covariance\n");
   for (i=0; i<n; ++i) {
     for (j=0; j<n; ++j)

@@ -98,7 +98,7 @@ int main(int argc, char **argv)
     real wa[1060];
     const int lwa = 1060;
 
-    tol = sqrt(dpmpar(1));
+    tol = sqrt(__cminpack_func__(dpmpar)(1));
 
     ic = 0;
 
@@ -114,16 +114,16 @@ int main(int argc, char **argv)
 
             vecfcn(n,x,fvec,hybrjtest.nprob);
 
-            fnorm1 = enorm(n,fvec);
+            fnorm1 = __cminpack_func__(enorm)(n,fvec);
 
             printf("\n\n\n\n      problem%5d      dimension%5d\n\n", hybrjtest.nprob, n);
 
             hybrjtest.nfev = 0;
             hybrjtest.njev = 0;
 
-            info = hybrj1(fcn,&hybrjtest,n,x,fvec,fjac,ldfjac,tol,wa,lwa);
+            info = __cminpack_func__(hybrj1)(fcn,&hybrjtest,n,x,fvec,fjac,ldfjac,tol,wa,lwa);
 
-            fnorm2 = enorm(n,fvec);
+            fnorm2 = __cminpack_func__(enorm)(n,fvec);
 
             np[ic] = hybrjtest.nprob;
             na[ic] = n;

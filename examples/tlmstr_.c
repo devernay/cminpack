@@ -31,8 +31,8 @@ int main()
   /*      and gtol to zero. unless high solutions are */
   /*      required, these are the recommended settings. */
 
-  ftol = sqrt(dpmpar_(&one));
-  xtol = sqrt(dpmpar_(&one));
+  ftol = sqrt(__minpack_func__(dpmpar)(&one));
+  xtol = sqrt(__minpack_func__(dpmpar)(&one));
   gtol = 0.;
 
   maxfev = 400;
@@ -40,10 +40,10 @@ int main()
   factor = 1.e2;
   nprint = 0;
 
-  lmstr_(&fcn, &m, &n, x, fvec, fjac, &ldfjac, &ftol, &xtol, &gtol, 
+  __minpack_func__(lmstr)(&fcn, &m, &n, x, fvec, fjac, &ldfjac, &ftol, &xtol, &gtol, 
 	&maxfev, diag, &mode, &factor, &nprint, &info, &nfev, &njev, 
 	ipvt, qtf, wa1, wa2, wa3, wa4);
-  fnorm = enorm_(&m, fvec);
+  fnorm = __minpack_func__(enorm)(&m, fvec);
 
   printf("      final l2 norm of the residuals%15.7g\n\n", (double)fnorm);
   printf("      number of function evaluations%10i\n\n", nfev);
@@ -52,11 +52,11 @@ int main()
   printf("      final approximate solution\n");
   for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n     ":"", (double)x[j-1]);
   printf("\n");
-  ftol = dpmpar_(&one);
+  ftol = __minpack_func__(dpmpar)(&one);
   {
       /* test the original covar from MINPACK */
       real covfac = fnorm*fnorm/(m-n);
-      covar_(&n, fjac, &ldfjac, ipvt, &ftol, wa1);
+      __minpack_func__(covar)(&n, fjac, &ldfjac, ipvt, &ftol, wa1);
       printf("      covariance\n");
       for (i=0; i<n; ++i) {
           for (j=0; j<n; ++j)

@@ -93,11 +93,11 @@ int main(int argc, char **argv)
 
         printf("\n\n\n      problem%5d      with dimension%5d   is  %c\n\n", nprob, n, a[nprob-1]?'T':'F');
 
-        chkder(n,n,x1,NULL,NULL,ldfjac,x2,NULL,1,NULL);
+        __cminpack_func__(chkder)(n,n,x1,NULL,NULL,ldfjac,x2,NULL,1,NULL);
         vecfcn(n,x1,fvec1,nprob);
         errjac(n,x1,fjac,ldfjac,nprob);
         vecfcn(n,x2,fvec2,nprob);
-        chkder(n,n,x1,fvec1,fjac,ldfjac,NULL,fvec2,2,err);
+        __cminpack_func__(chkder)(n,n,x1,fvec1,fjac,ldfjac,NULL,fvec2,2,err);
 
         errmin[nprob-1] = err[0];
         errmax[nprob-1] = err[0];

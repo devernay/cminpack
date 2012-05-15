@@ -31,7 +31,7 @@ int main()
 /*      unless high solutions are required, */
 /*      this is the recommended setting. */
 
-  xtol = sqrt(dpmpar_(&one));
+  xtol = sqrt(__minpack_func__(dpmpar)(&one));
 
   maxfev = 2000;
   ml = 1;
@@ -46,10 +46,10 @@ int main()
   factor = 1.e2;
   nprint = 0;
 
-  hybrd_(&fcn, &n, x, fvec, &xtol, &maxfev, &ml, &mu, &epsfcn,
+  __minpack_func__(hybrd)(&fcn, &n, x, fvec, &xtol, &maxfev, &ml, &mu, &epsfcn,
 	 diag, &mode, &factor, &nprint, &info, &nfev,
 	 fjac, &ldfjac, r, &lr, qtf, wa1, wa2, wa3, wa4);
-  fnorm = enorm_(&n, fvec);
+  fnorm = __minpack_func__(enorm)(&n, fvec);
   printf("     final l2 norm of the residuals %15.7g\n\n", (double)fnorm);
   printf("     number of function evaluations  %10i\n\n", nfev);
   printf("     exit parameter                  %10i\n\n", info);

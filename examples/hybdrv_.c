@@ -96,7 +96,7 @@ int main(int argc, char **argv)
     const int lwa = 2660;
     const int i1 = 1;
 
-    tol = sqrt(dpmpar_(&i1));
+    tol = sqrt(__minpack_func__(dpmpar)(&i1));
 
     ic = 0;
 
@@ -112,16 +112,16 @@ int main(int argc, char **argv)
 
             vecfcn(n,x,fvec,hybrdtest.nprob);
 
-            fnorm1 = enorm_(&n,fvec);
+            fnorm1 = __minpack_func__(enorm)(&n,fvec);
 
             printf("\n\n\n\n      problem%5d      dimension%5d\n\n", hybrdtest.nprob, n);
 
             hybrdtest.nfev = 0;
             hybrdtest.njev = 0;
 
-            hybrd1_(fcn,&n,x,fvec,&tol,&info,wa,&lwa);
+            __minpack_func__(hybrd1)(fcn,&n,x,fvec,&tol,&info,wa,&lwa);
 
-            fnorm2 = enorm_(&n,fvec);
+            fnorm2 = __minpack_func__(enorm)(&n,fvec);
 
             np[ic] = hybrdtest.nprob;
             na[ic] = n;

@@ -38,7 +38,7 @@ int main()
   ldfjac = 15;
 
   /* compute xp from x */
-  chkder(m, n, x, NULL, NULL, ldfjac, xp, NULL, 1, NULL);
+  __cminpack_func__(chkder)(m, n, x, NULL, NULL, ldfjac, xp, NULL, 1, NULL);
   /* compute fvec at x (all components of fvec should be != 0).*/
   fcn(&data, m, n, x, fvec, NULL, ldfjac, 1);
   /* compute fjac at x */
@@ -46,7 +46,7 @@ int main()
   /* compute fvecp at xp (all components of fvecp should be != 0)*/
   fcn(&data, m, n, xp, fvecp, NULL, ldfjac, 1);
   /* check Jacobian, put the result in err */
-  chkder(m, n, x, fvec, fjac, ldfjac, NULL, fvecp, 2, err);
+  __cminpack_func__(chkder)(m, n, x, fvec, fjac, ldfjac, NULL, fvecp, 2, err);
   /* Output values:
      err[i] = 1.: i-th gradient is correct
      err[i] = 0.: i-th gradient is incorrect
