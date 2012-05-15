@@ -10,6 +10,7 @@ CFLAGS= -O3 -g -Wall -Wextra
 ## make LIBSUFFIX=s CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_float__"
 #LIBSUFFIX=s
 #CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_float__"
+CFLAGS_F=$(CFLAGS) -D__cminpack_float__
 
 ### configuration for the half (half precision) version:
 ## make LIBSUFFIX=h CFLAGS="-O3 -g -Wall -Wextra -I/opt/local/include -D__cminpack_half__" LDADD="-L/opt/local/lib -lHalf" CC=g++
@@ -17,14 +18,23 @@ CFLAGS= -O3 -g -Wall -Wextra
 #CFLAGS="-O3 -g -Wall -Wextra -I/opt/local/include -D__cminpack_half__"
 #LDADD="-L/opt/local/lib -lHalf"
 #CC=g++
+CFLAGS_H=$(CFLAGS) -I/opt/local/include -D__cminpack_half__
+LDADD_H=-L/opt/local/lib -lHalf
+CC_H=$(CXX)
 
 OBJS = \
-chkder.o  enorm.o   hybrd1.o  hybrj.o   lmdif1.o  lmstr1.o  qrfac.o   r1updt.o \
-dogleg.o  fdjac1.o  hybrd.o   lmder1.o  lmdif.o   lmstr.o   qrsolv.o  rwupdt.o \
-dpmpar.o  fdjac2.o  hybrj1.o  lmder.o   lmpar.o   qform.o   r1mpyq.o  covar.o covar1.o \
-chkder_.o enorm_.o  hybrd1_.o hybrj_.o  lmdif1_.o lmstr1_.o qrfac_.o  r1updt_.o \
-dogleg_.o fdjac1_.o hybrd_.o  lmder1_.o lmdif_.o  lmstr_.o  qrsolv_.o rwupdt_.o \
-dpmpar_.o fdjac2_.o hybrj1_.o lmder_.o  lmpar_.o  qform_.o  r1mpyq_.o covar_.o
+$(LIBSUFFIX)chkder.o  $(LIBSUFFIX)enorm.o   $(LIBSUFFIX)hybrd1.o  $(LIBSUFFIX)hybrj.o  \
+$(LIBSUFFIX)lmdif1.o  $(LIBSUFFIX)lmstr1.o  $(LIBSUFFIX)qrfac.o   $(LIBSUFFIX)r1updt.o \
+$(LIBSUFFIX)dogleg.o  $(LIBSUFFIX)fdjac1.o  $(LIBSUFFIX)hybrd.o   $(LIBSUFFIX)lmder1.o \
+$(LIBSUFFIX)lmdif.o   $(LIBSUFFIX)lmstr.o   $(LIBSUFFIX)qrsolv.o  $(LIBSUFFIX)rwupdt.o \
+$(LIBSUFFIX)dpmpar.o  $(LIBSUFFIX)fdjac2.o  $(LIBSUFFIX)hybrj1.o  $(LIBSUFFIX)lmder.o \
+$(LIBSUFFIX)lmpar.o   $(LIBSUFFIX)qform.o   $(LIBSUFFIX)r1mpyq.o  $(LIBSUFFIX)covar.o $(LIBSUFFIX)covar1.o \
+$(LIBSUFFIX)chkder_.o $(LIBSUFFIX)enorm_.o  $(LIBSUFFIX)hybrd1_.o $(LIBSUFFIX)hybrj_.o \
+$(LIBSUFFIX)lmdif1_.o $(LIBSUFFIX)lmstr1_.o $(LIBSUFFIX)qrfac_.o  $(LIBSUFFIX)r1updt_.o \
+$(LIBSUFFIX)dogleg_.o $(LIBSUFFIX)fdjac1_.o $(LIBSUFFIX)hybrd_.o  $(LIBSUFFIX)lmder1_.o \
+$(LIBSUFFIX)lmdif_.o  $(LIBSUFFIX)lmstr_.o  $(LIBSUFFIX)qrsolv_.o $(LIBSUFFIX)rwupdt_.o \
+$(LIBSUFFIX)dpmpar_.o $(LIBSUFFIX)fdjac2_.o $(LIBSUFFIX)hybrj1_.o $(LIBSUFFIX)lmder_.o \
+$(LIBSUFFIX)lmpar_.o  $(LIBSUFFIX)qform_.o  $(LIBSUFFIX)r1mpyq_.o $(LIBSUFFIX)covar_.o
 
 # target dir for install
 DESTDIR=/usr/local
@@ -34,10 +44,19 @@ DESTDIR=/usr/local
 
 all: libcminpack$(LIBSUFFIX).a
 
+double:
+	$(MAKE) LIBSUFFIX=
+
+float:
+	$(MAKE) LIBSUFFIX=f CFLAGS="$(CFLAGS_F)"
+
+half:
+	$(MAKE) LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)"
+
 libcminpack$(LIBSUFFIX).a:  $(OBJS)
 	ar r $@ $(OBJS); ranlib $@
 
-%.o: %.c
+$(LIBSUFFIX)%.o: %.c
 	${CC} ${CFLAGS} -c -o $@ $<
 
 install: libcminpack$(LIBSUFFIX).a
@@ -50,9 +69,9 @@ install: libcminpack$(LIBSUFFIX).a
 	chmod 644 ${DESTDIR}/include/cminpack.h
 
 clean:
-	rm -f *.o libcminpack$(LIBSUFFIX).a *~ #*#
+	rm -f *.o libcminpack*.a *~ #*#
 
-.PHONY: dist
+.PHONY: dist all double float half
 
 # COPYFILE_DISABLE=true and COPY_EXTENDED_ATTRIBUTES_DISABLE=true are used to disable inclusion
 # of file attributes (._* files) in the tar file on MacOSX
