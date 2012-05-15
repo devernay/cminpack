@@ -14,7 +14,7 @@
 #define float_MIN FLT_MIN
 #define float_MAX FLT_MAX
 #define half_EPSILON HALF_EPSILON
-#define half_MIN HALF_MIN
+#define half_MIN HALF_NRM_MIN
 #define half_MAX HALF_MAX
 
 #define DPMPAR(type,X) _DPMPAR(type,X)
