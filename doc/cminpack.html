@@ -81,7 +81,8 @@ which came from the FORTRAN version:</p>
 
 <h3>Download</h3>
 <ul>
-  <li><a href="cminpack-1.2.0.tar.gz">cminpack-1.2.0.tar.gz</a> (latest version)</li>
+  <li><a href="cminpack-1.2.1.tar.gz">cminpack-1.2.1.tar.gz</a> (latest version)</li>
+  <li><a href="cminpack-1.2.0.tar.gz">cminpack-1.2.0.tar.gz</a></li>
   <li><a href="cminpack-1.1.5.tar.gz">cminpack-1.1.5.tar.gz</a></li>
   <li><a href="cminpack-1.1.4.tar.gz">cminpack-1.1.4.tar.gz</a></li>
   <li><a href="cminpack-1.1.3.tar.gz">cminpack-1.1.3.tar.gz</a></li>
@@ -131,6 +132,7 @@ which came from the FORTRAN version:</p>
 
 <h2>History</h2>
 <ul>
+  <li>1.2.1 (15/05/2012): The library can now be built as double ("make double"), float ("make float") or half ("make half") versions. Function names are prefixed by 's' (for float) or 'h' (for half) to avoid linking against the wrong library. Tests in the "examples" directory can now be lauched using "make check" (to run common tests, including against the float version), "make checkhalf" (to test the half version) and "make checkfail" (to run all the tests , even those that fail).</li>
   <li>1.2.0 (14/05/2012): Added original FORTRAN sources for better testing (type "make" in directory fortran, then "make" in examples and follow the instructions). Added driver tests lmsdrv, chkdrv, hyjdrv, hybdrv. Typing "make alltest" in the examples directory will run all possible test combinations (make sure you have gfortran installed).</li>
   <li>1.1.5 (04/05/2012): cminpack now works in CUDA, thanks to Jordi Bataller Mascarell, type "make" in the "cuda" subdir (be careful, though: this is a straightforward port from C, and each problem is solved using a single thread). cminpack can now also be compiled with single-precision floating point computation (define __cminpack_real__ to float when compiling and using the library). Fix cmake support for CMINPACK_LIB_INSTALL_DIR. Update the reference files for tests.</li>
   <li>1.1.4 (30/10/2011): Translated all the Levenberg-Marquardt code (lmder, lmdif, lmstr, lmder1, lmdif1, lmstr1, lmpar, qrfac, qrsolv, fdjac2, chkder) to use C-style indices.</li>
