@@ -6,8 +6,8 @@
 #include "cminpack.h"
 #define real __cminpack_real__
 
-__cminpack_function__
-int lmstr1(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x, 
+__cminpack_attr__
+int __cminpack_func__(lmstr1)(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x, 
 	real *fvec, real *fjac, int ldfjac, real tol, 
 	int *ipvt, real *wa, int lwa)
 {
@@ -157,7 +157,7 @@ int lmstr1(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x,
     gtol = 0.;
     mode = 1;
     nprint = 0;
-    info = lmstr(__cminpack_param_fcnderstr_mn__ p, m, n, x, fvec, fjac, ldfjac,
+    info = __cminpack_func__(lmstr)(__cminpack_param_fcnderstr_mn__ p, m, n, x, fvec, fjac, ldfjac,
 	    ftol, xtol, gtol, maxfev, wa, mode, factor, nprint, 
 	    &nfev, &njev, ipvt, &wa[n], &wa[(n << 1)], &
 	    wa[n * 3], &wa[(n << 2)], &wa[n * 5]);

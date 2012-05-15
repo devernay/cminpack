@@ -10,8 +10,8 @@
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 
 
-__cminpack_function__
-void lmpar(int n, real *r, int ldr, 
+__cminpack_attr__
+void __cminpack_func__(lmpar)(int n, real *r, int ldr, 
 	const int *ipvt, const real *diag, const real *qtb, real delta, 
 	real *par, real *x, real *sdiag, real *wa1, 
 	real *wa2)
@@ -131,7 +131,7 @@ void lmpar(int n, real *r, int ldr,
 
 /*     dwarf is the smallest positive magnitude. */
 
-    dwarf = dpmpar(2);
+    dwarf = __cminpack_func__(dpmpar)(2);
 
 /*     compute and store in x the gauss-newton direction. if the */
 /*     jacobian is rank-deficient, obtain a least squares solution. */
@@ -172,7 +172,7 @@ void lmpar(int n, real *r, int ldr,
     for (j = 0; j < n; ++j) {
 	wa2[j] = diag[j] * x[j];
     }
-    dxnorm = enorm(n, wa2);
+    dxnorm = __cminpack_func__(enorm)(n, wa2);
     fp = dxnorm - delta;
     if (fp <= p1 * delta) {
 	goto TERMINATE;
@@ -197,7 +197,7 @@ void lmpar(int n, real *r, int ldr,
             }
             wa1[j] = (wa1[j] - sum) / r[j + j * ldr];
         }
-        temp = enorm(n, wa1);
+        temp = __cminpack_func__(enorm)(n, wa1);
         parl = fp / delta / temp / temp;
     }
 
@@ -211,7 +211,7 @@ void lmpar(int n, real *r, int ldr,
 	l = ipvt[j]-1;
 	wa1[j] = sum / diag[l];
     }
-    gnorm = enorm(n, wa1);
+    gnorm = __cminpack_func__(enorm)(n, wa1);
     paru = gnorm / delta;
     if (paru == 0.) {
 	paru = dwarf / min(delta,(real)p1);
@@ -242,11 +242,11 @@ void lmpar(int n, real *r, int ldr,
         for (j = 0; j < n; ++j) {
             wa1[j] = temp * diag[j];
         }
-        qrsolv(n, r, ldr, ipvt, wa1, qtb, x, sdiag, wa2);
+        __cminpack_func__(qrsolv)(n, r, ldr, ipvt, wa1, qtb, x, sdiag, wa2);
         for (j = 0; j < n; ++j) {
             wa2[j] = diag[j] * x[j];
         }
-        dxnorm = enorm(n, wa2);
+        dxnorm = __cminpack_func__(enorm)(n, wa2);
         temp = fp;
         fp = dxnorm - delta;
 
@@ -273,7 +273,7 @@ void lmpar(int n, real *r, int ldr,
                 }
             }
         }
-        temp = enorm(n, wa1);
+        temp = __cminpack_func__(enorm)(n, wa1);
         parc = fp / delta / temp / temp;
 
 /*        depending on the sign of the function, update parl or paru. */

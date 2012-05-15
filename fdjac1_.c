@@ -9,8 +9,8 @@
 
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 
-__minpack_function__
-void fdjac1_(__minpack_decl_fcn_nn__ const int *n, real *x, const real *
+__minpack_attr__
+void __minpack_func__(fdjac1)(__minpack_decl_fcn_nn__ const int *n, real *x, const real *
 	fvec, real *fjac, const int *ldfjac, int *iflag, const int *ml, 
 	const int *mu, const real *epsfcn, real *wa1, real *wa2)
 {
@@ -126,7 +126,7 @@ void fdjac1_(__minpack_decl_fcn_nn__ const int *n, real *x, const real *
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar_(&c__1);
+    epsmch = __minpack_func__(dpmpar)(&c__1);
 
     eps = sqrt((max(*epsfcn,epsmch)));
     msum = *ml + *mu + 1;

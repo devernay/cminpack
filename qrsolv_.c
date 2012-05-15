@@ -9,8 +9,8 @@
 
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-__minpack_function__
-void qrsolv_(const int *n, real *r__, const int *ldr, 
+__minpack_attr__
+void __minpack_func__(qrsolv)(const int *n, real *r__, const int *ldr, 
 	const int *ipvt, const real *diag, const real *qtb, real *x, 
 	real *sdiag, real *wa)
 {

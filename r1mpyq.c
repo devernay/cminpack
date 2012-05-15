@@ -7,8 +7,8 @@
 #include <math.h>
 #define real __cminpack_real__
 
-__cminpack_function__
-void r1mpyq(int m, int n, real *a, int
+__cminpack_attr__
+void __cminpack_func__(r1mpyq)(int m, int n, real *a, int
 	lda, const real *v, const real *w)
 {
     /* System generated locals */

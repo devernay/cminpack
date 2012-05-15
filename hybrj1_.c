@@ -7,8 +7,8 @@
 #include <math.h>
 #define real __minpack_real__
 
-__minpack_function__
-void hybrj1_(__minpack_decl_fcnder_nn__ const int *n, real *x, real *
+__minpack_attr__
+void __minpack_func__(hybrj1)(__minpack_decl_fcnder_nn__ const int *n, real *x, real *
 	fvec, real *fjac, const int *ldfjac, const real *tol, int *
 	info, real *wa, const int *lwa)
 {
@@ -146,7 +146,7 @@ void hybrj1_(__minpack_decl_fcnder_nn__ const int *n, real *x, real *
     }
     nprint = 0;
     lr = *n * (*n + 1) / 2;
-    hybrj_(__minpack_param_fcnder_nn__ n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &xtol, &
+    __minpack_func__(hybrj)(__minpack_param_fcnder_nn__ n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &xtol, &
 	    maxfev, &wa[1], &mode, &factor, &nprint, info, &nfev, &njev, &wa[*
 	    n * 6 + 1], &lr, &wa[*n + 1], &wa[(*n << 1) + 1], &wa[*n * 3 + 1],
 	     &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);

@@ -7,8 +7,8 @@
 #include <math.h>
 #define real __minpack_real__
 
-__minpack_function__
-void lmdif1_(__minpack_decl_fcn_mn__  const int *m, const int *n, real *x, 
+__minpack_attr__
+void __minpack_func__(lmdif1)(__minpack_decl_fcn_mn__  const int *m, const int *n, real *x, 
 	real *fvec, const real *tol, int *info, int *iwa, 
 	real *wa, const int *lwa)
 {
@@ -146,7 +146,7 @@ void lmdif1_(__minpack_decl_fcn_mn__  const int *m, const int *n, real *x,
     mode = 1;
     nprint = 0;
     mp5n = *m + *n * 5;
-    lmdif_(__minpack_param_fcn_mn__ m, n, &x[1], &fvec[1], &ftol, &xtol, &gtol, &maxfev, &
+    __minpack_func__(lmdif)(__minpack_param_fcn_mn__ m, n, &x[1], &fvec[1], &ftol, &xtol, &gtol, &maxfev, &
 	    epsfcn, &wa[1], &mode, &factor, &nprint, info, &nfev, &wa[mp5n + 
 	    1], m, &iwa[1], &wa[*n + 1], &wa[(*n << 1) + 1], &wa[*n * 3 + 1], 
 	    &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);

@@ -12,8 +12,8 @@
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
 
-__minpack_function__
-void lmpar_(const int *n, real *r__, const int *ldr, 
+__minpack_attr__
+void __minpack_func__(lmpar)(const int *n, real *r__, const int *ldr, 
 	const int *ipvt, const real *diag, const real *qtb, const real *delta, 
 	real *par, real *x, real *sdiag, real *wa1, 
 	real *wa2)
@@ -152,7 +152,7 @@ void lmpar_(const int *n, real *r__, const int *ldr,
 
 /*     dwarf is the smallest positive magnitude. */
 
-    dwarf = dpmpar_(&c__2);
+    dwarf = __minpack_func__(dpmpar)(&c__2);
 
 /*     compute and store in x the gauss-newton direction. if the */
 /*     jacobian is rank-deficient, obtain a least squares solution. */
@@ -208,7 +208,7 @@ L50:
 	wa2[j] = diag[j] * x[j];
 /* L70: */
     }
-    dxnorm = enorm_(n, &wa2[1]);
+    dxnorm = __minpack_func__(enorm)(n, &wa2[1]);
     fp = dxnorm - *delta;
     if (fp <= p1 * *delta) {
 	goto L220;
@@ -244,7 +244,7 @@ L100:
 	wa1[j] = (wa1[j] - sum) / r__[j + j * r_dim1];
 /* L110: */
     }
-    temp = enorm_(n, &wa1[1]);
+    temp = __minpack_func__(enorm)(n, &wa1[1]);
     parl = fp / *delta / temp / temp;
 L120:
 
@@ -262,7 +262,7 @@ L120:
 	wa1[j] = sum / diag[l];
 /* L140: */
     }
-    gnorm = enorm_(n, &wa1[1]);
+    gnorm = __minpack_func__(enorm)(n, &wa1[1]);
     paru = gnorm / *delta;
     if (paru == 0.) {
 	paru = dwarf / min(*delta,(real)p1);
@@ -295,14 +295,14 @@ L150:
 	wa1[j] = temp * diag[j];
 /* L160: */
     }
-    qrsolv_(n, &r__[r_offset], ldr, &ipvt[1], &wa1[1], &qtb[1], &x[1], &sdiag[
+    __minpack_func__(qrsolv)(n, &r__[r_offset], ldr, &ipvt[1], &wa1[1], &qtb[1], &x[1], &sdiag[
 	    1], &wa2[1]);
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	wa2[j] = diag[j] * x[j];
 /* L170: */
     }
-    dxnorm = enorm_(n, &wa2[1]);
+    dxnorm = __minpack_func__(enorm)(n, &wa2[1]);
     temp = fp;
     fp = dxnorm - *delta;
 
@@ -340,7 +340,7 @@ L200:
 /* L210: */
 	;
     }
-    temp = enorm_(n, &wa1[1]);
+    temp = __minpack_func__(enorm)(n, &wa1[1]);
     parc = fp / *delta / temp / temp;
 
 /*        depending on the sign of the function, update parl or paru. */

@@ -10,8 +10,8 @@
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-__cminpack_function__
-void r1updt(int m, int n, real *s, int
+__cminpack_attr__
+void __cminpack_func__(r1updt)(int m, int n, real *s, int
 	ls, const real *u, real *v, real *w, int *sing)
 {
     /* Initialized data */
@@ -98,12 +98,13 @@ void r1updt(int m, int n, real *s, int
     --u;
     --v;
     --s;
+    (void)ls;
 
     /* Function Body */
 
 /*     giant is the largest magnitude. */
 
-    giant = dpmpar(3);
+    giant = __cminpack_func__(dpmpar)(3);
 
 /*     initialize the diagonal element pointer. */
 
@@ -234,5 +235,5 @@ void r1updt(int m, int n, real *s, int
 
 /*     last card of subroutine r1updt. */
 
-} /* r1updt_ */
+} /* __minpack_func__(r1updt) */
 

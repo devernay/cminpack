@@ -8,8 +8,8 @@
 #define real __cminpack_real__
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 
-__cminpack_function__
-int fdjac1(__cminpack_decl_fcn_nn__ void *p, int n, real *x, const real *
+__cminpack_attr__
+int __cminpack_func__(fdjac1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, const real *
 	fvec, real *fjac, int ldfjac, int ml, 
 	int mu, real epsfcn, real *wa1, real *wa2)
 {
@@ -122,7 +122,7 @@ int fdjac1(__cminpack_decl_fcn_nn__ void *p, int n, real *x, const real *
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar(1);
+    epsmch = __cminpack_func__(dpmpar)(1);
 
     eps = sqrt((max(epsfcn,epsmch)));
     msum = ml + mu + 1;

@@ -11,8 +11,8 @@
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-__minpack_function__
-void r1updt_(const int *m, const int *n, real *s, const int *
+__minpack_attr__
+void __minpack_func__(r1updt)(const int *m, const int *n, real *s, const int *
 	ls, const real *u, real *v, real *w, int *sing)
 {
     /* Initialized data */
@@ -104,12 +104,13 @@ void r1updt_(const int *m, const int *n, real *s, const int *
     --u;
     --v;
     --s;
+    (void)ls;
 
     /* Function Body */
 
 /*     giant is the largest magnitude. */
 
-    giant = dpmpar_(&c__3);
+    giant = __minpack_func__(dpmpar)(&c__3);
 
 /*     initialize the diagonal element pointer. */
 

@@ -6,8 +6,8 @@
 #include "cminpack.h"
 #define real __cminpack_real__
 
-__cminpack_function__
-int lmdif1(__cminpack_decl_fcn_mn__ void *p, int m, int n, real *x, 
+__cminpack_attr__
+int __cminpack_func__(lmdif1)(__cminpack_decl_fcn_mn__ void *p, int m, int n, real *x, 
 	real *fvec, real tol, int *iwa, 
 	real *wa, int lwa)
 {
@@ -137,7 +137,7 @@ int lmdif1(__cminpack_decl_fcn_mn__ void *p, int m, int n, real *x,
     mode = 1;
     nprint = 0;
     mp5n = m + n * 5;
-    info = lmdif(__cminpack_param_fcn_mn__ p, m, n, x, fvec, ftol, xtol, gtol, maxfev,
+    info = __cminpack_func__(lmdif)(__cminpack_param_fcn_mn__ p, m, n, x, fvec, ftol, xtol, gtol, maxfev,
 	    epsfcn, wa, mode, factor, nprint, &nfev, &wa[mp5n],
             m, iwa, &wa[n], &wa[(n << 1)], &wa[n * 3], 
 	    &wa[(n << 2)], &wa[n * 5]);

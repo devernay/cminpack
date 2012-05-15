@@ -7,8 +7,8 @@
 #include <math.h>
 #define real __minpack_real__
 
-__minpack_function__
-void lmstr1_(__minpack_decl_fcnderstr_mn__  const int *m, const int *n, real *x, 
+__minpack_attr__
+void __minpack_func__(lmstr1)(__minpack_decl_fcnderstr_mn__  const int *m, const int *n, real *x, 
 	real *fvec, real *fjac, const int *ldfjac, const real *tol, 
 	int *info, int *ipvt, real *wa, const int *lwa)
 {
@@ -173,7 +173,7 @@ void lmstr1_(__minpack_decl_fcnderstr_mn__  const int *m, const int *n, real *x,
     gtol = 0.;
     mode = 1;
     nprint = 0;
-    lmstr_(__minpack_param_fcnderstr_mn__ m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &
+    __minpack_func__(lmstr)(__minpack_param_fcnderstr_mn__ m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &
 	    ftol, &xtol, &gtol, &maxfev, &wa[1], &mode, &factor, &nprint, 
 	    info, &nfev, &njev, &ipvt[1], &wa[*n + 1], &wa[(*n << 1) + 1], &
 	    wa[*n * 3 + 1], &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);

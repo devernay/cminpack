@@ -38,8 +38,8 @@
 #define rdwarf dwarf(real)
 #define rgiant giant(real)
 
-__cminpack_function__
-real enorm(int n, const real *x)
+__cminpack_attr__
+real __cminpack_func__(enorm)(int n, const real *x)
 {
     /* System generated locals */
     real ret_val, d1;

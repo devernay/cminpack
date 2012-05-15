@@ -7,8 +7,8 @@
 #include <math.h>
 #define real __minpack_real__
 
-__minpack_function__
-void hybrd1_(__minpack_decl_fcn_nn__  const int *n, real *x, real *
+__minpack_attr__
+void __minpack_func__(hybrd1)(__minpack_decl_fcn_nn__  const int *n, real *x, real *
 	fvec, const real *tol, int *info, real *wa, const int *lwa)
 {
     /* Initialized data */
@@ -140,7 +140,7 @@ void hybrd1_(__minpack_decl_fcn_nn__  const int *n, real *x, real *
     nprint = 0;
     lr = *n * (*n + 1) / 2;
     index = *n * 6 + lr;
-    hybrd_(__minpack_param_fcn_nn__ n, &x[1], &fvec[1], &xtol, &maxfev, &ml, &mu, &epsfcn, &
+    __minpack_func__(hybrd)(__minpack_param_fcn_nn__ n, &x[1], &fvec[1], &xtol, &maxfev, &ml, &mu, &epsfcn, &
 	    wa[1], &mode, &factor, &nprint, info, &nfev, &wa[index + 1], n, &
 	    wa[*n * 6 + 1], &lr, &wa[*n + 1], &wa[(*n << 1) + 1], &wa[*n * 3 
 	    + 1], &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);

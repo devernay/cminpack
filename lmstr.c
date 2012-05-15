@@ -11,8 +11,8 @@
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-__cminpack_function__
-int lmstr(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x, 
+__cminpack_attr__
+int __cminpack_func__(lmstr)(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x, 
 	real *fvec, real *fjac, int ldfjac, real ftol,
 	real xtol, real gtol, int maxfev, real *
 	diag, int mode, real factor, int nprint,
@@ -222,7 +222,7 @@ int lmstr(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x,
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar(1);
+    epsmch = __cminpack_func__(dpmpar)(1);
 
     info = 0;
     iflag = 0;
@@ -251,7 +251,7 @@ int lmstr(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x,
     if (iflag < 0) {
 	goto TERMINATE;
     }
-    fnorm = enorm(m, fvec);
+    fnorm = __cminpack_func__(enorm)(m, fvec);
 
 /*     initialize levenberg-marquardt parameter and iteration counter. */
 
@@ -291,7 +291,7 @@ int lmstr(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x,
                 goto TERMINATE;
             }
             temp = fvec[i];
-            rwupdt(n, fjac, ldfjac, wa3, qtf, &temp,
+            __cminpack_func__(rwupdt)(n, fjac, ldfjac, wa3, qtf, &temp,
                    wa1, wa2);
             ++iflag;
         }
@@ -306,10 +306,10 @@ int lmstr(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x,
                 sing = TRUE_;
             }
             ipvt[j] = j+1;
-            wa2[j] = enorm(j+1, &fjac[j * ldfjac + 0]);
+            wa2[j] = __cminpack_func__(enorm)(j+1, &fjac[j * ldfjac + 0]);
         }
         if (sing) {
-            qrfac(n, n, fjac, ldfjac, TRUE_, ipvt, n,
+            __cminpack_func__(qrfac)(n, n, fjac, ldfjac, TRUE_, ipvt, n,
                   wa1, wa2, wa3);
             for (j = 0; j < n; ++j) {
                 if (fjac[j + j * ldfjac] != 0.) {
@@ -345,7 +345,7 @@ int lmstr(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x,
             for (j = 0; j < n; ++j) {
                 wa3[j] = diag[j] * x[j];
             }
-            xnorm = enorm(n, wa3);
+            xnorm = __cminpack_func__(enorm)(n, wa3);
             delta = factor * xnorm;
             if (delta == 0.) {
                 delta = factor;
@@ -395,7 +395,7 @@ int lmstr(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x,
 
 /*           determine the levenberg-marquardt parameter. */
 
-            lmpar(n, fjac, ldfjac, ipvt, diag, qtf, delta,
+            __cminpack_func__(lmpar)(n, fjac, ldfjac, ipvt, diag, qtf, delta,
                   &par, wa1, wa2, wa3, wa4);
 
 /*           store the direction p and x + p. calculate the norm of p. */
@@ -405,7 +405,7 @@ int lmstr(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x,
                 wa2[j] = x[j] + wa1[j];
                 wa3[j] = diag[j] * wa1[j];
             }
-            pnorm = enorm(n, wa3);
+            pnorm = __cminpack_func__(enorm)(n, wa3);
 
 /*           on the first iteration, adjust the initial step bound. */
 
@@ -420,7 +420,7 @@ int lmstr(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x,
             if (iflag < 0) {
                 goto TERMINATE;
             }
-            fnorm1 = enorm(m, wa4);
+            fnorm1 = __cminpack_func__(enorm)(m, wa4);
 
 /*           compute the scaled actual reduction. */
 
@@ -442,7 +442,7 @@ int lmstr(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x,
                     wa3[i] += fjac[i + j * ldfjac] * temp;
                 }
             }
-            temp1 = enorm(n, wa3) / fnorm;
+            temp1 = __cminpack_func__(enorm)(n, wa3) / fnorm;
             temp2 = (sqrt(par) * pnorm) / fnorm;
             prered = temp1 * temp1 + temp2 * temp2 / p5;
             dirder = -(temp1 * temp1 + temp2 * temp2);
@@ -490,7 +490,7 @@ int lmstr(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x,
                 for (i = 0; i < m; ++i) {
                     fvec[i] = wa4[i];
                 }
-                xnorm = enorm(n, wa2);
+                xnorm = __cminpack_func__(enorm)(n, wa2);
                 fnorm = fnorm1;
                 ++iter;
             }

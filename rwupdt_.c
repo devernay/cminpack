@@ -9,8 +9,8 @@
 
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-__minpack_function__
-void rwupdt_(const int *n, real *r__, const int *ldr, 
+__minpack_attr__
+void __minpack_func__(rwupdt)(const int *n, real *r__, const int *ldr, 
 	const real *w, real *b, real *alpha, real *cos__, 
 	real *sin__)
 {

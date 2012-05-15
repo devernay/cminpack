@@ -11,8 +11,8 @@
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-__cminpack_function__
-int hybrj(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
+__cminpack_attr__
+int __cminpack_func__(hybrj)(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
 	fvec, real *fjac, int ldfjac, real xtol, int
 	maxfev, real *diag, int mode, real factor, int
 	nprint, int *nfev, int *njev, real *r, 
@@ -209,7 +209,7 @@ int hybrj(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar(1);
+    epsmch = __cminpack_func__(dpmpar)(1);
 
     info = 0;
     iflag = 0;
@@ -238,7 +238,7 @@ int hybrj(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
     if (iflag < 0) {
 	goto TERMINATE;
     }
-    fnorm = enorm(n, &fvec[1]);
+    fnorm = __cminpack_func__(enorm)(n, &fvec[1]);
 
 /*     initialize iteration counter and monitors. */
 
@@ -263,7 +263,7 @@ int hybrj(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
 
 /*        compute the qr factorization of the jacobian. */
 
-        qrfac(n, n, &fjac[fjac_offset], ldfjac, FALSE_, iwa, 1,
+        __cminpack_func__(qrfac)(n, n, &fjac[fjac_offset], ldfjac, FALSE_, iwa, 1,
               &wa1[1], &wa2[1], &wa3[1]);
 
 /*        on the first iteration and if mode is 1, scale according */
@@ -285,7 +285,7 @@ int hybrj(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
             for (j = 1; j <= n; ++j) {
                 wa3[j] = diag[j] * x[j];
             }
-            xnorm = enorm(n, &wa3[1]);
+            xnorm = __cminpack_func__(enorm)(n, &wa3[1]);
             delta = factor * xnorm;
             if (delta == 0.) {
                 delta = factor;
@@ -330,7 +330,7 @@ int hybrj(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
 
 /*        accumulate the orthogonal factor in fjac. */
 
-        qform(n, n, &fjac[fjac_offset], ldfjac, &wa1[1]);
+        __cminpack_func__(qform)(n, n, &fjac[fjac_offset], ldfjac, &wa1[1]);
 
 /*        rescale if necessary. */
 
@@ -360,7 +360,7 @@ int hybrj(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
 
 /*           determine the direction p. */
 
-            dogleg(n, &r[1], lr, &diag[1], &qtf[1], delta, &wa1[1], &wa2[1], &wa3[1]);
+            __cminpack_func__(dogleg)(n, &r[1], lr, &diag[1], &qtf[1], delta, &wa1[1], &wa2[1], &wa3[1]);
 
 /*           store the direction p and x + p. calculate the norm of p. */
 
@@ -369,7 +369,7 @@ int hybrj(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
                 wa2[j] = x[j] + wa1[j];
                 wa3[j] = diag[j] * wa1[j];
             }
-            pnorm = enorm(n, &wa3[1]);
+            pnorm = __cminpack_func__(enorm)(n, &wa3[1]);
 
 /*           on the first iteration, adjust the initial step bound. */
 
@@ -384,7 +384,7 @@ int hybrj(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
             if (iflag < 0) {
                 goto TERMINATE;
             }
-            fnorm1 = enorm(n, &wa4[1]);
+            fnorm1 = __cminpack_func__(enorm)(n, &wa4[1]);
 
 /*           compute the scaled actual reduction. */
 
@@ -406,7 +406,7 @@ int hybrj(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
                 }
                 wa3[i] = qtf[i] + sum;
             }
-            temp = enorm(n, &wa3[1]);
+            temp = __cminpack_func__(enorm)(n, &wa3[1]);
             prered = 0.;
             if (temp < fnorm) {
                 /* Computing 2nd power */
@@ -452,7 +452,7 @@ int hybrj(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
                     wa2[j] = diag[j] * x[j];
                     fvec[j] = wa4[j];
                 }
-                xnorm = enorm(n, &wa2[1]);
+                xnorm = __cminpack_func__(enorm)(n, &wa2[1]);
                 fnorm = fnorm1;
                 ++iter;
             }
@@ -522,9 +522,9 @@ int hybrj(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
 
 /*           compute the qr factorization of the updated jacobian. */
 
-            r1updt(n, n, &r[1], lr, &wa1[1], &wa2[1], &wa3[1], &sing);
-            r1mpyq(n, n, &fjac[fjac_offset], ldfjac, &wa2[1], &wa3[1]);
-            r1mpyq(1, n, &qtf[1], 1, &wa2[1], &wa3[1]);
+            __cminpack_func__(r1updt)(n, n, &r[1], lr, &wa1[1], &wa2[1], &wa3[1], &sing);
+            __cminpack_func__(r1mpyq)(n, n, &fjac[fjac_offset], ldfjac, &wa2[1], &wa3[1]);
+            __cminpack_func__(r1mpyq)(1, n, &qtf[1], 1, &wa2[1], &wa3[1]);
 
 /*           end of the inner loop. */
 

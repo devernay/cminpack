@@ -9,8 +9,8 @@
 
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 
-__minpack_function__
-void qform_(const int *m, const int *n, real *q, const int *
+__minpack_attr__
+void __minpack_func__(qform)(const int *m, const int *n, real *q, const int *
 	ldq, real *wa)
 {
     /* System generated locals */

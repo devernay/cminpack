@@ -6,8 +6,8 @@
 #include "cminpack.h"
 #define real __cminpack_real__
 
-__cminpack_function__
-int hybrj1(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
+__cminpack_attr__
+int __cminpack_func__(hybrj1)(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
 	fvec, real *fjac, int ldfjac, real tol,
 	real *wa, int lwa)
 {
@@ -143,7 +143,7 @@ int hybrj1(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
     }
     nprint = 0;
     lr = n * (n + 1) / 2;
-    info = hybrj(__cminpack_param_fcnder_nn__ p, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, xtol,
+    info = __cminpack_func__(hybrj)(__cminpack_param_fcnder_nn__ p, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, xtol,
 	    maxfev, &wa[1], mode, factor, nprint, &nfev, &njev, &wa[
 	    n * 6 + 1], lr, &wa[n + 1], &wa[(n << 1) + 1], &wa[n * 3 + 1],
 	     &wa[(n << 2) + 1], &wa[n * 5 + 1]);

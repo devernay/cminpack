@@ -7,8 +7,8 @@
 
 /* Table of constant values */
 
-__cminpack_function__
-void chkder(int m, int n, const real *x, 
+__cminpack_attr__
+void __cminpack_func__(chkder)(int m, int n, const real *x, 
 	real *fvec, real *fjac, int ldfjac, real *xp, 
 	real *fvecp, int mode, real *err)
 {
@@ -101,7 +101,7 @@ void chkder(int m, int n, const real *x,
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar(1);
+    epsmch = __cminpack_func__(dpmpar)(1);
 
     eps = sqrt(epsmch);
 

@@ -7,8 +7,8 @@
 #define real __cminpack_real__
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 
-__cminpack_function__
-void qform(int m, int n, real *q, int
+__cminpack_attr__
+void __cminpack_func__(qform)(int m, int n, real *q, int
 	ldq, real *wa)
 {
     /* System generated locals */

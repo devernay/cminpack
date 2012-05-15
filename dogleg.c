@@ -12,8 +12,8 @@
 
 /* Table of constant values */
 
-__cminpack_function__
-void dogleg(int n, const real *r, int lr, 
+__cminpack_attr__
+void __cminpack_func__(dogleg)(int n, const real *r, int lr, 
 	const real *diag, const real *qtb, real delta, real *x, 
 	real *wa1, real *wa2)
 {
@@ -90,12 +90,13 @@ void dogleg(int n, const real *r, int lr,
     --qtb;
     --diag;
     --r;
+    (void)lr;
 
     /* Function Body */
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar(1);
+    epsmch = __cminpack_func__(dpmpar)(1);
 
 /*     first, calculate the gauss-newton direction. */
 
@@ -135,7 +136,7 @@ void dogleg(int n, const real *r, int lr,
 	wa1[j] = 0.;
 	wa2[j] = diag[j] * x[j];
     }
-    qnorm = enorm(n, &wa2[1]);
+    qnorm = __cminpack_func__(enorm)(n, &wa2[1]);
     if (qnorm <= delta) {
         return;
     }
@@ -156,7 +157,7 @@ void dogleg(int n, const real *r, int lr,
 /*     calculate the norm of the scaled gradient and test for */
 /*     the special case in which the scaled gradient is zero. */
 
-    gnorm = enorm(n, &wa1[1]);
+    gnorm = __cminpack_func__(enorm)(n, &wa1[1]);
     sgnorm = 0.;
     alpha = delta / qnorm;
     if (gnorm != 0.) {
@@ -176,7 +177,7 @@ void dogleg(int n, const real *r, int lr,
             }
             wa2[j] = sum;
         }
-        temp = enorm(n, &wa2[1]);
+        temp = __cminpack_func__(enorm)(n, &wa2[1]);
         sgnorm = gnorm / temp / temp;
 
 /*     test whether the scaled gradient direction is acceptable. */
@@ -188,7 +189,7 @@ void dogleg(int n, const real *r, int lr,
 /*     finally, calculate the point along the dogleg */
 /*     at which the quadratic is minimized. */
 
-            bnorm = enorm(n, &qtb[1]);
+            bnorm = __cminpack_func__(enorm)(n, &qtb[1]);
             temp = bnorm / gnorm * (bnorm / qnorm) * (sgnorm / delta);
             /* Computing 2nd power */
             d1 = sgnorm / delta;

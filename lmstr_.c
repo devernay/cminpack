@@ -13,8 +13,8 @@
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-__minpack_function__
-void lmstr_(__minpack_decl_fcnderstr_mn__ const int *m, const int *n, real *x, 
+__minpack_attr__
+void __minpack_func__(lmstr)(__minpack_decl_fcnderstr_mn__ const int *m, const int *n, real *x, 
 	real *fvec, real *fjac, const int *ldfjac, const real *ftol,
 	const real *xtol, const real *gtol, const int *maxfev, real *
 	diag, const int *mode, const real *factor, const int *nprint, int *
@@ -244,7 +244,7 @@ void lmstr_(__minpack_decl_fcnderstr_mn__ const int *m, const int *n, real *x,
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar_(&c__1);
+    epsmch = __minpack_func__(dpmpar)(&c__1);
 
     *info = 0;
     iflag = 0;
@@ -278,7 +278,7 @@ L20:
     if (iflag < 0) {
 	goto L340;
     }
-    fnorm = enorm_(m, &fvec[1]);
+    fnorm = __minpack_func__(enorm)(m, &fvec[1]);
 
 /*     initialize levenberg-marquardt parameter and iteration counter. */
 
@@ -326,7 +326,7 @@ L40:
 	    goto L340;
 	}
 	temp = fvec[i__];
-	rwupdt_(n, &fjac[fjac_offset], ldfjac, &wa3[1], &qtf[1], &temp, &wa1[
+	__minpack_func__(rwupdt)(n, &fjac[fjac_offset], ldfjac, &wa3[1], &qtf[1], &temp, &wa1[
 		1], &wa2[1]);
 	++iflag;
 /* L70: */
@@ -343,13 +343,13 @@ L40:
 	    sing = TRUE_;
 	}
 	ipvt[j] = j;
-	wa2[j] = enorm_(&j, &fjac[j * fjac_dim1 + 1]);
+	wa2[j] = __minpack_func__(enorm)(&j, &fjac[j * fjac_dim1 + 1]);
 /* L80: */
     }
     if (! sing) {
 	goto L130;
     }
-    qrfac_(n, n, &fjac[fjac_offset], ldfjac, &c_true, &ipvt[1], n, &wa1[1], &
+    __minpack_func__(qrfac)(n, n, &fjac[fjac_offset], ldfjac, &c_true, &ipvt[1], n, &wa1[1], &
 	    wa2[1], &wa3[1]);
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
@@ -401,7 +401,7 @@ L150:
 	wa3[j] = diag[j] * x[j];
 /* L160: */
     }
-    xnorm = enorm_(n, &wa3[1]);
+    xnorm = __minpack_func__(enorm)(n, &wa3[1]);
     delta = *factor * xnorm;
     if (delta == 0.) {
 	delta = *factor;
@@ -464,7 +464,7 @@ L240:
 
 /*           determine the levenberg-marquardt parameter. */
 
-    lmpar_(n, &fjac[fjac_offset], ldfjac, &ipvt[1], &diag[1], &qtf[1], &delta,
+    __minpack_func__(lmpar)(n, &fjac[fjac_offset], ldfjac, &ipvt[1], &diag[1], &qtf[1], &delta,
 	     &par, &wa1[1], &wa2[1], &wa3[1], &wa4[1]);
 
 /*           store the direction p and x + p. calculate the norm of p. */
@@ -476,7 +476,7 @@ L240:
 	wa3[j] = diag[j] * wa1[j];
 /* L250: */
     }
-    pnorm = enorm_(n, &wa3[1]);
+    pnorm = __minpack_func__(enorm)(n, &wa3[1]);
 
 /*           on the first iteration, adjust the initial step bound. */
 
@@ -492,7 +492,7 @@ L240:
     if (iflag < 0) {
 	goto L340;
     }
-    fnorm1 = enorm_(m, &wa4[1]);
+    fnorm1 = __minpack_func__(enorm)(m, &wa4[1]);
 
 /*           compute the scaled actual reduction. */
 
@@ -518,7 +518,7 @@ L240:
 	}
 /* L270: */
     }
-    temp1 = enorm_(n, &wa3[1]) / fnorm;
+    temp1 = __minpack_func__(enorm)(n, &wa3[1]) / fnorm;
     temp2 = sqrt(par) * pnorm / fnorm;
 /* Computing 2nd power */
     d__1 = temp1;
@@ -586,7 +586,7 @@ L300:
 	fvec[i__] = wa4[i__];
 /* L320: */
     }
-    xnorm = enorm_(n, &wa2[1]);
+    xnorm = __minpack_func__(enorm)(n, &wa2[1]);
     fnorm = fnorm1;
     ++iter;
 L330:

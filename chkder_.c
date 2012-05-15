@@ -12,8 +12,8 @@
 
 /* Table of constant values */
 
-__minpack_function__
-void chkder_(const int *m, const int *n, const real *x, 
+__minpack_attr__
+void __minpack_func__(chkder)(const int *m, const int *n, const real *x, 
 	real *fvec, real *fjac, const int *ldfjac, real *xp, 
 	real *fvecp, const int *mode, real *err)
 {
@@ -124,7 +124,7 @@ void chkder_(const int *m, const int *n, const real *x,
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar_(&c__1);
+    epsmch = __minpack_func__(dpmpar)(&c__1);
 
     eps = sqrt(epsmch);
 

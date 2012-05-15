@@ -8,8 +8,8 @@
 #define real __cminpack_real__
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-__cminpack_function__
-void qrsolv(int n, real *r, int ldr, 
+__cminpack_attr__
+void __cminpack_func__(qrsolv)(int n, real *r, int ldr, 
 	const int *ipvt, const real *diag, const real *qtb, real *x, 
 	real *sdiag, real *wa)
 {

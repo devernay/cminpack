@@ -12,8 +12,8 @@
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-__minpack_function__
-void lmdif_(__minpack_decl_fcn_mn__ const int *m, const int *n, real *x, 
+__minpack_attr__
+void __minpack_func__(lmdif)(__minpack_decl_fcn_mn__ const int *m, const int *n, real *x, 
 	real *fvec, const real *ftol, const real *xtol, const real *
 	gtol, const int *maxfev, const real *epsfcn, real *diag, const int *
 	mode, const real *factor, const int *nprint, int *info, int *
@@ -247,7 +247,7 @@ void lmdif_(__minpack_decl_fcn_mn__ const int *m, const int *n, real *x,
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar_(&c__1);
+    epsmch = __minpack_func__(dpmpar)(&c__1);
 
     *info = 0;
     iflag = 0;
@@ -280,7 +280,7 @@ L20:
     if (iflag < 0) {
 	goto L300;
     }
-    fnorm = enorm_(m, &fvec[1]);
+    fnorm = __minpack_func__(enorm)(m, &fvec[1]);
 
 /*     initialize levenberg-marquardt parameter and iteration counter. */
 
@@ -294,7 +294,7 @@ L30:
 /*        calculate the jacobian matrix. */
 
     iflag = 2;
-    fdjac2_(__minpack_param_fcn_mn__ m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &
+    __minpack_func__(fdjac2)(__minpack_param_fcn_mn__ m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &
 	    iflag, epsfcn, &wa4[1]);
     *nfev += *n;
     if (iflag < 0) {
@@ -317,7 +317,7 @@ L40:
 
 /*        compute the qr factorization of the jacobian. */
 
-    qrfac_(m, n, &fjac[fjac_offset], ldfjac, &c_true, &ipvt[1], n, &wa1[1], &
+    __minpack_func__(qrfac)(m, n, &fjac[fjac_offset], ldfjac, &c_true, &ipvt[1], n, &wa1[1], &
 	    wa2[1], &wa3[1]);
 
 /*        on the first iteration and if mode is 1, scale according */
@@ -347,7 +347,7 @@ L60:
 	wa3[j] = diag[j] * x[j];
 /* L70: */
     }
-    xnorm = enorm_(n, &wa3[1]);
+    xnorm = __minpack_func__(enorm)(n, &wa3[1]);
     delta = *factor * xnorm;
     if (delta == 0.) {
 	delta = *factor;
@@ -441,7 +441,7 @@ L200:
 
 /*           determine the levenberg-marquardt parameter. */
 
-    lmpar_(n, &fjac[fjac_offset], ldfjac, &ipvt[1], &diag[1], &qtf[1], &delta,
+    __minpack_func__(lmpar)(n, &fjac[fjac_offset], ldfjac, &ipvt[1], &diag[1], &qtf[1], &delta,
 	     &par, &wa1[1], &wa2[1], &wa3[1], &wa4[1]);
 
 /*           store the direction p and x + p. calculate the norm of p. */
@@ -453,7 +453,7 @@ L200:
 	wa3[j] = diag[j] * wa1[j];
 /* L210: */
     }
-    pnorm = enorm_(n, &wa3[1]);
+    pnorm = __minpack_func__(enorm)(n, &wa3[1]);
 
 /*           on the first iteration, adjust the initial step bound. */
 
@@ -469,7 +469,7 @@ L200:
     if (iflag < 0) {
 	goto L300;
     }
-    fnorm1 = enorm_(m, &wa4[1]);
+    fnorm1 = __minpack_func__(enorm)(m, &wa4[1]);
 
 /*           compute the scaled actual reduction. */
 
@@ -495,7 +495,7 @@ L200:
 	}
 /* L230: */
     }
-    temp1 = enorm_(n, &wa3[1]) / fnorm;
+    temp1 = __minpack_func__(enorm)(n, &wa3[1]) / fnorm;
     temp2 = sqrt(par) * pnorm / fnorm;
 /* Computing 2nd power */
     d__1 = temp1;
@@ -563,7 +563,7 @@ L260:
 	fvec[i__] = wa4[i__];
 /* L280: */
     }
-    xnorm = enorm_(n, &wa2[1]);
+    xnorm = __minpack_func__(enorm)(n, &wa2[1]);
     fnorm = fnorm1;
     ++iter;
 L290:

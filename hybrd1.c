@@ -6,8 +6,8 @@
 #include "cminpack.h"
 #define real __cminpack_real__
 
-__cminpack_function__
-int hybrd1(__cminpack_decl_fcn_nn__ void *p, int n, real *x, real *
+__cminpack_attr__
+int __cminpack_func__(hybrd1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, real *
 	fvec, real tol, real *wa, int lwa)
 {
     /* Initialized data */
@@ -133,7 +133,7 @@ int hybrd1(__cminpack_decl_fcn_nn__ void *p, int n, real *x, real *
     nprint = 0;
     lr = n * (n + 1) / 2;
     index = n * 6 + lr;
-    info = hybrd(__cminpack_param_fcn_nn__ p, n, &x[1], &fvec[1], xtol, maxfev, ml, mu, epsfcn, &
+    info = __cminpack_func__(hybrd)(__cminpack_param_fcn_nn__ p, n, &x[1], &fvec[1], xtol, maxfev, ml, mu, epsfcn, &
 	    wa[1], mode, factor, nprint, &nfev, &wa[index + 1], n, &
 	    wa[n * 6 + 1], lr, &wa[n + 1], &wa[(n << 1) + 1], &wa[n * 3 
 	    + 1], &wa[(n << 2) + 1], &wa[n * 5 + 1]);

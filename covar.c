@@ -2,8 +2,8 @@
 #include <math.h>
 #define real __cminpack_real__
 
-__cminpack_function__
-void covar(int n, real *r, int ldr, 
+__cminpack_attr__
+void __cminpack_func__(covar)(int n, real *r, int ldr, 
 	const int *ipvt, real tol, real *wa)
 {
     /* Local variables */

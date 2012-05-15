@@ -9,8 +9,8 @@
 
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-__minpack_function__
-void r1mpyq_(const int *m, const int *n, real *a, const int *
+__minpack_attr__
+void __minpack_func__(r1mpyq)(const int *m, const int *n, real *a, const int *
 	lda, const real *v, const real *w)
 {
     /* System generated locals */

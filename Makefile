@@ -1,10 +1,23 @@
 PACKAGE=cminpack
 VERSION=1.2.0
 
-#CC=cc
 CC=gcc
-CFLAGS= -O2 -g -Wall -Wextra -I.
-#CFLAGS= -g -Wall -I.
+CFLAGS= -O3 -g -Wall -Wextra
+
+### The default configuration is to compile the double precision version
+
+### configuration for the float (single precision) version:
+## make LIBSUFFIX=s CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_float__"
+#LIBSUFFIX=s
+#CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_float__"
+
+### configuration for the half (half precision) version:
+## make LIBSUFFIX=h CFLAGS="-O3 -g -Wall -Wextra -I/opt/local/include -D__cminpack_half__" LDADD="-L/opt/local/lib -lHalf" CC=g++
+#LIBSUFFIX=h
+#CFLAGS="-O3 -g -Wall -Wextra -I/opt/local/include -D__cminpack_half__"
+#LDADD="-L/opt/local/lib -lHalf"
+#CC=g++
+
 OBJS = \
 chkder.o  enorm.o   hybrd1.o  hybrj.o   lmdif1.o  lmstr1.o  qrfac.o   r1updt.o \
 dogleg.o  fdjac1.o  hybrd.o   lmder1.o  lmdif.o   lmstr.o   qrsolv.o  rwupdt.o \
@@ -19,25 +32,25 @@ DESTDIR=/usr/local
 #  Static library target
 #
 
-all: libcminpack.a
+all: libcminpack$(LIBSUFFIX).a
 
-libcminpack.a:  $(OBJS)
+libcminpack$(LIBSUFFIX).a:  $(OBJS)
 	ar r $@ $(OBJS); ranlib $@
 
 %.o: %.c
 	${CC} ${CFLAGS} -c -o $@ $<
 
-install: libcminpack.a
-	cp libcminpack.a ${DESTDIR}/lib
-	chmod 644 ${DESTDIR}/lib/libcminpack.a
-	ranlib -t ${DESTDIR}/lib/libcminpack.a # might be unnecessary
+install: libcminpack$(LIBSUFFIX).a
+	cp libcminpack$(LIBSUFFIX).a ${DESTDIR}/lib
+	chmod 644 ${DESTDIR}/lib/libcminpack$(LIBSUFFIX).a
+	ranlib -t ${DESTDIR}/lib/libcminpack$(LIBSUFFIX).a # might be unnecessary
 	cp minpack.h ${DESTDIR}/include
 	chmod 644 ${DESTDIR}/include/minpack.h
 	cp cminpack.h ${DESTDIR}/include
 	chmod 644 ${DESTDIR}/include/cminpack.h
 
 clean:
-	rm -f *.o libcminpack.a *~ #*#
+	rm -f *.o libcminpack$(LIBSUFFIX).a *~ #*#
 
 .PHONY: dist
 

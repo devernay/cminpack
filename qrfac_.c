@@ -10,8 +10,8 @@
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 
-__minpack_function__
-void qrfac_(const int *m, const int *n, real *a, const int *
+__minpack_attr__
+void __minpack_func__(qrfac)(const int *m, const int *n, real *a, const int *
 	lda, const int *pivot, int *ipvt, const int *lipvt, real *rdiag,
 	 real *acnorm, real *wa)
 {
@@ -116,18 +116,19 @@ void qrfac_(const int *m, const int *n, real *a, const int *
     a_offset = 1 + a_dim1 * 1;
     a -= a_offset;
     --ipvt;
+    (void)lipvt;
 
     /* Function Body */
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar_(&c__1);
+    epsmch = __minpack_func__(dpmpar)(&c__1);
 
 /*     compute the initial column norms and initialize several arrays. */
 
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	acnorm[j] = enorm_(m, &a[j * a_dim1 + 1]);
+	acnorm[j] = __minpack_func__(enorm)(m, &a[j * a_dim1 + 1]);
 	rdiag[j] = acnorm[j];
 	wa[j] = rdiag[j];
 	if (*pivot) {
@@ -176,7 +177,7 @@ L40:
 /*        j-th column of a to a multiple of the j-th unit vector. */
 
 	i__2 = *m - j + 1;
-	ajnorm = enorm_(&i__2, &a[j + j * a_dim1]);
+	ajnorm = __minpack_func__(enorm)(&i__2, &a[j + j * a_dim1]);
 	if (ajnorm == 0.) {
 	    goto L100;
 	}
@@ -226,7 +227,7 @@ L40:
 		goto L80;
 	    }
 	    i__3 = *m - j;
-	    rdiag[k] = enorm_(&i__3, &a[jp1 + k * a_dim1]);
+	    rdiag[k] = __minpack_func__(enorm)(&i__3, &a[jp1 + k * a_dim1]);
 	    wa[k] = rdiag[k];
 L80:
 /* L90: */

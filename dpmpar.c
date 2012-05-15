@@ -20,8 +20,8 @@
 #define DPMPAR(type,X) _DPMPAR(type,X)
 #define _DPMPAR(type,X) type ## _ ## X
 
-__cminpack_function__
-real dpmpar(int i)
+__cminpack_attr__
+real __cminpack_func__(dpmpar)(int i)
 {
 /*     ********** */
 

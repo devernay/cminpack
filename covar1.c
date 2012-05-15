@@ -20,8 +20,8 @@
    and sigma**2 = fsumsq / (m - k)
    where fsumsq is the residual sum of squares and k is the rank of J.
 */
-__cminpack_function__
-int covar1(int m, int n, real fsumsq, real *r, int ldr, 
+__cminpack_attr__
+int __cminpack_func__(covar1)(int m, int n, real fsumsq, real *r, int ldr, 
 	const int *ipvt, real tol, real *wa)
 {
     /* Local variables */

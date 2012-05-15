@@ -11,8 +11,8 @@
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-__cminpack_function__
-int lmder(__cminpack_decl_fcnder_mn__ void *p, int m, int n, real *x, 
+__cminpack_attr__
+int __cminpack_func__(lmder)(__cminpack_decl_fcnder_mn__ void *p, int m, int n, real *x, 
 	real *fvec, real *fjac, int ldfjac, real ftol,
 	real xtol, real gtol, int maxfev, real *
 	diag, int mode, real factor, int nprint,
@@ -222,7 +222,7 @@ int lmder(__cminpack_decl_fcnder_mn__ void *p, int m, int n, real *x,
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar(1);
+    epsmch = __cminpack_func__(dpmpar)(1);
 
     info = 0;
     iflag = 0;
@@ -251,7 +251,7 @@ int lmder(__cminpack_decl_fcnder_mn__ void *p, int m, int n, real *x,
     if (iflag < 0) {
 	goto TERMINATE;
     }
-    fnorm = enorm(m, fvec);
+    fnorm = __cminpack_func__(enorm)(m, fvec);
 
 /*     initialize levenberg-marquardt parameter and iteration counter. */
 
@@ -284,7 +284,7 @@ int lmder(__cminpack_decl_fcnder_mn__ void *p, int m, int n, real *x,
 
 /*        compute the qr factorization of the jacobian. */
 
-        qrfac(m, n, fjac, ldfjac, TRUE_, ipvt, n,
+        __cminpack_func__(qrfac)(m, n, fjac, ldfjac, TRUE_, ipvt, n,
               wa1, wa2, wa3);
 
 /*        on the first iteration and if mode is 1, scale according */
@@ -306,7 +306,7 @@ int lmder(__cminpack_decl_fcnder_mn__ void *p, int m, int n, real *x,
             for (j = 0; j < n; ++j) {
                 wa3[j] = diag[j] * x[j];
             }
-            xnorm = enorm(n, wa3);
+            xnorm = __cminpack_func__(enorm)(n, wa3);
             delta = factor * xnorm;
             if (delta == 0.) {
                 delta = factor;
@@ -377,7 +377,7 @@ int lmder(__cminpack_decl_fcnder_mn__ void *p, int m, int n, real *x,
 
 /*           determine the levenberg-marquardt parameter. */
 
-            lmpar(n, fjac, ldfjac, ipvt, diag, qtf, delta,
+            __cminpack_func__(lmpar)(n, fjac, ldfjac, ipvt, diag, qtf, delta,
                   &par, wa1, wa2, wa3, wa4);
 
 /*           store the direction p and x + p. calculate the norm of p. */
@@ -387,7 +387,7 @@ int lmder(__cminpack_decl_fcnder_mn__ void *p, int m, int n, real *x,
                 wa2[j] = x[j] + wa1[j];
                 wa3[j] = diag[j] * wa1[j];
             }
-            pnorm = enorm(n, wa3);
+            pnorm = __cminpack_func__(enorm)(n, wa3);
 
 /*           on the first iteration, adjust the initial step bound. */
 
@@ -402,7 +402,7 @@ int lmder(__cminpack_decl_fcnder_mn__ void *p, int m, int n, real *x,
             if (iflag < 0) {
                 goto TERMINATE;
             }
-            fnorm1 = enorm(m, wa4);
+            fnorm1 = __cminpack_func__(enorm)(m, wa4);
 
 /*           compute the scaled actual reduction. */
 
@@ -424,7 +424,7 @@ int lmder(__cminpack_decl_fcnder_mn__ void *p, int m, int n, real *x,
                     wa3[i] += fjac[i + j * ldfjac] * temp;
                 }
             }
-            temp1 = enorm(n, wa3) / fnorm;
+            temp1 = __cminpack_func__(enorm)(n, wa3) / fnorm;
             temp2 = (sqrt(par) * pnorm) / fnorm;
             prered = temp1 * temp1 + temp2 * temp2 / p5;
             dirder = -(temp1 * temp1 + temp2 * temp2);
@@ -472,7 +472,7 @@ int lmder(__cminpack_decl_fcnder_mn__ void *p, int m, int n, real *x,
                 for (i = 0; i < m; ++i) {
                     fvec[i] = wa4[i];
                 }
-                xnorm = enorm(n, wa2);
+                xnorm = __cminpack_func__(enorm)(n, wa2);
                 fnorm = fnorm1;
                 ++iter;
             }

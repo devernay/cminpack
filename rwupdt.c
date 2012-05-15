@@ -8,8 +8,8 @@
 #define real __cminpack_real__
 #define abs(x) ((x) >= 0 ? (x) : -(x))
 
-__cminpack_function__
-void rwupdt(int n, real *r, int ldr, 
+__cminpack_attr__
+void __cminpack_func__(rwupdt)(int n, real *r, int ldr, 
 	const real *w, real *b, real *alpha, real *cos, 
 	real *sin)
 {

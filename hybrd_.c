@@ -12,8 +12,8 @@
 #define TRUE_ (1)
 #define FALSE_ (0)
 
-__minpack_function__
- void hybrd_(__minpack_decl_fcn_nn__ const int *n, real *x, real *
+__minpack_attr__
+void __minpack_func__(hybrd)(__minpack_decl_fcn_nn__ const int *n, real *x, real *
 	fvec, const real *xtol, const int *maxfev, const int *ml, const int *mu, 
 	const real *epsfcn, real *diag, const int *mode, const real *
 	factor, const int *nprint, int *info, int *nfev, real *
@@ -227,7 +227,7 @@ __minpack_function__
 
 /*     epsmch is the machine precision. */
 
-    epsmch = dpmpar_(&c__1);
+    epsmch = __minpack_func__(dpmpar)(&c__1);
 
     *info = 0;
     iflag = 0;
@@ -260,7 +260,7 @@ L20:
     if (iflag < 0) {
 	goto L300;
     }
-    fnorm = enorm_(n, &fvec[1]);
+    fnorm = __minpack_func__(enorm)(n, &fvec[1]);
 
 /*     determine the number of calls to fcn needed to compute */
 /*     the jacobian matrix. */
@@ -285,7 +285,7 @@ L30:
 /*        calculate the jacobian matrix. */
 
     iflag = 2;
-    fdjac1_(__minpack_param_fcn_nn__ n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag,
+    __minpack_func__(fdjac1)(__minpack_param_fcn_nn__ n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &iflag,
 	     ml, mu, epsfcn, &wa1[1], &wa2[1]);
     *nfev += msum;
     if (iflag < 0) {
@@ -294,7 +294,7 @@ L30:
 
 /*        compute the qr factorization of the jacobian. */
 
-    qrfac_(n, n, &fjac[fjac_offset], ldfjac, &c_false, iwa, &c__1, &wa1[1], &
+    __minpack_func__(qrfac)(n, n, &fjac[fjac_offset], ldfjac, &c_false, iwa, &c__1, &wa1[1], &
 	    wa2[1], &wa3[1]);
 
 /*        on the first iteration and if mode is 1, scale according */
@@ -324,7 +324,7 @@ L50:
 	wa3[j] = diag[j] * x[j];
 /* L60: */
     }
-    xnorm = enorm_(n, &wa3[1]);
+    xnorm = __minpack_func__(enorm)(n, &wa3[1]);
     delta = *factor * xnorm;
     if (delta == 0.) {
 	delta = *factor;
@@ -386,7 +386,7 @@ L140:
 
 /*        accumulate the orthogonal factor in fjac. */
 
-    qform_(n, n, &fjac[fjac_offset], ldfjac, &wa1[1]);
+    __minpack_func__(qform)(n, n, &fjac[fjac_offset], ldfjac, &wa1[1]);
 
 /*        rescale if necessary. */
 
@@ -422,7 +422,7 @@ L190:
 
 /*           determine the direction p. */
 
-    dogleg_(n, &r__[1], lr, &diag[1], &qtf[1], &delta, &wa1[1], &wa2[1], &wa3[
+    __minpack_func__(dogleg)(n, &r__[1], lr, &diag[1], &qtf[1], &delta, &wa1[1], &wa2[1], &wa3[
 	    1]);
 
 /*           store the direction p and x + p. calculate the norm of p. */
@@ -434,7 +434,7 @@ L190:
 	wa3[j] = diag[j] * wa1[j];
 /* L200: */
     }
-    pnorm = enorm_(n, &wa3[1]);
+    pnorm = __minpack_func__(enorm)(n, &wa3[1]);
 
 /*           on the first iteration, adjust the initial step bound. */
 
@@ -450,7 +450,7 @@ L190:
     if (iflag < 0) {
 	goto L300;
     }
-    fnorm1 = enorm_(n, &wa4[1]);
+    fnorm1 = __minpack_func__(enorm)(n, &wa4[1]);
 
 /*           compute the scaled actual reduction. */
 
@@ -476,7 +476,7 @@ L190:
 	wa3[i__] = qtf[i__] + sum;
 /* L220: */
     }
-    temp = enorm_(n, &wa3[1]);
+    temp = __minpack_func__(enorm)(n, &wa3[1]);
     prered = 0.;
     if (temp < fnorm) {
 /* Computing 2nd power */
@@ -529,7 +529,7 @@ L240:
 	fvec[j] = wa4[j];
 /* L250: */
     }
-    xnorm = enorm_(n, &wa2[1]);
+    xnorm = __minpack_func__(enorm)(n, &wa2[1]);
     fnorm = fnorm1;
     ++iter;
 L260:
@@ -604,9 +604,9 @@ L260:
 
 /*           compute the qr factorization of the updated jacobian. */
 
-    r1updt_(n, n, &r__[1], lr, &wa1[1], &wa2[1], &wa3[1], &sing);
-    r1mpyq_(n, n, &fjac[fjac_offset], ldfjac, &wa2[1], &wa3[1]);
-    r1mpyq_(&c__1, n, &qtf[1], &c__1, &wa2[1], &wa3[1]);
+    __minpack_func__(r1updt)(n, n, &r__[1], lr, &wa1[1], &wa2[1], &wa3[1], &sing);
+    __minpack_func__(r1mpyq)(n, n, &fjac[fjac_offset], ldfjac, &wa2[1], &wa3[1]);
+    __minpack_func__(r1mpyq)(&c__1, n, &qtf[1], &c__1, &wa2[1], &wa3[1]);
 
 /*           end of the inner loop. */
 

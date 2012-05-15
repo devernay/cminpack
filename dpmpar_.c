@@ -20,8 +20,8 @@
 #define DPMPAR(type,X) _DPMPAR(type,X)
 #define _DPMPAR(type,X) type ## _ ## X
 
-__minpack_function__
-real dpmpar_(const int *i)
+__minpack_attr__
+real __minpack_func__(dpmpar)(const int *i)
 {
 /*     ********** */
 

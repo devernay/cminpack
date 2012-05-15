@@ -14,8 +14,8 @@
 #include <math.h>
 #define real __minpack_real__
 
-__minpack_function__
-void covar_(const int *n, real *r__, const int *ldr, 
+__minpack_attr__
+void __minpack_func__(covar)(const int *n, real *r__, const int *ldr, 
 	const int *ipvt, const real *tol, real *wa)
 {
     /* System generated locals */
