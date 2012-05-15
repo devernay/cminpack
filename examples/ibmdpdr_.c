@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
-#include "cminpack.h"
-#define real __cminpack_real__
+#include "minpack.h"
+#define real __minpack_real__
 
 extern void machar_(int *ibeta, int *it, int *irnd, 
                     int *ngrd, int *machep, int *negep, int *iexp, 
@@ -45,6 +45,7 @@ int main(int argc, char **argv)
     int machep;
     real epsmch, epsneg;
     int minexp, maxexp;
+    const int i1 = 1, i2 = 2, i3 = 3;
 
 /*     determine the machine constants dynamically from machar. */
 
@@ -54,9 +55,9 @@ int main(int argc, char **argv)
 /*     compare the dpmpar constants with their machar counterparts and */
 /*     store the relative differences in rerr. */
 
-    epsmch = dpmpar(1);
-    dwarf = dpmpar(2);
-    giant = dpmpar(3);
+    epsmch = dpmpar_(&i1);
+    dwarf = dpmpar_(&i2);
+    giant = dpmpar_(&i3);
     rerr[0] = (epsmch - eps) / epsmch;
     rerr[1] = (dwarf - xmin) / dwarf;
     rerr[2] = (xmax - giant) / giant;

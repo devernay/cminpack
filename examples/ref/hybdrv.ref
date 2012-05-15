@@ -61,15 +61,15 @@
 
       initial l2 norm of the residuals  0.1466288D+02
 
-      final l2 norm of the residuals    0.1736920D-34
+      final l2 norm of the residuals    0.1658388D-33
 
-      number of function evaluations         123
+      number of function evaluations         108
 
       exit parameter                           4
 
       final approximate solution
 
-      -0.3964312D-18  0.3964312D-19  0.1671100D-17  0.1671100D-17
+      -0.1717233D-17  0.1717233D-18  0.4885792D-17  0.4885792D-17
 
 
 
@@ -79,15 +79,15 @@
 
       initial l2 norm of the residuals  0.1270984D+04
 
-      final l2 norm of the residuals    0.1828554D-32
+      final l2 norm of the residuals    0.9820406D-35
 
-      number of function evaluations         110
+      number of function evaluations         112
 
       exit parameter                           4
 
       final approximate solution
 
-       0.1138905D-16 -0.1138905D-17  0.1511307D-16  0.1511307D-16
+       0.1137339D-17 -0.1137339D-18  0.1509232D-17  0.1509232D-17
 
 
 
@@ -97,15 +97,15 @@
 
       initial l2 norm of the residuals  0.1268879D+06
 
-      final l2 norm of the residuals    0.2539466D-34
+      final l2 norm of the residuals    0.4843140D-34
 
-      number of function evaluations         156
+      number of function evaluations         143
 
       exit parameter                           4
 
       final approximate solution
 
-       0.2034050D-17 -0.2034050D-18  0.2417742D-17  0.2417742D-17
+       0.2071579D-17 -0.2071579D-18  0.3365608D-17  0.3365608D-17
 
 
 
@@ -115,7 +115,7 @@
 
       initial l2 norm of the residuals  0.1065487D+01
 
-      final l2 norm of the residuals    0.1712494D-08
+      final l2 norm of the residuals    0.1712421D-08
 
       number of function evaluations         181
 
@@ -151,7 +151,7 @@
 
       initial l2 norm of the residuals  0.8550557D+04
 
-      final l2 norm of the residuals    0.4005067D-10
+      final l2 norm of the residuals    0.3998844D-10
 
       number of function evaluations          94
 
@@ -169,7 +169,7 @@
 
       initial l2 norm of the residuals  0.7349823D+07
 
-      final l2 norm of the residuals    0.5154548D-09
+      final l2 norm of the residuals    0.1285689D-11
 
       number of function evaluations         234
 
@@ -187,9 +187,9 @@
 
       initial l2 norm of the residuals  0.7273070D+10
 
-      final l2 norm of the residuals    0.2491133D-10
+      final l2 norm of the residuals    0.4568910D-09
 
-      number of function evaluations         514
+      number of function evaluations         494
 
       exit parameter                           1
 
@@ -205,7 +205,7 @@
 
       initial l2 norm of the residuals  0.5000000D+02
 
-      final l2 norm of the residuals    0.2753444D-12
+      final l2 norm of the residuals    0.2753440D-12
 
       number of function evaluations          27
 
@@ -213,7 +213,7 @@
 
       final approximate solution
 
-       0.1000000D+01 -0.1612105D-13 -0.1844970D-34
+       0.1000000D+01 -0.1612103D-13 -0.8125674D-34
 
 
 
@@ -223,15 +223,15 @@
 
       initial l2 norm of the residuals  0.1029563D+03
 
-      final l2 norm of the residuals    0.4427907D-13
+      final l2 norm of the residuals    0.2251025D-09
 
-      number of function evaluations          31
+      number of function evaluations          32
 
       exit parameter                           1
 
       final approximate solution
 
-       0.1000000D+01  0.2222029D-14 -0.6281903D-44
+       0.1000000D+01  0.1388634D-10  0.0000000D+00
 
 
 
@@ -241,7 +241,7 @@
 
       initial l2 norm of the residuals  0.9912618D+03
 
-      final l2 norm of the residuals    0.1610836D-12
+      final l2 norm of the residuals    0.1610831D-12
 
       number of function evaluations          40
 
@@ -249,7 +249,7 @@
 
       final approximate solution
 
-       0.1000000D+01  0.1238991D-14 -0.2713839D-48
+       0.1000000D+01  0.1238719D-14  0.0000000D+00
 
 
 
@@ -259,7 +259,7 @@
 
       initial l2 norm of the residuals  0.6848587D+02
 
-      final l2 norm of the residuals    0.3191646D-12
+      final l2 norm of the residuals    0.3208563D-12
 
       number of function evaluations          96
 
@@ -278,7 +278,7 @@
 
       initial l2 norm of the residuals  0.3531259D+07
 
-      final l2 norm of the residuals    0.2336128D-10
+      final l2 norm of the residuals    0.2333047D-10
 
       number of function evaluations         310
 
@@ -297,7 +297,7 @@
 
       initial l2 norm of the residuals  0.8878955D+02
 
-      final l2 norm of the residuals    0.1817744D-13
+      final l2 norm of the residuals    0.3267200D-14
 
       number of function evaluations         167
 
@@ -316,9 +316,9 @@
 
       initial l2 norm of the residuals  0.1015108D+08
 
-      final l2 norm of the residuals    0.1138869D-11
+      final l2 norm of the residuals    0.1716655D-11
 
-      number of function evaluations         167
+      number of function evaluations         175
 
       exit parameter                           1
 
@@ -335,7 +335,7 @@
 
       initial l2 norm of the residuals  0.2257066D+00
 
-      final l2 norm of the residuals    0.3540292D-11
+      final l2 norm of the residuals    0.3540441D-11
 
       number of function evaluations          17
 
@@ -353,15 +353,15 @@
 
       initial l2 norm of the residuals  0.4117243D+07
 
-      final l2 norm of the residuals    0.1902384D-09
+      final l2 norm of the residuals    0.1158079D-11
 
-      number of function evaluations         256
+      number of function evaluations         259
 
       exit parameter                           1
 
       final approximate solution
 
-       0.5000000D+00  0.9162487D+00  0.6872707D+00  0.3127293D+00  0.8375126D-01
+       0.6872707D+00  0.9162487D+00  0.5000000D+00  0.8375126D-01  0.3127293D+00
 
 
 
@@ -371,15 +371,15 @@
 
       initial l2 norm of the residuals  0.5636130D+12
 
-      final l2 norm of the residuals    0.2269130D-10
+      final l2 norm of the residuals    0.4076007D-09
 
-      number of function evaluations         522
+      number of function evaluations         536
 
       exit parameter                           1
 
       final approximate solution
 
-       0.3127293D+00  0.5000000D+00  0.8375126D-01  0.6872707D+00  0.9162487D+00
+       0.5000000D+00  0.6872707D+00  0.8375126D-01  0.3127293D+00  0.9162487D+00
 
 
 
@@ -389,7 +389,7 @@
 
       initial l2 norm of the residuals  0.2154720D+00
 
-      final l2 norm of the residuals    0.6841874D-09
+      final l2 norm of the residuals    0.6867966D-09
 
       number of function evaluations          25
 
@@ -408,15 +408,15 @@
 
       initial l2 norm of the residuals  0.1307925D+09
 
-      final l2 norm of the residuals    0.2281996D-10
+      final l2 norm of the residuals    0.1003427D-11
 
-      number of function evaluations         172
+      number of function evaluations         173
 
       exit parameter                           1
 
       final approximate solution
 
-       0.9331234D+00  0.3666823D+00  0.6687659D-01  0.7112593D+00  0.2887407D+00
+       0.9331234D+00  0.2887407D+00  0.6687659D-01  0.7112593D+00  0.3666823D+00
        0.6333177D+00
 
 
@@ -427,16 +427,16 @@
 
       initial l2 norm of the residuals  0.1875579D+15
 
-      final l2 norm of the residuals    0.1260220D-10
+      final l2 norm of the residuals    0.1182988D-10
 
-      number of function evaluations         274
+      number of function evaluations         266
 
       exit parameter                           1
 
       final approximate solution
 
-       0.6333177D+00  0.2887407D+00  0.6687659D-01  0.3666823D+00  0.7112593D+00
-       0.9331234D+00
+       0.3666823D+00  0.6333177D+00  0.7112593D+00  0.6687659D-01  0.9331234D+00
+       0.2887407D+00
 
 
 
@@ -465,16 +465,16 @@
 
       initial l2 norm of the residuals  0.4269328D+10
 
-      final l2 norm of the residuals    0.1624356D-09
+      final l2 norm of the residuals    0.9095716D-09
 
-      number of function evaluations         525
+      number of function evaluations         630
 
       exit parameter                           1
 
       final approximate solution
 
-       0.5806915D-01  0.5000000D+00  0.2351716D+00  0.6619559D+00  0.9419309D+00
-       0.7648284D+00  0.3380441D+00
+       0.3380441D+00  0.5000000D+00  0.2351716D+00  0.7648284D+00  0.9419309D+00
+       0.5806915D-01  0.6619559D+00
 
 
 
@@ -484,16 +484,16 @@
 
       initial l2 norm of the residuals  0.6414317D+17
 
-      final l2 norm of the residuals    0.2416003D+00
+      final l2 norm of the residuals    0.2491665D+15
 
-      number of function evaluations         657
+      number of function evaluations         180
 
       exit parameter                           4
 
       final approximate solution
 
-       0.9164983D+00  0.1448833D+00  0.4254315D+00  0.7063049D+00  0.9735517D+00
-       0.3940540D+00  0.7277111D+00
+      -0.3267366D+02 -0.2996210D+02 -0.8587775D+02  0.2222113D+02  0.5957249D+02
+      -0.1038026D+01  0.8600843D+02
 
 
 
@@ -503,7 +503,7 @@
 
       initial l2 norm of the residuals  0.1965139D+00
 
-      final l2 norm of the residuals    0.6440508D-01
+      final l2 norm of the residuals    0.6440509D-01
 
       number of function evaluations         120
 
@@ -511,7 +511,7 @@
 
       final approximate solution
 
-       0.4985639D-01  0.1986351D+00  0.2698288D+00  0.4992723D+00  0.5007277D+00
+       0.4985640D-01  0.1986351D+00  0.2698288D+00  0.4992723D+00  0.5007277D+00
        0.7301712D+00  0.8013649D+00  0.9501437D+00
 
 
@@ -541,7 +541,7 @@
 
       initial l2 norm of the residuals  0.1653022D+02
 
-      final l2 norm of the residuals    0.1312131D-13
+      final l2 norm of the residuals    0.1925301D-13
 
       number of function evaluations          31
 
@@ -560,7 +560,7 @@
 
       initial l2 norm of the residuals  0.9765624D+07
 
-      final l2 norm of the residuals    0.1601186D-13
+      final l2 norm of the residuals    0.4440892D-15
 
       number of function evaluations          31
 
@@ -579,16 +579,16 @@
 
       initial l2 norm of the residuals  0.9765625D+17
 
-      final l2 norm of the residuals    0.4213000D-14
+      final l2 norm of the residuals    0.1299849D-12
 
-      number of function evaluations          38
+      number of function evaluations          40
 
       exit parameter                           1
 
       final approximate solution
 
-       0.9794303D+00  0.9794303D+00  0.9794303D+00  0.9794303D+00  0.9794303D+00
-       0.9794303D+00  0.9794303D+00  0.9794303D+00  0.9794303D+00  0.1205697D+01
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
 
 
 
@@ -598,20 +598,20 @@
 
       initial l2 norm of the residuals  0.8347604D+02
 
-      final l2 norm of the residuals    0.2073414D-12
+      final l2 norm of the residuals    0.1390247D-12
 
-      number of function evaluations         113
+      number of function evaluations         120
 
       exit parameter                           1
 
       final approximate solution
 
-       0.9977542D+00  0.9977542D+00  0.9977542D+00  0.9977542D+00  0.9977542D+00
-       0.9977542D+00  0.9977542D+00  0.9977542D+00  0.9977542D+00  0.9977542D+00
-       0.9977542D+00  0.9977542D+00  0.9977542D+00  0.9977542D+00  0.9977542D+00
-       0.9977542D+00  0.9977542D+00  0.9977542D+00  0.9977542D+00  0.9977542D+00
-       0.9977542D+00  0.9977542D+00  0.9977542D+00  0.9977542D+00  0.9977542D+00
-       0.9977542D+00  0.9977542D+00  0.9977542D+00  0.9977542D+00  0.1067374D+01
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
+       0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01  0.1000000D+01
 
 
 
@@ -621,9 +621,9 @@
 
       initial l2 norm of the residuals  0.1280264D+03
 
-      final l2 norm of the residuals    0.8885114D-13
+      final l2 norm of the residuals    0.1055840D-12
 
-      number of function evaluations         196
+      number of function evaluations         153
 
       exit parameter                           1
 
@@ -646,7 +646,7 @@
 
       initial l2 norm of the residuals  0.2808058D-01
 
-      final l2 norm of the residuals    0.2497793D-14
+      final l2 norm of the residuals    0.2514039D-14
 
       number of function evaluations          16
 
@@ -665,7 +665,7 @@
 
       initial l2 norm of the residuals  0.5255526D+00
 
-      final l2 norm of the residuals    0.1725954D-12
+      final l2 norm of the residuals    0.1726095D-12
 
       number of function evaluations          19
 
@@ -684,7 +684,7 @@
 
       initial l2 norm of the residuals  0.1065739D+03
 
-      final l2 norm of the residuals    0.4174414D-09
+      final l2 norm of the residuals    0.4177561D-09
 
       number of function evaluations          52
 
@@ -703,7 +703,7 @@
 
       initial l2 norm of the residuals  0.1279297D+00
 
-      final l2 norm of the residuals    0.5551115D-16
+      final l2 norm of the residuals    0.2775558D-16
 
       number of function evaluations           7
 
@@ -739,7 +739,7 @@
 
       initial l2 norm of the residuals  0.8361172D+03
 
-      final l2 norm of the residuals    0.2775558D-16
+      final l2 norm of the residuals    0.5551115D-16
 
       number of function evaluations          16
 
@@ -795,7 +795,7 @@
 
       initial l2 norm of the residuals  0.1269309D+04
 
-      final l2 norm of the residuals    0.3034804D-14
+      final l2 norm of the residuals    0.3022340D-14
 
       number of function evaluations          39
 
@@ -814,7 +814,7 @@
 
       initial l2 norm of the residuals  0.8411753D-01
 
-      final l2 norm of the residuals    0.5296401D-02
+      final l2 norm of the residuals    0.5296400D-02
 
       number of function evaluations         130
 
@@ -822,8 +822,8 @@
 
       final approximate solution
 
-       0.5526169D-01  0.5695772D-01  0.5889086D-01  0.6113628D-01  0.6377880D-01
-       0.6700510D-01  0.2079408D+00  0.1642667D+00  0.8644054D-01  0.9133614D-01
+       0.5526168D-01  0.5695771D-01  0.5889083D-01  0.6113625D-01  0.6377876D-01
+       0.6700506D-01  0.2079408D+00  0.1642667D+00  0.8644045D-01  0.9133610D-01
 
 
 
@@ -833,7 +833,7 @@
 
       initial l2 norm of the residuals  0.2030519D+02
 
-      final l2 norm of the residuals    0.5915392D-10
+      final l2 norm of the residuals    0.5916907D-10
 
       number of function evaluations          84
 
@@ -852,7 +852,7 @@
 
       initial l2 norm of the residuals  0.9336937D+02
 
-      final l2 norm of the residuals    0.1813678D-08
+      final l2 norm of the residuals    0.1824033D-08
 
       number of function evaluations          85
 
@@ -871,7 +871,7 @@
 
       initial l2 norm of the residuals  0.2240213D+07
 
-      final l2 norm of the residuals    0.5119467D-11
+      final l2 norm of the residuals    0.5886077D-11
 
       number of function evaluations          31
 
@@ -890,7 +890,7 @@
 
       initial l2 norm of the residuals  0.5223438D+08
 
-      final l2 norm of the residuals    0.7399640D-10
+      final l2 norm of the residuals    0.9391515D-12
 
       number of function evaluations          35
 
@@ -911,7 +911,7 @@
 
       final l2 norm of the residuals    0.0000000D+00
 
-      number of function evaluations          66
+      number of function evaluations          84
 
       exit parameter                           1
 
@@ -947,7 +947,7 @@
 
       initial l2 norm of the residuals  0.6391009D+03
 
-      final l2 norm of the residuals    0.5337442D-08
+      final l2 norm of the residuals    0.5056867D-08
 
       number of function evaluations          59
 
@@ -966,7 +966,7 @@
 
       initial l2 norm of the residuals  0.6333758D+05
 
-      final l2 norm of the residuals    0.9878880D-10
+      final l2 norm of the residuals    0.9878833D-10
 
       number of function evaluations          42
 
@@ -1004,7 +1004,7 @@
 
       initial l2 norm of the residuals  0.1713092D+05
 
-      final l2 norm of the residuals    0.7953613D-08
+      final l2 norm of the residuals    0.7953611D-08
 
       number of function evaluations          45
 
@@ -1023,7 +1023,7 @@
 
       initial l2 norm of the residuals  0.1594986D+08
 
-      final l2 norm of the residuals    0.4526424D-09
+      final l2 norm of the residuals    0.4526426D-09
 
       number of function evaluations          58
 
@@ -1040,55 +1040,55 @@
    1     2     22     1   0.0000000D+00
    1     2      9     1   0.0000000D+00
    1     2      9     1   0.5373479D-12
-   2     4    123     4   0.1736920D-34
-   2     4    110     4   0.1828554D-32
-   2     4    156     4   0.2539466D-34
-   3     2    181     1   0.1712494D-08
+   2     4    108     4   0.1658388D-33
+   2     4    112     4   0.9820406D-35
+   2     4    143     4   0.4843140D-34
+   3     2    181     1   0.1712421D-08
    3     2     11     1   0.3744485D-07
-   4     4     94     1   0.4005067D-10
-   4     4    234     1   0.5154548D-09
-   4     4    514     1   0.2491133D-10
-   5     3     27     1   0.2753444D-12
-   5     3     31     1   0.4427907D-13
-   5     3     40     1   0.1610836D-12
-   6     6     96     1   0.3191646D-12
-   6     6    310     1   0.2336128D-10
-   6     9    167     1   0.1817744D-13
-   6     9    167     1   0.1138869D-11
-   7     5     17     1   0.3540292D-11
-   7     5    256     1   0.1902384D-09
-   7     5    522     1   0.2269130D-10
-   7     6     25     1   0.6841874D-09
-   7     6    172     1   0.2281996D-10
-   7     6    274     1   0.1260220D-10
+   4     4     94     1   0.3998844D-10
+   4     4    234     1   0.1285689D-11
+   4     4    494     1   0.4568910D-09
+   5     3     27     1   0.2753440D-12
+   5     3     32     1   0.2251025D-09
+   5     3     40     1   0.1610831D-12
+   6     6     96     1   0.3208563D-12
+   6     6    310     1   0.2333047D-10
+   6     9    167     1   0.3267200D-14
+   6     9    175     1   0.1716655D-11
+   7     5     17     1   0.3540441D-11
+   7     5    259     1   0.1158079D-11
+   7     5    536     1   0.4076007D-09
+   7     6     25     1   0.6867966D-09
+   7     6    173     1   0.1003427D-11
+   7     6    266     1   0.1182988D-10
    7     7     20     1   0.2398700D-08
-   7     7    525     1   0.1624356D-09
-   7     7    657     4   0.2416003D+00
-   7     8    120     4   0.6440508D-01
+   7     7    630     1   0.9095716D-09
+   7     7    180     4   0.2491665D+15
+   7     8    120     4   0.6440509D-01
    7     9     41     1   0.1889808D-08
-   8    10     31     1   0.1312131D-13
-   8    10     31     1   0.1601186D-13
-   8    10     38     1   0.4213000D-14
-   8    30    113     1   0.2073414D-12
-   8    40    196     1   0.8885114D-13
-   9    10     16     1   0.2497793D-14
-   9    10     19     1   0.1725954D-12
-   9    10     52     1   0.4174414D-09
-  10     1      7     1   0.5551115D-16
+   8    10     31     1   0.1925301D-13
+   8    10     31     1   0.4440892D-15
+   8    10     40     1   0.1299849D-12
+   8    30    120     1   0.1390247D-12
+   8    40    153     1   0.1055840D-12
+   9    10     16     1   0.2514039D-14
+   9    10     19     1   0.1726095D-12
+   9    10     52     1   0.4177561D-09
+  10     1      7     1   0.2775558D-16
   10     1      9     1   0.5551115D-16
-  10     1     16     1   0.2775558D-16
+  10     1     16     1   0.5551115D-16
   10    10     16     1   0.5009132D-14
   10    10     19     1   0.2188310D-12
-  10    10     39     1   0.3034804D-14
-  11    10    130     4   0.5296401D-02
-  11    10     84     1   0.5915392D-10
-  11    10     85     1   0.1813678D-08
-  12    10     31     1   0.5119467D-11
-  12    10     35     1   0.7399640D-10
-  12    10     66     1   0.0000000D+00
+  10    10     39     1   0.3022340D-14
+  11    10    130     4   0.5296400D-02
+  11    10     84     1   0.5916907D-10
+  11    10     85     1   0.1824033D-08
+  12    10     31     1   0.5886077D-11
+  12    10     35     1   0.9391515D-12
+  12    10     84     1   0.0000000D+00
   13    10     21     1   0.1493879D-07
-  13    10     59     1   0.5337442D-08
-  13    10     42     1   0.9878880D-10
+  13    10     59     1   0.5056867D-08
+  13    10     42     1   0.9878833D-10
   14    10     30     1   0.2057898D-08
-  14    10     45     1   0.7953613D-08
-  14    10     58     1   0.4526424D-09
+  14    10     45     1   0.7953611D-08
+  14    10     58     1   0.4526426D-09

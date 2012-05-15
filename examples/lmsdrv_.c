@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "cminpack.h"
+#include "minpack.h"
 #include "ssq.h"
-#define real __cminpack_real__
+#define real __minpack_real__
 
 /*     ********** */
 
@@ -31,11 +31,13 @@
 
 /*     ********** */
 
-int fcn(void *p, int m, int n, const real *x, real *fvec, real *fjrow, int iflag);
+void fcn(const int *m, const int *n, const real *x, real *fvec, real *fjrow, int *iflag);
 
 struct refnum {
     int nprob, nfev, njev;
 };
+
+struct refnum lmstrtest;
 
 static void printvec(int n, const real *x)
 {
@@ -76,7 +78,6 @@ int main(int argc, char **argv)
 {
 
     int i,ic,k,m,n,ntries;
-    struct refnum lmstrtest;
     int info;
 
     int ma[60];
@@ -99,8 +100,9 @@ int main(int argc, char **argv)
 
     real wa[5*40+65];
     const int lwa = 5*40+65;
+    const int i1 = 1;
 
-    tol = sqrt(dpmpar(1));
+    tol = sqrt(dpmpar_(&i1));
 
     ic = 0;
 
@@ -119,7 +121,7 @@ int main(int argc, char **argv)
 
             ssqfcn(m,n,x,fvec,lmstrtest.nprob);
 
-            fnorm1 = enorm(m,fvec);
+            fnorm1 = enorm_(&m,fvec);
 
             printf("\n\n\n\n      problem%5d      dimensions%5d%5d\n\n", lmstrtest.nprob, n, m);
 /*
@@ -131,11 +133,11 @@ int main(int argc, char **argv)
             lmstrtest.nfev = 0;
             lmstrtest.njev = 0;
 
-            info = lmstr1(fcn,&lmstrtest,m,n,x,fvec,fjac,ldfjac,tol,ipvt,wa,lwa);
+            lmstr1_(fcn,&m,&n,x,fvec,fjac,&ldfjac,&tol,&info,ipvt,wa,&lwa);
 
             ssqfcn(m,n,x,fvec,lmstrtest.nprob);
 
-            fnorm2 = enorm(m,fvec);
+            fnorm2 = enorm_(&m,fvec);
 
             np[ic] = lmstrtest.nprob;
             na[ic] = n;
@@ -195,7 +197,8 @@ int main(int argc, char **argv)
 }
 
 real temp[65*40];
-int fcn(void *p, int m, int n, const real *x, real *fvec, real *fjrow, int iflag)
+
+void fcn(const int *m, const int *n, const real *x, real *fvec, real *fjrow, int *iflag)
 {
     /* Local variables */
     int j;
@@ -221,20 +224,17 @@ int fcn(void *p, int m, int n, const real *x, real *fvec, real *fjrow, int iflag
 /*     burton s. garbow, kenneth e. hillstrom, jorge j. more */
 
 /*     ********** */
-    struct refnum *lmstrtest = (struct refnum *)p;
-    if (iflag == 1) {
-        ssqfcn(m,n,x,fvec,lmstrtest->nprob);
-        lmstrtest->nfev++;
+    if (*iflag == 1) {
+        ssqfcn(*m,*n,x,fvec,lmstrtest.nprob);
+        lmstrtest.nfev++;
     }
-    if (iflag >= 2) {
-        if (iflag == 2) {
-            ssqjac(m,n,x,temp,65,lmstrtest->nprob);
-            lmstrtest->njev++;
+    if (*iflag >= 2) {
+        if (*iflag == 2) {
+            ssqjac(*m,*n,x,temp,65,lmstrtest.nprob);
+            lmstrtest.njev++;
         }
-        for (j = 0; j < n; ++j) {
-            fjrow[j] = temp[(iflag - 2) + j * 65];
+        for (j = 0; j < *n; ++j) {
+            fjrow[j] = temp[(*iflag - 2) + j * 65];
         }
     }
-
-    return 0;
 } /* fcn_ */

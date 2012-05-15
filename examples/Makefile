@@ -28,9 +28,10 @@ FMINPACK=../fortran/libminpack.a
 FPGM=tchkder thybrd thybrd1 thybrj thybrj1 tlmder tlmder1 tlmdif \
 	tlmdif1 tlmstr tlmstr1 ibmdpdr
 PGM=tchkder_ thybrd_ thybrd1_ thybrj_ thybrj1_ tlmder_ tlmder1_ tlmdif_ \
-	tlmdif1_ tlmstr_ tlmstr1_ tfdjac2_
+	tlmdif1_ tlmstr_ tlmstr1_ tfdjac2_ ibmdpdr_
 CPGM=tchkderc thybrdc thybrd1c thybrjc thybrj1c tlmderc tlmder1c tlmdifc \
 	tlmdif1c tlmstrc tlmstr1c tfdjac2c ibmdpdrc
+FDRVPGM=lmddrv_ lmfdrv_ lmsdrv_ hyjdrv_ hybdrv_ chkdrv_
 DRVPGM=lmddrv lmfdrv lmsdrv hyjdrv hybdrv chkdrv
 CDRVPGM=lmddrvc lmfdrvc lmsdrvc hyjdrvc hybdrvc chkdrvc
 FSRCGEN=tchkder.f thybrd.f thybrd1.f thybrj.f thybrj1.f tlmder.f tlmder1.f \
@@ -38,14 +39,14 @@ FSRCGEN=tchkder.f thybrd.f thybrd1.f thybrj.f thybrj1.f tlmder.f tlmder1.f \
 FSRC=$(FSRCGEN) \
 	lmddrv.f lmdipt.f ssqfcn.f ssqjac.f lmfdrv.f lmsdrv.f \
 	hyjdrv.f hybipt.f vecfcn.f vecjac.f hybdrv.f \
-	errjac.f chkdrv.f ibmdpdr.f dmchar.f
+	errjac.f chkdrv.f ibmdpdr.f machar.f
 SRC=tchkder_.c thybrd_.c thybrd1_.c thybrj_.c thybrj1_.c tlmder_.c tlmder1_.c \
-	tlmdif_.c tlmdif1_.c tlmstr_.c tlmstr1_.c tfdjac2_.c
+	tlmdif_.c tlmdif1_.c tlmstr_.c tlmstr1_.c tfdjac2_.c ibmdpdr_.c
 CSRC=tchkderc.c thybrdc.c thybrd1c.c thybrjc.c thybrj1c.c tlmderc.c tlmder1c.c \
 	tlmdifc.c tlmdif1c.c tlmstrc.c tlmstr1c.c tfdjac2c.c \
 	lmddrv.c lmdipt.c ssqfcn.c ssqjac.c lmfdrv.c lmsdrv.c \
 	hyjdrv.c hybipt.c vecfcn.c vecjac.c hybdrv.c \
-	errjac.c chkdrv.c ibmdpdr.c dmchar.c
+	errjac.c chkdrv.c ibmdpdr.c machar.c
 
 CDRVSRC=lmddrv.c lmfdrv.c lmsdrv.c hyjdrv.c hybdrv.c
 REF=test.ref ctest.ref ftest.ref
@@ -59,69 +60,98 @@ all:
 	@echo "make ftest: calling FORTRAN CMINPACK from FORTRAN"
 	@echo "make ftest MINPACK=../fortran/libminpack.a: calling FORTRAN MINPACK from FORTRAN"
 	@echo "Intensive (driver) tests:"
+	@echo "make testdrv: calling FORTRAN CMINPACK from C"
+	@echo "make testdrv MINPACK=../fortran/libminpack.a: calling FORTRAN MINPACK from C"
 	@echo "make ctestdrv: calling CMINPACK from C"
 	@echo "make ftestdrv: calling FORTRAN CMINPACK from FORTRAN"
 	@echo "make ftestdrv MINPACK=../fortran/libminpack.a: calling FORTRAN MINPACK from FORTRAN"
 
 .PHONY: test ctest ctestdrv ctestlmdrv ctesthydrv ctestchkdrv ftest ftestdrv ftestlmdrv ftesthydrv ftestchkdrv alltest
-test: ${PGM}
-	for x in ${PGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/`echo $$x.ref|sed -e s/_.ref/c.ref/` $$x.out ; done
+test: $(MINPACK) $(PGM)
+	@echo "*** Running standard tests (calling MINPACK from C using $(MINPACK))"
+	for x in $(PGM); do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/`echo $$x.ref|sed -e s/_.ref/c.ref/` $$x.out ; done
 
-ctest: ${CPGM}
-	for x in ${CPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+testdrv: $(MINPACK) $(FDRVPGM) testlmdrv testhydrv testchkdrv
 
-ctestdrv: ${CDRVPGM} ctestlmdrv ctesthydrv ctestchkdrv
+testlmdrv: lmddrv_ lmfdrv_ lmsdrv_
+	@echo "*** Running LM tests (calling MINPACK from C using $(MINPACK))"
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
+
+testhydrv: hyjdrv_ hybdrv_
+	@echo "*** Running HY tests (calling MINPACK from C using $(MINPACK))"
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/hybrd.data > $$x.out; diff -u ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
+
+testchkdrv:chkdrv_
+	@echo "*** Running CHK tests (calling MINPACK from C using $(MINPACK))"
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
+
+ctest: $(MINPACK) $(CPGM)
+	@echo "*** Running standard tests (calling CMINPACK from C using $(MINPACK))"
+	for x in $(CPGM); do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+
+ctestdrv: $(MINPACK) $(CDRVPGM) ctestlmdrv ctesthydrv ctestchkdrv
 
 ctestlmdrv: lmddrvc lmfdrvc lmsdrvc
+	@echo "*** Running LM tests (calling CMINPACK from C using $(MINPACK))"
 	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 ctesthydrv: hyjdrvc hybdrvc
+	@echo "*** Running HY tests (calling CMINPACK from C using $(MINPACK))"
 	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/hybrd.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
-ctestchkdrv: chkdrvc
+ctestchkdrv:chkdrvc
+	@echo "*** Running CHK tests (calling CMINPACK from C using $(MINPACK))"
 	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
-ftest: ${FPGM}
+ftest: $(MINPACK) $(FPGM)
+	@echo "*** Running standard tests (calling MINPACK from FORTRAN using $(MINPACK))"
 	for x in ${FPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
-ftestdrv: ${DRVPGM} ftestlmdrv ftesthydrv ftestchkdrv
+ftestdrv: $(MINPACK) $(DRVPGM) ftestlmdrv ftesthydrv ftestchkdrv
 
 ftestlmdrv: lmddrv lmfdrv lmsdrv
+	@echo "*** Running LM tests (calling MINPACK from FORTRAN using $(MINPACK))"
 	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 ftesthydrv: hyjdrv hybdrv
+	@echo "*** Running HY tests (calling MINPACK from FORTRAN using $(MINPACK))"
 	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/hybrd.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 ftestchkdrv: chkdrv
+	@echo "*** Running CHK tests (calling MINPACK from FORTRAN using $(MINPACK))"
 	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 alltest: ../libcminpack.a ../fortran/libminpack.a
-	$(MAKE) clean
+	$(MAKE) clean $(PGM) 2>&1 > /dev/null
 	-$(MAKE) test
-	$(MAKE) clean
+	$(MAKE) clean $(PGM) MINPACK=../fortran/libminpack.a 2>&1 > /dev/null
 	-$(MAKE) test MINPACK=../fortran/libminpack.a
-	$(MAKE) clean
+	$(MAKE) clean $(CPGM) 2>&1 > /dev/null
 	-$(MAKE) ctest
-	$(MAKE) clean
+	$(MAKE) clean $(FPGM) 2>&1 > /dev/null
 	-$(MAKE) ftest
-	$(MAKE) clean
+	$(MAKE) clean $(FPGM) MINPACK=../fortran/libminpack.a 2>&1 > /dev/null
 	-$(MAKE) ftest MINPACK=../fortran/libminpack.a
-	$(MAKE) clean
+	$(MAKE) clean $(FDRVPGM) 2>&1 > /dev/null
+	-$(MAKE) -k testdrv
+	$(MAKE) clean $(FDRVPGM) MINPACK=../fortran/libminpack.a 2>&1 > /dev/null
+	-$(MAKE) -k testdrv MINPACK=../fortran/libminpack.a
+	$(MAKE) clean $(CDRVPGM) 2>&1 > /dev/null
 	-$(MAKE) -k ctestdrv
-	$(MAKE) clean
+	$(MAKE) clean $(DRVPGM) 2>&1 > /dev/null
 	-$(MAKE) -k ftestdrv
-	$(MAKE) clean
+	$(MAKE) clean $(DRVPGM) MINPACK=../fortran/libminpack.a 2>&1 > /dev/null
 	-$(MAKE) -k ftestdrv MINPACK=../fortran/libminpack.a
-	$(MAKE) clean
+	$(MAKE) clean 2>&1 > /dev/null
 
 ../libcminpack.a:
 	$(MAKE) -C ..
 
- ../fortran/libminpack.a:
+../fortran/libminpack.a:
 	$(MAKE) -C ../fortran
 
 clean:
-	-rm -f $(PGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(CSRC:.c=.o) $(FPGM) $(FSRCGEN) $(FSRC:.f=.o) $(PGM:=.out) $(CPGM:=.out) $(CDRVPGM:=.out) $(FPGM:=.out) *~ #*#
+	-rm -f $(PGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(SRC:.c=.o) $(CSRC:.c=.o) $(FPGM) $(FSRCGEN) $(FSRC:.f=.o) $(PGM:=.out) $(CPGM:=.out) $(CDRVPGM:=.out) $(FPGM:=.out) *~ #*#
 	-rm -rf $(PGM:=.dSYM) $(CPGM:=.dSYM) $(CDRVPGM:=.dSYM) $(FPGM:=.dSYM)
 
 ${FSRCGEN}: ../doc/minpack-documentation.txt
@@ -149,6 +179,27 @@ ${FSRCGEN}: ../doc/minpack-documentation.txt
 .c.o:
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
+lmddrv_: $(MINPACK) lmddrv_.o lmdipt.o ssqfcn.o ssqjac.o
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
+
+lmfdrv_: $(MINPACK) lmfdrv_.o lmdipt.o ssqfcn.o
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
+
+lmsdrv_: $(MINPACK) lmsdrv_.o lmdipt.o ssqfcn.o ssqjac.o
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
+
+hyjdrv_: $(MINPACK) hyjdrv_.o hybipt.o vecfcn.o vecjac.o
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
+
+hybdrv_: $(MINPACK) hybdrv_.o hybipt.o vecfcn.o
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
+
+chkdrv_: $(MINPACK) chkdrv_.o hybipt.o vecfcn.o errjac.o
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
+
+ibmdpdr_: $(MINPACK) ibmdpdr_.o machar.o
+	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
+
 lmddrvc: $(MINPACK) lmddrv.o lmdipt.o ssqfcn.o ssqjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
@@ -167,7 +218,7 @@ hybdrvc: $(MINPACK) hybdrv.o hybipt.o vecfcn.o
 chkdrvc: $(MINPACK) chkdrv.o hybipt.o vecfcn.o errjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
-ibmdpdrc: $(MINPACK) ibmdpdr.o dmchar.o
+ibmdpdrc: $(MINPACK) ibmdpdr.o machar.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
 lmddrv: $(MINPACK) lmddrv.f lmdipt.f ssqfcn.f ssqjac.f
@@ -188,5 +239,5 @@ hybdrv: $(MINPACK) hybdrv.f hybipt.f vecfcn.f
 chkdrv: $(MINPACK) chkdrv.f hybipt.f vecfcn.f errjac.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
 
-ibmdpdr: $(MINPACK) ibmdpdr.f dmchar.f
+ibmdpdr: $(MINPACK) ibmdpdr.f machar.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)

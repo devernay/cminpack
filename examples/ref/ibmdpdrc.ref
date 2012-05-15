@@ -1,42 +1,42 @@
- dmchar constants
+ MACHAR constants
 
 
  ibeta =     2
 
  it    =    53
 
- irnd  =     0
+ irnd  =     5
 
- ngrd  =     1
+ ngrd  =     0
 
  machep =   -52
 
  negep =   -53
 
- iexp =    12
+ iexp =    11
 
- minexp = -1074
+ minexp = -1022
 
- maxexp =  3021
+ maxexp =  1024
 
  eps =  2.2204460e-16
 
  epsneg =  1.1102230e-16
 
- xmin = 4.9406565e-324
+ xmin = 2.2250739e-308
 
- xmax =            inf
+ xmax = 1.7976931e+308
 
 
 
- dpmpar constants and relative differences
+ DPMPAR constants and relative differences
 
 
  epsmch =  2.2204460e-16
  rerr(1) =  0.0000000e+00
 
  dwarf = 2.2250739e-308
- rerr(2) =  1.0000000e+00
+ rerr(2) =  0.0000000e+00
 
  giant = 1.7976931e+308
- rerr(3) =            inf
+ rerr(3) =  0.0000000e+00
