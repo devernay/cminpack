@@ -139,7 +139,7 @@ ftestchkdrv: chkdrv
 	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$(LIBSUFFIX)$$x.ref $$x.out ; done
 
 check: ../fortran/libminpack.a
-	$(MAKE) -C .. clean all LIBSUFFIX= 2>&1 > /dev/null
+	$(MAKE) -C .. all LIBSUFFIX= 2>&1 > /dev/null
 	$(MAKE) clean $(PGM) LIBSUFFIX= 2>&1 > /dev/null
 	-$(MAKE) test LIBSUFFIX=
 	$(MAKE) clean $(PGM) LIBSUFFIX= MINPACK=../fortran/libminpack.a 2>&1 > /dev/null
@@ -155,7 +155,6 @@ check: ../fortran/libminpack.a
 	$(MAKE) clean $(CDRVPGM) LIBSUFFIX= 2>&1 > /dev/null
 	-$(MAKE) -k ctestdrv LIBSUFFIX=
 	$(MAKE) clean 2>&1 > /dev/null
-	$(MAKE) -C .. clean 2>&1 > /dev/null
 	$(MAKE) -C .. all LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 2>&1 > /dev/null
 	$(MAKE) clean $(PGM) LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 2>&1 > /dev/null
 	-$(MAKE) test LIBSUFFIX=s CFLAGS="$(CFLAGS_F)"
@@ -166,10 +165,9 @@ check: ../fortran/libminpack.a
 	$(MAKE) clean $(CDRVPGM) LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 2>&1 > /dev/null
 	-$(MAKE) -k ctestdrv LIBSUFFIX=s CFLAGS="$(CFLAGS_F)"
 	$(MAKE) clean LIBSUFFIX=s 2>&1 > /dev/null
-	$(MAKE) -C .. clean LIBSUFFIX=s 2>&1 > /dev/null
 
 checkhalf:
-	$(MAKE) -C .. clean all LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)" 2>&1 > /dev/null
+	$(MAKE) -C .. all LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)" 2>&1 > /dev/null
 	$(MAKE) clean $(PGM) LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)" 2>&1 > /dev/null
 	-$(MAKE) test LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)"
 	$(MAKE) clean $(CPGM) LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)" 2>&1 > /dev/null
@@ -182,7 +180,6 @@ checkhalf:
 #	$(MAKE) -C .. clean LIBSUFFIX=h 2>&1 > /dev/null
 
 checkfail: ../fortran/libminpack.a check
-	$(MAKE) -C .. clean LIBSUFFIX= 2>&1 > /dev/null
 	$(MAKE) clean $(FDRVPGM) LIBSUFFIX= MINPACK=../fortran/libminpack.a 2>&1 > /dev/null
 	-$(MAKE) -k testdrv LIBSUFFIX= MINPACK=../fortran/libminpack.a
 	$(MAKE) clean $(DRVPGM) LIBSUFFIX= 2>&1 > /dev/null
