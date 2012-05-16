@@ -1,5 +1,5 @@
 PACKAGE=cminpack
-VERSION=1.2.1
+VERSION=1.2.2
 
 CC=gcc
 CFLAGS= -O3 -g -Wall -Wextra
@@ -53,6 +53,22 @@ float:
 half:
 	$(MAKE) LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)"
 
+fortran:
+	$(MAKE) -C fortran
+
+cuda:
+	$(MAKE) -C cuda
+
+check:
+	$(MAKE) -C examples check
+
+checkhalf:
+	$(MAKE) -C examples checkhalf
+
+checkfail:
+	$(MAKE) -C examples checkfail
+
+
 libcminpack$(LIBSUFFIX).a:  $(OBJS)
 	ar r $@ $(OBJS); ranlib $@
 
@@ -71,7 +87,7 @@ install: libcminpack$(LIBSUFFIX).a
 clean:
 	rm -f *.o libcminpack*.a *~ #*#
 
-.PHONY: dist all double float half
+.PHONY: dist all double float half fortran cuda check checkhalf checkfail
 
 # COPYFILE_DISABLE=true and COPY_EXTENDED_ATTRIBUTES_DISABLE=true are used to disable inclusion
 # of file attributes (._* files) in the tar file on MacOSX
