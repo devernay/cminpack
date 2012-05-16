@@ -33,17 +33,17 @@
 
 /* Begin PBXBuildFile section */
 		1E20CA5214486BB40084559B /* covar1.c in Sources */ = {isa = PBXBuildFile; fileRef = 1E20CA5114486BB40084559B /* covar1.c */; };
-		1E548DCD0F83DF710015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
-		1E548E0A0F83E1C10015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
-		1E548E1C0F83E2050015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
-		1E548E510F83E2DF0015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
-		1E548E650F83E2F90015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
-		1E548E780F83E3130015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
-		1E548E8A0F83E32D0015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
-		1E548E9B0F83E3440015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
-		1E548EBA0F83E3810015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
-		1E548ECA0F83E38C0015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
-		1E548ED90F83E3A10015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1E548DCD0F83DF710015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
+		1E548E0A0F83E1C10015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
+		1E548E1C0F83E2050015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
+		1E548E510F83E2DF0015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
+		1E548E650F83E2F90015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
+		1E548E780F83E3130015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
+		1E548E8A0F83E32D0015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
+		1E548E9B0F83E3440015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
+		1E548EBA0F83E3810015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
+		1E548ECA0F83E38C0015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
+		1E548ED90F83E3A10015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
 		35C3D6DF0DB79E4800A4BB4B /* lmdif.c in Sources */ = {isa = PBXBuildFile; fileRef = 35C3D6BC0DB79E4800A4BB4B /* lmdif.c */; };
 		35C3D6E00DB79E4800A4BB4B /* chkder.c in Sources */ = {isa = PBXBuildFile; fileRef = 35C3D6BD0DB79E4800A4BB4B /* chkder.c */; };
 		35C3D6E10DB79E4800A4BB4B /* covar.c in Sources */ = {isa = PBXBuildFile; fileRef = 35C3D6BE0DB79E4800A4BB4B /* covar.c */; };
@@ -393,7 +393,7 @@
 		7F8F63A81148F51A0013EA0C /* tlmstr1c.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlmstr1c.c; path = examples/tlmstr1c.c; sourceTree = "<group>"; };
 		7F8F63A91148F51A0013EA0C /* tlmstr_.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlmstr_.c; path = examples/tlmstr_.c; sourceTree = "<group>"; };
 		7F8F63AA1148F51A0013EA0C /* tlmstrc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlmstrc.c; path = examples/tlmstrc.c; sourceTree = "<group>"; };
-		D2AAC046055464E500DB518D /* libcminpack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcminpack.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2AAC046055464E500DB518D /* libminpack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libminpack.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -401,7 +401,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548DCD0F83DF710015F022 /* libcminpack.a in Frameworks */,
+				1E548DCD0F83DF710015F022 /* libminpack.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,7 +409,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548E0A0F83E1C10015F022 /* libcminpack.a in Frameworks */,
+				1E548E0A0F83E1C10015F022 /* libminpack.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,7 +417,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548E1C0F83E2050015F022 /* libcminpack.a in Frameworks */,
+				1E548E1C0F83E2050015F022 /* libminpack.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -425,7 +425,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548E510F83E2DF0015F022 /* libcminpack.a in Frameworks */,
+				1E548E510F83E2DF0015F022 /* libminpack.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,7 +433,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548E650F83E2F90015F022 /* libcminpack.a in Frameworks */,
+				1E548E650F83E2F90015F022 /* libminpack.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -441,7 +441,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548E780F83E3130015F022 /* libcminpack.a in Frameworks */,
+				1E548E780F83E3130015F022 /* libminpack.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,7 +449,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548E8A0F83E32D0015F022 /* libcminpack.a in Frameworks */,
+				1E548E8A0F83E32D0015F022 /* libminpack.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -457,7 +457,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548E9B0F83E3440015F022 /* libcminpack.a in Frameworks */,
+				1E548E9B0F83E3440015F022 /* libminpack.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,7 +465,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548EBA0F83E3810015F022 /* libcminpack.a in Frameworks */,
+				1E548EBA0F83E3810015F022 /* libminpack.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,7 +473,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548ECA0F83E38C0015F022 /* libcminpack.a in Frameworks */,
+				1E548ECA0F83E38C0015F022 /* libminpack.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,7 +481,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548ED90F83E3A10015F022 /* libcminpack.a in Frameworks */,
+				1E548ED90F83E3A10015F022 /* libminpack.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -546,7 +546,7 @@
 		1AB674ADFE9D54B511CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D2AAC046055464E500DB518D /* libcminpack.a */,
+				D2AAC046055464E500DB518D /* libminpack.a */,
 				1E548DC60F83DF460015F022 /* tlmdif */,
 				1E548E0E0F83E1C10015F022 /* tlmdif1 */,
 				1E548E200F83E2050015F022 /* tchkder */,
@@ -945,7 +945,7 @@
 			);
 			name = minpack;
 			productName = libfnt;
-			productReference = D2AAC046055464E500DB518D /* libcminpack.a */;
+			productReference = D2AAC046055464E500DB518D /* libminpack.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
