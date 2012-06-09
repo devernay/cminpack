@@ -155,7 +155,7 @@ which came from the FORTRAN version:</p>
 
 <h2>History</h2>
 <ul>
-  <li>1.3.0 (): Optionally use LAPACK and CBLAS in lmpar, qrfac, and qrsolv, add "make lapack" to build the LAPACK-based cminpack and "make checklapack" to test it (results of the test may depend on the underlying LAPACK and BLAS implementations).</li>
+  <li>1.3.0 (09/06/2012): Optionally use LAPACK and CBLAS in lmpar, qrfac, and qrsolv. Added "make lapack" to build the LAPACK-based cminpack and "make checklapack" to test it (results of the test may depend on the underlying LAPACK and BLAS implementations).</li>
   <li>1.2.2 (16/05/2012): Update Makefiles and documentation (see "Using CMinpack" above) for easier building and testing.</li>
   <li>1.2.1 (15/05/2012): The library can now be built as double, float or half versions. Standard tests in the "examples" directory can now be lauched using "make check" (to run common tests, including against the float version), "make checkhalf" (to test the half version) and "make checkfail" (to run all the tests, even those that fail).</li>
   <li>1.2.0 (14/05/2012): Added original FORTRAN sources for better testing (type "make" in directory fortran, then "make" in examples and follow the instructions). Added driver tests lmsdrv, chkdrv, hyjdrv, hybdrv. Typing "make alltest" in the examples directory will run all possible test combinations (make sure you have gfortran installed).</li>
