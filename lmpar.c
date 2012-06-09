@@ -22,9 +22,9 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
     real d1, d2;
 
     /* Local variables */
-    int i, j, k, l;
+    int j, l;
     real fp;
-    real sum, parc, parl;
+    real parc, parl;
     int iter;
     real temp, paru, dwarf;
     int nsing;
@@ -142,20 +142,25 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
 	if (nsing < n) {
 	    wa1[j] = 0.;
 	}
-/* L10: */
     }
+# ifdef USE_CBLAS
+    cblas_dtrsv(CblasColMajor, CblasUpper, CblasNoTrans, CblasNonUnit, nsing, r, ldr, wa1, 1);
+# else
     if (nsing >= 1) {
+        int k;
         for (k = 1; k <= nsing; ++k) {
             j = nsing - k;
             wa1[j] /= r[j + j * ldr];
             temp = wa1[j];
             if (j >= 1) {
+                int i;
                 for (i = 0; i < j; ++i) {
                     wa1[i] -= r[i + j * ldr] * temp;
                 }
             }
         }
     }
+# endif
     for (j = 0; j < n; ++j) {
 	l = ipvt[j]-1;
 	x[l] = wa1[j];
@@ -185,15 +190,20 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
             l = ipvt[j]-1;
             wa1[j] = diag[l] * (wa2[l] / dxnorm);
         }
+#     ifdef USE_CBLAS
+        cblas_dtrsv(CblasColMajor, CblasUpper, CblasTrans, CblasNonUnit, n, r, ldr, wa1, 1);
+#     else
         for (j = 0; j < n; ++j) {
-            sum = 0.;
+            real sum = 0.;
             if (j >= 1) {
+                int i;
                 for (i = 0; i < j; ++i) {
                     sum += r[i + j * ldr] * wa1[i];
                 }
             }
             wa1[j] = (wa1[j] - sum) / r[j + j * ldr];
         }
+#     endif
         temp = __cminpack_enorm__(n, wa1);
         parl = fp / delta / temp / temp;
     }
@@ -201,17 +211,23 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
 /*     calculate an upper bound, paru, for the zero of the function. */
 
     for (j = 0; j < n; ++j) {
+        real sum;
+#     ifdef USE_CBLAS
+        sum = cblas_ddot(j+1, &r[j*ldr], 1, qtb, 1);
+#     else
 	sum = 0.;
+        int i;
 	for (i = 0; i <= j; ++i) {
 	    sum += r[i + j * ldr] * qtb[i];
 	}
+#     endif
 	l = ipvt[j]-1;
 	wa1[j] = sum / diag[l];
     }
     gnorm = __cminpack_enorm__(n, wa1);
     paru = gnorm / delta;
     if (paru == 0.) {
-	paru = dwarf / min(delta,(real)p1);
+	paru = dwarf / min(delta,(real)p1) /* / p001 ??? */;
     }
 
 /*     if the input par lies outside of the interval (parl,paru), */
@@ -257,6 +273,21 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
 
 /*        compute the newton correction. */
 
+#     ifdef USE_CBLAS
+        for (j = 0; j < nsing; ++j) {
+            l = ipvt[j]-1;
+            wa1[j] = diag[l] * (wa2[l] / dxnorm);
+        }
+        for (j = nsing; j < n; ++j) {
+            wa1[j] = 0.;
+        }
+        /* exchange the diagonal of r with sdiag */
+        cblas_dswap(n, r, ldr+1, sdiag, 1);
+        /* solve lower(r).x = wa1, result id put in wa1 */
+        cblas_dtrsv(CblasColMajor, CblasLower, CblasNoTrans, CblasNonUnit, nsing, r, ldr, wa1, 1);
+        /* exchange the diagonal of r with sdiag */
+        cblas_dswap( n, r, ldr+1, sdiag, 1);
+#     else /* !USE_CBLAS */
         for (j = 0; j < n; ++j) {
             l = ipvt[j]-1;
             wa1[j] = diag[l] * (wa2[l] / dxnorm);
@@ -265,11 +296,13 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
             wa1[j] /= sdiag[j];
             temp = wa1[j];
             if (n > j+1) {
+                int i;
                 for (i = j+1; i < n; ++i) {
                     wa1[i] -= r[i + j * ldr] * temp;
                 }
             }
         }
+#     endif /* !USE_CBLAS */
         temp = __cminpack_enorm__(n, wa1);
         parc = fp / delta / temp / temp;
 

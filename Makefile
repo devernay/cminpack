@@ -72,6 +72,9 @@ cuda:
 check:
 	$(MAKE) -C examples check
 
+checklapack:
+	$(MAKE) -C examples checklapack
+
 checkhalf:
 	$(MAKE) -C examples checkhalf
 

@@ -1,8 +1,3 @@
-/* qrsolv.f -- translated by f2c (version 20020621).
-   You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
-*/
-
 #include "cminpack.h"
 #include <math.h>
 #include "cminpackP.h"
@@ -18,8 +13,8 @@ void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
 #define p25 .25
 
     /* Local variables */
-    int i, j, k, l, jp1, kp1;
-    real tan, cos, sin, sum, temp, cotan;
+    int i, j, k, l;
+    real cos, sin, sum, temp;
     int nsing;
     real qtbpj;
 
@@ -137,11 +132,16 @@ void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
 /*           appropriate element in the current row of d. */
 
                 if (sdiag[k] != 0.) {
+#                 ifdef USE_LAPACK
+                    dlartg_( &r[k + k * ldr], &sdiag[k], &cos, &sin, &temp );
+#                 else /* !USE_LAPACK */
                     if (fabs(r[k + k * ldr]) < fabs(sdiag[k])) {
+                        real cotan;
                         cotan = r[k + k * ldr] / sdiag[k];
                         sin = p5 / sqrt(p25 + p25 * (cotan * cotan));
                         cos = sin * cotan;
                     } else {
+                        real tan;
                         tan = sdiag[k] / r[k + k * ldr];
                         cos = p5 / sqrt(p25 + p25 * (tan * tan));
                         sin = cos * tan;
@@ -150,21 +150,24 @@ void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
 /*           compute the modified diagonal element of r and */
 /*           the modified element of ((q transpose)*b,0). */
 
-                    r[k + k * ldr] = cos * r[k + k * ldr] + sin * sdiag[k];
+#                 endif /* !USE_LAPACK */
                     temp = cos * wa[k] + sin * qtbpj;
                     qtbpj = -sin * wa[k] + cos * qtbpj;
                     wa[k] = temp;
 
 /*           accumulate the tranformation in the row of s. */
-
-                    kp1 = k + 1;
-                    if (n > kp1) {
-                        for (i = kp1; i < n; ++i) {
+#                 ifdef USE_CBLAS
+                    cblas_drot( n-k, &r[k + k * ldr], 1, &sdiag[k], 1, cos, sin );
+#                 else /* !USE_CBLAS */
+                    r[k + k * ldr] = cos * r[k + k * ldr] + sin * sdiag[k];
+                    if (n > k+1) {
+                        for (i = k+1; i < n; ++i) {
                             temp = cos * r[i + k * ldr] + sin * sdiag[i];
                             sdiag[i] = -sin * r[i + k * ldr] + cos * sdiag[i];
                             r[i + k * ldr] = temp;
                         }
                     }
+#                 endif /* !USE_CBLAS */
                 }
             }
         }
@@ -192,9 +195,8 @@ void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
         for (k = 1; k <= nsing; ++k) {
             j = nsing - k;
             sum = 0.;
-            jp1 = j + 1;
-            if (nsing > jp1) {
-                for (i = jp1; i < nsing; ++i) {
+            if (nsing > j+1) {
+                for (i = j+1; i < nsing; ++i) {
                     sum += r[i + j * ldr] * wa[i];
                 }
             }
