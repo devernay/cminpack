@@ -27,4 +27,10 @@
 #define __cminpack_enorm__(n,x) __cminpack_func__(enorm)(n,x)
 #endif
 
+#ifdef USE_LAPACK
+extern void dlartg_(double *f, double *g, double *cs, double *sn, double *r__);
+extern void dgeqp3_(int *m, int *n, double *a, int *lda, int *jpvt, double *tau, double *work, int *lwork, int *info);
+extern void dgeqrf_(int *m, int *n, double *a, int *lda, double *tau, double *work, int *lwork, int *info);
+#endif
+
 #endif /* !__CMINPACKP_H__ */
