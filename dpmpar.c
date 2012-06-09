@@ -5,7 +5,7 @@
 
 #include "cminpack.h"
 #include <float.h>
-#define real __cminpack_real__
+#include "cminpackP.h"
 
 #define double_EPSILON DBL_EPSILON
 #define double_MIN DBL_MIN

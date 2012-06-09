@@ -5,10 +5,7 @@
 
 #include "cminpack.h"
 #include <math.h>
-#define real __cminpack_real__
-
-#define min(a,b) ((a) <= (b) ? (a) : (b))
-#define max(a,b) ((a) >= (b) ? (a) : (b))
+#include "cminpackP.h"
 
 /* Table of constant values */
 
@@ -136,7 +133,7 @@ void __cminpack_func__(dogleg)(int n, const real *r, int lr,
 	wa1[j] = 0.;
 	wa2[j] = diag[j] * x[j];
     }
-    qnorm = __cminpack_func__(enorm)(n, &wa2[1]);
+    qnorm = __cminpack_enorm__(n, &wa2[1]);
     if (qnorm <= delta) {
         return;
     }
@@ -157,7 +154,7 @@ void __cminpack_func__(dogleg)(int n, const real *r, int lr,
 /*     calculate the norm of the scaled gradient and test for */
 /*     the special case in which the scaled gradient is zero. */
 
-    gnorm = __cminpack_func__(enorm)(n, &wa1[1]);
+    gnorm = __cminpack_enorm__(n, &wa1[1]);
     sgnorm = 0.;
     alpha = delta / qnorm;
     if (gnorm != 0.) {
@@ -177,7 +174,7 @@ void __cminpack_func__(dogleg)(int n, const real *r, int lr,
             }
             wa2[j] = sum;
         }
-        temp = __cminpack_func__(enorm)(n, &wa2[1]);
+        temp = __cminpack_enorm__(n, &wa2[1]);
         sgnorm = gnorm / temp / temp;
 
 /*     test whether the scaled gradient direction is acceptable. */
@@ -189,7 +186,7 @@ void __cminpack_func__(dogleg)(int n, const real *r, int lr,
 /*     finally, calculate the point along the dogleg */
 /*     at which the quadratic is minimized. */
 
-            bnorm = __cminpack_func__(enorm)(n, &qtb[1]);
+            bnorm = __cminpack_enorm__(n, &qtb[1]);
             temp = bnorm / gnorm * (bnorm / qnorm) * (sgnorm / delta);
             /* Computing 2nd power */
             d1 = sgnorm / delta;

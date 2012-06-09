@@ -5,7 +5,7 @@
 
 #include "cminpack.h"
 #include <math.h>
-#define real __cminpack_real__
+#include "cminpackP.h"
 
 /*
   About the values for rdwarf and rgiant.
@@ -41,6 +41,9 @@
 __cminpack_attr__
 real __cminpack_func__(enorm)(int n, const real *x)
 {
+#ifdef USE_CBLAS
+    return cblas_dnrm2(n, x, 1);
+#else /* !USE_CBLAS */
     /* System generated locals */
     real ret_val, d1;
 
@@ -154,6 +157,6 @@ real __cminpack_func__(enorm)(int n, const real *x)
     return ret_val;
 
 /*     last card of function enorm. */
-
+#endif /* !USE_CBLAS */
 } /* enorm_ */
 

@@ -43,7 +43,7 @@ add_subdirectory (cmake)
 add_subdirectory (examples)
 
 set (cminpack_srcs
-  cminpack.h
+  cminpack.h cminpackP.h
   chkder.c  enorm.c   hybrd1.c  hybrj.c   lmdif1.c  lmstr1.c  qrfac.c   r1updt.c
   dogleg.c  fdjac1.c  hybrd.c   lmder1.c  lmdif.c   lmstr.c   qrsolv.c  rwupdt.c
   dpmpar.c  fdjac2.c  hybrj1.c  lmder.c   lmpar.c   qform.c   r1mpyq.c  covar.c covar1.c

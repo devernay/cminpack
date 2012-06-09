@@ -5,10 +5,7 @@
 
 #include "cminpack.h"
 #include <math.h>
-#define real __cminpack_real__
-#define min(a,b) ((a) <= (b) ? (a) : (b))
-#define max(a,b) ((a) >= (b) ? (a) : (b))
-
+#include "cminpackP.h"
 
 __cminpack_attr__
 void __cminpack_func__(lmpar)(int n, real *r, int ldr, 
@@ -172,7 +169,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
     for (j = 0; j < n; ++j) {
 	wa2[j] = diag[j] * x[j];
     }
-    dxnorm = __cminpack_func__(enorm)(n, wa2);
+    dxnorm = __cminpack_enorm__(n, wa2);
     fp = dxnorm - delta;
     if (fp <= p1 * delta) {
 	goto TERMINATE;
@@ -197,7 +194,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
             }
             wa1[j] = (wa1[j] - sum) / r[j + j * ldr];
         }
-        temp = __cminpack_func__(enorm)(n, wa1);
+        temp = __cminpack_enorm__(n, wa1);
         parl = fp / delta / temp / temp;
     }
 
@@ -211,7 +208,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
 	l = ipvt[j]-1;
 	wa1[j] = sum / diag[l];
     }
-    gnorm = __cminpack_func__(enorm)(n, wa1);
+    gnorm = __cminpack_enorm__(n, wa1);
     paru = gnorm / delta;
     if (paru == 0.) {
 	paru = dwarf / min(delta,(real)p1);
@@ -246,7 +243,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
         for (j = 0; j < n; ++j) {
             wa2[j] = diag[j] * x[j];
         }
-        dxnorm = __cminpack_func__(enorm)(n, wa2);
+        dxnorm = __cminpack_enorm__(n, wa2);
         temp = fp;
         fp = dxnorm - delta;
 
@@ -273,7 +270,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
                 }
             }
         }
-        temp = __cminpack_func__(enorm)(n, wa1);
+        temp = __cminpack_enorm__(n, wa1);
         parc = fp / delta / temp / temp;
 
 /*        depending on the sign of the function, update parl or paru. */

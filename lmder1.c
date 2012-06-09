@@ -4,7 +4,7 @@
 */
 
 #include "cminpack.h"
-#define real __cminpack_real__
+#include "cminpackP.h"
 
 __cminpack_attr__
 int __cminpack_func__(lmder1)(__cminpack_decl_fcnder_mn__ void *p, int m, int n, real *x, 

@@ -5,8 +5,7 @@
 
 #include "cminpack.h"
 #include <math.h>
-#define real __cminpack_real__
-#define abs(x) ((x) >= 0 ? (x) : -(x))
+#include "cminpackP.h"
 
 __cminpack_attr__
 void __cminpack_func__(rwupdt)(int n, real *r, int ldr, 

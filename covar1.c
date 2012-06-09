@@ -12,7 +12,7 @@
 
 #include "cminpack.h"
 #include <math.h>
-#define real __cminpack_real__
+#include "cminpackP.h"
 
 /* covar1 estimates the variance-covariance matrix:
    C = sigma**2 (JtJ)**+

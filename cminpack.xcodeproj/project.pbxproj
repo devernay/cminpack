@@ -44,6 +44,17 @@
 		1E548EBA0F83E3810015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
 		1E548ECA0F83E38C0015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
 		1E548ED90F83E3A10015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
+		1E8894D11582651E00FD154D /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
+		1E8894D21582652700FD154D /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
+		1E8894D31582653000FD154D /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
+		1E8894D41582653300FD154D /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
+		1E8894D51582653600FD154D /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
+		1E8894D61582653900FD154D /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
+		1E8894D71582653B00FD154D /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
+		1E8894D81582653E00FD154D /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
+		1E8894D91582654100FD154D /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
+		1E8894DA1582654400FD154D /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
+		1E8894DB1582654700FD154D /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
 		35C3D6DF0DB79E4800A4BB4B /* lmdif.c in Sources */ = {isa = PBXBuildFile; fileRef = 35C3D6BC0DB79E4800A4BB4B /* lmdif.c */; };
 		35C3D6E00DB79E4800A4BB4B /* chkder.c in Sources */ = {isa = PBXBuildFile; fileRef = 35C3D6BD0DB79E4800A4BB4B /* chkder.c */; };
 		35C3D6E10DB79E4800A4BB4B /* covar.c in Sources */ = {isa = PBXBuildFile; fileRef = 35C3D6BE0DB79E4800A4BB4B /* covar.c */; };
@@ -254,6 +265,8 @@
 		1E548EBE0F83E3810015F022 /* tlmstr */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmstr; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E548ECE0F83E38C0015F022 /* tlmstr1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmstr1; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E548EDD0F83E3A10015F022 /* tlmder1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmder1; sourceTree = BUILT_PRODUCTS_DIR; };
+		1E8894CE158261E000FD154D /* cminpackP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cminpackP.h; sourceTree = "<group>"; };
+		1E8894D01582651E00FD154D /* vecLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = vecLib.framework; path = System/Library/Frameworks/vecLib.framework; sourceTree = SDKROOT; };
 		1EE5E35E145DA88300F4FFF4 /* cminpack.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = cminpack.html; path = doc/cminpack.html; sourceTree = "<group>"; };
 		1EE5E35F145DA88300F4FFF4 /* hybrd_.3 */ = {isa = PBXFileReference; lastKnownFileType = text; name = hybrd_.3; path = doc/hybrd_.3; sourceTree = "<group>"; };
 		1EE5E360145DA88300F4FFF4 /* hybrd1_.3 */ = {isa = PBXFileReference; lastKnownFileType = text; name = hybrd1_.3; path = doc/hybrd1_.3; sourceTree = "<group>"; };
@@ -402,6 +415,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E548DCD0F83DF710015F022 /* libminpack.a in Frameworks */,
+				1E8894D81582653E00FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -410,6 +424,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E548E0A0F83E1C10015F022 /* libminpack.a in Frameworks */,
+				1E8894D91582654100FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -418,6 +433,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E548E1C0F83E2050015F022 /* libminpack.a in Frameworks */,
+				1E8894D11582651E00FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -426,6 +442,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E548E510F83E2DF0015F022 /* libminpack.a in Frameworks */,
+				1E8894D21582652700FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,6 +451,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E548E650F83E2F90015F022 /* libminpack.a in Frameworks */,
+				1E8894D31582653000FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,6 +460,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E548E780F83E3130015F022 /* libminpack.a in Frameworks */,
+				1E8894D41582653300FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,6 +469,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E548E8A0F83E32D0015F022 /* libminpack.a in Frameworks */,
+				1E8894D51582653600FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,6 +478,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E548E9B0F83E3440015F022 /* libminpack.a in Frameworks */,
+				1E8894D61582653900FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,6 +487,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E548EBA0F83E3810015F022 /* libminpack.a in Frameworks */,
+				1E8894DA1582654400FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,6 +496,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E548ECA0F83E38C0015F022 /* libminpack.a in Frameworks */,
+				1E8894DB1582654700FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +505,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E548ED90F83E3A10015F022 /* libminpack.a in Frameworks */,
+				1E8894D71582653B00FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,6 +522,7 @@
 		08FB7794FE84155DC02AAC07 /* libfnt */ = {
 			isa = PBXGroup;
 			children = (
+				1E8894D01582651E00FD154D /* vecLib.framework */,
 				1EE5E399145DA9D700F4FFF4 /* Makefiles */,
 				1EE5E371145DA91200F4FFF4 /* Data */,
 				08FB7795FE84155DC02AAC07 /* Source */,
@@ -536,6 +561,7 @@
 				35C3D6D20DB79E4800A4BB4B /* r1updt.c */,
 				35C3D6D30DB79E4800A4BB4B /* rwupdt.c */,
 				35C3D7020DB79E5600A4BB4B /* cminpack.h */,
+				1E8894CE158261E000FD154D /* cminpackP.h */,
 				35C3D7030DB79E5600A4BB4B /* minpack.h */,
 				1E548DD10F83DFAA0015F022 /* examples */,
 				1EE5E3A3145DAAAF00F4FFF4 /* Fortran API */,
@@ -1259,7 +1285,11 @@
 				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
 				GCC_FAST_MATH = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DEBUG,
+					USE_CBLAS,
+					USE_LAPACK,
+				);
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = cminpack;
 				WARNING_CFLAGS = "-Wall";
@@ -1275,7 +1305,11 @@
 				GCC_FAST_MATH = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_OPTIMIZATION_LEVEL = 3;
-				GCC_PREPROCESSOR_DEFINITIONS = NDEBUG;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					USE_CBLAS,
+					USE_LAPACK,
+				);
 				PRODUCT_NAME = cminpack;
 				WARNING_CFLAGS = "-Wall";
 			};

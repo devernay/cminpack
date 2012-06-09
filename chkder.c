@@ -1,6 +1,6 @@
 #include "cminpack.h"
 #include <math.h>
-#define real __cminpack_real__
+#include "cminpackP.h"
 
 #define log10e 0.43429448190325182765
 #define factor 100.

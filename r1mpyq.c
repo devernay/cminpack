@@ -5,7 +5,7 @@
 
 #include "cminpack.h"
 #include <math.h>
-#define real __cminpack_real__
+#include "cminpackP.h"
 
 __cminpack_attr__
 void __cminpack_func__(r1mpyq)(int m, int n, real *a, int

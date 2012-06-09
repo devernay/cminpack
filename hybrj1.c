@@ -4,7 +4,7 @@
 */
 
 #include "cminpack.h"
-#define real __cminpack_real__
+#include "cminpackP.h"
 
 __cminpack_attr__
 int __cminpack_func__(hybrj1)(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *

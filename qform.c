@@ -4,8 +4,7 @@
 */
 
 #include "cminpack.h"
-#define real __cminpack_real__
-#define min(a,b) ((a) <= (b) ? (a) : (b))
+#include "cminpackP.h"
 
 __cminpack_attr__
 void __cminpack_func__(qform)(int m, int n, real *q, int

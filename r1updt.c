@@ -5,10 +5,7 @@
 
 #include "cminpack.h"
 #include <math.h>
-#define real __cminpack_real__
-#define abs(x) ((x) >= 0 ? (x) : -(x))
-#define TRUE_ (1)
-#define FALSE_ (0)
+#include "cminpackP.h"
 
 __cminpack_attr__
 void __cminpack_func__(r1updt)(int m, int n, real *s, int
@@ -137,7 +134,7 @@ void __cminpack_func__(r1updt)(int m, int n, real *s, int
                     sin = p5 / sqrt(p25 + p25 * (cotan * cotan));
                     cos = sin * cotan;
                     tau = 1.;
-                    if (abs(cos) * giant > 1.) {
+                    if (fabs(cos) * giant > 1.) {
                         tau = 1. / cos;
                     }
                 } else {
