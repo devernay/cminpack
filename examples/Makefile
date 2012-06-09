@@ -22,6 +22,13 @@ FMINPACK=../fortran/libminpack.a
 
 ### The default configuration is to compile the double precision version
 
+### configuration for the LAPACK/BLAS (double precision) version:
+## make LIBSUFFIX= CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_float__"
+#LIBSUFFIX=s
+#CFLAGS="-O3 -g -Wall -Wextra -DUSE_CBLAS -DUSE_LAPACK"
+CFLAGS_L=$(CFLAGS) -DUSE_CBLAS -DUSE_LAPACK
+LDADD_L=-framework vecLib
+
 ### configuration for the float (single precision) version:
 ## make LIBSUFFIX=s CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_float__"
 #LIBSUFFIX=s
@@ -166,6 +173,13 @@ check: ../fortran/libminpack.a
 	-$(MAKE) -k ctestdrv LIBSUFFIX=s CFLAGS="$(CFLAGS_F)"
 	$(MAKE) clean LIBSUFFIX=s 2>&1 > /dev/null
 
+checklapack:
+	$(MAKE) -C .. all LIBSUFFIX=l CFLAGS="$(CFLAGS_L)" LDADD="$(LDADD_L)" 2>&1 > /dev/null
+	$(MAKE) clean $(CPGM) LIBSUFFIX=l CFLAGS="$(CFLAGS_L)" LDADD="$(LDADD_L)" 2>&1 > /dev/null
+	-$(MAKE) ctest LIBSUFFIX=l CFLAGS="$(CFLAGS_L)" LDADD="$(LDADD_L)"
+	$(MAKE) clean $(CDRVPGM) LIBSUFFIX=l CFLAGS="$(CFLAGS_L)" LDADD="$(LDADD_L)" 2>&1 > /dev/null
+	-$(MAKE) -k ctestdrv LIBSUFFIX=l CFLAGS="$(CFLAGS_L)" LDADD="$(LDADD_L)"
+
 checkhalf:
 	$(MAKE) -C .. all LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)" 2>&1 > /dev/null
 	$(MAKE) clean $(PGM) LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)" 2>&1 > /dev/null
@@ -195,7 +209,7 @@ checkfail: ../fortran/libminpack.a check
 	$(MAKE) -C ../fortran
 
 clean:
-	-rm -f $(PGM) $(FDRVPGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(SRC:.c=.o) $(CSRC:.c=.o) $(FPGM) $(FSRCGEN) $(FSRC:.f=.o) $(PGM:=.out) $(CPGM:=.out) $(CDRVPGM:=.out) $(FPGM:=.out) *~ #*#
+	-rm -f $(PGM) $(FDRVPGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(SRC:.c=.o) $(CSRC:.c=.o) $(FPGM) $(FSRCGEN) $(FSRC:.f=.o) $(PGM:=.out) $(CPGM:=.out) $(FDRVPGM:=.out) $(DRVPGM:=.out) $(CDRVPGM:=.out) $(FPGM:=.out) *~ #*#
 	-rm -rf $(PGM:=.dSYM) $(CPGM:=.dSYM) $(CDRVPGM:=.dSYM) $(FPGM:=.dSYM)
 
 ${FSRCGEN}: ../doc/minpack-documentation.txt

@@ -6,6 +6,13 @@ CFLAGS= -O3 -g -Wall -Wextra
 
 ### The default configuration is to compile the double precision version
 
+### configuration for the LAPACK/BLAS (double precision) version:
+## make LIBSUFFIX= CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_float__"
+#LIBSUFFIX=s
+#CFLAGS="-O3 -g -Wall -Wextra -DUSE_CBLAS -DUSE_LAPACK"
+CFLAGS_L=$(CFLAGS) -DUSE_CBLAS -DUSE_LAPACK
+LDADD_L=-framework vecLib
+
 ### configuration for the float (single precision) version:
 ## make LIBSUFFIX=s CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_float__"
 #LIBSUFFIX=s
@@ -47,6 +54,9 @@ all: libcminpack$(LIBSUFFIX).a
 double:
 	$(MAKE) LIBSUFFIX=
 
+lapack:
+	$(MAKE) LIBSUFFIX=l CFLAGS="$(CFLAGS_L)" LDADD="$(LDADD_L)"
+
 float:
 	$(MAKE) LIBSUFFIX=f CFLAGS="$(CFLAGS_F)"
 
@@ -87,7 +97,7 @@ install: libcminpack$(LIBSUFFIX).a
 clean:
 	rm -f *.o libcminpack*.a *~ #*#
 
-.PHONY: dist all double float half fortran cuda check checkhalf checkfail
+.PHONY: dist all double lapack float half fortran cuda check checkhalf checkfail
 
 # COPYFILE_DISABLE=true and COPY_EXTENDED_ATTRIBUTES_DISABLE=true are used to disable inclusion
 # of file attributes (._* files) in the tar file on MacOSX
