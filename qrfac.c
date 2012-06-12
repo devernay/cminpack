@@ -31,12 +31,14 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
     lwork = -1;
     if (pivot) {
         dgeqp3_(&m,&n,a,&lda,ipvt,tau,tau,&lwork,&info);
+        lwork = (int)tau[0];
+        assert( lwork >= 3*n+1  );
     } else {
         dgeqrf_(&m,&n,a,&lda,tau,tau,&lwork,&info);
+        lwork = (int)tau[0];
+        assert( lwork >= 1 && lwork >= n );
     }
     
-    lwork = (int)tau[0];
-    assert( lwork >= 3*n+1  );
     assert( info == 0 );
     
     /* alloc work area */
