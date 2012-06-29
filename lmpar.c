@@ -215,19 +215,19 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
 #     ifdef USE_CBLAS
         sum = cblas_ddot(j+1, &r[j*ldr], 1, qtb, 1);
 #     else
-	sum = 0.;
         int i;
-	for (i = 0; i <= j; ++i) {
-	    sum += r[i + j * ldr] * qtb[i];
-	}
+        sum = 0.;
+        for (i = 0; i <= j; ++i) {
+            sum += r[i + j * ldr] * qtb[i];
+        }
 #     endif
-	l = ipvt[j]-1;
-	wa1[j] = sum / diag[l];
+        l = ipvt[j]-1;
+        wa1[j] = sum / diag[l];
     }
     gnorm = __cminpack_enorm__(n, wa1);
     paru = gnorm / delta;
     if (paru == 0.) {
-	paru = dwarf / min(delta,(real)p1) /* / p001 ??? */;
+        paru = dwarf / min(delta,(real)p1) /* / p001 ??? */;
     }
 
 /*     if the input par lies outside of the interval (parl,paru), */
@@ -236,7 +236,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
     *par = max(*par,parl);
     *par = min(*par,paru);
     if (*par == 0.) {
-	*par = gnorm / dxnorm;
+        *par = gnorm / dxnorm;
     }
 
 /*     beginning of an iteration. */
