@@ -7,7 +7,7 @@ string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
 include(${PROJECT_SOURCE_DIR}/cmake/cminpack_utils.cmake)
 # Set version and OS-specific settings
-set(CMINPACK_VERSION 1.0.90 CACHE STRING "CMinpack version")
+set(CMINPACK_VERSION 1.3.0 CACHE STRING "CMinpack version")
 DISSECT_VERSION()
 GET_OS_INFO()
 
