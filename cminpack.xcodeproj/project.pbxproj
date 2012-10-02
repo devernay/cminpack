@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		1E548EEC0F83E3F10015F022 /* cminpack */ = {
+		1E548EEC0F83E3F10015F022 /* all */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = 1E548F0D0F83E42D0015F022 /* Build configuration list for PBXAggregateTarget "cminpack" */;
+			buildConfigurationList = 1E548F0D0F83E42D0015F022 /* Build configuration list for PBXAggregateTarget "all" */;
 			buildPhases = (
 			);
 			dependencies = (
@@ -33,24 +33,24 @@
 				1E548F030F83E3F90015F022 /* PBXTargetDependency */,
 				1E548F050F83E3F90015F022 /* PBXTargetDependency */,
 			);
-			name = cminpack;
+			name = all;
 			productName = cminpack;
 		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
 		1E20CA5214486BB40084559B /* covar1.c in Sources */ = {isa = PBXBuildFile; fileRef = 1E20CA5114486BB40084559B /* covar1.c */; };
-		1E548DCD0F83DF710015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
-		1E548E0A0F83E1C10015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
-		1E548E1C0F83E2050015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
-		1E548E510F83E2DF0015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
-		1E548E650F83E2F90015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
-		1E548E780F83E3130015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
-		1E548E8A0F83E32D0015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
-		1E548E9B0F83E3440015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
-		1E548EBA0F83E3810015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
-		1E548ECA0F83E38C0015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
-		1E548ED90F83E3A10015F022 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
+		1E548DCD0F83DF710015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1E548E0A0F83E1C10015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1E548E1C0F83E2050015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1E548E510F83E2DF0015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1E548E650F83E2F90015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1E548E780F83E3130015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1E548E8A0F83E32D0015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1E548E9B0F83E3440015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1E548EBA0F83E3810015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1E548ECA0F83E38C0015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1E548ED90F83E3A10015F022 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
 		1E8894D21582652700FD154D /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
 		1E8894D31582653000FD154D /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
 		1E8894D41582653300FD154D /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
@@ -85,13 +85,13 @@
 		1EA5C2E315877C1900F5CFF7 /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
 		1EA5C2E415877C1A00F5CFF7 /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
 		1EA5C2E515877C1B00F5CFF7 /* vecLib.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E8894D01582651E00FD154D /* vecLib.framework */; };
-		1EA5C2E615877C2100F5CFF7 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
-		1EA5C2E715877C2200F5CFF7 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
-		1EA5C2E815877C2400F5CFF7 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
-		1EA5C2E915877C2400F5CFF7 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
-		1EA5C2EA15877C2500F5CFF7 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
-		1EA5C2EB15877C2500F5CFF7 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
-		1EA5C2EC15877C2500F5CFF7 /* libminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libminpack.a */; };
+		1EA5C2E615877C2100F5CFF7 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1EA5C2E715877C2200F5CFF7 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1EA5C2E815877C2400F5CFF7 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1EA5C2E915877C2400F5CFF7 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1EA5C2EA15877C2500F5CFF7 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1EA5C2EB15877C2500F5CFF7 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
+		1EA5C2EC15877C2500F5CFF7 /* libcminpack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC046055464E500DB518D /* libcminpack.a */; };
 		1EA5C2EE15877C2F00F5CFF7 /* machar.c in Sources */ = {isa = PBXBuildFile; fileRef = 1EA5C2ED15877C2F00F5CFF7 /* machar.c */; };
 		1EA5C2EF15877C6800F5CFF7 /* lmdipt.c in Sources */ = {isa = PBXBuildFile; fileRef = 1EE5E36C145DA8F100F4FFF4 /* lmdipt.c */; };
 		1EA5C2F015877C6800F5CFF7 /* ssqfcn.c in Sources */ = {isa = PBXBuildFile; fileRef = 1EE5E36F145DA8F100F4FFF4 /* ssqfcn.c */; };
@@ -445,7 +445,7 @@
 		1E548EDD0F83E3A10015F022 /* tlmder1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tlmder1; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E8894CE158261E000FD154D /* cminpackP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cminpackP.h; sourceTree = "<group>"; };
 		1E8894D01582651E00FD154D /* vecLib.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = vecLib.framework; path = System/Library/Frameworks/vecLib.framework; sourceTree = SDKROOT; };
-		1EA5C255158779BA00F5CFF7 /* ibmdpdr */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ibmdpdr; sourceTree = BUILT_PRODUCTS_DIR; };
+		1EA5C255158779BA00F5CFF7 /* ibmdpdr */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = ibmdpdr; path = ibmdpdrc; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EA5C25F15877A0900F5CFF7 /* ibmdpdr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ibmdpdr.c; path = examples/ibmdpdr.c; sourceTree = "<group>"; };
 		1EA5C26515877A8B00F5CFF7 /* lmddrvc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = lmddrvc; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EA5C27315877A9500F5CFF7 /* lmfdrvc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = lmfdrvc; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -590,7 +590,7 @@
 		7F8F63A61148F51A0013EA0C /* tlmdifc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlmdifc.c; path = examples/tlmdifc.c; sourceTree = "<group>"; };
 		7F8F63A81148F51A0013EA0C /* tlmstr1c.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlmstr1c.c; path = examples/tlmstr1c.c; sourceTree = "<group>"; };
 		7F8F63AA1148F51A0013EA0C /* tlmstrc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlmstrc.c; path = examples/tlmstrc.c; sourceTree = "<group>"; };
-		D2AAC046055464E500DB518D /* libminpack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libminpack.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2AAC046055464E500DB518D /* libcminpack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcminpack.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -598,7 +598,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548DCD0F83DF710015F022 /* libminpack.a in Frameworks */,
+				1E548DCD0F83DF710015F022 /* libcminpack.a in Frameworks */,
 				1E8894D81582653E00FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -607,7 +607,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548E0A0F83E1C10015F022 /* libminpack.a in Frameworks */,
+				1E548E0A0F83E1C10015F022 /* libcminpack.a in Frameworks */,
 				1E8894D91582654100FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -616,7 +616,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548E1C0F83E2050015F022 /* libminpack.a in Frameworks */,
+				1E548E1C0F83E2050015F022 /* libcminpack.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -624,7 +624,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548E510F83E2DF0015F022 /* libminpack.a in Frameworks */,
+				1E548E510F83E2DF0015F022 /* libcminpack.a in Frameworks */,
 				1E8894D21582652700FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -633,7 +633,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548E650F83E2F90015F022 /* libminpack.a in Frameworks */,
+				1E548E650F83E2F90015F022 /* libcminpack.a in Frameworks */,
 				1E8894D31582653000FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -642,7 +642,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548E780F83E3130015F022 /* libminpack.a in Frameworks */,
+				1E548E780F83E3130015F022 /* libcminpack.a in Frameworks */,
 				1E8894D41582653300FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -651,7 +651,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548E8A0F83E32D0015F022 /* libminpack.a in Frameworks */,
+				1E548E8A0F83E32D0015F022 /* libcminpack.a in Frameworks */,
 				1E8894D51582653600FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -660,7 +660,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548E9B0F83E3440015F022 /* libminpack.a in Frameworks */,
+				1E548E9B0F83E3440015F022 /* libcminpack.a in Frameworks */,
 				1EA5C30015877DEB00F5CFF7 /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -669,7 +669,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548EBA0F83E3810015F022 /* libminpack.a in Frameworks */,
+				1E548EBA0F83E3810015F022 /* libcminpack.a in Frameworks */,
 				1E8894DA1582654400FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -678,7 +678,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548ECA0F83E38C0015F022 /* libminpack.a in Frameworks */,
+				1E548ECA0F83E38C0015F022 /* libcminpack.a in Frameworks */,
 				1E8894DB1582654700FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -687,7 +687,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E548ED90F83E3A10015F022 /* libminpack.a in Frameworks */,
+				1E548ED90F83E3A10015F022 /* libcminpack.a in Frameworks */,
 				1E8894D71582653B00FD154D /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -696,7 +696,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1EA5C2E615877C2100F5CFF7 /* libminpack.a in Frameworks */,
+				1EA5C2E615877C2100F5CFF7 /* libcminpack.a in Frameworks */,
 				1EA5C2DF15877C1700F5CFF7 /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -705,7 +705,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1EA5C2E715877C2200F5CFF7 /* libminpack.a in Frameworks */,
+				1EA5C2E715877C2200F5CFF7 /* libcminpack.a in Frameworks */,
 				1EA5C2E015877C1700F5CFF7 /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -714,7 +714,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1EA5C2E815877C2400F5CFF7 /* libminpack.a in Frameworks */,
+				1EA5C2E815877C2400F5CFF7 /* libcminpack.a in Frameworks */,
 				1EA5C2E115877C1800F5CFF7 /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -723,7 +723,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1EA5C2E915877C2400F5CFF7 /* libminpack.a in Frameworks */,
+				1EA5C2E915877C2400F5CFF7 /* libcminpack.a in Frameworks */,
 				1EA5C2E215877C1800F5CFF7 /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -732,7 +732,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1EA5C2EA15877C2500F5CFF7 /* libminpack.a in Frameworks */,
+				1EA5C2EA15877C2500F5CFF7 /* libcminpack.a in Frameworks */,
 				1EA5C2E315877C1900F5CFF7 /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -741,7 +741,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1EA5C2EB15877C2500F5CFF7 /* libminpack.a in Frameworks */,
+				1EA5C2EB15877C2500F5CFF7 /* libcminpack.a in Frameworks */,
 				1EA5C2E415877C1A00F5CFF7 /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -750,7 +750,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1EA5C2EC15877C2500F5CFF7 /* libminpack.a in Frameworks */,
+				1EA5C2EC15877C2500F5CFF7 /* libcminpack.a in Frameworks */,
 				1EA5C2E515877C1B00F5CFF7 /* vecLib.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -819,7 +819,7 @@
 		1AB674ADFE9D54B511CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D2AAC046055464E500DB518D /* libminpack.a */,
+				D2AAC046055464E500DB518D /* libcminpack.a */,
 				1E548DC60F83DF460015F022 /* tlmdif */,
 				1E548E0E0F83E1C10015F022 /* tlmdif1 */,
 				1E548E200F83E2050015F022 /* tchkder */,
@@ -1339,9 +1339,9 @@
 			productReference = 1EA5C2AB15877AC900F5CFF7 /* chkdrvc */;
 			productType = "com.apple.product-type.tool";
 		};
-		D2AAC045055464E500DB518D /* minpack */ = {
+		D2AAC045055464E500DB518D /* cminpack */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "minpack" */;
+			buildConfigurationList = 1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "cminpack" */;
 			buildPhases = (
 				D2AAC044055464E500DB518D /* Sources */,
 				D289987405E68DCB004EDB86 /* Frameworks */,
@@ -1350,9 +1350,9 @@
 			);
 			dependencies = (
 			);
-			name = minpack;
+			name = cminpack;
 			productName = libfnt;
-			productReference = D2AAC046055464E500DB518D /* libminpack.a */;
+			productReference = D2AAC046055464E500DB518D /* libcminpack.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -1377,8 +1377,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1E548EEC0F83E3F10015F022 /* cminpack */,
-				D2AAC045055464E500DB518D /* minpack */,
+				1E548EEC0F83E3F10015F022 /* all */,
+				D2AAC045055464E500DB518D /* cminpack */,
 				1E548E180F83E2050015F022 /* tchkderc */,
 				1E548E450F83E2DF0015F022 /* thybrdc */,
 				1E548E5A0F83E2F90015F022 /* thybrd1c */,
@@ -1600,7 +1600,7 @@
 /* Begin PBXTargetDependency section */
 		1E548EF10F83E3F90015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minpack */;
+			target = D2AAC045055464E500DB518D /* cminpack */;
 			targetProxy = 1E548EF00F83E3F90015F022 /* PBXContainerItemProxy */;
 		};
 		1E548EF30F83E3F90015F022 /* PBXTargetDependency */ = {
@@ -1660,57 +1660,57 @@
 		};
 		1E548F110F83E4590015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minpack */;
+			target = D2AAC045055464E500DB518D /* cminpack */;
 			targetProxy = 1E548F100F83E4590015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F130F83E4620015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minpack */;
+			target = D2AAC045055464E500DB518D /* cminpack */;
 			targetProxy = 1E548F120F83E4620015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F150F83E4710015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minpack */;
+			target = D2AAC045055464E500DB518D /* cminpack */;
 			targetProxy = 1E548F140F83E4710015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F170F83E4740015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minpack */;
+			target = D2AAC045055464E500DB518D /* cminpack */;
 			targetProxy = 1E548F160F83E4740015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F190F83E4770015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minpack */;
+			target = D2AAC045055464E500DB518D /* cminpack */;
 			targetProxy = 1E548F180F83E4770015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F1B0F83E47E0015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minpack */;
+			target = D2AAC045055464E500DB518D /* cminpack */;
 			targetProxy = 1E548F1A0F83E47E0015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F1D0F83E4820015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minpack */;
+			target = D2AAC045055464E500DB518D /* cminpack */;
 			targetProxy = 1E548F1C0F83E4820015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F1F0F83E4880015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minpack */;
+			target = D2AAC045055464E500DB518D /* cminpack */;
 			targetProxy = 1E548F1E0F83E4880015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F210F83E48B0015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minpack */;
+			target = D2AAC045055464E500DB518D /* cminpack */;
 			targetProxy = 1E548F200F83E48B0015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F230F83E4920015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minpack */;
+			target = D2AAC045055464E500DB518D /* cminpack */;
 			targetProxy = 1E548F220F83E4920015F022 /* PBXContainerItemProxy */;
 		};
 		1E548F250F83E4950015F022 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minpack */;
+			target = D2AAC045055464E500DB518D /* cminpack */;
 			targetProxy = 1E548F240F83E4950015F022 /* PBXContainerItemProxy */;
 		};
 		1EA5C2D015877BB000F5CFF7 /* PBXTargetDependency */ = {
@@ -1750,7 +1750,7 @@
 		};
 		1EA5C2DE15877C0400F5CFF7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D2AAC045055464E500DB518D /* minpack */;
+			target = D2AAC045055464E500DB518D /* cminpack */;
 			targetProxy = 1EA5C2DD15877C0400F5CFF7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1769,7 +1769,7 @@
 					"\"$(SRCROOT)/../local/lib\"",
 				);
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = minpack;
+				PRODUCT_NAME = cminpack;
 			};
 			name = Debug;
 		};
@@ -1785,7 +1785,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../local/lib\"",
 				);
-				PRODUCT_NAME = minpack;
+				PRODUCT_NAME = cminpack;
 			};
 			name = Release;
 		};
@@ -2280,7 +2280,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "minpack" */ = {
+		1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "cminpack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB91EC08733DB70010E9CD /* Debug */,
@@ -2397,7 +2397,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1E548F0D0F83E42D0015F022 /* Build configuration list for PBXAggregateTarget "cminpack" */ = {
+		1E548F0D0F83E42D0015F022 /* Build configuration list for PBXAggregateTarget "all" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1E548EED0F83E3F10015F022 /* Debug */,
@@ -2413,6 +2413,7 @@
 				1EA5C25E158779BA00F5CFF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1EA5C26C15877A8B00F5CFF7 /* Build configuration list for PBXNativeTarget "lmddrvc" */ = {
 			isa = XCConfigurationList;
@@ -2421,6 +2422,7 @@
 				1EA5C26E15877A8B00F5CFF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1EA5C27A15877A9500F5CFF7 /* Build configuration list for PBXNativeTarget "lmfdrvc" */ = {
 			isa = XCConfigurationList;
@@ -2429,6 +2431,7 @@
 				1EA5C27C15877A9500F5CFF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1EA5C28815877AA100F5CFF7 /* Build configuration list for PBXNativeTarget "lmsdrvc" */ = {
 			isa = XCConfigurationList;
@@ -2437,6 +2440,7 @@
 				1EA5C28A15877AA100F5CFF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1EA5C29615877AAF00F5CFF7 /* Build configuration list for PBXNativeTarget "hyjdrvc" */ = {
 			isa = XCConfigurationList;
@@ -2445,6 +2449,7 @@
 				1EA5C29815877AAF00F5CFF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1EA5C2A415877ABA00F5CFF7 /* Build configuration list for PBXNativeTarget "hybdrvc" */ = {
 			isa = XCConfigurationList;
@@ -2453,6 +2458,7 @@
 				1EA5C2A615877ABA00F5CFF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1EA5C2B215877AC900F5CFF7 /* Build configuration list for PBXNativeTarget "chkdrvc" */ = {
 			isa = XCConfigurationList;
@@ -2461,6 +2467,7 @@
 				1EA5C2B415877AC900F5CFF7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
