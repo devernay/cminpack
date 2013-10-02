@@ -8,11 +8,18 @@
 #include <string.h>
 #include <cminpack.h>
 
-#include <cutil.h>
-#include <cutil_inline_runtime.h>
-
 #include <lmdif1.cu>
 #define real __cminpack_real__
+
+#define cutilSafeCall(err)           __cudaSafeCall      (err, __FILE__, __LINE__)
+inline void __cudaSafeCall( cudaError err, const char *file, const int line )
+{
+    if( cudaSuccess != err) {
+        fprintf(stderr, "cudaSafeCall() Runtime API error in file <%s>, line %i : %s.\n",
+                file, line, cudaGetErrorString( err) );
+        exit(-1);
+    }
+}
 
 //--------------------------------------------------------------------------
 //--------------------------------------------------------------------------
@@ -45,7 +52,7 @@ typedef struct
 //--------------------------------------------------------------------------
 // the cost function
 //--------------------------------------------------------------------------
-__cminpack_function__ /* __device__ */
+__cminpack_attr__ /* __device__ */
 int fcn_mn(void *p, int m, int n, const real *x, real *fvec, int iflag)
 {
 
@@ -90,14 +97,14 @@ __global__ void mainKernel(ResultType  pResults[])
        precision solutions are required, this is the recommended
        setting. */
 
-    tol = sqrt(dpmpar(1));
+    tol = sqrt(__cminpack_func__(dpmpar)(1));
 
     // -------------------------------
     // call lmdif, and enorm
     // -------------------------------
-    info = lmdif1(__cminpack_param_fcn_mn__ 0, NUM_OBSERVATIONS, NUM_PARAMS, x, fvec, tol, iwa, wa, lwa);
+    info = __cminpack_func__(lmdif1)(__cminpack_param_fcn_mn__ 0, NUM_OBSERVATIONS, NUM_PARAMS, x, fvec, tol, iwa, wa, lwa);
   
-    fnorm = enorm(NUM_OBSERVATIONS, fvec);
+    fnorm = __cminpack_func__(enorm)(NUM_OBSERVATIONS, fvec);
 
     // ----------------------------------
     // save the results in global memory

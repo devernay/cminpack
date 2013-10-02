@@ -8,12 +8,19 @@
 #include <string.h>
 #include <cminpack.h>
 
-#include <cutil.h>
-#include <cutil_inline_runtime.h>
-
 #include <lmder.cu>
 #include <covar1.cu>
 #define real __cminpack_real__
+
+#define cutilSafeCall(err)           __cudaSafeCall      (err, __FILE__, __LINE__)
+inline void __cudaSafeCall( cudaError err, const char *file, const int line )
+{
+    if( cudaSuccess != err) {
+        fprintf(stderr, "cudaSafeCall() Runtime API error in file <%s>, line %i : %s.\n",
+                file, line, cudaGetErrorString( err) );
+        exit(-1);
+    }
+}
 
 //--------------------------------------------------------------------------
 //--------------------------------------------------------------------------
@@ -48,7 +55,7 @@ typedef struct
 //--------------------------------------------------------------------------
 // the cost function
 //--------------------------------------------------------------------------
-__cminpack_function__ /* __device__ */
+__cminpack_attr__ /* __device__ */
 int fcnder_mn(
     void *p, int m, int n, const real *x, 
     real *fvec, real *fjac, 
@@ -123,8 +130,8 @@ __global__ void mainKernel(ResultType  pResults[])
     /*      and gtol to zero. unless high solutions are */
     /*      required, these are the recommended settings. */
 
-    ftol = sqrt(dpmpar(1));
-    xtol = sqrt(dpmpar(1));
+    ftol = sqrt(__cminpack_func__(dpmpar)(1));
+    xtol = sqrt(__cminpack_func__(dpmpar)(1));
     gtol = 0.;
 
     maxfev = 400;
@@ -135,18 +142,18 @@ __global__ void mainKernel(ResultType  pResults[])
     // -------------------------------
     // call lmder, enorm, and covar1
     // -------------------------------
-    info = lmder(__cminpack_param_fcnder_mn__ 0, NUM_OBSERVATIONS, NUM_PARAMS, 
+    info = __cminpack_func__(lmder)(__cminpack_param_fcnder_mn__ 0, NUM_OBSERVATIONS, NUM_PARAMS, 
                  x, fvec, fjac, ldfjac, ftol, xtol, gtol, 
                  maxfev, diag, mode, factor, nprint, &nfev, &njev, 
                  ipvt, qtf, wa1, wa2, wa3, wa4);
 
-    fnorm = enorm(NUM_OBSERVATIONS, fvec);
+    fnorm = __cminpack_func__(enorm)(NUM_OBSERVATIONS, fvec);
 
     // NOTE: REMOVED THE TEST OF ORIGINAL MINPACK covar routine
 
     /* test covar1, which also estimates the rank of the Jacobian */
-    ftol = dpmpar(1);
-    k = covar1(NUM_OBSERVATIONS, NUM_PARAMS, 
+    ftol = __cminpack_func__(dpmpar)(1);
+    k = __cminpack_func__(covar1)(NUM_OBSERVATIONS, NUM_PARAMS, 
                fnorm*fnorm, fjac, ldfjac, ipvt, ftol, wa1);
 
     // ----------------------------------
