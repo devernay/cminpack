@@ -145,7 +145,9 @@ ftestchkdrv: chkdrv
 	@echo "*** Running CHK tests (calling MINPACK from FORTRAN using $(MINPACK))"
 	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$(LIBSUFFIX)$$x.ref $$x.out ; done
 
-check: ../fortran/libminpack.a
+check: checkdouble checkfloat
+
+checkdouble: ../fortran/libminpack.a
 	$(MAKE) -C .. all LIBSUFFIX= 2>&1 > /dev/null
 	$(MAKE) clean $(PGM) LIBSUFFIX= 2>&1 > /dev/null
 	-$(MAKE) test LIBSUFFIX=
@@ -162,6 +164,8 @@ check: ../fortran/libminpack.a
 	$(MAKE) clean $(CDRVPGM) LIBSUFFIX= 2>&1 > /dev/null
 	-$(MAKE) -k ctestdrv LIBSUFFIX=
 	$(MAKE) clean 2>&1 > /dev/null
+
+checkfloat:
 	$(MAKE) -C .. all LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 2>&1 > /dev/null
 	$(MAKE) clean $(PGM) LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 2>&1 > /dev/null
 	-$(MAKE) test LIBSUFFIX=s CFLAGS="$(CFLAGS_F)"

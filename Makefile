@@ -11,7 +11,7 @@ CFLAGS= -O3 -g -Wall -Wextra
 #LIBSUFFIX=s
 #CFLAGS="-O3 -g -Wall -Wextra -DUSE_CBLAS -DUSE_LAPACK"
 CFLAGS_L=$(CFLAGS) -DUSE_CBLAS -DUSE_LAPACK
-LDADD_L=-framework vecLib
+LDADD_L=-framework Accelerate
 
 ### configuration for the float (single precision) version:
 ## make LIBSUFFIX=s CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_float__"
@@ -72,8 +72,14 @@ cuda:
 check:
 	$(MAKE) -C examples check
 
+checkdouble:
+	$(MAKE) -C examples checkdouble
+
 checklapack:
 	$(MAKE) -C examples checklapack
+
+checkfloat:
+	$(MAKE) -C examples checkfloat
 
 checkhalf:
 	$(MAKE) -C examples checkhalf
