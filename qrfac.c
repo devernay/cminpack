@@ -13,9 +13,6 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
 	 real *acnorm, real *wa)
 {
 #ifdef USE_LAPACK
-    //int dgeqp3_(__CLPK_integer *m, __CLPK_integer *n, __CLPK_doublereal *a, __CLPK_integer *
-    //            lda, __CLPK_integer *jpvt, __CLPK_doublereal *tau, __CLPK_doublereal *work, __CLPK_integer *lwork,
-    //            __CLPK_integer *info)
     __CLPK_integer m_ = m;
     __CLPK_integer n_ = n;
     __CLPK_integer lda_ = lda;
