@@ -22,6 +22,9 @@ Manolis Lourakis -- lourakis at ics forth gr, July 2002
 
 Repackaging by Frederic Devernay -- frederic dot devernay at m4x dot org:
 
+version 1.3.2 (27/10/2013):
+ - Minor change in the CMake build: also set SOVERSION.
+
 version 1.3.1 (02/10/2013):
  - Fix CUDA examples compilation, and remove non-free files.
 
@@ -30,6 +33,10 @@ version 1.3.0 (09/06/2012):
   "make lapack" to build the LAPACK-based cminpack and "make
   checklapack" to test it (results of the test may depend on the
   underlying LAPACK and BLAS implementations).
+  On 64-bits architectures, the preprocessor symbol __LP64__ must be
+  defined (see cminpackP.h) if the LAPACK library uses the LP64
+  interface (i.e. 32-bits integer, vhereas the ILP interface uses 64
+  bits integers).
 
 version 1.2.2 (16/05/2012):
 - Update Makefiles and documentation (see "Using CMinpack" above) for
