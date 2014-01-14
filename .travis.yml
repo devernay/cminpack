@@ -2,4 +2,4 @@ language: c
 compiler:
   - gcc
   - clang
-script: make && make check
+script: make double float && make -C examples checkdoublec checkfloatc

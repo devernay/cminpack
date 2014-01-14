@@ -22,6 +22,9 @@ Manolis Lourakis -- lourakis at ics forth gr, July 2002
 
 Repackaging by Frederic Devernay -- frederic dot devernay at m4x dot org:
 
+version 1.3.3:
+ - continuous integration https://travis-ci.org/devernay/cminpack
+
 version 1.3.2 (27/10/2013):
  - Minor change in the CMake build: also set SOVERSION.
 
