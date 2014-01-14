@@ -524,7 +524,7 @@
 		1EE5E39F145DAA5300F4FFF4 /* runtest.cmake */ = {isa = PBXFileReference; lastKnownFileType = text; path = runtest.cmake; sourceTree = "<group>"; };
 		1EE5E3A0145DAA8C00F4FFF4 /* CopyrightMINPACK.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = CopyrightMINPACK.txt; sourceTree = "<group>"; };
 		1EE5E3A1145DAA8C00F4FFF4 /* readme.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
-		1EE5E3A2145DAA8C00F4FFF4 /* readmeC.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = readmeC.txt; sourceTree = "<group>"; };
+		1EE5E3A2145DAA8C00F4FFF4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		1EE5E3A4145DAB0A00F4FFF4 /* chkder_.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = chkder_.c; sourceTree = "<group>"; };
 		1EE5E3A5145DAB0A00F4FFF4 /* covar_.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = covar_.c; sourceTree = "<group>"; };
 		1EE5E3A6145DAB0A00F4FFF4 /* dogleg_.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dogleg_.c; sourceTree = "<group>"; };
@@ -1026,7 +1026,7 @@
 				1E548DE10F83E0960015F022 /* lmstr_.html */,
 				1E548DE20F83E0960015F022 /* minpack-documentation.txt */,
 				1EE5E3A1145DAA8C00F4FFF4 /* readme.txt */,
-				1EE5E3A2145DAA8C00F4FFF4 /* readmeC.txt */,
+				1EE5E3A2145DAA8C00F4FFF4 /* README.md */,
 			);
 			name = Documentation;
 			sourceTree = "<group>";

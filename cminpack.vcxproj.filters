@@ -170,6 +170,6 @@
   <ItemGroup>
     <None Include="CopyrightMINPACK.txt" />
     <None Include="readme.txt" />
-    <None Include="readmeC.txt" />
+    <None Include="README.md" />
   </ItemGroup>
 </Project>
