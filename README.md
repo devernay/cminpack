@@ -52,7 +52,7 @@ History
   easier building and testing.
 
 * version 1.2.1 (15/05/2012):
-- The library can now be built as double, float or half
+ - The library can now be built as double, float or half
   versions. Standard tests in the "examples" directory can now be
   lauched using "make check" (to run common tests, including against
   the float version), "make checkhalf" (to test the half version) and
