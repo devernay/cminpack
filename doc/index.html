@@ -66,6 +66,16 @@ which came from the FORTRAN version:</p>
 <li>The Debian project also translated all the FORTRAN examples to C. I worked from these to produce examples which also call my C/C++ version of Minpack instead of the FORTRAN version. Also included in the distribution are reference output files produced by the test runs (for comparison).</li>
 </ol>
 
+<p>If you use C/C++ Minpack for a publication, you should cite it as:</p>
+<pre>
+@misc{cminpack,
+  title={C/C++ Minpack},
+  author={Devernay, Fr{\'e}d{\'e}ric},
+  year={2007},
+  howpublished = "\url{http://devernay.free.fr/hacks/cminpack/}",
+}
+</pre>
+
 <h2>Distribution</h2>
 
 <p>The distribution contains:</p>
@@ -74,7 +84,7 @@ which came from the FORTRAN version:</p>
 <li>The C/C++ Minpack code (reentrant and MT-Safe).</li>
 <li>C and C++-compatible include files for Minpack or CMinpack (minpack.h) and C/C++ Minpack (cminpack.h), and Unix Makefiles.</li>
 <li>Full original documentation, translated to HTML, and all the examples, tests, and reference test results, so that you can check if the code runs properly on your machine before really using it.</li>
-<li>The extra covariance function "covar", with sample uses in the tlmder and tlmdir examples. Note that the result of covar has to be scaled by some factor, as shown in the source file examples/tlmderc.c (look for the documentation of the NAG function E04YCF for further explanations).</li>
+<li>The extra covariance function "covar", with sample uses in the tlmder and tlmdir examples. Note that the result of covar has to be scaled by some factor, as shown in the source file examples/tlmderc.c (look for the documentation of the <a href="http://www.nag.co.uk/">NAG</a> function <a href="http://www.nag.co.uk/numeric/fl/manual/xhtml/E04/e04ycf.xml">E04YCF</a> for further explanations).</li>
 </ul>
 
 <p>It is distributed under the original Minpack license (see the file CopyrightMINPACK.txt in the distribution).</p>
@@ -96,27 +106,15 @@ which came from the FORTRAN version:</p>
   <li><a href="cminpack-1.0.1.tar.gz">cminpack-1.0.1.tar.gz</a></li>
 </ul>
 
-<h3>Compiling and testing CMinpack</h3>
 
-<p>The standard, double-precision version of CMinpack can be built and installed using <code>cmake</code>.<p>
-<p>If you want to test thoroughly CMinpack, if you want to build a single-precision (float) or half-precision CMinpack, or if you want to build the FORTRAN version, you can use the Makefile-based build:</p>
-<ul>
-  <li>"<code>make</code>" builds the standard double-precision version of CMinpack as the static library <code>libcminpack.a</code></li>
-  <li>"<code>make float</code>" builds the single-precision (float) version of CMinpack as the static library <code>libcminpacks.a</code></li>
-  <li>"<code>make half</code>" builds the half-precision version of CMinpack as the static library <code>libcminpackh.a</code> (this requires the <a href="http://savannah.nongnu.org/download/openexr">OpenEXR ILM Base libraries</a>)</li>
-  <li>"<code>make fortran</code>" builds the double-precision FORTRAN version of Minpack as the static library <code>fortran/libminpack.a</code> (this requires a FORTRAN compiler, such as gfortran, g77 or g95)</li>
-  <li>"<code>make cuda</code>" builds the single-precision CUDA version of Minpack as the static library <code>cuda/libcuminpack.a</code> (this requires the CUDA SDK)</li>
-  <li>"<code>make check</code>" builds and runs the standard and intensive tests for thh double-precision and single-precision CMinpack (as of version 1.2.2, there are only two small differences in the single-precision tests for lmder and lmstr)</li>
-  <li>"<code>make checkhalf</code>" builds and runs the standard and intensive tests for the half-precision version of CMinpack</li>
-  <li>"<code>make checkfail</code>" builds and runs the CMinpack tests that fail (probably because of differences in the maths between FORTRAN and C)</li>
-</ul>
+<p>GitHub repository: <a href="https://github.com/devernay/cminpack">https://github.com/devernay/cminpack</a></p> 
 
 <h3>Using CMinpack</h3>
 
 <p>The CMinpack calls have the same name as the FORTRAN functions, in lowercase (e.g. <code>lmder(...)</code>). See the links to the documentation below, or take a look at the simple examples in the <code>examples</code> directory of the distribution. The simple examples are named after the function they call: <code>tlmder.c</code> is the simple example for <code>lmder</code>.</p>
 <p>If you want to use the single precision CMinpack, you should define __cminpack_float__ before including <code>cminpack.h</code>. __cminpack_half__ has to be defined for the half-precision version (and the code needs to be compiled with a C++ compiler).</p>
 <p>The single-precision versions of the functions are prefixed by "s" (as in "<code>slmder(...)</code>"), and the half-precision are prefixed by "h".</p>
-<p>CMinpack defines __cminpack_real__ as the floating point type, and the __cminpack_func__() macro can be used to call CMinpack functions independently of the precision used (as in the examples). However, you shouldn't use these macros in your own code, since your code is probably designed for a specific precision.</p>
+<p>CMinpack defines __cminpack_real__ as the floating point type, and the <code>__cminpack_func__()</code> macro can be used to call CMinpack functions independently of the precision used (as in the examples). However, you shouldn't use these macros in your own code, since your code is probably designed for a specific precision, and you should prefer calling directly <code>slmder(...)</code> or <code>slmder(...)</code>.</p>
 
 <h2>Documentation</h2>
 <ul>
@@ -125,6 +123,18 @@ which came from the FORTRAN version:</p>
   <li><a href="http://en.wikipedia.org/wiki/MINPACK">MINPACK on Wikipedia</a></li>
   <li>User Guide for MINPACK-1 : <a href="http://www-unix.mcs.anl.gov/~more/ANL8074a.pdf">Chapters 1-3</a>, <a href="http://www-unix.mcs.anl.gov/~more/ANL8074b.pdf">Chapter 4</a></li>
 </ul>
+
+<h2>Simulating box constraints</h2>
+
+<p>Note that box constraints can easily be simulated in C++ Minpack, using a change of variables in the function (that hint was found in the <a href="http://apps.jcns.fz-juelich.de/doku/sc/lmfit:constraints">lmfit documentation</a>).</p>
+
+<p>For example, say you want <code>a < x1 < b</code>, just apply the following change of variable at the beginning of <code>fvec</code>: <code>x1 = (a+b)/2. + tanh(x[1])*((b-a)/2.))</code>.</p>
+
+<p>Of course, if you use <code>lmder</code> or <code>lmder1</code>, the Jacobian must be consistent with that new function, so the column of the original Jacobian corresponding to <code>x1</code> must be multiplied by the derivative of the above function, i.e <code>(1-tanh(x[1])^2)*(b-a)/2.</p>
+
+<p>After the optimization, just apply the same transform to <code>x[1]</code> to obtain the "real" <code>x1</code>.</p>
+
+<p>An example of optimization with a box constraint on one of the variables will be provided in the next release.</p>
 
 <h2>Equivalence table with other libraries</h2>
 <p>The following table may be useful if you need to switch to or from another library.</p>
@@ -153,6 +163,8 @@ which came from the FORTRAN version:</p>
   <li>Python library scipy, module <code>scipy.optimize.leastsq</code>,</li>
   <li><a href="http://www.ittvis.com/">IDL</a>, add-on <a href="http://cow.physics.wisc.edu/~craigm/idl/fitting.html">MPFIT</a>.</li>
   <li><a href="http://www.r-project.org/">R</a> has the <a href="http://cran.r-project.org/web/packages/minpack.lm/index.html"">minpack.lm</a> package.</li>
+  <li><a href="http://eigen.tuxfamily.org/">Eigen</a> has an unsupported <a href="http://eigen.tuxfamily.org/dox/unsupported/group__NonLinearOptimization__Module.html">nonlinear optimization</a> module based on cminpack.</li>
+  <li><a href="http://code.google.com/p/ceres-solver/">Ceres Solver</a> is not derived from MINPACK, but is probably the best available alternative, with lots of features (New BSD License).</li>
 </ul>
 
 <h2>History</h2>
@@ -175,12 +187,18 @@ which came from the FORTRAN version:</p>
   <li>1.0.0 (24/04/2007): Initial revision.</li>
 </ul>
 
+<h2>Future work</h2>
 
-<!-- <p>Please <a href="/email.html">contact me</a> for any suggestion or request.</p>
+<p>There is now a very powerful alternative to MINPACK, which is the <a href="http://code.google.com/p/ceres-solver/">Ceres Solver</a>. You may want to consider using Ceres for any new project.</p>
+
+<p>The main feature that's missing on cminpack is the possibility to add constraints on variables. Simple boundary constraints should be enough, as implemented in <a href="http://www.alglib.net/optimization/levenbergmarquardt.php">ALGLIB</a> or <a href="http://www.physics.wisc.edu/~craigm/idl/cmpfit.html">MPFIT</a>.<p>
+
+<p><a href="http://www.ics.forth.gr/~lourakis/levmar/">levmar</a> also has linear constraints, but they shouldn't be necessary since linear constraints can be changed to box constraints by a simple change of variables. If you really need nonlinear constraints, and no reparameterization of variables (which may be able to linearize these constraints), you should consider using <a href="http://ab-initio.mit.edu/wiki/index.php/NLopt">NLopt</a> instead of cminpack.</p>
+
+<p>Please <a href="/email.html">contact me</a> for any suggestion or request.</p>
 
 <address>
 <a href="/email.html">Fr&eacute;d&eacute;ric Devernay</a></address>
--->
      
 <hr />
 
