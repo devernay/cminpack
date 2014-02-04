@@ -16,6 +16,9 @@ build*
 CMakeFiles
 *.pbxuser
 *.perspectivev3
+DerivedData/*
+*.xcworkspacedata
+*.xcworkspace
 xcuserdata
 *.patch
 tchkderc
@@ -63,3 +66,6 @@ lmfdrv
 lmfdrvc
 lmsdrv
 lmsdrvc
+tchkderc_box
+thybrjc_box
+tlmderc_box
