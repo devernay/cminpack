@@ -5,6 +5,13 @@
 #include <cminpack.h>
 #define real __cminpack_real__
 
+#ifdef BOX_CONSTRAINTS
+typedef struct  {
+    real *xmin;
+    real *xmax;
+} fcndata_t;
+#endif
+
 int fcn(void *p, int n, const real *x, real *fvec, real *fjac, int ldfjac, 
 	 int iflag);
 
@@ -15,6 +22,15 @@ int main()
   real xtol, factor, fnorm;
   real x[9], fvec[9], fjac[9*9], diag[9], r[45], qtf[9],
     wa1[9], wa2[9], wa3[9], wa4[9];
+  void *p = NULL;
+#ifdef BOX_CONSTRAINTS
+  real xmin[9] = {-2.,-0.5, -2., -2., -2., -2., -2., -2., -2.};
+  real xmax[9] = { 2.,  2.,  2.,  2.,  2.,  2.,  2.,  2.,  2.};
+  fcndata_t data;
+  data.xmin = xmin;
+  data.xmax = xmax;
+  p = &data;
+#endif
 
   n = 9;
 
@@ -43,9 +59,18 @@ int main()
   factor = 1.e2;
   nprint = 0;
 
-  info = __cminpack_func__(hybrj)(fcn, 0, n, x, fvec, fjac, ldfjac, xtol, maxfev, diag, 
+  info = __cminpack_func__(hybrj)(fcn, p, n, x, fvec, fjac, ldfjac, xtol, maxfev, diag, 
 	mode, factor, nprint, &nfev, &njev, r, lr, qtf, 
 	wa1, wa2, wa3, wa4);
+#ifdef BOX_CONSTRAINTS
+  /* compute the real x, using the same change of variable as in fcn */
+  for (j = 0; j < 3; ++j) {
+    real xmiddle = (xmin[j]+xmax[j])/2.;
+    real xwidth = (xmax[j]-xmin[j])/2.;
+    real th =  tanh((x[j]-xmiddle)/xwidth);
+    x[j] = xmiddle + th * xwidth;
+  }
+#endif
  fnorm = __cminpack_func__(enorm)(n, fvec);
 
  printf("     final l2 norm of the residuals%15.7g\n\n", (double)fnorm);
@@ -66,6 +91,21 @@ int fcn(void *p, int n, const real *x, real *fvec, real *fjac, int ldfjac,
 
   int j, k;
   real one=1, temp, temp1, temp2, three=3, two=2, zero=0, four=4;
+#ifdef BOX_CONSTRAINTS
+  const real *xmin = ((fcndata_t*)p)->xmin;
+  const real *xmax = ((fcndata_t*)p)->xmax;
+  real xb[9];
+  real jacfac[9];
+
+  for (j = 0; j < 9; ++j) {
+    real xmiddle = (xmin[j]+xmax[j])/2.;
+    real xwidth = (xmax[j]-xmin[j])/2.;
+    real th =  tanh((x[j]-xmiddle)/xwidth);
+    xb[j] = xmiddle + th * xwidth;
+    jacfac[j] = 1. - th * th;
+  }
+  x = xb;
+#endif
 
   if (iflag == 0)
     {
@@ -75,27 +115,36 @@ int fcn(void *p, int n, const real *x, real *fvec, real *fjac, int ldfjac,
 
   if (iflag != 2) 
     {
-      for (k=1; k <= n; k++)
+      for (k = 0; k < n; ++k)
 	{
-	  temp = (three - two*x[k-1])*x[k-1];
+	  temp = (three - two*x[k])*x[k];
 	  temp1 = zero;
-	  if (k != 1) temp1 = x[k-1-1];
+	  if (k != 0) temp1 = x[k-1];
 	  temp2 = zero;
-	  if (k != n) temp2 = x[k+1-1];
-	  fvec[k-1] = temp - temp1 - two*temp2 + one;
+	  if (k != n-1) temp2 = x[k+1];
+	  fvec[k] = temp - temp1 - two*temp2 + one;
 	}
     }
   else
     {
-      for (k = 1; k <= n; k++)
+      for (k = 0; k < n; ++k)
 	{
-	  for (j=1; j <= n; j++)
+	  for (j = 0; j < n; ++j)
 	    {
-	      fjac[k-1 + ldfjac*(j-1)] = zero;
+	      fjac[k + ldfjac*j] = zero;
 	    }
-	  fjac[k-1 + ldfjac*(k-1)] = three - four*x[k-1];
-	  if (k != 1) fjac[k-1 + ldfjac*(k-1-1)] = -one;
-	  if (k != n) fjac[k-1 + ldfjac*(k+1-1)] = -two;
+	  fjac[k + ldfjac*k] = three - four*x[k];
+	  if (k != 0) {
+            fjac[k + ldfjac*(k-1)] = -one;
+          }
+	  if (k != n-1) {
+            fjac[k + ldfjac*(k+1)] = -two;
+          }
+#        ifdef BOX_CONSTRAINTS
+          for (j = 0; j < n; ++j) {
+	    fjac[k + ldfjac*j] *= jacfac[j];
+	  }
+#        endif
 	}      
     }
   return 0;

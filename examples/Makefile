@@ -50,7 +50,8 @@ FPGM=tchkder thybrd thybrd1 thybrj thybrj1 tlmder tlmder1 tlmdif \
 PGM=tchkder_ thybrd_ thybrd1_ thybrj_ thybrj1_ tlmder_ tlmder1_ tlmdif_ \
 	tlmdif1_ tlmstr_ tlmstr1_ tfdjac2_ ibmdpdr_
 CPGM=tchkderc thybrdc thybrd1c thybrjc thybrj1c tlmderc tlmder1c tlmdifc \
-	tlmdif1c tlmstrc tlmstr1c tfdjac2c ibmdpdrc
+	tlmdif1c tlmstrc tlmstr1c tfdjac2c ibmdpdrc \
+	tchkderc_box tlmderc_box thybrjc_box
 FDRVPGM=lmddrv_ lmfdrv_ lmsdrv_ hyjdrv_ hybdrv_ chkdrv_
 DRVPGM=lmddrv lmfdrv lmsdrv hyjdrv hybdrv chkdrv
 CDRVPGM=lmddrvc lmfdrvc lmsdrvc hyjdrvc hybdrvc chkdrvc
@@ -243,6 +244,15 @@ ${FSRCGEN}: ../doc/minpack-documentation.txt
 
 .c:
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $< $(MINPACK) $(LDADD) -lm
+
+tchkderc_box: tchkderc.c
+	$(CC) $(CPPFLAGS) -DBOX_CONSTRAINTS $(CFLAGS) -o $@ $< $(MINPACK) $(LDADD) -lm
+
+tlmderc_box: tlmderc.c
+	$(CC) $(CPPFLAGS) -DBOX_CONSTRAINTS $(CFLAGS) -o $@ $< $(MINPACK) $(LDADD) -lm
+
+thybrjc_box: thybrjc.c
+	$(CC) $(CPPFLAGS) -DBOX_CONSTRAINTS $(CFLAGS) -o $@ $< $(MINPACK) $(LDADD) -lm
 
 .c.o:
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<

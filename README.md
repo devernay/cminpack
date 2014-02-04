@@ -28,7 +28,8 @@ The project home page is at http://devernay.free.fr/hacks/cminpack/
 History
 ------
 
-* version 1.3.3:
+* version 1.3.3 (04/02/2014)::
+ - Add documentation and examples abouts how to add box constraints to the variables.
  - continuous integration https://travis-ci.org/devernay/cminpack
 
 * version 1.3.2 (27/10/2013):

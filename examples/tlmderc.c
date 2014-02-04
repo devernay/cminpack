@@ -7,10 +7,17 @@
 #include <cminpack.h>
 #define real __cminpack_real__
 
+/* define the preprocessor symbol BOX_CONSTRAINTS to enable the simulated box constraints
+   using a change of variables. */
+
 /* the following struct defines the data points */
 typedef struct  {
     int m;
     real *y;
+#ifdef BOX_CONSTRAINTS
+    real *xmin;
+    real *xmax;
+#endif
 } fcndata_t;
 
 int fcn(void *p, int m, int n, const real *x, real *fvec, real *fjac, 
@@ -29,9 +36,20 @@ int main()
   /* auxiliary data (e.g. measurements) */
   real y[15] = {1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
                   3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
+#ifdef BOX_CONSTRAINTS
+  /* the minimum and maximum bounds for each variable. */
+  real xmin[3] = {0., 0.1, 0.5};
+  real xmax[3] = {2., 1.5, 2.3};
+  /* the Jacobian factor for each line, used to compute the covariance matrix. */
+  real jacfac[3];
+#endif
   fcndata_t data;
   data.m = m;
   data.y = y;
+#ifdef BOX_CONSTRAINTS
+  data.xmin = xmin;
+  data.xmax = xmax;
+#endif
 
 /*      the following starting values provide a rough fit. */
 
@@ -57,6 +75,16 @@ int main()
   info = __cminpack_func__(lmder)(fcn, &data, m, n, x, fvec, fjac, ldfjac, ftol, xtol, gtol, 
 	maxfev, diag, mode, factor, nprint, &nfev, &njev, 
 	ipvt, qtf, wa1, wa2, wa3, wa4);
+#ifdef BOX_CONSTRAINTS
+  /* compute the real x, using the same change of variable as in fcn */
+  for (j = 0; j < 3; ++j) {
+    real xmiddle = (xmin[j]+xmax[j])/2.;
+    real xwidth = (xmax[j]-xmin[j])/2.;
+    real th =  tanh((x[j]-xmiddle)/xwidth);
+    x[j] = xmiddle + th * xwidth;
+    jacfac[j] = 1. - th * th;
+  }
+#endif
   fnorm = __cminpack_func__(enorm)(m, fvec);
   printf("      final l2 norm of the residuals%15.7g\n\n", (double)fnorm);
   printf("      number of function evaluations%10i\n\n", nfev);
@@ -75,8 +103,12 @@ int main()
       covar(n, fjac1, ldfjac, ipvt, ftol, wa1);
       printf("      covariance (using covar)\n");
       for (i=0; i<n; ++i) {
-          for (j=0; j<n; ++j)
+          for (j=0; j<n; ++j) {
+#           ifdef BOX_CONSTRAINTS
+              fjac1[i*ldfjac+j] *= jacfac[i] * jacfac[j];
+#           endif
               printf("%s%15.7g", j%3==0?"\n     ":"", (double)fjac1[i*ldfjac+j]*covfac);
+          }
       }
       printf("\n");
   }
@@ -85,8 +117,12 @@ int main()
   k = __cminpack_func__(covar1)(m, n, fnorm*fnorm, fjac, ldfjac, ipvt, ftol, wa1);
   printf("      covariance\n");
   for (i=0; i<n; ++i) {
-    for (j=0; j<n; ++j)
+    for (j=0; j<n; ++j) {
+#    ifdef BOX_CONSTRAINTS
+      fjac[i*ldfjac+j] *= jacfac[i] * jacfac[j];
+#    endif
       printf("%s%15.7g", j%3==0?"\n     ":"", (double)fjac[i*ldfjac+j]);
+    }
   }
   printf("\n");
   /* printf("      rank(J) = %d\n", k != 0 ? k : n); */
@@ -102,6 +138,23 @@ int fcn(void *p, int m, int n, const real *x, real *fvec, real *fjac,
   int i;
   real tmp1, tmp2, tmp3, tmp4;
   const real *y = ((fcndata_t*)p)->y;
+#ifdef BOX_CONSTRAINTS
+  const real *xmin = ((fcndata_t*)p)->xmin;
+  const real *xmax = ((fcndata_t*)p)->xmax;
+  int j;
+  real xb[3];
+  real jacfac[3];
+  real xmiddle, xwidth, th;
+
+  for (j = 0; j < 3; ++j) {
+    xmiddle = (xmin[j]+xmax[j])/2.;
+    xwidth = (xmax[j]-xmin[j])/2.;
+    th =  tanh((x[j]-xmiddle)/xwidth);
+    xb[j] = (xmin[j]+xmax[j])/2. + th * xwidth;
+    jacfac[j] = 1. - th * th;
+  }
+  x = xb;
+#endif
 
   if (iflag == 0) 
     {
@@ -130,7 +183,15 @@ int fcn(void *p, int m, int n, const real *x, real *fvec, real *fjac,
 	  fjac[i + ldfjac*0] = -1.;
 	  fjac[i + ldfjac*1] = tmp1*tmp2/tmp4;
 	  fjac[i + ldfjac*2] = tmp1*tmp3/tmp4;
-	};
+	}
+#    ifdef BOX_CONSTRAINTS
+      for (j = 0; j < 3; ++j) {
+        for (i=0; i < 15; ++i)
+          {
+	    fjac[i + ldfjac*j] *= jacfac[j];
+	  }
+      }
+#    endif
     }
   return 0;
 }

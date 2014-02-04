@@ -91,7 +91,8 @@ which came from the FORTRAN version:</p>
 
 <h3>Download</h3>
 <ul>
-  <li><a href="cminpack-1.3.2.tar.gz">cminpack-1.3.2.tar.gz</a> (latest version)</li> 
+  <li><a href="cminpack-1.3.3.tar.gz">cminpack-1.3.3.tar.gz</a> (latest version)</li> 
+  <li><a href="cminpack-1.3.2.tar.gz">cminpack-1.3.2.tar.gz</a></li> 
   <li><a href="cminpack-1.3.1.tar.gz">cminpack-1.3.1.tar.gz</a></li> 
   <li><a href="cminpack-1.2.2.tar.gz">cminpack-1.2.2.tar.gz</a></li>
   <li><a href="cminpack-1.2.1.tar.gz">cminpack-1.2.1.tar.gz</a></li>
@@ -128,13 +129,24 @@ which came from the FORTRAN version:</p>
 
 <p>Note that box constraints can easily be simulated in C++ Minpack, using a change of variables in the function (that hint was found in the <a href="http://apps.jcns.fz-juelich.de/doku/sc/lmfit:constraints">lmfit documentation</a>).</p>
 
-<p>For example, say you want <code>a < x1 < b</code>, just apply the following change of variable at the beginning of <code>fvec</code>: <code>x1 = (a+b)/2. + tanh(x[1])*((b-a)/2.))</code>.</p>
+<p>For example, say you want <code>xmin[j] < x[j] < xmax[j]</code>, just apply the following change of variable at the beginning of <code>fcn</code> on the variables vector, and also on the computed solution after the optimization was performed:</p>
+<pre>
+  for (j = 0; j < 3; ++j) {
+    real xmiddle = (xmin[j]+xmax[j])/2.;
+    real xwidth = (xmax[j]-xmin[j])/2.;
+    real th =  tanh((x[j]-xmiddle)/xwidth);
+    x[j] = xmiddle + th * xwidth;
+    jacfac[j] = 1. - th * th;
+  }
+</pre>
 
-<p>Of course, if you use <code>lmder</code> or <code>lmder1</code>, the Jacobian must be consistent with that new function, so the column of the original Jacobian corresponding to <code>x1</code> must be multiplied by the derivative of the above function, i.e <code>(1-tanh(x[1])^2)*(b-a)/2.</p>
+<p>This change of variables preserves the variables scaling, and is almost the identity near the middle of the interval.</p>
 
-<p>After the optimization, just apply the same transform to <code>x[1]</code> to obtain the "real" <code>x1</code>.</p>
+<p>Of course, if you use <code>lmder</code>, <code>lmder1</code>, <code>hybrj</code> or <code>hybrj1</code>, the Jacobian must be also consistent with that new function, so the column of the original Jacobian corresponding to <code>x1</code> must be multiplied by the derivative of the change of variable, i.e <code>jacfac[j]</code>.</p>
 
-<p>An example of optimization with a box constraint on one of the variables will be provided in the next release.</p>
+<p>Similarly, each element of the covariance matrix must be multiplied by <code>jacfac[i]*jacfac[j]</code>.</p>
+
+<p>Examples of optimization with a box constraint is available in the following examples: <code>tlmderc.c</code>, <code>thybrj.c</code>, <code>tchkderc.c</code>.</p>
 
 <h2>Equivalence table with other libraries</h2>
 <p>The following table may be useful if you need to switch to or from another library.</p>
@@ -169,6 +181,7 @@ which came from the FORTRAN version:</p>
 
 <h2>History</h2>
 <ul>
+  <li>1.3.3 (04/02/2014): Add documentation and examples abouts how to add box constraints to the variables. <a href="https://travis-ci.org/devernay/cminpack">Continuous integration using Travis CI</a></li>
   <li>1.3.2 (27/10/2013): Minor change in the CMake build: also set SOVERSION.</li>
   <li>1.3.1 (02/10/2013): Fix CUDA examples compilation, and remove non-free files.</li>
   <li>1.3.0 (09/06/2012): Optionally use LAPACK and CBLAS in lmpar, qrfac, and qrsolv. Added "make lapack" to build the LAPACK-based cminpack and "make checklapack" to test it (results of the test may depend on the underlying LAPACK and BLAS implementations). On 64-bits architectures, the preprocessor symbol __LP64__ must be defined (see cminpackP.h) if the LAPACK library uses the LP64 interface (i.e. 32-bits integer, vhereas the ILP interface uses 64 bits integers).</li>
