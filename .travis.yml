@@ -5,10 +5,14 @@ compiler:
 before_install:
   - sudo apt-get install gfortran libblas-dev liblapack-dev libilmbase-dev
   - sudo pip install cpp-coveralls --use-mirrors
+
 script:
+  - make double float lapack fortran half
+  - make check
+  - make -C examples checklapack LDADD_L='-llapack -lblas'
   - make veryclean
-  - make double float lapack fortran half CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror' FFLAGS='-g -fprofile-arcs -ftest-coverage'
-  - make check CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror'' FFLAGS=''-g -fprofile-arcs -ftest-coverage'
-  - make -C examples checklapack LDADD_L='-llapack -lblas' CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror'
+  - make double fortran CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror' FFLAGS='-g -fprofile-arcs -ftest-coverage'
+  - make -C examples checkdouble CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror'' FFLAGS=''-g -fprofile-arcs -ftest-coverage'
+
 after_success:
   - coveralls
