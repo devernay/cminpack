@@ -42,14 +42,14 @@ typedef long int 	__CLPK_ftnlen;
 #endif
 //extern void dlartg_(double *f, double *g, double *cs, double *sn, double *r__);
 int dlartg_(__CLPK_doublereal *f, __CLPK_doublereal *g, __CLPK_doublereal *cs,
-            __CLPK_doublereal *sn, __CLPK_doublereal *r__)
+            __CLPK_doublereal *sn, __CLPK_doublereal *r__);
 //extern void dgeqp3_(int *m, int *n, double *a, int *lda, int *jpvt, double *tau, double *work, int *lwork, int *info);
 int dgeqp3_(__CLPK_integer *m, __CLPK_integer *n, __CLPK_doublereal *a, __CLPK_integer *
             lda, __CLPK_integer *jpvt, __CLPK_doublereal *tau, __CLPK_doublereal *work, __CLPK_integer *lwork,
-            __CLPK_integer *info)
+            __CLPK_integer *info);
 //extern void dgeqrf_(int *m, int *n, double *a, int *lda, double *tau, double *work, int *lwork, int *info);
 int dgeqrf_(__CLPK_integer *m, __CLPK_integer *n, __CLPK_doublereal *a, __CLPK_integer *
-            lda, __CLPK_doublereal *tau, __CLPK_doublereal *work, __CLPK_integer *lwork, __CLPK_integer *info)
+            lda, __CLPK_doublereal *tau, __CLPK_doublereal *work, __CLPK_integer *lwork, __CLPK_integer *info);
 #endif
 #endif
 
