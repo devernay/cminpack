@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <assert.h>
 #include <minpack.h>
 #define real __minpack_real__
 
@@ -66,6 +67,7 @@ void fcn(const int *n, const real *x, real *fvec, int *iflag)
 
   int k;
   real one=1, temp, temp1, temp2, three=3, two=2, zero=0;
+  assert(*n == 9);
 
   if (iflag == 0)
     {

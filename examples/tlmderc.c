@@ -126,7 +126,8 @@ int main()
     }
   }
   printf("\n");
-  printf("      rank(J) = %d\n", k != 0 ? k : n);
+  (void)k;
+  /* printf("      rank(J) = %d\n", k != 0 ? k : n); */
   return 0;
 }
 

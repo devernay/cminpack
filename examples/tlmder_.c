@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <assert.h>
 #include <minpack.h>
 #define real __minpack_real__
 
@@ -76,6 +77,7 @@ void fcn(const int *m, const int *n, const real *x, real *fvec, real *fjac,
   real tmp1, tmp2, tmp3, tmp4;
   real y[15]={1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
 		3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
+  assert(*m == 15 && *n == 3);
 
   if (*iflag == 0) 
     {
