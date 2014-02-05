@@ -104,9 +104,14 @@ install: libcminpack$(LIBSUFFIX).a
 	chmod 644 ${DESTDIR}/include/cminpack.h
 
 clean:
-	rm -f *.o libcminpack*.a *.gcno *.gcda *~ #*#
+	rm -f $(OBJS) libcminpack$(LIBSUFFIX).a
+	make -C examples clean
 
-.PHONY: dist all double lapack float half fortran cuda check checkhalf checkfail
+veryclean: clean
+	rm -f *.o libcminpack*.a *.gcno *.gcda *~ #*#
+	make -C examples veryclean
+
+.PHONY: dist all double lapack float half fortran cuda check checkhalf checkfail clean veryclean
 
 # COPYFILE_DISABLE=true and COPY_EXTENDED_ATTRIBUTES_DISABLE=true are used to disable inclusion
 # of file attributes (._* files) in the tar file on MacOSX
