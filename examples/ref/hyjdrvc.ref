@@ -921,7 +921,7 @@
 
       initial l2 norm of the residuals  2.0305195e+01
 
-      final l2 norm of the residuals    5.9167010e-11
+      final l2 norm of the residuals    5.9167519e-11
 
       number of function evaluations          34
 
@@ -942,7 +942,7 @@
 
       initial l2 norm of the residuals  9.3369375e+01
 
-      final l2 norm of the residuals    1.5138556e-09
+      final l2 norm of the residuals    1.5134044e-09
 
       number of function evaluations          44
 
@@ -1191,8 +1191,8 @@
   10    10      9      1     1   2.7315309e-12
   10    10     48      3     1   7.9371720e-14
   11    10     60      7     4   5.2963921e-03
-  11    10     34      5     1   5.9167010e-11
-  11    10     44      4     1   1.5138556e-09
+  11    10     34      5     1   5.9167519e-11
+  11    10     44      4     1   1.5134044e-09
   12    10     21      1     1   5.3575313e-12
   12    10     25      1     1   1.2591618e-10
   12    10     38      2     1   0.0000000e+00

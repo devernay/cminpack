@@ -900,7 +900,7 @@
 
       initial l2 norm of the residuals  8.4117534e-02
 
-      final l2 norm of the residuals    5.2964002e-03
+      final l2 norm of the residuals    5.2963744e-03
 
       number of function evaluations          60
 
@@ -910,8 +910,8 @@
 
       final approximate solution
 
-       5.5261680e-02  5.6957710e-02  5.8890834e-02  6.1136252e-02  6.3778763e-02
-       6.7005062e-02  2.0794077e-01  1.6426674e-01  8.6440450e-02  9.1336101e-02
+       5.5261171e-02  5.6957153e-02  5.8890230e-02  6.1135579e-02  6.3778015e-02
+       6.7004183e-02  2.0794171e-01  1.6426807e-01  8.6437149e-02  9.1332221e-02
 
 
 
@@ -921,7 +921,7 @@
 
       initial l2 norm of the residuals  2.0305195e+01
 
-      final l2 norm of the residuals    5.9169065e-11
+      final l2 norm of the residuals    5.9143616e-11
 
       number of function evaluations          34
 
@@ -942,7 +942,7 @@
 
       initial l2 norm of the residuals  9.3369375e+01
 
-      final l2 norm of the residuals    1.8240335e-09
+      final l2 norm of the residuals    1.8210307e-09
 
       number of function evaluations          45
 
@@ -1190,9 +1190,9 @@
   10    10      6      1     1   5.0091317e-15
   10    10      9      1     1   2.1883100e-13
   10    10     19      2     1   3.0223404e-15
-  11    10     60      7     4   5.2964002e-03
-  11    10     34      5     1   5.9169065e-11
-  11    10     45      4     1   1.8240335e-09
+  11    10     60      7     4   5.2963744e-03
+  11    10     34      5     1   5.9143616e-11
+  11    10     45      4     1   1.8210307e-09
   12    10     21      1     1   5.8860770e-12
   12    10     25      1     1   9.3915146e-13
   12    10     42      4     1   8.9546999e-13

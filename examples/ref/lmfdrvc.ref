@@ -187,7 +187,7 @@
 
       initial l2 norm of the residuals  5.0000000e+01
 
-      final l2 norm of the residuals    2.2689445e-16
+      final l2 norm of the residuals    8.6617632e-17
 
       number of function evaluations          11
 
@@ -197,7 +197,7 @@
 
       final approximate solution
 
-       1.0000000e+00  1.4256199e-17  0.0000000e+00
+       1.0000000e+00 -5.4423463e-18  0.0000000e+00
 
 
 
@@ -227,7 +227,7 @@
 
       initial l2 norm of the residuals  9.9126182e+02
 
-      final l2 norm of the residuals    4.3371437e-22
+      final l2 norm of the residuals    7.8016363e-23
 
       number of function evaluations          19
 
@@ -237,7 +237,7 @@
 
       final approximate solution
 
-       1.0000000e+00 -2.7251077e-23  0.0000000e+00
+       1.0000000e+00  4.9019126e-24  0.0000000e+00
 
 
 
@@ -489,15 +489,15 @@
 
       final l2 norm of the residuals    9.3779451e+00
 
-      number of function evaluations         126
+      number of function evaluations         127
 
-      number of Jacobian evaluations         116
+      number of Jacobian evaluations         117
 
-      exit parameter                           1
+      exit parameter                           3
 
       final approximate solution
 
-       5.6096351e-03  6.1813465e+03  3.4522364e+02
+       5.6096366e-03  6.1813463e+03  3.4522363e+02
 
 
 
@@ -759,9 +759,9 @@
 
       initial l2 norm of the residuals  2.8154384e+03
 
-      final l2 norm of the residuals    2.9295706e+02
+      final l2 norm of the residuals    2.9295526e+02
 
-      number of function evaluations         212
+      number of function evaluations         213
 
       number of Jacobian evaluations         197
 
@@ -769,7 +769,7 @@
 
       final approximate solution
 
-      -1.1559622e+01  1.3191168e+01 -4.0171512e-01  2.3928971e-01
+      -1.1573786e+01  1.3196252e+01 -4.0709165e-01  2.3391777e-01
 
 
 
@@ -781,15 +781,15 @@
 
       final l2 norm of the residuals    2.9295427e+02
 
-      number of function evaluations          47
+      number of function evaluations          49
 
-      number of Jacobian evaluations          36
+      number of Jacobian evaluations          38
 
       exit parameter                           1
 
       final approximate solution
 
-      -1.1595745e+01  1.3204119e+01 -4.0350771e-01  2.3670586e-01
+      -1.1595252e+01  1.3203937e+01 -4.0343758e-01  2.3676793e-01
 
 
 
@@ -809,7 +809,7 @@
 
       final approximate solution
 
-      -1.1586455e+01  1.3200626e+01 -4.0325124e-01  2.3701605e-01
+      -1.1586353e+01  1.3200591e+01 -4.0420616e-01  2.3635101e-01
 
 
 
@@ -1067,7 +1067,7 @@
 
       final approximate solution
 
-       3.7541004e-01  1.9358453e+00 -1.4646855e+00  1.2867531e-02  2.2122706e-02
+       3.7541005e-01  1.9358472e+00 -1.4646874e+00  1.2867535e-02  2.2122699e-02
 
 
 
@@ -1087,8 +1087,8 @@
 
       final approximate solution
 
-       1.3099766e+00  4.3155248e-01  6.3366126e-01  5.9942855e-01  7.5417976e-01
-       9.0430010e-01  1.3657995e+00  4.8237321e+00  2.3986847e+00  4.5688756e+00
+       1.3099766e+00  4.3155248e-01  6.3366126e-01  5.9942856e-01  7.5417978e-01
+       9.0430006e-01  1.3657995e+00  4.8237320e+00  2.3986848e+00  4.5688755e+00
        5.6753421e+00
  summary of 53 calls to lmdif1: 
 
@@ -1105,9 +1105,9 @@
     4    2    2    22    16     2   0.0000000e+00
     4    2    2     8     5     2   2.2204460e-15
     4    2    2     7     5     2   0.0000000e+00
-    5    3    3    11     8     2   2.2689445e-16
+    5    3    3    11     8     2   8.6617632e-17
     5    3    3    20    15     2   1.1296851e-17
-    5    3    3    19    16     2   4.3371437e-22
+    5    3    3    19    16     2   7.8016363e-23
     6    4    4   235   192     5   1.1138530e-23
     6    4    4   236   192     5   2.6976056e-21
     6    4    4   239   191     5   1.5238485e-22
@@ -1120,7 +1120,7 @@
     9    4   11    18    16     1   1.7535838e-02
     9    4   11    77    68     1   3.2052194e-02
     9    4   11   229   193     5   3.0709117e-02
-   10    3   16   126   116     1   9.3779451e+00
+   10    3   16   127   117     3   9.3779451e+00
    10    3   16     4     3     4   6.2375992e+04
    11    6   31     8     7     1   5.1046620e-02
    11    6   31    14    13     1   4.7829594e-02
@@ -1133,8 +1133,8 @@
    11   12   31    54    30     2   2.1732863e-05
    12    3   10     7     6     2   1.8410966e-16
    13    2   10    21    12     1   1.1151779e+01
-   14    4   20   212   197     5   2.9295706e+02
-   14    4   20    47    36     1   2.9295427e+02
+   14    4   20   213   197     5   2.9295526e+02
+   14    4   20    49    38     1   2.9295427e+02
    14    4   20   212   197     5   2.9295442e+02
    15    1    8     2     1     1   1.8862380e+00
    15    1    8    29    28     1   1.8842482e+00
