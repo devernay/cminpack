@@ -79,6 +79,7 @@ int main(int argc, char **argv)
     int nprob;
     real errmin[14], errmax[14];
     const int i1 = 1, i2 = 2;
+    (void)argc; (void)argv;
 
     for (;;) {
         scanf("%5d%5d\n", &nprob, &n);

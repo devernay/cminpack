@@ -99,6 +99,7 @@ int main(int argc, char **argv)
     real wa[1060];
     const int lwa = 1060;
     const int i1 = 1;
+    (void)argc; (void)argv;
 
     tol = sqrt(__minpack_func__(dpmpar)(&i1));
 
