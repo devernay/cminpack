@@ -78,6 +78,7 @@ int main(int argc, char **argv)
     real fvec1[10], fvec2[10];
     int nprob;
     real errmin[14], errmax[14];
+    (void)argc; (void)argv;
 
     for (;;) {
         scanf("%5d%5d\n", &nprob, &n);

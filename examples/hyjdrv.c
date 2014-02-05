@@ -97,6 +97,7 @@ int main(int argc, char **argv)
 
     real wa[1060];
     const int lwa = 1060;
+    (void)argc; (void)argv;
 
     tol = sqrt(__cminpack_func__(dpmpar)(1));
 

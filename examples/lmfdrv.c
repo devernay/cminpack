@@ -95,6 +95,7 @@ int main(int argc, char **argv)
     int iwa[40];
     real wa[65*40+5*40+65];
     const int lwa = 65*40+5*40+65;
+    (void)argc; (void)argv;
 
     tol = sqrt(__cminpack_func__(dpmpar)(1));
 
