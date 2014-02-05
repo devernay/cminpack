@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include <assert.h>
 #include <cminpack.h>
 #define real __cminpack_real__
 
@@ -125,7 +126,7 @@ int main()
     }
   }
   printf("\n");
-  /* printf("      rank(J) = %d\n", k != 0 ? k : n); */
+  printf("      rank(J) = %d\n", k != 0 ? k : n);
   return 0;
 }
 
@@ -155,6 +156,7 @@ int fcn(void *p, int m, int n, const real *x, real *fvec, real *fjac,
   }
   x = xb;
 #endif
+  assert(m == 15 && n == 3);
 
   if (iflag == 0) 
     {

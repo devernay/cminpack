@@ -45,6 +45,7 @@ int main(int argc, char **argv)
     int machep;
     real epsmch, epsneg;
     int minexp, maxexp;
+    (void)argc; (void)argv;
 
 /*     determine the machine constants dynamically from machar. */
 

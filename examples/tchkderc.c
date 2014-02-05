@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <assert.h>
 #include <cminpack.h>
 #define real __cminpack_real__
 
@@ -83,7 +84,7 @@ int fcn(void *p, int m, int n, const real *x, real *fvec,
 	 real *fjac, int ldfjac, int iflag)
 {
   /*      subroutine fcn for chkder example. */
-
+  assert(m == 15 && n == 3);
   int i;
   real tmp1, tmp2, tmp3, tmp4;
   const real *y = ((fcndata_t*)p)->y;

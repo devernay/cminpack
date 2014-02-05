@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <assert.h>
 #include <cminpack.h>
 #define real __cminpack_real__
 
@@ -87,6 +88,8 @@ int fcn(void *p, int m, int n, const real *x, real *fvec, int iflag)
   real tmp1, tmp2, tmp3;
   real y[15]={1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
 		3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
+  assert(m == 15 && n == 3);
+  (void)p;
 
   if (iflag == 0)
     {
@@ -111,6 +114,7 @@ void fcnjac(int m, int n, const real *x,
 
   int i;
   real tmp1, tmp2, tmp3, tmp4;
+  assert(m == 15 && n == 3);
 
   for (i = 1; i <= 15; i++)
     {

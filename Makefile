@@ -104,7 +104,7 @@ install: libcminpack$(LIBSUFFIX).a
 	chmod 644 ${DESTDIR}/include/cminpack.h
 
 clean:
-	rm -f *.o libcminpack*.a *~ #*#
+	rm -f *.o libcminpack*.a *.gcno *.gcda *~ #*#
 
 .PHONY: dist all double lapack float half fortran cuda check checkhalf checkfail
 

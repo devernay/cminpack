@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <assert.h>
 #include <cminpack.h>
 #define real __cminpack_real__
 
@@ -88,6 +89,8 @@ int fcn(void *p, int n, const real *x, real *fvec, real *fjac, int ldfjac,
 {
   
   /*      subroutine fcn for hybrj example. */
+  (void)p;
+  assert(n == 9);
 
   int j, k;
   real one=1, temp, temp1, temp2, three=3, two=2, zero=0, four=4;

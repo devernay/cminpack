@@ -220,7 +220,7 @@ checkfail: ../fortran/libminpack.a check
 	$(MAKE) -C ../fortran
 
 clean:
-	-rm -f $(PGM) $(FDRVPGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(SRC:.c=.o) $(CSRC:.c=.o) $(FPGM) $(FSRCGEN) $(FSRC:.f=.o) $(PGM:=.out) $(CPGM:=.out) $(FDRVPGM:=.out) $(DRVPGM:=.out) $(CDRVPGM:=.out) $(FPGM:=.out) *~ #*#
+	-rm -f $(PGM) $(FDRVPGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(SRC:.c=.o) $(CSRC:.c=.o) $(SRC:.c=.gcno) $(CSRC:.c=.gcno) $(SRC:.c=.gcda) $(CSRC:.c=.gcda) $(FPGM) $(FSRCGEN) $(FSRC:.f=.o) $(FSRC:.f=.gcno) $(FSRC:.f=.gcda) $(PGM:=.out) $(CPGM:=.out) $(FDRVPGM:=.out) $(DRVPGM:=.out) $(CDRVPGM:=.out) $(FPGM:=.out) *~ #*#
 	-rm -rf $(PGM:=.dSYM) $(CPGM:=.dSYM) $(CDRVPGM:=.dSYM) $(FPGM:=.dSYM)
 
 ${FSRCGEN}: ../doc/minpack-documentation.txt

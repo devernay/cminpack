@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
+#include <assert.h>
 #include <cminpack.h>
 #define real __cminpack_real__
 
@@ -89,7 +90,7 @@ int main()
       printf("%s%15.7g", j%3==0?"\n     ":"", (double)fjac[i*ldfjac+j]);
   }
   printf("\n");
-  /* printf("      rank(J) = %d\n", k != 0 ? k : n); */
+  printf("      rank(J) = %d\n", k != 0 ? k : n);
   return 0;
 }
 
@@ -101,6 +102,7 @@ int fcn(void *p, int m, int n, const real *x, real *fvec, int iflag)
   int i;
   real tmp1, tmp2, tmp3;
   const real *y = ((fcndata_t*)p)->y;
+  assert(m == 15 && n == 3);
 
   if (iflag == 0)
     {

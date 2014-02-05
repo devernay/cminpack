@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <assert.h>
 #include <cminpack.h>
 #define real __cminpack_real__
 
@@ -48,6 +49,9 @@ int fcn(void *p, int n, const real *x, real *fvec, int iflag)
 
   int k;
   real one=1, temp, temp1, temp2, three=3, two=2, zero=0;
+  (void)p;
+  (void)iflag;
+  assert(n == 9);
 
   for (k=1; k <= n; k++)
     {

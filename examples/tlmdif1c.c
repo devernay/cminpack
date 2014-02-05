@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <assert.h>
 #include <cminpack.h>
 #define real __cminpack_real__
 
@@ -60,6 +61,8 @@ int fcn(void *p, int m, int n, const real *x, real *fvec, int iflag)
   int i;
   real tmp1,tmp2,tmp3;
   const real *y = ((fcndata_t*)p)->y;
+  assert(m == 15 && n == 3);
+  (void)iflag;
 
   for (i = 0; i < 15; ++i)
     {
