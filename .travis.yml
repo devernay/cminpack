@@ -12,7 +12,7 @@ script:
   - make -C examples checklapack LDADD_L='-llapack -lblas'
   - make veryclean
   - make double fortran CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror' FFLAGS='-g -fprofile-arcs -ftest-coverage'
-  - make -C examples checkdouble CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror'' FFLAGS=''-g -fprofile-arcs -ftest-coverage'
+  - make -C examples checkdouble CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror' FFLAGS='-g -fprofile-arcs -ftest-coverage'
 
 after_success:
   - coveralls
