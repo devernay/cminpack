@@ -302,7 +302,7 @@ ${FSRCGEN}: ../doc/minpack-documentation.txt
 	}'
 
 $(LIBSUFFIX)%: %.f $(MINPACK)
-	$(F77) -o $@ $< $(MINPACK)
+	$(F77) $(FFLAGS) -o $@ $< $(MINPACK)
 
 $(LIBSUFFIX)%: %.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $< $(MINPACK) $(LDADD) -lm
