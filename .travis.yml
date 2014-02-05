@@ -2,4 +2,13 @@ language: c
 compiler:
   - gcc
   - clang
-script: make double float && make -C examples checkdoublec checkfloatc
+before_install:
+  - sudo apt-get install gfortran libblas-dev liblapack-dev libilmbase-dev
+  - sudo pip install cpp-coveralls --use-mirrors
+script:
+  - make veryclean
+  - make double float lapack fortran half CFLAGS=''-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror'' FFLAGS=''-g -fprofile-arcs -ftest-coverage''
+  - make check CFLAGS=''-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror'' FFLAGS=''-g -fprofile-arcs -ftest-coverage''
+  - make -C examples checklapack LDADD_L=''-llapack -lblas'' CFLAGS=''-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror''
+after_success:
+  - coveralls
