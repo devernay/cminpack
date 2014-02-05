@@ -93,7 +93,7 @@ void fcnjac(int m, int n, const real *x,
 
   int i;
   real tmp1, tmp2, tmp3, tmp4;
-  assert(*m == 15 && *n == 3);
+  assert(m == 15 && n == 3);
 
   for (i = 1; i <= 15; i++)
     {

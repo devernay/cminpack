@@ -51,6 +51,7 @@ void fcn(const int *m, const int *n, const real *x, real *fvec, int *iflag)
   real y[15]={1.4e-1,1.8e-1,2.2e-1,2.5e-1,2.9e-1,3.2e-1,3.5e-1,3.9e-1,
 		3.7e-1,5.8e-1,7.3e-1,9.6e-1,1.34e0,2.1e0,4.39e0};
   assert(*m == 15 && *n == 3);
+  (void)iflag;
 
   for (i=0; i<15; i++)
     {
