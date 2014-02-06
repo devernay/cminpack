@@ -8,6 +8,8 @@
 #include <cminpack.h>
 #define real __cminpack_real__
 
+#define TEST_COVAR
+
 /* define the preprocessor symbol BOX_CONSTRAINTS to enable the simulated box constraints
    using a change of variables. */
 
@@ -37,6 +39,10 @@ int main()
   /* auxiliary data (e.g. measurements) */
   real y[15] = {1.4e-1, 1.8e-1, 2.2e-1, 2.5e-1, 2.9e-1, 3.2e-1, 3.5e-1,
                   3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
+#ifdef TEST_COVAR
+  real covfac;
+  real fjac1[15*3];
+#endif
 #ifdef BOX_CONSTRAINTS
   /* the minimum and maximum bounds for each variable. */
   real xmin[3] = {0., 0.1, 0.5};
@@ -96,23 +102,20 @@ int main()
   printf("\n");
   ftol = __cminpack_func__(dpmpar)(1);
 #ifdef TEST_COVAR
-  {
-      /* test the original covar from MINPACK */
-      real covfac = fnorm*fnorm/(m-n);
-      real fjac1[15*3];
-      memcpy(fjac1, fjac, sizeof(fjac));
-      covar(n, fjac1, ldfjac, ipvt, ftol, wa1);
-      printf("      covariance (using covar)\n");
-      for (i=0; i<n; ++i) {
-          for (j=0; j<n; ++j) {
-#           ifdef BOX_CONSTRAINTS
-              fjac1[i*ldfjac+j] *= jacfac[i] * jacfac[j];
-#           endif
-              printf("%s%15.7g", j%3==0?"\n     ":"", (double)fjac1[i*ldfjac+j]*covfac);
-          }
-      }
-      printf("\n");
+  /* test the original covar from MINPACK */
+  covfac = fnorm*fnorm/(m-n);
+  memcpy(fjac1, fjac, sizeof(fjac));
+  covar(n, fjac1, ldfjac, ipvt, ftol, wa1);
+  /* printf("      covariance (using covar)\n"); */
+  for (i=0; i<n; ++i) {
+    for (j=0; j<n; ++j) {
+#    ifdef BOX_CONSTRAINTS
+      fjac1[i*ldfjac+j] *= jacfac[i] * jacfac[j];
+#    endif
+      /* printf("%s%15.7g", j%3==0?"\n     ":"", (double)fjac1[i*ldfjac+j]*covfac); */
+    }
   }
+  /* printf("\n"); */
 #endif
   /* test covar1, which also estimates the rank of the Jacobian */
   k = __cminpack_func__(covar1)(m, n, fnorm*fnorm, fjac, ldfjac, ipvt, ftol, wa1);
@@ -127,6 +130,18 @@ int main()
   }
   printf("\n");
   (void)k;
+#ifdef TEST_COVAR
+  if (k == n) {
+    /* comparison only works if covariance matrix has full rank */
+    for (i=0; i<n; ++i) {
+      for (j=0; j<n; ++j) {
+        if (fjac[i*ldfjac+j] != fjac1[i*ldfjac+j]*covfac) {
+          printf("component (%d,%d) of covar and covar1 differ: %g != %g\n", i, j, fjac[i*ldfjac+j], fjac1[i*ldfjac+j]*covfac);
+        }
+      }
+    }
+  }
+#endif
   /* printf("      rank(J) = %d\n", k != 0 ? k : n); */
   return 0;
 }
