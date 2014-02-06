@@ -11,7 +11,7 @@ script:
   - make check
   - make -C examples checklapack LDADD_L='-llapack -lblas'
   - make veryclean
-  - make -C examples ftest test ctest CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror' FFLAGS='-g -fprofile-arcs -ftest-coverage'
+  - make -k -C examples ftest test ctest testdrv ctestdrv CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror' FFLAGS='-g -fprofile-arcs -ftest-coverage'
 #  - make double fortran CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror' FFLAGS='-g -fprofile-arcs -ftest-coverage'
 #  - make -C examples checkdouble CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror' FFLAGS='-g -fprofile-arcs -ftest-coverage'
 
