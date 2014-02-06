@@ -293,3 +293,15 @@ examples/htlmstrc
 examples/htchkderc_box
 examples/hthybrjc_box
 examples/htlmderc_box
+
+examples/tchkder.f
+examples/thybrd.f
+examples/thybrd1.f
+examples/thybrj.f
+examples/thybrj1.f
+examples/tlmder.f
+examples/tlmder1.f
+examples/tlmdif.f
+examples/tlmdif1.f
+examples/tlmstr.f
+examples/tlmstr1.f
