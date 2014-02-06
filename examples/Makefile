@@ -313,15 +313,6 @@ $(LIBSUFFIX)%: %.c
 $(LIBSUFFIX)%.o: %.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
-$(LIBSUFFIX)tchkderc_box: tchkderc.c
-	$(CC) $(CPPFLAGS) -DBOX_CONSTRAINTS $(CFLAGS) -o $@ $< $(MINPACK) $(LDADD) -lm
-
-$(LIBSUFFIX)tlmderc_box: tlmderc.c
-	$(CC) $(CPPFLAGS) -DBOX_CONSTRAINTS $(CFLAGS) -o $@ $< $(MINPACK) $(LDADD) -lm
-
-$(LIBSUFFIX)thybrjc_box: thybrjc.c
-	$(CC) $(CPPFLAGS) -DBOX_CONSTRAINTS $(CFLAGS) -o $@ $< $(MINPACK) $(LDADD) -lm
-
 $(LIBSUFFIX)lmddrv_: $(MINPACK) $(LIBSUFFIX)lmddrv_.o $(LIBSUFFIX)lmdipt.o $(LIBSUFFIX)ssqfcn.o $(LIBSUFFIX)ssqjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
