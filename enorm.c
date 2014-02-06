@@ -44,7 +44,7 @@ real __cminpack_func__(enorm)(int n, const real *x)
 
     /* Local variables */
     int i;
-    real s1, s2, s3, xabs, x1max, x3max, agiant, floatn;
+    real s1, s2, s3, xabs, x1max, x3max, agiant;
 
 /*     ********** */
 
@@ -89,46 +89,35 @@ real __cminpack_func__(enorm)(int n, const real *x)
     s3 = 0.;
     x1max = 0.;
     x3max = 0.;
-    floatn = (real) (n);
-    agiant = rgiant / floatn;
+    agiant = rgiant / (real)n;
     for (i = 0; i < n; ++i) {
 	xabs = fabs(x[i]);
-	if (xabs <= rdwarf || xabs >= agiant) {
-            if (xabs > rdwarf) {
-
+        if (xabs >= agiant) {
 /*              sum for large components. */
-
-                if (xabs > x1max) {
-                    /* Computing 2nd power */
-                    d1 = x1max / xabs;
-                    s1 = 1. + s1 * (d1 * d1);
-                    x1max = xabs;
-                } else {
-                    /* Computing 2nd power */
-                    d1 = xabs / x1max;
-                    s1 += d1 * d1;
-                }
+            if (xabs > x1max) {
+                /* Computing 2nd power */
+                d1 = x1max / xabs;
+                s1 = 1. + s1 * (d1 * d1);
+                x1max = xabs;
             } else {
-
+                /* Computing 2nd power */
+                d1 = xabs / x1max;
+                s1 += d1 * d1;
+            }
+        } else if (xabs <= rdwarf) {
 /*              sum for small components. */
-
-                if (xabs > x3max) {
-                    /* Computing 2nd power */
-                    d1 = x3max / xabs;
-                    s3 = 1. + s3 * (d1 * d1);
-                    x3max = xabs;
-                } else {
-                    if (xabs != 0.) {
-                        /* Computing 2nd power */
-                        d1 = xabs / x3max;
-                        s3 += d1 * d1;
-                    }
-                }
+            if (xabs > x3max) {
+                /* Computing 2nd power */
+                d1 = x3max / xabs;
+                s3 = 1. + s3 * (d1 * d1);
+                x3max = xabs;
+            } else if (xabs != 0.) {
+                /* Computing 2nd power */
+                d1 = xabs / x3max;
+                s3 += d1 * d1;
             }
 	} else {
-
 /*           sum for intermediate components. */
-
             /* Computing 2nd power */
             s2 += xabs * xabs;
         }
@@ -138,16 +127,14 @@ real __cminpack_func__(enorm)(int n, const real *x)
 
     if (s1 != 0.) {
         ret_val = x1max * sqrt(s1 + (s2 / x1max) / x1max);
-    } else {
-        if (s2 != 0.) {
-            if (s2 >= x3max) {
-                ret_val = sqrt(s2 * (1. + (x3max / s2) * (x3max * s3)));
-            } else {
-                ret_val = sqrt(x3max * ((s2 / x3max) + (x3max * s3)));
-            }
+    } else if (s2 != 0.) {
+        if (s2 >= x3max) {
+            ret_val = sqrt(s2 * (1. + (x3max / s2) * (x3max * s3)));
         } else {
-            ret_val = x3max * sqrt(s3);
+            ret_val = sqrt(x3max * ((s2 / x3max) + (x3max * s3)));
         }
+    } else {
+        ret_val = x3max * sqrt(s3);
     }
     return ret_val;
 
