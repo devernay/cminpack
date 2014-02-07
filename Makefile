@@ -106,10 +106,12 @@ install: libcminpack$(LIBSUFFIX).a
 clean:
 	rm -f $(OBJS) libcminpack$(LIBSUFFIX).a
 	make -C examples clean
+	make -C fortran clean
 
 veryclean: clean
 	rm -f *.o libcminpack*.a *.gcno *.gcda *~ #*#
 	make -C examples veryclean
+	make -C fortran veryclean
 
 .PHONY: dist all double lapack float half fortran cuda check checkhalf checkfail clean veryclean
 

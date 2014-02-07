@@ -19,6 +19,7 @@ DESTDIR=/usr/local
 #
 #  Static library target
 #
+.PHONY: all clean veryclean install
 
 all: libminpack.a
 
@@ -34,4 +35,7 @@ install: libminpack.a
 	ranlib -t ${DESTDIR}/lib/libminpack.a # might be unnecessary
 
 clean:
-	rm -f *.o libminpack.a *~ #*#
+	rm -f $(OBJS) libminpack.a
+
+veryclean:
+	rm -f *.o *.gcno *.gcda *~ #*#
