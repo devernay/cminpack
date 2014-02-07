@@ -203,6 +203,8 @@ examples/lmsdrv_
 examples/lmsdrvc
 examples/tchkder_
 examples/tchkderc
+examples/tenorm_
+examples/tenormc
 examples/tfdjac2_
 examples/tfdjac2c
 examples/thybrd1_
@@ -245,6 +247,8 @@ examples/slmsdrv_
 examples/slmsdrvc
 examples/stchkder_
 examples/stchkderc
+examples/stenorm_
+examples/stenormc
 examples/stfdjac2_
 examples/stfdjac2c
 examples/sthybrd1_
@@ -293,6 +297,7 @@ examples/htlmstrc
 examples/htchkderc_box
 examples/hthybrjc_box
 examples/htlmderc_box
+examples/htenormc
 
 examples/tchkder.f
 examples/thybrd.f
