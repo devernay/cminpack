@@ -19,16 +19,27 @@
   However, rdwarf is smaller than sqrt(FLT_MIN) = 1.0842021724855044e-19, so that rdwarf**2 will
   underflow. This contradicts the constraints expressed in the comments below.
 
-  We changed these constants to be sqrt(TYPE_MIN)*0.9 and sqrt(TYPE_MAX)*0.9, as proposed by the
-  implementation found in MPFIT: http://cow.physics.wisc.edu/~craigm/idl/fitting.html
-*/
+  We changed these constants to those proposed by the
+  implementation found in MPFIT http://cow.physics.wisc.edu/~craigm/idl/fitting.html
 
-#define double_dwarf (1.4916681462400413e-154*0.9)
-#define double_giant (1.3407807929942596e+154*0.9)
-#define float_dwarf (1.0842021724855044e-19f*0.9f)
-#define float_giant (1.8446743523953730e+19f*0.9f)
-#define half_dwarf (2.4414062505039999e-4f*0.9f)
-#define half_giant (255.93749236874225497222f*0.9f)
+ cmpfit-1.2 proposes the following definitions:
+  rdwarf = sqrt(dpmpar(2)*1.5) * 10
+  rgiant = sqrt(dpmpar(3)) * 0.1
+
+ The half version does not really worked that way, so we use for half:
+  rdwarf = sqrt(dpmpar(2)) * 2
+  rgiant = sqrt(dpmpar(3)) * 0.5
+ Any suggestion is welcome. Half CMINPACK is really only a
+ proof-of-concept anyway.
+
+ See the example/tenorm*c, which computes these values 
+*/
+#define double_dwarf (1.82691291192569e-153)
+#define double_giant (1.34078079299426e+153)
+#define float_dwarf (1.327871072777421e-18f)
+#define float_giant (1.844674297419792e+18f)
+#define half_dwarf (0.015625f)
+#define half_giant (127.9375f)
 
 #define dwarf(type) _dwarf(type)
 #define _dwarf(type) type ## _dwarf
