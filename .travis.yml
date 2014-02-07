@@ -16,4 +16,4 @@ script:
 #  - make -C examples checkdouble CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror' FFLAGS='-g -fprofile-arcs -ftest-coverage'
 
 after_success:
-  - coveralls --exclude examples
+  - coveralls --extension .c --extension .f --exclude examples
