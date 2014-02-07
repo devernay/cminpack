@@ -105,7 +105,7 @@ int main()
   /* test the original covar from MINPACK */
   covfac = fnorm*fnorm/(m-n);
   memcpy(fjac1, fjac, sizeof(fjac));
-  covar(n, fjac1, ldfjac, ipvt, ftol, wa1);
+  __cminpack_func__(covar)(n, fjac1, ldfjac, ipvt, ftol, wa1);
   /* printf("      covariance (using covar)\n"); */
   for (i=0; i<n; ++i) {
     for (j=0; j<n; ++j) {
@@ -136,7 +136,7 @@ int main()
     for (i=0; i<n; ++i) {
       for (j=0; j<n; ++j) {
         if (fjac[i*ldfjac+j] != fjac1[i*ldfjac+j]*covfac) {
-          printf("component (%d,%d) of covar and covar1 differ: %g != %g\n", i, j, fjac[i*ldfjac+j], fjac1[i*ldfjac+j]*covfac);
+          printf("component (%d,%d) of covar and covar1 differ: %g != %g\n", i, j, (double)fjac[i*ldfjac+j], (double)fjac1[i*ldfjac+j]*covfac);
         }
       }
     }

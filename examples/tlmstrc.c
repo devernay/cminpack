@@ -71,7 +71,7 @@ int main()
       real covfac = fnorm*fnorm/(m-n);
       real fjac1[3*3];
       memcpy(fjac1, fjac, sizeof(fjac));
-      covar(n, fjac1, ldfjac, ipvt, ftol, wa1);
+      __cminpack_func__(covar)(n, fjac1, ldfjac, ipvt, ftol, wa1);
       printf("      covariance (using covar)\n");
       for (i=0; i<n; ++i) {
           for (j=0; j<n; ++j)
