@@ -11,14 +11,20 @@
 #ifdef __cminpack_double__
 #define N1 3
 #define N2 367
+#define SQRTFAC 1.5
+#define FAC 10.
 #endif
 #ifdef __cminpack_float__
 #define N1 3
 #define N2 367
+#define SQRTFAC 1.5
+#define FAC 10.
 #endif
 #ifdef __cminpack_half__
 #define N1 2
 #define N2 2
+#define SQRTFAC 1.
+#define FAC 2.
 #endif
 
 int main()
@@ -29,8 +35,8 @@ int main()
   real norm;
   real agiant;
 
-  real rdwarf = sqrt(__cminpack_func__(dpmpar)(2)*1.5) * 10.;
-  real rgiant = sqrt(__cminpack_func__(dpmpar)(3)) * 0.1;
+  real rdwarf = sqrt(__cminpack_func__(dpmpar)(2)*SQRTFAC) * FAC;
+  real rgiant = sqrt(__cminpack_func__(dpmpar)(3)) / FAC;
   printf ("dpmpar(2) = %15.7g, dpmpar(3) = %15.7g\n", (double)__cminpack_func__(dpmpar)(2), (double)__cminpack_func__(dpmpar)(3));
   printf ("rdwarf = %.16g, rgiant = %.16g\n", (double)rdwarf, (double)rgiant);
 

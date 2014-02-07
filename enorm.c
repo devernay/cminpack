@@ -21,15 +21,20 @@
   rdwarf = sqrt(dpmpar(2)*1.5) * 10
   rgiant = sqrt(dpmpar(3)) * 0.1
 
- The half version does not really work. Any suggestion is welcome. Half CMINPACK is really only a
+ The half version does not really worked that way, so we use for half:
+  rdwarf = sqrt(dpmpar(2)) * 2
+  rgiant = sqrt(dpmpar(3)) * 0.5
+ Any suggestion is welcome. Half CMINPACK is really only a
  proof-of-concept anyway.
+
+ See the example/tenorm*c, which computes these values 
 */
 #define double_dwarf (1.82691291192569e-153)
 #define double_giant (1.34078079299426e+153)
 #define float_dwarf (1.327871072777421e-18f)
 #define float_giant (1.844674297419792e+18f)
-#define half_dwarf (0.095703125f)
-#define half_giant (25.59375f)
+#define half_dwarf (0.015625f)
+#define half_giant (127.9375f)
 
 #define dwarf(type) _dwarf(type)
 #define _dwarf(type) type ## _dwarf
