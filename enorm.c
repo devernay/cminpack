@@ -5,7 +5,7 @@
 /*
   About the values for rdwarf and rgiant.
 
-  The original values, both in signe-precision FORTRAN source code and in double-precision code were:
+  The original values, both in single-precision FORTRAN source code and in double-precision code were:
 #define rdwarf 3.834e-20
 #define rgiant 1.304e19
   See for example:
@@ -14,16 +14,22 @@
   However, rdwarf is smaller than sqrt(FLT_MIN) = 1.0842021724855044e-19, so that rdwarf**2 will
   underflow. This contradicts the constraints expressed in the comments below.
 
-  We changed these constants to be sqrt(dpmpar(2))*0.9 and sqrt(dpmpar(3))*0.9, as proposed by the
+  We changed these constants to those proposed by the
   implementation found in MPFIT http://cow.physics.wisc.edu/~craigm/idl/fitting.html
-*/
 
-#define double_dwarf (1.4916681462400413e-154*0.9)
-#define double_giant (1.3407807929942596e+154*0.9)
-#define float_dwarf (1.0842021724855044e-19f*0.9f)
-#define float_giant (1.8446743523953730e+19f*0.9f)
-#define half_dwarf (2.4414062505039999e-4f*0.9f)
-#define half_giant (255.93749236874225497222f*0.9f)
+ cmpfit-1.2 proposes the following definitions:
+  rdwarf = sqrt(dpmpar(2)*1.5) * 10
+  rgiant = sqrt(dpmpar(3)) * 0.1
+
+ The half version does not really work. Any suggestion is welcome. Half CMINPACK is really only a
+ proof-of-concept anyway.
+*/
+#define double_dwarf (1.82691291192569e-153)
+#define double_giant (1.34078079299426e+153)
+#define float_dwarf (1.327871072777421e-18f)
+#define float_giant (1.844674297419792e+18f)
+#define half_dwarf (0.095703125f)
+#define half_giant (25.59375f)
 
 #define dwarf(type) _dwarf(type)
 #define _dwarf(type) type ## _dwarf

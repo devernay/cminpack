@@ -29,9 +29,9 @@ int main()
   real norm;
   real agiant;
 
-  real rdwarf = sqrt(__cminpack_func__(dpmpar)(2)*1.5) * 10;
+  real rdwarf = sqrt(__cminpack_func__(dpmpar)(2)*1.5) * 10.;
   real rgiant = sqrt(__cminpack_func__(dpmpar)(3)) * 0.1;
-  printf ("dpmpar(2) = %.16g, dpmpar(3) = %.16g\n", (double)__cminpack_func__(dpmpar)(2), (double)__cminpack_func__(dpmpar)(3));
+  printf ("dpmpar(2) = %15.7g, dpmpar(3) = %15.7g\n", (double)__cminpack_func__(dpmpar)(2), (double)__cminpack_func__(dpmpar)(3));
   printf ("rdwarf = %.16g, rgiant = %.16g\n", (double)rdwarf, (double)rgiant);
 
   n = N1*N1*N2*N2*2+2;
