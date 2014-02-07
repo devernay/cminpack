@@ -247,17 +247,17 @@
 
       initial l2 norm of the residuals  1.4662878e+01
 
-      final l2 norm of the residuals    2.3305191e-39
+      final l2 norm of the residuals    6.4623485e-27
 
-      number of function evaluations          68
+      number of function evaluations          69
 
-      number of jacobian evaluations          67
+      number of jacobian evaluations          63
 
-      exit parameter                           4
+      exit parameter                           2
 
       final approximate solution
 
-       3.2267928e-20 -3.2267928e-21  5.1628926e-21  5.1628926e-21
+       5.1628674e-19 -5.1628675e-20  8.2606004e-20  8.2606004e-20
 
 
 
@@ -507,17 +507,17 @@
 
       initial l2 norm of the residuals  4.1682162e+06
 
-      final l2 norm of the residuals    7.8565161e+02
+      final l2 norm of the residuals    7.8786133e+02
 
       number of function evaluations         400
 
-      number of jacobian evaluations         346
+      number of jacobian evaluations         343
 
       exit parameter                           5
 
       final approximate solution
 
-       2.1614894e-11  3.2887129e+04  8.8951385e+02
+       1.8935223e-11  3.3143027e+04  8.9325427e+02
 
 
 
@@ -857,7 +857,7 @@
       problem   15      dimensions    1    8
 
 
-      initial l2 norm of the residuals  1.1808873e+18
+      initial l2 norm of the residuals  1.1808874e+18
 
       final l2 norm of the residuals    1.8842576e+00
 
@@ -984,18 +984,18 @@
 
       initial l2 norm of the residuals  9.7656252e+16
 
-      final l2 norm of the residuals    9.9999863e-01
+      final l2 norm of the residuals    1.0000000e+00
 
-      number of function evaluations          21
+      number of function evaluations          19
 
-      number of jacobian evaluations          19
+      number of jacobian evaluations          17
 
       exit parameter                           1
 
       final approximate solution
 
-       1.7449272e-01  1.7449291e-01  1.7449301e-01  1.7449285e-01  1.7449301e-01
-       1.7449291e-01  1.7449276e-01  1.7449296e-01  1.7449291e-01  9.2550716e+00
+       4.3799043e-02  4.3799356e-02  4.3799341e-02  4.3799251e-02  4.3799207e-02
+       4.3799236e-02  4.3799207e-02  4.3799326e-02  4.3799326e-02  1.0562008e+01
 
 
 
@@ -1108,7 +1108,7 @@
     5    3    3    10     7     2   4.4930580e-08
     5    3    3    19    14     2   1.1145794e-09
     5    3    3    18    15     2   5.6543193e-14
-    6    4    4    68    67     4   2.3305191e-39
+    6    4    4    69    63     2   6.4623485e-27
     6    4    4    39    35     4   6.1098873e-18
     6    4    4    38    37     4   2.6869068e-17
     7    2    2     8     5     1   6.9989629e+00
@@ -1121,7 +1121,7 @@
     9    4   11    45    37     1   3.2069419e-02
     9    4   11    27    22     1   4.2413365e-02
    10    3   16   121   113     2   9.4535589e+00
-   10    3   16   400   346     5   7.8565161e+02
+   10    3   16   400   343     5   7.8786133e+02
    11    6   31     7     6     3   4.7829498e-02
    11    6   31    11    10     1   4.7829639e-02
    11    6   31    15    14     2   4.7829773e-02
@@ -1144,7 +1144,7 @@
    15   10   10    15     7     1   8.0647513e-02
    16   10   10    13    11     2   2.6927846e-06
    16   10   10    12    10     2   1.8506258e-06
-   16   10   10    21    19     1   9.9999863e-01
+   16   10   10    19    17     1   1.0000000e+00
    16   30   30     5     2     1   1.0000000e+00
    16   40   40     5     2     1   1.0000000e+00
    17    5   33    17    14     1   7.3924954e-03

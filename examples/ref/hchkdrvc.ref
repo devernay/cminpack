@@ -239,8 +239,8 @@
 
       function difference vector
 
-                 nan            nan            nan            nan            nan
-                 nan            nan            nan            nan            nan
+                -nan           -nan           -nan           -nan           -nan
+                -nan           -nan           -nan           -nan           -nan
 
 
       error vector
