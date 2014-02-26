@@ -28,7 +28,12 @@ The project home page is at http://devernay.free.fr/hacks/cminpack/
 History
 ------
 
-* version 1.3.3 (04/02/2014)::
+* version 1.3.4 (//2014):
+ - Add FindCMinpack.cmake cmake module. If you use the cmake install,
+   finding CMinpack from your `CMakeLists.txt` is as easy as
+   `find_package(CMinpack)`.
+
+* version 1.3.3 (04/02/2014):
  - Add documentation and examples abouts how to add box constraints to the variables.
  - continuous integration https://travis-ci.org/devernay/cminpack
 
