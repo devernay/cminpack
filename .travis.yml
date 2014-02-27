@@ -13,7 +13,7 @@ script:
   - make veryclean
   - make -k -C examples test ctest testdrv ctestdrv CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror' FFLAGS='-g -fprofile-arcs -ftest-coverage'
   - make fortran FFLAGS='-g -fprofile-arcs -ftest-coverage'
-  - make -C examples ftest LIBSUFFIX= MINPACK=../fortran/libminpack.a FFLAGS='-g -fprofile-arcs -ftest-coverage'
+  - make -C examples ftest ftestdrv LIBSUFFIX= MINPACK=../fortran/libminpack.a FFLAGS='-g -fprofile-arcs -ftest-coverage'
 
 after_success:
   - coveralls --extension .c --extension .f --extension .h --exclude examples --verbose

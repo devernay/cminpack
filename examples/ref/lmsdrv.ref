@@ -493,7 +493,7 @@
 
       number of jacobian evaluations         116
 
-      exit parameter                           3
+      exit parameter                           2
 
       final approximate solution
 
@@ -507,7 +507,7 @@
 
       initial l2 norm of the residuals  0.4168217D+07
 
-      final l2 norm of the residuals    0.8010923D+03
+      final l2 norm of the residuals    0.8011018D+03
 
       number of function evaluations         400
 
@@ -517,7 +517,7 @@
 
       final approximate solution
 
-       0.8798278D-11  0.3464175D+05  0.9148701D+03
+       0.8795151D-11  0.3464245D+05  0.9148801D+03
 
 
 
@@ -719,7 +719,7 @@
 
       initial l2 norm of the residuals  0.3211158D+02
 
-      final l2 norm of the residuals    0.0000000D+00
+      final l2 norm of the residuals    0.2419675D-15
 
       number of function evaluations           7
 
@@ -769,7 +769,7 @@
 
       final approximate solution
 
-      -0.1159125D+02  0.1320249D+02 -0.4035748D+00  0.2367362D+00
+      -0.1159125D+02  0.1320249D+02 -0.4035747D+00  0.2367362D+00
 
 
 
@@ -809,7 +809,7 @@
 
       final approximate solution
 
-      -0.1159026D+02  0.1320206D+02 -0.4036925D+00  0.2366620D+00
+      -0.1159026D+02  0.1320206D+02 -0.4036921D+00  0.2366622D+00
 
 
 
@@ -1118,8 +1118,8 @@
     9    4   11    18    16     1   0.1753584D-01
     9    4   11    78    70     1   0.3205219D-01
     9    4   11   500   383     5   0.1753584D-01
-   10    3   16   126   116     3   0.9377945D+01
-   10    3   16   400   353     5   0.8010923D+03
+   10    3   16   126   116     2   0.9377945D+01
+   10    3   16   400   353     5   0.8011018D+03
    11    6   31     8     7     1   0.4782959D-01
    11    6   31    14    13     1   0.4782959D-01
    11    6   31    15    14     1   0.4782959D-01
@@ -1129,7 +1129,7 @@
    11   12   31     9     8     3   0.2173104D-04
    11   12   31    13    12     2   0.2173104D-04
    11   12   31    34    28     3   0.2173104D-04
-   12    3   10     7     6     2   0.0000000D+00
+   12    3   10     7     6     2   0.2419675D-15
    13    2   10    21    12     1   0.1115178D+02
    14    4   20   254   236     1   0.2929543D+03
    14    4   20    53    42     1   0.2929543D+03

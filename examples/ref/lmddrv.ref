@@ -507,17 +507,17 @@
 
       initial l2 norm of the residuals  0.4168217D+07
 
-      final l2 norm of the residuals    0.7946453D+03
+      final l2 norm of the residuals    0.7994077D+03
 
       number of function evaluations         400
 
-      number of jacobian evaluations         346
+      number of jacobian evaluations         345
 
       exit parameter                           5
 
       final approximate solution
 
-       0.1287545D-10  0.3389213D+05  0.9041072D+03
+       0.9728056D-11  0.3444313D+05  0.9120292D+03
 
 
 
@@ -769,7 +769,7 @@
 
       final approximate solution
 
-      -0.1159126D+02  0.1320249D+02 -0.4035744D+00  0.2367363D+00
+      -0.1159126D+02  0.1320249D+02 -0.4035745D+00  0.2367363D+00
 
 
 
@@ -809,7 +809,7 @@
 
       final approximate solution
 
-      -0.1159026D+02  0.1320206D+02 -0.4036878D+00  0.2366652D+00
+      -0.1159026D+02  0.1320206D+02 -0.4036877D+00  0.2366653D+00
 
 
 
@@ -1119,7 +1119,7 @@
     9    4   11    78    70     1   0.3205219D-01
     9    4   11   500   380     5   0.1753584D-01
    10    3   16   126   116     2   0.9377945D+01
-   10    3   16   400   346     5   0.7946453D+03
+   10    3   16   400   345     5   0.7994077D+03
    11    6   31     8     7     1   0.4782959D-01
    11    6   31    14    13     1   0.4782959D-01
    11    6   31    15    14     1   0.4782959D-01
