@@ -4,7 +4,7 @@ compiler:
   - clang
 before_install:
   - sudo apt-get install gfortran libblas-dev liblapack-dev libilmbase-dev
-  - sudo pip install cpp-coveralls --use-mirrors
+  - sudo pip install cpp-coveralls
 
 script:
   - make double float lapack fortran half
