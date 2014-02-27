@@ -63,7 +63,7 @@ int main()
 
   agiant = rgiant / (real)n;
   for (i = 0; i < n; ++i) {
-    if (i < 1) {
+    if (i < 2) {
       x[i] = agiant * N1;
     } else {
       x[i] = agiant / N2;
