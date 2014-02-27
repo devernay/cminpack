@@ -111,6 +111,9 @@ clean:
 veryclean: clean
 	rm -f *.o libcminpack*.a *.gcno *.gcda *~ #*#
 	make -C examples veryclean
+	make -C examples veryclean LIBSUFFIX=s
+	make -C examples veryclean LIBSUFFIX=h
+	make -C examples veryclean LIBSUFFIX=l
 	make -C fortran veryclean
 
 .PHONY: dist all double lapack float half fortran cuda check checkhalf checkfail clean veryclean
