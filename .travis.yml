@@ -16,4 +16,4 @@ script:
   - make -C examples ftest ftestdrv LIBSUFFIX= MINPACK=../fortran/libminpack.a FFLAGS='-g -fprofile-arcs -ftest-coverage'
 
 after_success:
-  - coveralls --extension .c --extension .f --extension .h --exclude examples --verbose
+  - coveralls --extension .c --extension .f --extension .h --exclude examples
