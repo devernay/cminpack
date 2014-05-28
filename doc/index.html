@@ -91,7 +91,8 @@ which came from the FORTRAN version:</p>
 
 <h3>Download</h3>
 <ul>
-  <li><a href="cminpack-1.3.3.tar.gz">cminpack-1.3.3.tar.gz</a> (latest version)</li> 
+  <li><a href="cminpack-1.3.4.tar.gz">cminpack-1.3.4.tar.gz</a> (latest version)</li> 
+  <li><a href="cminpack-1.3.3.tar.gz">cminpack-1.3.3.tar.gz</a></li> 
   <li><a href="cminpack-1.3.2.tar.gz">cminpack-1.3.2.tar.gz</a></li> 
   <li><a href="cminpack-1.3.1.tar.gz">cminpack-1.3.1.tar.gz</a></li> 
   <li><a href="cminpack-1.2.2.tar.gz">cminpack-1.2.2.tar.gz</a></li>
@@ -146,7 +147,7 @@ which came from the FORTRAN version:</p>
 
 <p>Similarly, each element of the covariance matrix must be multiplied by <code>jacfac[i]*jacfac[j]</code>.</p>
 
-<p>Examples of optimization with a box constraint is available in the following examples: <code>tlmderc.c</code>, <code>thybrj.c</code>, <code>tchkderc.c</code>.</p>
+<p>For examples on how to implement this in practice, see the portions of code delimited by "#ifdef BOX_CONSTRAINTS" in the following source files: <code>tlmderc.c</code>, <code>thybrj.c</code>, <code>tchkderc.c</code>.</p>
 
 <h2>Equivalence table with other libraries</h2>
 <p>The following table may be useful if you need to switch to or from another library.</p>
@@ -181,7 +182,7 @@ which came from the FORTRAN version:</p>
 
 <h2>History</h2>
 <ul>
-  <li>1.3.4 (//2014): Add FindCMinpack.cmake cmake module. If you use the cmake install, finding CMinpack from your <code>CMakeLists.txt</code> (especially on Windows) is as easy as <code>find_package(CMinpack)</code>.</li>
+  <li>1.3.4 (28/05/2014): Add FindCMinpack.cmake cmake module. If you use the cmake install, finding CMinpack from your <code>CMakeLists.txt</code> (especially on Windows) is as easy as <code>find_package(CMinpack)</code>.</li>
   <li>1.3.3 (04/02/2014): Add documentation and examples abouts how to add box constraints to the variables. <a href="https://travis-ci.org/devernay/cminpack">Continuous integration using Travis CI</a></li>
   <li>1.3.2 (27/10/2013): Minor change in the CMake build: also set SOVERSION.</li>
   <li>1.3.1 (02/10/2013): Fix CUDA examples compilation, and remove non-free files.</li>
