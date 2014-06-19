@@ -121,8 +121,8 @@ $(LIBSUFFIX)chkdrvc
 FSRCGEN=tchkder.f thybrd.f thybrd1.f thybrj.f thybrj1.f tlmder.f tlmder1.f \
 	tlmdif.f tlmdif1.f tlmstr.f tlmstr1.f
 FSRC=$(FSRCGEN) \
-	lmddrv.f lmdipt.f ssqfcn.f ssqjac.f lmfdrv.f lmsdrv.f \
-	hyjdrv.f hybipt.f vecfcn.f vecjac.f hybdrv.f \
+	lmddrv.f ssqipt.f ssqfcn.f ssqjac.f lmfdrv.f lmsdrv.f \
+	hyjdrv.f neqipt.f vecfcn.f vecjac.f hybdrv.f \
 	errjac.f chkdrv.f ibmdpdr.f machar.f
 SRC=tchkder_.c thybrd_.c thybrd1_.c thybrj_.c thybrj1_.c tlmder_.c tlmder1_.c \
 	tlmdif_.c tlmdif1_.c tlmstr_.c tlmstr1_.c tfdjac2_.c \
@@ -131,8 +131,8 @@ SRC=tchkder_.c thybrd_.c thybrd1_.c thybrj_.c thybrj1_.c tlmder_.c tlmder1_.c \
 	chkdrv_.c ibmdpdr_.c
 CSRC=tchkderc.c thybrdc.c thybrd1c.c thybrjc.c thybrj1c.c tlmderc.c tlmder1c.c \
 	tlmdifc.c tlmdif1c.c tlmstrc.c tlmstr1c.c tfdjac2c.c \
-	lmddrv.c lmdipt.c ssqfcn.c ssqjac.c lmfdrv.c lmsdrv.c \
-	hyjdrv.c hybipt.c vecfcn.c vecjac.c hybdrv.c \
+	lmddrv.c ssqipt.c ssqfcn.c ssqjac.c lmfdrv.c lmsdrv.c \
+	hyjdrv.c neqipt.c vecfcn.c vecjac.c hybdrv.c \
 	errjac.c chkdrv.c ibmdpdr.c machar.c
 
 CDRVSRC=lmddrv.c lmfdrv.c lmsdrv.c hyjdrv.c hybdrv.c
@@ -164,11 +164,11 @@ testdrv: $(MINPACK) $(FDRVPGM) testlmdrv testhydrv testchkdrv
 
 testlmdrv: $(LIBSUFFIX)lmddrv_ $(LIBSUFFIX)lmfdrv_ $(LIBSUFFIX)lmsdrv_
 	@echo "*** Running LM tests (calling MINPACK from C using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/ssq.data > $$x.out; diff -u ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
 
 testhydrv: $(LIBSUFFIX)hyjdrv_ $(LIBSUFFIX)hybdrv_
 	@echo "*** Running HY tests (calling MINPACK from C using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/hybrd.data > $$x.out; diff -u ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/neq.data > $$x.out; diff -u ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
 
 testchkdrv: $(LIBSUFFIX)chkdrv_
 	@echo "*** Running CHK tests (calling MINPACK from C using $(MINPACK))"
@@ -182,11 +182,11 @@ ctestdrv: $(MINPACK) $(CDRVPGM) ctestlmdrv ctesthydrv ctestchkdrv
 
 ctestlmdrv: $(LIBSUFFIX)lmddrvc $(LIBSUFFIX)lmfdrvc $(LIBSUFFIX)lmsdrvc
 	@echo "*** Running LM tests (calling CMINPACK from C using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/ssq.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 ctesthydrv: $(LIBSUFFIX)hyjdrvc $(LIBSUFFIX)hybdrvc
 	@echo "*** Running HY tests (calling CMINPACK from C using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/hybrd.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/neq.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 ctestchkdrv: $(LIBSUFFIX)chkdrvc
 	@echo "*** Running CHK tests (calling CMINPACK from C using $(MINPACK))"
@@ -200,11 +200,11 @@ ftestdrv: $(MINPACK) $(DRVPGM) ftestlmdrv ftesthydrv ftestchkdrv
 
 ftestlmdrv: $(LIBSUFFIX)lmddrv $(LIBSUFFIX)lmfdrv $(LIBSUFFIX)lmsdrv
 	@echo "*** Running LM tests (calling MINPACK from FORTRAN using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/lm.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/ssq.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 ftesthydrv: $(LIBSUFFIX)hyjdrv $(LIBSUFFIX)hybdrv
 	@echo "*** Running HY tests (calling MINPACK from FORTRAN using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/hybrd.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/neq.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
 ftestchkdrv: $(LIBSUFFIX)chkdrv
 	@echo "*** Running CHK tests (calling MINPACK from FORTRAN using $(MINPACK))"
@@ -319,64 +319,64 @@ $(LIBSUFFIX)%: %.c
 $(LIBSUFFIX)%.o: %.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
 
-$(LIBSUFFIX)lmddrv_: $(MINPACK) $(LIBSUFFIX)lmddrv_.o $(LIBSUFFIX)lmdipt.o $(LIBSUFFIX)ssqfcn.o $(LIBSUFFIX)ssqjac.o
+$(LIBSUFFIX)lmddrv_: $(MINPACK) $(LIBSUFFIX)lmddrv_.o $(LIBSUFFIX)ssqipt.o $(LIBSUFFIX)ssqfcn.o $(LIBSUFFIX)ssqjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
-$(LIBSUFFIX)lmfdrv_: $(MINPACK) $(LIBSUFFIX)lmfdrv_.o $(LIBSUFFIX)lmdipt.o $(LIBSUFFIX)ssqfcn.o
+$(LIBSUFFIX)lmfdrv_: $(MINPACK) $(LIBSUFFIX)lmfdrv_.o $(LIBSUFFIX)ssqipt.o $(LIBSUFFIX)ssqfcn.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
-$(LIBSUFFIX)lmsdrv_: $(MINPACK) $(LIBSUFFIX)lmsdrv_.o $(LIBSUFFIX)lmdipt.o $(LIBSUFFIX)ssqfcn.o $(LIBSUFFIX)ssqjac.o
+$(LIBSUFFIX)lmsdrv_: $(MINPACK) $(LIBSUFFIX)lmsdrv_.o $(LIBSUFFIX)ssqipt.o $(LIBSUFFIX)ssqfcn.o $(LIBSUFFIX)ssqjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
-$(LIBSUFFIX)hyjdrv_: $(MINPACK) $(LIBSUFFIX)hyjdrv_.o $(LIBSUFFIX)hybipt.o $(LIBSUFFIX)vecfcn.o $(LIBSUFFIX)vecjac.o
+$(LIBSUFFIX)hyjdrv_: $(MINPACK) $(LIBSUFFIX)hyjdrv_.o $(LIBSUFFIX)neqipt.o $(LIBSUFFIX)vecfcn.o $(LIBSUFFIX)vecjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
-$(LIBSUFFIX)hybdrv_: $(MINPACK) $(LIBSUFFIX)hybdrv_.o $(LIBSUFFIX)hybipt.o $(LIBSUFFIX)vecfcn.o
+$(LIBSUFFIX)hybdrv_: $(MINPACK) $(LIBSUFFIX)hybdrv_.o $(LIBSUFFIX)neqipt.o $(LIBSUFFIX)vecfcn.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
-$(LIBSUFFIX)chkdrv_: $(MINPACK) $(LIBSUFFIX)chkdrv_.o $(LIBSUFFIX)hybipt.o $(LIBSUFFIX)vecfcn.o $(LIBSUFFIX)errjac.o
+$(LIBSUFFIX)chkdrv_: $(MINPACK) $(LIBSUFFIX)chkdrv_.o $(LIBSUFFIX)neqipt.o $(LIBSUFFIX)vecfcn.o $(LIBSUFFIX)errjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
 $(LIBSUFFIX)ibmdpdr_: $(MINPACK) $(LIBSUFFIX)ibmdpdr_.o $(LIBSUFFIX)machar.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
-$(LIBSUFFIX)lmddrvc: $(MINPACK) $(LIBSUFFIX)lmddrv.o $(LIBSUFFIX)lmdipt.o $(LIBSUFFIX)ssqfcn.o $(LIBSUFFIX)ssqjac.o
+$(LIBSUFFIX)lmddrvc: $(MINPACK) $(LIBSUFFIX)lmddrv.o $(LIBSUFFIX)ssqipt.o $(LIBSUFFIX)ssqfcn.o $(LIBSUFFIX)ssqjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
-$(LIBSUFFIX)lmfdrvc: $(MINPACK) $(LIBSUFFIX)lmfdrv.o $(LIBSUFFIX)lmdipt.o $(LIBSUFFIX)ssqfcn.o
+$(LIBSUFFIX)lmfdrvc: $(MINPACK) $(LIBSUFFIX)lmfdrv.o $(LIBSUFFIX)ssqipt.o $(LIBSUFFIX)ssqfcn.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
-$(LIBSUFFIX)lmsdrvc: $(MINPACK) $(LIBSUFFIX)lmsdrv.o $(LIBSUFFIX)lmdipt.o $(LIBSUFFIX)ssqfcn.o $(LIBSUFFIX)ssqjac.o
+$(LIBSUFFIX)lmsdrvc: $(MINPACK) $(LIBSUFFIX)lmsdrv.o $(LIBSUFFIX)ssqipt.o $(LIBSUFFIX)ssqfcn.o $(LIBSUFFIX)ssqjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
-$(LIBSUFFIX)hyjdrvc: $(MINPACK) $(LIBSUFFIX)hyjdrv.o $(LIBSUFFIX)hybipt.o $(LIBSUFFIX)vecfcn.o $(LIBSUFFIX)vecjac.o
+$(LIBSUFFIX)hyjdrvc: $(MINPACK) $(LIBSUFFIX)hyjdrv.o $(LIBSUFFIX)neqipt.o $(LIBSUFFIX)vecfcn.o $(LIBSUFFIX)vecjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
-$(LIBSUFFIX)hybdrvc: $(MINPACK) $(LIBSUFFIX)hybdrv.o $(LIBSUFFIX)hybipt.o $(LIBSUFFIX)vecfcn.o
+$(LIBSUFFIX)hybdrvc: $(MINPACK) $(LIBSUFFIX)hybdrv.o $(LIBSUFFIX)neqipt.o $(LIBSUFFIX)vecfcn.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
-$(LIBSUFFIX)chkdrvc: $(MINPACK) $(LIBSUFFIX)chkdrv.o $(LIBSUFFIX)hybipt.o $(LIBSUFFIX)vecfcn.o $(LIBSUFFIX)errjac.o
+$(LIBSUFFIX)chkdrvc: $(MINPACK) $(LIBSUFFIX)chkdrv.o $(LIBSUFFIX)neqipt.o $(LIBSUFFIX)vecfcn.o $(LIBSUFFIX)errjac.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
 $(LIBSUFFIX)ibmdpdrc: $(MINPACK) $(LIBSUFFIX)ibmdpdr.o $(LIBSUFFIX)machar.o
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(MINPACK) $(LDADD) -lm
 
-$(LIBSUFFIX)lmddrv: $(MINPACK) lmddrv.f lmdipt.f ssqfcn.f ssqjac.f
+$(LIBSUFFIX)lmddrv: $(MINPACK) lmddrv.f ssqipt.f ssqfcn.f ssqjac.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
 
-$(LIBSUFFIX)lmfdrv: $(MINPACK) lmfdrv.f lmdipt.f ssqfcn.f
+$(LIBSUFFIX)lmfdrv: $(MINPACK) lmfdrv.f ssqipt.f ssqfcn.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
 
-$(LIBSUFFIX)lmsdrv: $(MINPACK) lmsdrv.f lmdipt.f ssqfcn.f ssqjac.f
+$(LIBSUFFIX)lmsdrv: $(MINPACK) lmsdrv.f ssqipt.f ssqfcn.f ssqjac.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
 
-$(LIBSUFFIX)hyjdrv: $(MINPACK) hyjdrv.f hybipt.f vecfcn.f vecjac.f
+$(LIBSUFFIX)hyjdrv: $(MINPACK) hyjdrv.f neqipt.f vecfcn.f vecjac.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
 
-$(LIBSUFFIX)hybdrv: $(MINPACK) hybdrv.f hybipt.f vecfcn.f
+$(LIBSUFFIX)hybdrv: $(MINPACK) hybdrv.f neqipt.f vecfcn.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
 
-$(LIBSUFFIX)chkdrv: $(MINPACK) chkdrv.f hybipt.f vecfcn.f errjac.f
+$(LIBSUFFIX)chkdrv: $(MINPACK) chkdrv.f neqipt.f vecfcn.f errjac.f
 	$(F77) $(FFLAGS) -o $@ $^ $(MINPACK)
 
 $(LIBSUFFIX)ibmdpdr: $(MINPACK) ibmdpdr.f machar.f
