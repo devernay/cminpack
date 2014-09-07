@@ -1,4 +1,4 @@
-C/C++ Minpack [![Build Status](https://api.travis-ci.org/devernay/cminpack.png?branch=master)](https://travis-ci.org/devernay/cminpack) [![Coverage Status](https://coveralls.io/repos/devernay/cminpack/badge.png?branch=master)](https://coveralls.io/r/devernay/cminpack?branch=master) [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/devernay/cminpack/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+C/C++ Minpack [![Build Status](https://api.travis-ci.org/devernay/cminpack.png?branch=master)](https://travis-ci.org/devernay/cminpack) [![Coverage Status](https://coveralls.io/repos/devernay/cminpack/badge.png?branch=master)](https://coveralls.io/r/devernay/cminpack?branch=master)  [![Coverity Scan Build Status](https://scan.coverity.com/projects/2942/badge.svg)](https://scan.coverity.com/projects/2942 "Coverity Badge") [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/devernay/cminpack/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 ==========
 
 This is a C version of the minpack minimization package.
