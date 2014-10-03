@@ -26,17 +26,15 @@ else (OS_LINUX)
   option (USE_FPIC "Use the -fPIC compiler flag." OFF)
 endif (OS_LINUX)
 
-option (SHARED_LIBS "Build shared libraries instead of static." OFF)
-if (SHARED_LIBS)
+option (BUILD_SHARED_LIBS "Build shared libraries instead of static." OFF)
+if (BUILD_SHARED_LIBS)
   message (STATUS "Building shared libraries.")
-  set (LIB_TYPE SHARED)
-else (SHARED_LIBS)
+else ()
   message (STATUS "Building static libraries.")
-  set (LIB_TYPE STATIC)
   if(WIN32)
     add_definitions(-DCMINPACK_NO_DLL)
   endif(WIN32)
-endif (SHARED_LIBS)
+endif ()
 
 #set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../build)
 
@@ -56,7 +54,7 @@ set (cminpack_srcs
 set (cminpack_hdrs
     cminpack.h minpack.h)
 
-add_library (cminpack ${LIB_TYPE} ${cminpack_srcs})
+add_library (cminpack ${cminpack_srcs})
 
 install (TARGETS cminpack 
    LIBRARY DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
@@ -65,9 +63,9 @@ install (TARGETS cminpack
 install (FILES ${cminpack_hdrs} DESTINATION ${CMINPACK_INCLUDE_INSTALL_DIR}
     COMPONENT cminpack_hdrs)
 
-if (USE_FPIC AND NOT SHARED_LIBS)
+if (USE_FPIC AND NOT BUILD_SHARED_LIBS)
   set_target_properties (cminpack PROPERTIES COMPILE_FLAGS -fPIC)
-endif (USE_FPIC AND NOT SHARED_LIBS)
+endif ()
 
 set_target_properties(cminpack PROPERTIES VERSION ${CMINPACK_VERSION} SOVERSION ${CMINPACK_SOVERSION})
 
