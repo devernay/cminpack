@@ -20,7 +20,7 @@ before_install:
   - sudo pip install cpp-coveralls
 
 script:
-  - test "${COVERITY_SCAN_BRANCH}" != 1 && make double float lapack fortran half; fi
+  - test "${COVERITY_SCAN_BRANCH}" != 1 && make double float lapack fortran half
   - test "${COVERITY_SCAN_BRANCH}" != 1 && make check
   - test "${COVERITY_SCAN_BRANCH}" != 1 && make -C examples checklapack LDADD_L='-llapack -lblas'
   - test "${COVERITY_SCAN_BRANCH}" != 1 && make veryclean
