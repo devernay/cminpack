@@ -20,16 +20,16 @@ before_install:
   - sudo pip install cpp-coveralls
 
 script:
-  - test "${COVERITY_SCAN_BRANCH}" != 1 && make double float lapack fortran half
-  - test "${COVERITY_SCAN_BRANCH}" != 1 && make check
-  - test "${COVERITY_SCAN_BRANCH}" != 1 && make -C examples checklapack LDADD_L='-llapack -lblas'
-  - test "${COVERITY_SCAN_BRANCH}" != 1 && make veryclean
-  - test "${COVERITY_SCAN_BRANCH}" != 1 && make -k -C examples test ctest testdrv ctestdrv CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror' FFLAGS='-g -fprofile-arcs -ftest-coverage'
-  - test "${COVERITY_SCAN_BRANCH}" != 1 && make fortran FFLAGS='-g -fprofile-arcs -ftest-coverage'
-  - test "${COVERITY_SCAN_BRANCH}" != 1 && make -C examples ftest ftestdrv LIBSUFFIX= MINPACK=../fortran/libminpack.a FFLAGS='-g -fprofile-arcs -ftest-coverage'
+  - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then make double float lapack fortran half; fi
+  - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then make check; fi
+  - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then make -C examples checklapack LDADD_L='-llapack -lblas'; fi
+  - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then make veryclean; fi
+  - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then make -k -C examples test ctest testdrv ctestdrv CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror' FFLAGS='-g -fprofile-arcs -ftest-coverage'; fi
+  - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then make fortran FFLAGS='-g -fprofile-arcs -ftest-coverage'; fi
+  - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then make -C examples ftest ftestdrv LIBSUFFIX= MINPACK=../fortran/libminpack.a FFLAGS='-g -fprofile-arcs -ftest-coverage'; fi
 
 after_success:
-  - coveralls --extension .c --extension .f --extension .h --exclude examples
+  - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then coveralls --extension .c --extension .f --extension .h --exclude examples; fi
 
 addons:
   coverity_scan:
