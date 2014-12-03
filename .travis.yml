@@ -1,19 +1,41 @@
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "Ms5I/fBICPT8kpIxkdoeSK+iLHA7rsaUaCDXCoYX9ufiB9uqT1FP+66W1e9mJa2H5QSv44eoOw0dvfoZm4ThJbehdXYhUrTWM6Am5hpOZmWp1ttYNTXkzxQRpKMthjZJvTMi5SAYJB13lk4/x5xt1zVFA9ZQgCPVvrRaQcZ820E="
+  # Coverity run condition (avoid matrix multiple runs), need customized
+  # build script. Need an update if new matrix cases.
+  - coverity_scan_run_condition='"$CC" = gcc -a "$TRAVIS_OS_NAME" != osx'
+  # Coverity script test mode (if true no uploading, avoid reaching the quota)
+  # usual processing: false.
+  - coverity_scan_script_test_mode=false
+
 language: c
 compiler:
   - gcc
   - clang
+  
 before_install:
   - sudo apt-get install gfortran libblas-dev liblapack-dev libilmbase-dev
   - sudo pip install cpp-coveralls
 
 script:
-  - make double float lapack fortran half
-  - make check
-  - make -C examples checklapack LDADD_L='-llapack -lblas'
-  - make veryclean
-  - make -k -C examples test ctest testdrv ctestdrv CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror' FFLAGS='-g -fprofile-arcs -ftest-coverage'
-  - make fortran FFLAGS='-g -fprofile-arcs -ftest-coverage'
-  - make -C examples ftest ftestdrv LIBSUFFIX= MINPACK=../fortran/libminpack.a FFLAGS='-g -fprofile-arcs -ftest-coverage'
+  - [ ${COVERITY_SCAN_BRANCH} != 1 ] && make double float lapack fortran half
+  - [ ${COVERITY_SCAN_BRANCH} != 1 ] && make check
+  - [ ${COVERITY_SCAN_BRANCH} != 1 ] && make -C examples checklapack LDADD_L='-llapack -lblas'
+  - [ ${COVERITY_SCAN_BRANCH} != 1 ] && make veryclean
+  - [ ${COVERITY_SCAN_BRANCH} != 1 ] && make -k -C examples test ctest testdrv ctestdrv CFLAGS='-g -fprofile-arcs -ftest-coverage -Wall -Wextra -Werror' FFLAGS='-g -fprofile-arcs -ftest-coverage'
+  - [ ${COVERITY_SCAN_BRANCH} != 1 ] && make fortran FFLAGS='-g -fprofile-arcs -ftest-coverage'
+  - [ ${COVERITY_SCAN_BRANCH} != 1 ] && make -C examples ftest ftestdrv LIBSUFFIX= MINPACK=../fortran/libminpack.a FFLAGS='-g -fprofile-arcs -ftest-coverage'
 
 after_success:
   - coveralls --extension .c --extension .f --extension .h --exclude examples
+
+addons:
+  coverity_scan:
+    project:
+      name: "devernay/cminpack"
+      description: "CMinpack Build submitted via Travis CI"
+    notification_email: frederic.devernay@m4x.org
+    build_command:   "make double float lapack fortran half"
+    branch_pattern: coverity_scan
