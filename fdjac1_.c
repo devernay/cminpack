@@ -167,7 +167,7 @@ L40:
     for (k = 1; k <= i__1; ++k) {
 	i__2 = *n;
 	i__3 = msum;
-	for (j = k; i__3 < 0 ? j >= i__2 : j <= i__2; j += i__3) {
+	for (j = k; j <= i__2; j += i__3) {
 	    wa2[j] = x[j];
 	    h__ = eps * fabs(wa2[j]);
 	    if (h__ == 0.) {
@@ -183,7 +183,7 @@ L40:
 	}
 	i__3 = *n;
 	i__2 = msum;
-	for (j = k; i__2 < 0 ? j >= i__3 : j <= i__3; j += i__2) {
+	for (j = k; j <= i__3; j += i__2) {
 	    x[j] = wa2[j];
 	    h__ = eps * fabs(wa2[j]);
 	    if (h__ == 0.) {

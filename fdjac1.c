@@ -154,7 +154,7 @@ int __cminpack_func__(fdjac1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, 
 /*        computation of banded approximate jacobian. */
 
     for (k = 1; k <= msum; ++k) {
-	for (j = k; msum < 0 ? j >= n : j <= n; j += msum) {
+	for (j = k; j <= n; j += msum) {
 	    wa2[j] = x[j];
 	    h = eps * fabs(wa2[j]);
 	    if (h == 0.) {
