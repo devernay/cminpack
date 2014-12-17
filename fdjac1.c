@@ -166,7 +166,7 @@ int __cminpack_func__(fdjac1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, 
 	if (iflag < 0) {
             return iflag;
 	}
-	for (j = k; msum < 0 ? j >= n : j <= n; j += msum) {
+	for (j = k; j <= n; j += msum) {
 	    x[j] = wa2[j];
 	    h = eps * fabs(wa2[j]);
 	    if (h == 0.) {
