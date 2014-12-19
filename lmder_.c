@@ -45,7 +45,7 @@ void __minpack_func__(lmder)(__minpack_decl_fcnder_mn__ const int *m, const int 
     int iflag;
     real delta;
     real ratio;
-    real fnorm, gnorm, pnorm, xnorm, fnorm1, actred, dirder, 
+    real fnorm, gnorm, pnorm, xnorm = 0, fnorm1, actred, dirder, 
 	    epsmch, prered;
 
 /*     ********** */
@@ -519,8 +519,7 @@ L200:
     }
     if (actred >= 0.) {
 	temp = p5;
-    }
-    if (actred < 0.) {
+    } else {
 	temp = p5 * dirder / (dirder + p5 * actred);
     }
     if (p1 * fnorm1 >= fnorm || temp < p1) {

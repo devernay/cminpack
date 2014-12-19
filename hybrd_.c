@@ -48,7 +48,7 @@ void __minpack_func__(hybrd)(__minpack_decl_fcn_nn__ const int *n, real *x, real
     int ncsuc;
     real ratio;
     real fnorm;
-    real pnorm, xnorm, fnorm1;
+    real pnorm, xnorm = 0, fnorm1;
     int nslow1, nslow2;
     int ncfail;
     real actred, epsmch, prered;

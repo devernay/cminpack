@@ -180,8 +180,7 @@ L100:
     }
     if (s2 >= x3max) {
 	ret_val = sqrt(s2 * (1. + x3max / s2 * (x3max * s3)));
-    }
-    if (s2 < x3max) {
+    } else {
 	ret_val = sqrt(x3max * (s2 / x3max + x3max * s3));
     }
     goto L120;

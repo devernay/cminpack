@@ -47,7 +47,7 @@ void __minpack_func__(lmstr)(__minpack_decl_fcnderstr_mn__ const int *m, const i
     int iflag;
     real delta;
     real ratio;
-    real fnorm, gnorm, pnorm, xnorm, fnorm1, actred, dirder, 
+    real fnorm, gnorm, pnorm, xnorm = 0, fnorm1, actred, dirder, 
 	    epsmch, prered;
 
 /*     ********** */

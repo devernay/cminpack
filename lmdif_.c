@@ -47,7 +47,7 @@ void __minpack_func__(lmdif)(__minpack_decl_fcn_mn__ const int *m, const int *n,
     real delta;
     real ratio;
     real fnorm, gnorm;
-    real pnorm, xnorm, fnorm1, actred, dirder, epsmch, prered;
+    real pnorm, xnorm = 0, fnorm1, actred, dirder, epsmch, prered;
 
 /*     ********** */
 
@@ -523,8 +523,7 @@ L200:
     }
     if (actred >= 0.) {
 	temp = p5;
-    }
-    if (actred < 0.) {
+    } else {
 	temp = p5 * dirder / (dirder + p5 * actred);
     }
     if (p1 * fnorm1 >= fnorm || temp < p1) {
