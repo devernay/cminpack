@@ -53,7 +53,9 @@ int main()
   printf("     number of function evaluations  %10i\n\n", nfev);
   printf("     exit parameter                  %10i\n\n", info);
   printf("     final approximate solution\n");
-  for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n     ":"", (double)x[j-1]);
+  for (j=1; j<=n; j++) {
+    printf("%s%15.7g", j%3==1?"\n     ":"", (double)x[j-1]);
+  }
   printf("\n");
   return 0;
 }
@@ -67,7 +69,7 @@ void fcn(const int *n, const real *x, real *fvec, int *iflag)
   real temp, temp1, temp2;
   assert(*n == 9);
 
-  if (iflag == 0) {
+  if (*iflag == 0) {
     /*      insert print statements here when nprint is positive. */
     /* if the nprint parameter to lmder is positive, the function is
        called every nprint iterations with iflag=0, so that the

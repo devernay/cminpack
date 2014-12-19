@@ -91,6 +91,7 @@ void fcn(const int *m, const int *n, const real *x, real *fvec, real *fjrow, int
        residuals. */
     return;
   }
+  
   if (*iflag < 2) {
     /* compute residuals */
     for (i = 1; i <= 15; i++) {

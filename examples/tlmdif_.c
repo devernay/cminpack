@@ -82,20 +82,23 @@ void fcn(const int *m, const int *n, const real *x, real *fvec, int *iflag)
   assert(*m == 15 && *n == 3);
 
   if (*iflag == 0) {
+    /*      insert print statements here when nprint is positive. */
     /* if the nprint parameter to lmder is positive, the function is
        called every nprint iterations with iflag=0, so that the
        function may perform special operations, such as printing
        residuals. */
-      /*      insert print statements here when nprint is positive. */
-      return;
-    }
+    return;
+  }
+  
   /* compute residuals */
   for (i = 1; i <= 15; i++) {
-      tmp1 = i;
-      tmp2 = 16 - i;
-      tmp3 = tmp1;
-      if (i > 8) tmp3 = tmp2;
-      fvec[i-1] = y[i-1] - (x[1-1] + tmp1/(x[2-1]*tmp2 + x[3-1]*tmp3));
+    tmp1 = i;
+    tmp2 = 16 - i;
+    tmp3 = tmp1;
+    if (i > 8) {
+      tmp3 = tmp2;
     }
+    fvec[i-1] = y[i-1] - (x[1-1] + tmp1/(x[2-1]*tmp2 + x[3-1]*tmp3));
+  }
   return;
 }

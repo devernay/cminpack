@@ -40,7 +40,9 @@ int main()
   printf("      final l2 norm of the residuals%15.7g\n\n", (double)fnorm);
   printf("      exit parameter                %10i\n\n", info);
   printf("      final approximate solution\n");
-  for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n     ":"", (double)x[j-1]);
+  for (j=1; j<=n; j++) {
+    printf("%s%15.7g", j%3==1?"\n     ":"", (double)x[j-1]);
+  }
   printf("\n");
 
   return 0;

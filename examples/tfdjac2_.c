@@ -86,6 +86,8 @@ void fcn(const int *m, const int *n, const real *x, real *fvec, int *iflag)
        residuals. */
     return;
   }
+
+  /* compute residuals */
   for (i = 1; i <= 15; i++) {
     tmp1 = i;
     tmp2 = 16 - i;

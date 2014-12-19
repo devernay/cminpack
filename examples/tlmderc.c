@@ -98,7 +98,9 @@ int main()
   printf("      number of Jacobian evaluations%10i\n\n", njev);
   printf("      exit parameter                %10i\n\n", info);
   printf("      final approximate solution\n");
-  for (j=0; j<n; ++j) printf("%s%15.7g", j%3==0?"\n     ":"", (double)x[j]);
+  for (j=0; j<n; ++j) {
+    printf("%s%15.7g", j%3==0?"\n     ":"", (double)x[j]);
+  }
   printf("\n");
   ftol = __cminpack_func__(dpmpar)(1);
 #ifdef TEST_COVAR

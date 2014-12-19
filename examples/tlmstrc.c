@@ -116,6 +116,7 @@ int fcn(void *p, int m, int n, const real *x, real *fvec, real *fjrow, int iflag
        residuals. */
     return 0;
   }
+  
   if (iflag < 2) {
     /* compute residuals */
     for (i=0; i < 15; ++i) {

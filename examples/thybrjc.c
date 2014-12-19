@@ -77,7 +77,9 @@ int main()
  printf("     number of jacobian evaluations%10i\n\n", njev);
  printf("     exit parameter                %10i\n\n", info);
  printf("     final approximate solution\n\n");
- for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n     ":"", (double)x[j-1]);
+ for (j=1; j<=n; j++) {
+   printf("%s%15.7g", j%3==1?"\n     ":"", (double)x[j-1]);
+ }
  printf("\n");
  return 0;
 }

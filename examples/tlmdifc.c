@@ -70,7 +70,9 @@ int main()
   printf("      number of function evaluations%10i\n\n", nfev);
   printf("      exit parameter                %10i\n\n", info);
   printf("      final approximate solution\n");
-  for (j=0; j<n; ++j) printf("%s%15.7g", j%3==0?"\n     ":"", (double)x[j]);
+  for (j=0; j<n; ++j) {
+    printf("%s%15.7g", j%3==0?"\n     ":"", (double)x[j]);
+  }
   printf("\n");
   ftol = __cminpack_func__(dpmpar)(1);
 #ifdef TEST_COVAR
@@ -130,6 +132,7 @@ int fcn(void *p, int m, int n, const real *x, real *fvec, int iflag)
        residuals. */
     return 0;
   }
+  
   /* compute residuals */
   for (i = 0; i < 15; ++i) {
     tmp1 = i + 1;
