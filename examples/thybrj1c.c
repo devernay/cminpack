@@ -63,7 +63,7 @@ int fcn(void *p, int n, const real *x, real *fvec, real *fjac, int ldfjac,
        called every nprint iterations with iflag=0, so that the
        function may perform special operations, such as printing
        residuals. */
-    return;
+    return 0;
   }
 
   if (iflag != 2) {
