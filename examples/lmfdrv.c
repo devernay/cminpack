@@ -217,6 +217,7 @@ int fcn(void *p, int m, int n, const real *x, real *fvec, int iflag)
         lmdiftest->nfev++;
     }
     if (iflag == 2) {
+        /* The function is called by fdjac2 for Jacobian approximation */
         lmdiftest->njev++;
     }
 

@@ -180,6 +180,7 @@ int fcn(void *p, int n, const real *x, real *fvec, int iflag)
         hybrdtest->nfev++;
     }
     if (iflag == 2) {
+        /* The function is called by fdjac1 for Jacobian approximation */
         hybrdtest->njev++;
     }
 

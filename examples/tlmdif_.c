@@ -53,15 +53,18 @@ int main()
   printf("      number of function evaluations%10i\n\n", nfev);
   printf("      exit parameter                %10i\n\n", info);
   printf("      final approximate solution\n");
-  for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n     ":"", (double)x[j-1]);
+  for (j=1; j<=n; j++) {
+    printf("%s%15.7g", j%3==1?"\n     ":"", (double)x[j-1]);
+  }
   printf("\n");
   ftol = __minpack_func__(dpmpar)(&one);
   covfac = fnorm*fnorm/(m-n);
   __minpack_func__(covar)(&n, fjac, &ldfjac, ipvt, &ftol, wa1);
   printf("      covariance\n");
   for (i=1; i<=n; i++) {
-    for (j=1; j<=n; j++)
+    for (j=1; j<=n; j++) {
       printf("%s%15.7g", j%3==1?"\n     ":"", (double)fjac[(i-1)*ldfjac+j-1]*covfac);
+    }
   }
   printf("\n");
   return 0;
@@ -78,13 +81,16 @@ void fcn(const int *m, const int *n, const real *x, real *fvec, int *iflag)
 		3.9e-1, 3.7e-1, 5.8e-1, 7.3e-1, 9.6e-1, 1.34, 2.1, 4.39};
   assert(*m == 15 && *n == 3);
 
-  if (*iflag == 0)
-    {
+  if (*iflag == 0) {
+    /* if the nprint parameter to lmder is positive, the function is
+       called every nprint iterations with iflag=0, so that the
+       function may perform special operations, such as printing
+       residuals. */
       /*      insert print statements here when nprint is positive. */
       return;
     }
-  for (i = 1; i <= 15; i++)
-    {
+  /* compute residuals */
+  for (i = 1; i <= 15; i++) {
       tmp1 = i;
       tmp2 = 16 - i;
       tmp3 = tmp1;

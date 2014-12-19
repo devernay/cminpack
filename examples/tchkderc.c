@@ -66,16 +66,21 @@ int main()
      err[I] > 0.5: i-th gradient is probably correct
   */
 
-  for (i=0; i<m; ++i)
-    {
-      fvecp[i] = fvecp[i] - fvec[i];
-    }
+  for (i=0; i<m; ++i) {
+    fvecp[i] = fvecp[i] - fvec[i];
+  }
   printf("\n      fvec\n");  
-  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", (double)fvec[i]);
+  for (i=0; i<m; ++i) {
+    printf("%s%15.7g",i%3==0?"\n     ":"", (double)fvec[i]);
+  }
   printf("\n      fvecp - fvec\n");  
-  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", (double)fvecp[i]);
+  for (i=0; i<m; ++i) {
+    printf("%s%15.7g",i%3==0?"\n     ":"", (double)fvecp[i]);
+  }
   printf("\n      err\n");  
-  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", (double)err[i]);
+  for (i=0; i<m; ++i) {
+    printf("%s%15.7g",i%3==0?"\n     ":"", (double)err[i]);
+  }
   printf("\n");
   return 0;
 }
@@ -105,48 +110,47 @@ int fcn(void *p, int m, int n, const real *x, real *fvec,
   x = xb;
 #endif
 
-  if (iflag == 0) 
-    {
-      /*      insert print statements here when nprint is positive. */
-      return 0;
-    }
+  if (iflag == 0) {
+    /*      insert print statements here when nprint is positive. */
+    /* if the nprint parameter to lmder is positive, the function is
+       called every nprint iterations with iflag=0, so that the
+       function may perform special operations, such as printing
+       residuals. */
+    return 0;
+  }
 
-  if (iflag != 2) 
-    {
-      for (i=0; i < 15; ++i)
-	{
-	  tmp1 = i + 1;
-	  tmp2 = 15 - i;
-	  tmp3 = (i > 7) ? tmp2 : tmp1;
-	  fvec[i] = y[i] - (x[0] + tmp1/(x[1]*tmp2 + x[2]*tmp3));
-	}
+  if (iflag != 2) {
+    /* compute residuals */
+    for (i=0; i < 15; ++i) {
+      tmp1 = i + 1;
+      tmp2 = 15 - i;
+      tmp3 = (i > 7) ? tmp2 : tmp1;
+      fvec[i] = y[i] - (x[0] + tmp1/(x[1]*tmp2 + x[2]*tmp3));
     }
-  else
-    {
-      for (i=0; i < 15; ++i)
-	{
-	  tmp1 = i + 1;
-	  tmp2 = 15 - i;
-#        ifdef TCHKDER_FIXED
-	  tmp3 = (i > 7) ? tmp2 : tmp1;
-#        else
-	  /* error introduced into next statement for illustration. */
-	  /* corrected statement should read    tmp3 = (i > 7) ? tmp2 : tmp1 . */
-	  tmp3 = (i > 7) ? tmp2 : tmp2;
-#        endif
-	  tmp4 = (x[1]*tmp2 + x[2]*tmp3); tmp4 = tmp4*tmp4;
-	  fjac[i + ldfjac*0] = -1.;
-	  fjac[i + ldfjac*1] = tmp1*tmp2/tmp4;
-	  fjac[i + ldfjac*2] = tmp1*tmp3/tmp4;
-	}
-#    ifdef BOX_CONSTRAINTS
-      for (j = 0; j < 3; ++j) {
-        for (i=0; i < 15; ++i)
-          {
-	    fjac[i + ldfjac*j] *= jacfac[j];
-	  }
-      }
+  } else {
+    /* compute Jacobian */
+    for (i=0; i < 15; ++i) {
+      tmp1 = i + 1;
+      tmp2 = 15 - i;
+#    ifdef TCHKDER_FIXED
+      tmp3 = (i > 7) ? tmp2 : tmp1;
+#    else
+      /* error introduced into next statement for illustration. */
+      /* corrected statement should read    tmp3 = (i > 7) ? tmp2 : tmp1 . */
+      tmp3 = (i > 7) ? tmp2 : tmp2;
 #    endif
+      tmp4 = (x[1]*tmp2 + x[2]*tmp3); tmp4 = tmp4*tmp4;
+      fjac[i + ldfjac*0] = -1.;
+      fjac[i + ldfjac*1] = tmp1*tmp2/tmp4;
+      fjac[i + ldfjac*2] = tmp1*tmp3/tmp4;
     }
+#  ifdef BOX_CONSTRAINTS
+    for (j = 0; j < 3; ++j) {
+      for (i=0; i < 15; ++i) {
+        fjac[i + ldfjac*j] *= jacfac[j];
+      }
+    }
+#  endif
+  }
   return 0;
 }

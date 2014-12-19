@@ -62,7 +62,9 @@ int main()
   printf("      number of Jacobian evaluations%10i\n\n", njev);
   printf("      exit parameter                %10i\n\n", info);
   printf("      final approximate solution\n");
-  for (j=0; j<n; ++j) printf("%s%15.7g", j%3==0?"\n     ":"", (double)x[j]);
+  for (j=0; j<n; ++j) {
+    printf("%s%15.7g", j%3==0?"\n     ":"", (double)x[j]);
+  }
   printf("\n");
   ftol = __cminpack_func__(dpmpar)(1);
 #ifdef TEST_COVAR
@@ -74,8 +76,9 @@ int main()
       __cminpack_func__(covar)(n, fjac1, ldfjac, ipvt, ftol, wa1);
       printf("      covariance (using covar)\n");
       for (i=0; i<n; ++i) {
-          for (j=0; j<n; ++j)
-              printf("%s%15.7g", j%3==0?"\n     ":"", (double)fjac1[i*ldfjac+j]*covfac);
+        for (j=0; j<n; ++j) {
+          printf("%s%15.7g", j%3==0?"\n     ":"", (double)fjac1[i*ldfjac+j]*covfac);
+        }
       }
       printf("\n");
   }
@@ -84,8 +87,9 @@ int main()
   k = __cminpack_func__(covar1)(m, n, fnorm*fnorm, fjac, ldfjac, ipvt, ftol, wa1);
   printf("      covariance\n");
   for (i=0; i<n; ++i) {
-    for (j=0; j<n; ++j)
-        printf("%s%15.7g", j%3==0?"\n     ":"", (double)fjac[i*ldfjac+j]);
+    for (j=0; j<n; ++j) {
+      printf("%s%15.7g", j%3==0?"\n     ":"", (double)fjac[i*ldfjac+j]);
+    }
   }
   printf("\n");
   (void)k;
@@ -104,31 +108,32 @@ int fcn(void *p, int m, int n, const real *x, real *fvec, real *fjrow, int iflag
   const real *y = ((fcndata_t*)p)->y;
   assert(m == 15 && n == 3);
 
-  if (iflag == 0)
-    {
-      /*      insert print statements here when nprint is positive. */
-      return 0;
-    }
-  if (iflag < 2)
-    {
-      for (i=0; i < 15; ++i)
-	{
-	  tmp1 = i + 1;
-	  tmp2 = 15 - i;
-	  tmp3 = (i > 7) ? tmp2 : tmp1;
-	  fvec[i] = y[i] - (x[0] + tmp1/(x[1]*tmp2 + x[2]*tmp3));
-	}
-    }
-  else
-    {
-      i = iflag - 2;
+  if (iflag == 0) {
+    /*      insert print statements here when nprint is positive. */
+    /* if the nprint parameter to lmder is positive, the function is
+       called every nprint iterations with iflag=0, so that the
+       function may perform special operations, such as printing
+       residuals. */
+    return 0;
+  }
+  if (iflag < 2) {
+    /* compute residuals */
+    for (i=0; i < 15; ++i) {
       tmp1 = i + 1;
       tmp2 = 15 - i;
       tmp3 = (i > 7) ? tmp2 : tmp1;
-      tmp4 = (x[1]*tmp2 + x[2]*tmp3); tmp4 = tmp4*tmp4;
-      fjrow[0] = -1.;
-      fjrow[1] = tmp1*tmp2/tmp4;
-      fjrow[2] = tmp1*tmp3/tmp4;
+      fvec[i] = y[i] - (x[0] + tmp1/(x[1]*tmp2 + x[2]*tmp3));
     }
+  } else {
+    /* compute Jacobian row */
+    i = iflag - 2;
+    tmp1 = i + 1;
+    tmp2 = 15 - i;
+    tmp3 = (i > 7) ? tmp2 : tmp1;
+    tmp4 = (x[1]*tmp2 + x[2]*tmp3); tmp4 = tmp4*tmp4;
+    fjrow[0] = -1.;
+    fjrow[1] = tmp1*tmp2/tmp4;
+    fjrow[2] = tmp1*tmp3/tmp4;
+  }
   return 0;
 }

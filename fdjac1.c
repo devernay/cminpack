@@ -136,9 +136,10 @@ int __cminpack_func__(fdjac1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, 
                 h = eps;
             }
             x[j] = temp + h;
-            /* the last parameter of fcn_nn() is set to 2 to tell calls
-               made to compute the function from calls made to compute
-               the Jacobian (see fcn() in tlmfdrv.c) */
+            /* the last parameter of fcn_nn() is set to 2 to differentiate
+               calls made to compute the function from calls made to compute
+               the Jacobian (see fcn() in examples/hybdrv.c, and how njev
+               is used to compute the number of Jacobian evaluations) */
             iflag = fcn_nn(p, n, &x[1], &wa1[1], 2);
             if (iflag < 0) {
                 return iflag;

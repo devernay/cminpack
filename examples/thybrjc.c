@@ -37,10 +37,9 @@ int main()
 
 /*      the following starting values provide a rough solution. */
 
-  for (j=1; j<=9; j++)
-    {
-      x[j-1] = -1.;
-    }
+  for (j=1; j<=9; j++) {
+    x[j-1] = -1.;
+  }
 
   ldfjac = 9;
   lr = 45;
@@ -53,10 +52,9 @@ int main()
 
   maxfev = 1000;
   mode = 2;
-  for (j=1; j<=9; j++)
-    {
-      diag[j-1] = 1.;
-    }
+  for (j=1; j<=9; j++) {
+    diag[j-1] = 1.;
+  }
   factor = 1.e2;
   nprint = 0;
 
@@ -93,7 +91,7 @@ int fcn(void *p, int n, const real *x, real *fvec, real *fjac, int ldfjac,
   assert(n == 9);
 
   int j, k;
-  real one=1, temp, temp1, temp2, three=3, two=2, zero=0, four=4;
+  real temp, temp1, temp2;
 #ifdef BOX_CONSTRAINTS
   const real *xmin = ((fcndata_t*)p)->xmin;
   const real *xmax = ((fcndata_t*)p)->xmax;
@@ -110,46 +108,45 @@ int fcn(void *p, int n, const real *x, real *fvec, real *fjac, int ldfjac,
   x = xb;
 #endif
 
-  if (iflag == 0)
-    {
-      /*      insert print statements here when nprint is positive. */
-      return 0;
-    }
+  if (iflag == 0) {
+    /*      insert print statements here when nprint is positive. */
+    /* if the nprint parameter to lmder is positive, the function is
+       called every nprint iterations with iflag=0, so that the
+       function may perform special operations, such as printing
+       residuals. */
+    return 0;
+  }
 
-  if (iflag != 2) 
-    {
-      for (k = 0; k < n; ++k)
-	{
-	  temp = (three - two*x[k])*x[k];
-	  temp1 = zero;
-	  if (k != 0) temp1 = x[k-1];
-	  temp2 = zero;
-	  if (k != n-1) temp2 = x[k+1];
-	  fvec[k] = temp - temp1 - two*temp2 + one;
-	}
+  if (iflag != 2) {
+    /* compute residuals */
+    for (k = 0; k < n; ++k) {
+      temp = (3 - 2*x[k])*x[k];
+      temp1 = 0;
+      if (k != 0) temp1 = x[k-1];
+      temp2 = 0;
+      if (k != n-1) temp2 = x[k+1];
+      fvec[k] = temp - temp1 - 2*temp2 + 1;
     }
-  else
-    {
-      for (k = 0; k < n; ++k)
-	{
-	  for (j = 0; j < n; ++j)
-	    {
-	      fjac[k + ldfjac*j] = zero;
-	    }
-	  fjac[k + ldfjac*k] = three - four*x[k];
-	  if (k != 0) {
-            fjac[k + ldfjac*(k-1)] = -one;
-          }
-	  if (k != n-1) {
-            fjac[k + ldfjac*(k+1)] = -two;
-          }
-#        ifdef BOX_CONSTRAINTS
-          for (j = 0; j < n; ++j) {
-	    fjac[k + ldfjac*j] *= jacfac[j];
-	  }
-#        endif
-	}      
-    }
+  } else {
+    /* compute Jacobian */
+    for (k = 0; k < n; ++k) {
+      for (j = 0; j < n; ++j) {
+        fjac[k + ldfjac*j] = 0;
+      }
+      fjac[k + ldfjac*k] = 3 - 4*x[k];
+      if (k != 0) {
+        fjac[k + ldfjac*(k-1)] = -1;
+      }
+      if (k != n-1) {
+        fjac[k + ldfjac*(k+1)] = -2;
+      }
+#    ifdef BOX_CONSTRAINTS
+      for (j = 0; j < n; ++j) {
+        fjac[k + ldfjac*j] *= jacfac[j];
+      }
+#    endif
+    }      
+  }
   return 0;
 }
 

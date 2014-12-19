@@ -68,13 +68,21 @@ int main()
       fvecp[i] = fvecp[i] - fvec[i];
     }
   printf("\n      fvec\n");  
-  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", (double)fvec[i]);
+  for (i=0; i<m; ++i) {
+    printf("%s%15.7g",i%3==0?"\n     ":"", (double)fvec[i]);
+  }
   printf("\n      fvecp - fvec\n");  
-  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", (double)fvecp[i]);
+  for (i=0; i<m; ++i) {
+    printf("%s%15.7g",i%3==0?"\n     ":"", (double)fvecp[i]);
+  }
   printf("\n      errd\n");  
-  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", (double)errd[i]);
+  for (i=0; i<m; ++i) {
+    printf("%s%15.7g",i%3==0?"\n     ":"", (double)errd[i]);
+  }
   printf("\n      err\n");  
-  for (i=0; i<m; ++i) printf("%s%15.7g",i%3==0?"\n     ":"", (double)err[i]);
+  for (i=0; i<m; ++i) {
+    printf("%s%15.7g",i%3==0?"\n     ":"", (double)err[i]);
+  }
   printf("\n");
   return 0;
 }
@@ -91,19 +99,21 @@ int fcn(void *p, int m, int n, const real *x, real *fvec, int iflag)
   assert(m == 15 && n == 3);
   (void)p;
 
-  if (iflag == 0)
-    {
-      /*      insert print statements here when nprint is positive. */
-      return 0;
-    }
-  for (i = 1; i <= 15; i++)
-    {
-      tmp1 = i;
-      tmp2 = 16 - i;
-      tmp3 = tmp1;
-      if (i > 8) tmp3 = tmp2;
-      fvec[i-1] = y[i-1] - (x[1-1] + tmp1/(x[2-1]*tmp2 + x[3-1]*tmp3));
-    }
+  if (iflag == 0) {
+    /*      insert print statements here when nprint is positive. */
+    /* if the nprint parameter to lmder is positive, the function is
+       called every nprint iterations with iflag=0, so that the
+       function may perform special operations, such as printing
+       residuals. */
+    return 0;
+  }
+  for (i = 1; i <= 15; i++) {
+    tmp1 = i;
+    tmp2 = 16 - i;
+    tmp3 = tmp1;
+    if (i > 8) tmp3 = tmp2;
+    fvec[i-1] = y[i-1] - (x[1-1] + tmp1/(x[2-1]*tmp2 + x[3-1]*tmp3));
+  }
   return 0;
 }
 
@@ -116,16 +126,15 @@ void fcnjac(int m, int n, const real *x,
   real tmp1, tmp2, tmp3, tmp4;
   assert(m == 15 && n == 3);
 
-  for (i = 1; i <= 15; i++)
-    {
-      tmp1 = i;
-      tmp2 = 16 - i;
+  for (i = 1; i <= 15; i++) {
+    tmp1 = i;
+    tmp2 = 16 - i;
 	  
-      tmp3 = tmp1;
-      if (i > 8) tmp3 = tmp2;
-      tmp4 = (x[2-1]*tmp2 + x[3-1]*tmp3); tmp4=tmp4*tmp4;
-      fjac[i-1+ ldfjac*(1-1)] = -1.;
-      fjac[i-1+ ldfjac*(2-1)] = tmp1*tmp2/tmp4;
-      fjac[i-1+ ldfjac*(3-1)] = tmp1*tmp3/tmp4;
-    }
+    tmp3 = tmp1;
+    if (i > 8) tmp3 = tmp2;
+    tmp4 = (x[2-1]*tmp2 + x[3-1]*tmp3); tmp4=tmp4*tmp4;
+    fjac[i-1+ ldfjac*(1-1)] = -1.;
+    fjac[i-1+ ldfjac*(2-1)] = tmp1*tmp2/tmp4;
+    fjac[i-1+ ldfjac*(3-1)] = tmp1*tmp3/tmp4;
+  }
 }

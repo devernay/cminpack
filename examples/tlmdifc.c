@@ -122,17 +122,20 @@ int fcn(void *p, int m, int n, const real *x, real *fvec, int iflag)
   const real *y = ((fcndata_t*)p)->y;
   assert(m == 15 && n == 3);
 
-  if (iflag == 0)
-    {
-      /*      insert print statements here when nprint is positive. */
-      return 0;
-    }
-  for (i = 0; i < 15; ++i)
-    {
-      tmp1 = i + 1;
-      tmp2 = 15 - i;
-      tmp3 = (i > 7) ? tmp2 : tmp1;
-      fvec[i] = y[i] - (x[0] + tmp1/(x[1]*tmp2 + x[2]*tmp3));
-    }
+  if (iflag == 0) {
+    /*      insert print statements here when nprint is positive. */
+    /* if the nprint parameter to lmdif is positive, the function is
+       called every nprint iterations with iflag=0, so that the
+       function may perform special operations, such as printing
+       residuals. */
+    return 0;
+  }
+  /* compute residuals */
+  for (i = 0; i < 15; ++i) {
+    tmp1 = i + 1;
+    tmp2 = 15 - i;
+    tmp3 = (i > 7) ? tmp2 : tmp1;
+    fvec[i] = y[i] - (x[0] + tmp1/(x[1]*tmp2 + x[2]*tmp3));
+  }
   return 0;
 }

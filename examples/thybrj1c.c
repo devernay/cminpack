@@ -19,10 +19,9 @@ int main()
 
 /*      the following starting values provide a rough solution. */
 
-  for (j=1; j<=9; j++)
-    {
-      x[j-1] = -1.;
-    }
+  for (j=1; j<=9; j++) {
+    x[j-1] = -1.;
+  }
 
   ldfjac = 9;
   lwa = 99;
@@ -40,7 +39,9 @@ int main()
   printf("      final l2 norm of the residuals%15.7g\n\n", (double)fnorm);
   printf("      exit parameter                %10i\n\n", info);
   printf("      final approximate solution\n");
-  for (j=1; j<=n; j++) printf("%s%15.7g", j%3==1?"\n     ":"", (double)x[j-1]);
+  for (j=1; j<=n; j++) {
+    printf("%s%15.7g", j%3==1?"\n     ":"", (double)x[j-1]);
+  }
   printf("\n");
 
   return 0;
@@ -52,34 +53,43 @@ int fcn(void *p, int n, const real *x, real *fvec, real *fjac, int ldfjac,
   /*      subroutine fcn for hybrj1 example. */
 
   int j, k;
-  real one=1, temp, temp1, temp2, three=3, two=2, zero=0, four=4;
+  real temp, temp1, temp2;
   (void)p;
   assert(n == 9);
 
-  if (iflag != 2)
-    {
-      for (k = 1; k <= n; k++)
-	{
-	  temp = (three - two*x[k-1])*x[k-1];
-	  temp1 = zero;
-	  if (k != 1) temp1 = x[k-1-1];
-	  temp2 = zero;
-	  if (k != n) temp2 = x[k+1-1];
-	  fvec[k-1] = temp - temp1 - two*temp2 + one;
-	}
+  if (iflag == 0) {
+    /*      insert print statements here when nprint is positive. */
+    /* if the nprint parameter to lmder is positive, the function is
+       called every nprint iterations with iflag=0, so that the
+       function may perform special operations, such as printing
+       residuals. */
+    return;
+  }
+
+  if (iflag != 2) {
+    /* compute residuals */
+    for (k = 1; k <= n; k++) {
+      temp = (3 - 2*x[k-1])*x[k-1];
+      temp1 = 0;
+      if (k != 1) temp1 = x[k-1-1];
+      temp2 = 0;
+      if (k != n) temp2 = x[k+1-1];
+      fvec[k-1] = temp - temp1 - 2*temp2 + 1;
     }
-  else
-    {
-     for (k = 1; k <= n; k++)
-       {
-	 for (j = 1; j <= n; j++)
-	   {
-	     fjac[k-1 + ldfjac*(j-1)] = zero;
-	   }
-         fjac[k-1 + ldfjac*(k-1)] = three - four*x[k-1];
-         if (k != 1) fjac[k-1 + ldfjac*(k-1-1)] = -one;
-         if (k != n) fjac[k-1 + ldfjac*(k+1-1)] = -two;
-       }
+  } else {
+    /* compute Jacobian */
+    for (k = 1; k <= n; k++) {
+      for (j = 1; j <= n; j++) {
+        fjac[k-1 + ldfjac*(j-1)] = 0;
+      }
+      fjac[k-1 + ldfjac*(k-1)] = 3 - 4*x[k-1];
+      if (k != 1) {
+        fjac[k-1 + ldfjac*(k-1-1)] = -1;
+      }
+      if (k != n) {
+        fjac[k-1 + ldfjac*(k+1-1)] = -2;
+      }
     }
+  }
   return 0;
 }

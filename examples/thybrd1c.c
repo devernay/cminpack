@@ -48,19 +48,27 @@ int fcn(void *p, int n, const real *x, real *fvec, int iflag)
 /*      subroutine fcn for hybrd1 example. */
 
   int k;
-  real one=1, temp, temp1, temp2, three=3, two=2, zero=0;
+  real temp, temp1, temp2;
   (void)p;
-  (void)iflag;
   assert(n == 9);
 
-  for (k=1; k <= n; k++)
-    {
-      temp = (three - two*x[k-1])*x[k-1];
-      temp1 = zero;
-      if (k != 1) temp1 = x[k-1-1];
-      temp2 = zero;
-      if (k != n) temp2 = x[k+1-1];
-      fvec[k-1] = temp - temp1 - two*temp2 + one;
-    }
+  if (iflag == 0) {
+    /*      insert print statements here when nprint is positive. */
+    /* if the nprint parameter to lmder is positive, the function is
+       called every nprint iterations with iflag=0, so that the
+       function may perform special operations, such as printing
+       residuals. */
+    return;
+  }
+
+  /* compute residuals */
+  for (k=1; k <= n; k++) {
+    temp = (3 - 2*x[k-1])*x[k-1];
+    temp1 = 0;
+    if (k != 1) temp1 = x[k-1-1];
+    temp2 = 0;
+    if (k != n) temp2 = x[k+1-1];
+    fvec[k-1] = temp - temp1 - 2*temp2 + 1;
+  }
   return 0;
 }
