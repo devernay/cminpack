@@ -94,6 +94,7 @@ int __cminpack_func__(covar1)(int m, int n, real fsumsq, real *r, int ldr,
 	r[k + k * ldr] = 1. / r[k + k * ldr];
 	if (k > 0) {
             for (j = 0; j < k; ++j) {
+                // coverity[copy_paste_error]
                 temp = r[k + k * ldr] * r[j + k * ldr];
                 r[j + k * ldr] = 0.;
                 for (i = 0; i <= j; ++i) {

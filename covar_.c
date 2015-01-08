@@ -116,6 +116,7 @@ void __minpack_func__(covar)(const int *n, real *r__, const int *ldr,
 	}
 	i__2 = km1;
 	for (j = 1; j <= i__2; ++j) {
+	    // coverity[copy_paste_error]
 	    temp = r__[k + k * r_dim1] * r__[j + k * r_dim1];
 	    r__[j + k * r_dim1] = 0.;
 	    i__3 = j;
