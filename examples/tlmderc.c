@@ -138,7 +138,7 @@ int main()
     for (i=0; i<n; ++i) {
       for (j=0; j<n; ++j) {
         if (fjac[i*ldfjac+j] != fjac1[i*ldfjac+j]*covfac) {
-          printf("component (%d,%d) of covar and covar1 differ: %g != %g\n", i, j, (double)fjac[i*ldfjac+j], (double)fjac1[i*ldfjac+j]*covfac);
+          printf("component (%d,%d) of covar and covar1 differ: %g != %g\n", i, j, (double)fjac[i*ldfjac+j], (double)(fjac1[i*ldfjac+j]*covfac));
         }
       }
     }

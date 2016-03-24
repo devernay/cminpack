@@ -29,6 +29,12 @@ FMINPACK=../fortran/libminpack.a
 CFLAGS_L=$(CFLAGS) -DUSE_CBLAS -DUSE_LAPACK
 LDADD_L=-framework vecLib
 
+### configuration for the long double version:
+## make LIBSUFFIX=s CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_long_double__"
+#LIBSUFFIX=s
+#CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_long_double__"
+CFLAGS_LD=$(CFLAGS) -D__cminpack_long_double__
+
 ### configuration for the float (single precision) version:
 ## make LIBSUFFIX=s CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_float__"
 #LIBSUFFIX=s
@@ -154,7 +160,7 @@ all:
 	@echo "make ftestdrv: calling FORTRAN CMINPACK from FORTRAN"
 	@echo "make ftestdrv MINPACK=../fortran/libminpack.a: calling FORTRAN MINPACK from FORTRAN"
 
-.PHONY: test ctest ctestdrv ctestlmdrv ctesthydrv ctestchkdrv ftest ftestdrv ftestlmdrv ftesthydrv ftestchkdrv check checkdoublec checkdouble checkfloatc checkfloat checkhalfc checkhalf checkfail clean veryclean
+.PHONY: test ctest ctestdrv ctestlmdrv ctesthydrv ctestchkdrv ftest ftestdrv ftestlmdrv ftesthydrv ftestchkdrv check checkdoublec checkdouble checklongdoublec checklongdouble checkfloatc checkfloat checkhalfc checkhalf checkfail clean veryclean
 
 test: $(MINPACK) $(PGM)
 	@echo "*** Running standard tests (calling MINPACK from C using $(MINPACK))"
@@ -210,7 +216,7 @@ ftestchkdrv: $(LIBSUFFIX)chkdrv
 	@echo "*** Running CHK tests (calling MINPACK from FORTRAN using $(MINPACK))"
 	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
 
-check: checkdouble checkfloat
+check: checkdouble checklongdouble checkfloat
 
 checkdoublec:
 	$(MAKE) -C .. double 2>&1 > /dev/null
@@ -232,6 +238,21 @@ checkdouble: checkdoublec ../fortran/libminpack.a
 	$(MAKE) clean LIBSUFFIX= 2>&1 > /dev/null
 	-$(MAKE) -k testdrv LIBSUFFIX=
 	$(MAKE) clean 2>&1 > /dev/null
+
+checklongdoublec:
+	$(MAKE) -C .. longdouble 2>&1 > /dev/null
+	$(MAKE) clean LIBSUFFIX=ld 2>&1 > /dev/null
+	-$(MAKE) ctest LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)" 
+	$(MAKE) clean LIBSUFFIX=ld 2>&1 > /dev/null
+	-$(MAKE) -k ctestdrv LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)"
+	$(MAKE) clean LIBSUFFIX=ld 2>&1 > /dev/null
+
+checklongdouble: checklongdoublec
+	$(MAKE) clean LIBSUFFIX=ld 2>&1 > /dev/null
+	-$(MAKE) test LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)"
+	$(MAKE) clean LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)" 2>&1 > /dev/null
+	-$(MAKE) -k testdrv LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)" 
+	$(MAKE) clean LIBSUFFIX=ld 2>&1 > /dev/null
 
 checkfloatc:
 	$(MAKE) -C .. float 2>&1 > /dev/null
