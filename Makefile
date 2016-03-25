@@ -13,6 +13,12 @@ CFLAGS= -O3 -g -Wall -Wextra
 CFLAGS_L=$(CFLAGS) -DUSE_CBLAS -DUSE_LAPACK
 LDADD_L=-framework Accelerate
 
+### configuration for the long double version:
+## make LIBSUFFIX=s CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_long_double__"
+#LIBSUFFIX=s
+#CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_long_double__"
+CFLAGS_LD=$(CFLAGS) -D__cminpack_long_double__
+
 ### configuration for the float (single precision) version:
 ## make LIBSUFFIX=s CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_float__"
 #LIBSUFFIX=s
@@ -57,6 +63,9 @@ double:
 lapack:
 	$(MAKE) LIBSUFFIX=l CFLAGS="$(CFLAGS_L)" LDADD="$(LDADD_L)"
 
+longdouble:
+	$(MAKE) LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)"
+
 float:
 	$(MAKE) LIBSUFFIX=s CFLAGS="$(CFLAGS_F)"
 
@@ -77,6 +86,9 @@ checkdouble:
 
 checklapack:
 	$(MAKE) -C examples checklapack
+
+checklongdouble:
+	$(MAKE) -C examples checklongdouble
 
 checkfloat:
 	$(MAKE) -C examples checkfloat
@@ -116,7 +128,7 @@ veryclean: clean
 	make -C examples veryclean LIBSUFFIX=l
 	make -C fortran veryclean
 
-.PHONY: dist all double lapack float half fortran cuda check checkhalf checkfail clean veryclean
+.PHONY: dist all double lapack longdouble float half fortran cuda check checkhalf checkfail clean veryclean
 
 # COPYFILE_DISABLE=true and COPY_EXTENDED_ATTRIBUTES_DISABLE=true are used to disable inclusion
 # of file attributes (._* files) in the tar file on MacOSX

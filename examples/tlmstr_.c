@@ -63,7 +63,7 @@ int main()
     printf("      covariance\n");
     for (i=0; i<n; ++i) {
       for (j=0; j<n; ++j) {
-        printf("%s%15.7g", j%3==0?"\n     ":"", (double)fjac[i*ldfjac+j]*covfac);
+        printf("%s%15.7g", j%3==0?"\n     ":"", (double)(fjac[i*ldfjac+j]*covfac));
       }
     }
     printf("\n");

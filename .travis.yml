@@ -20,7 +20,7 @@ before_install:
   - sudo pip install cpp-coveralls
 
 script:
-  - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then make double float lapack fortran half LDADD_L='-llapack -lblas'; fi
+  - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then make double longdouble float lapack fortran half LDADD_L='-llapack -lblas'; fi
   - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then make check; fi
   - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then make -C examples checklapack LDADD_L='-llapack -lblas'; fi
   - if [ "$COVERITY_SCAN_BRANCH" != 1 ]; then make veryclean; fi
@@ -46,6 +46,6 @@ addons:
     #build_command_prepend: ./configure
     # This command will be added as an argument to "cov-build" to compile
     # the project for analysis
-    build_command:   "make double float lapack fortran half"
+    build_command:   "make double longdouble float lapack fortran half"
     # Pattern to match selecting branches that will run analysis
     branch_pattern: coverity_scan
