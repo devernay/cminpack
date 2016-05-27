@@ -28,6 +28,10 @@ The project home page is at http://devernay.free.fr/hacks/cminpack/
 History
 ------
 
+* version 1.3.5 (28/05/2016):
+ - Add support for compiling a long double version (Makefile only).
+ - CMake: static libraries now have the suffix _s.
+
 * version 1.3.4 (28/05/2014):
  - Add FindCMinpack.cmake cmake module. If you use the cmake install,
    finding CMinpack from your `CMakeLists.txt` is as easy as

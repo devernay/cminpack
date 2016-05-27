@@ -91,7 +91,8 @@ which came from the FORTRAN version:</p>
 
 <h3>Download</h3>
 <ul>
-  <li><a href="cminpack-1.3.4.tar.gz">cminpack-1.3.4.tar.gz</a> (latest version)</li> 
+  <li><a href="cminpack-1.3.5.tar.gz">cminpack-1.3.5.tar.gz</a> (latest version)</li> 
+  <li><a href="cminpack-1.3.4.tar.gz">cminpack-1.3.4.tar.gz</a></li> 
   <li><a href="cminpack-1.3.3.tar.gz">cminpack-1.3.3.tar.gz</a></li> 
   <li><a href="cminpack-1.3.2.tar.gz">cminpack-1.3.2.tar.gz</a></li> 
   <li><a href="cminpack-1.3.1.tar.gz">cminpack-1.3.1.tar.gz</a></li> 
@@ -136,7 +137,7 @@ which came from the FORTRAN version:</p>
 </ul>
 
 <h2>References</h2>
-<h3>LMDER/LMDIF</h3
+<h3>LMDER/LMDIF</h3>
 <ul>
   <li>J.J. Mor&eacute;, "The Levenberg-Marquardt Algorithm, Implementation and Theory", in Numerical Analysis, G.A. Watson, Editor, Lecture Notes in Mathematics 630, Springer-Verlag, 1977. <a href="http://dx.doi.org/10.1007/BFb0067700">doi:10.1007/BFb0067700</a></li>
 </ul>
@@ -199,11 +200,12 @@ which came from the FORTRAN version:</p>
   <li><a href="http://www.ittvis.com/">IDL</a>, add-on <a href="http://cow.physics.wisc.edu/~craigm/idl/fitting.html">MPFIT</a>.</li>
   <li><a href="http://www.r-project.org/">R</a> has the <a href="http://cran.r-project.org/web/packages/minpack.lm/index.html"">minpack.lm</a> package.</li>
   <li><a href="http://eigen.tuxfamily.org/">Eigen</a> has an unsupported <a href="http://eigen.tuxfamily.org/dox/unsupported/group__NonLinearOptimization__Module.html">nonlinear optimization</a> module based on cminpack.</li>
-  <li><a href="http://code.google.com/p/ceres-solver/">Ceres Solver</a> is not derived from MINPACK, but is probably the best available alternative, with lots of features (New BSD License).</li>
+  <li><a href="http://ceres-solver.org/">Ceres Solver</a> is not derived from MINPACK, but is probably the best available alternative, with lots of features (New BSD License).</li>
 </ul>
 
 <h2>History</h2>
 <ul>
+  <li>1.3.5 (28/05/2016): Add support for compiling a long double version (Makefile only). CMake: static libraries now have the suffix <code>_s</code>.</li>
   <li>1.3.4 (28/05/2014): Add FindCMinpack.cmake cmake module. If you use the cmake install, finding CMinpack from your <code>CMakeLists.txt</code> (especially on Windows) is as easy as <code>find_package(CMinpack)</code>.</li>
   <li>1.3.3 (04/02/2014): Add documentation and examples abouts how to add box constraints to the variables. <a href="https://travis-ci.org/devernay/cminpack">Continuous integration using Travis CI</a></li>
   <li>1.3.2 (27/10/2013): Minor change in the CMake build: also set SOVERSION.</li>
@@ -226,7 +228,7 @@ which came from the FORTRAN version:</p>
 
 <h2>Future work</h2>
 
-<p>There is now a very powerful alternative to MINPACK, which is the <a href="http://code.google.com/p/ceres-solver/">Ceres Solver</a>. You may want to consider using Ceres for any new project.</p>
+<p>There is now a very powerful alternative to MINPACK, which is the <a href="http://ceres-solver.org/">Ceres Solver</a>. You may want to consider using Ceres for any new project.</p>
 
 <p>The main feature that's missing on cminpack is the possibility to add constraints on variables. Simple boundary constraints should be enough, as implemented in <a href="http://www.alglib.net/optimization/levenbergmarquardt.php">ALGLIB</a> or <a href="http://www.physics.wisc.edu/~craigm/idl/cmpfit.html">MPFIT</a>.<p>
 
