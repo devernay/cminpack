@@ -20,7 +20,7 @@ ADD_CUSTOM_TARGET (uninstall "${CMAKE_COMMAND}" -P
 
 enable_testing()
 
-if (OS_LINUX)
+if (OS_LINUX OR ${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
   option (USE_FPIC "Use the -fPIC compiler flag." ON)
 else (OS_LINUX)
   option (USE_FPIC "Use the -fPIC compiler flag." OFF)
@@ -59,6 +59,10 @@ set (cminpack_hdrs
     cminpack.h minpack.h)
 
 add_library (cminpack ${cminpack_srcs})
+
+if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
+  TARGET_LINK_LIBRARIES(cminpack m)
+endif()
 
 install (TARGETS cminpack 
    LIBRARY DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
