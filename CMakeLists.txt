@@ -40,10 +40,9 @@ else ()
   endif(WIN32)
 endif ()
 
-#set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../build)
+option(USE_BLAS "Compile cminpack using a blas library if possible" ON)
 
-add_subdirectory (cmake)
-add_subdirectory (examples)
+#set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../build)
 
 set (cminpack_srcs
   cminpack.h cminpackP.h
@@ -64,7 +63,20 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
   TARGET_LINK_LIBRARIES(cminpack m)
 endif()
 
-install (TARGETS cminpack 
+# Link with a BLAS library if requested
+if (USE_BLAS)
+  if (NOT BUILD_SHARED_LIBS)
+    set(BLA_STATIC True)
+  endif()
+  find_package(BLAS)
+  if (BLAS_FOUND)
+    target_link_libraries(cminpack PUBLIC ${BLAS_LIBRARIES})
+    set_target_properties(cminpack PROPERTIES LINK_FLAGS "${BLAS_LINKER_FLAGS}")
+    target_compile_definitions(cminpack PUBLIC -DUSE_CBLAS)
+  endif()
+endif()
+
+install (TARGETS cminpack
    LIBRARY DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
    ARCHIVE DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
    RUNTIME DESTINATION bin COMPONENT library)
@@ -77,3 +89,5 @@ endif ()
 
 set_target_properties(cminpack PROPERTIES VERSION ${CMINPACK_VERSION} SOVERSION ${CMINPACK_SOVERSION})
 
+add_subdirectory (cmake)
+add_subdirectory (examples)

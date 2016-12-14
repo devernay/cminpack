@@ -8,6 +8,5 @@ Name: @PROJECT_NAME@
 Description: @PKG_DESC@
 Version: @CMINPACK_VERSION@
 Requires: @PKG_EXTERNAL_DEPS@
-Libs: -L${libdir} -lcminpack -lm
-Cflags: -I${includedir}
-
+Libs: -L${libdir} -lcminpack -lm @PC_CMINPACK_LIBRARIES@ @PC_CMINPACK_LDFLAGS@
+Cflags: -I${includedir} @CMINPACK_CFLAGS@
