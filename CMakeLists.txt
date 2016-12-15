@@ -44,6 +44,10 @@ option(USE_BLAS "Compile cminpack using a blas library if possible" ON)
 
 #set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../build)
 
+if(NOT "${CMAKE_PREFIX_PATH}" STREQUAL "")
+  include_directories(${CMAKE_PREFIX_PATH}/include)
+endif()
+
 set (cminpack_srcs
   cminpack.h cminpackP.h
   chkder.c  enorm.c   hybrd1.c  hybrj.c   lmdif1.c  lmstr1.c  qrfac.c   r1updt.c
