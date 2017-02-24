@@ -28,6 +28,9 @@ The project home page is at http://devernay.free.fr/hacks/cminpack/
 History
 ------
 
+* version 1.3.6 (24/02/2017):
+ - Fix FreeBSD build.
+
 * version 1.3.5 (28/05/2016):
  - Add support for compiling a long double version (Makefile only).
  - CMake: static libraries now have the suffix _s.
