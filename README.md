@@ -29,7 +29,9 @@ History
 ------
 
 * version 1.3.6 (24/02/2017):
- - Fix FreeBSD build.
+ - Fix FreeBSD build #6
+ - CMake: install CMinpackConfig.cmake rather than FindCMinpack.cmake #8
+ - CMake: add option USE_BLAS to compile with blas #9
 
 * version 1.3.5 (28/05/2016):
  - Add support for compiling a long double version (Makefile only).
