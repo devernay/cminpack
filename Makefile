@@ -41,6 +41,7 @@ CFLAGS_H=$(CFLAGS) -I/opt/local/include -D__cminpack_half__
 LDADD_H=-L/opt/local/lib -lHalf
 CC_H=$(CXX)
 
+LIB  = libcminpack$(LIBSUFFIX).a
 SRCS = $(wildcard *.c)
 OBJS = $(addprefix $(LIBSUFFIX),$(SRCS:.c=.o))
 
@@ -50,7 +51,7 @@ DESTDIR ?= /usr/local
 #  Static library target
 #
 
-all: libcminpack$(LIBSUFFIX).a
+all: $(LIB)
 
 double:
 	$(MAKE) LIBSUFFIX=
@@ -94,24 +95,24 @@ checkhalf:
 checkfail:
 	$(MAKE) -C examples checkfail
 
-
-libcminpack$(LIBSUFFIX).a:  $(OBJS)
-	ar r $@ $(OBJS); ranlib $@
+$(LIB): $(OBJS)
+	ar r $@ $^
+	ranlib $@
 
 $(LIBSUFFIX)%.o: %.c
 	${CC} ${CFLAGS} -c -o $@ $<
 
-install: libcminpack$(LIBSUFFIX).a
-	cp libcminpack$(LIBSUFFIX).a ${DESTDIR}/lib
-	chmod 644 ${DESTDIR}/lib/libcminpack$(LIBSUFFIX).a
-	ranlib -t ${DESTDIR}/lib/libcminpack$(LIBSUFFIX).a # might be unnecessary
+install: $(LIB)
+	cp $(LIB) ${DESTDIR}/lib
+	chmod 644 ${DESTDIR}/lib/$(LIB)
+	ranlib -t ${DESTDIR}/lib/$(LIB) # might be unnecessary
 	cp minpack.h ${DESTDIR}/include
 	chmod 644 ${DESTDIR}/include/minpack.h
 	cp cminpack.h ${DESTDIR}/include
 	chmod 644 ${DESTDIR}/include/cminpack.h
 
 clean:
-	rm -f $(OBJS) libcminpack$(LIBSUFFIX).a
+	rm -f $(OBJS) $(LIB)
 	make -C examples clean
 	make -C fortran clean
 
