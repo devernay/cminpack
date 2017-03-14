@@ -41,19 +41,8 @@ CFLAGS_H=$(CFLAGS) -I/opt/local/include -D__cminpack_half__
 LDADD_H=-L/opt/local/lib -lHalf
 CC_H=$(CXX)
 
-OBJS = \
-$(LIBSUFFIX)chkder.o  $(LIBSUFFIX)enorm.o   $(LIBSUFFIX)hybrd1.o  $(LIBSUFFIX)hybrj.o  \
-$(LIBSUFFIX)lmdif1.o  $(LIBSUFFIX)lmstr1.o  $(LIBSUFFIX)qrfac.o   $(LIBSUFFIX)r1updt.o \
-$(LIBSUFFIX)dogleg.o  $(LIBSUFFIX)fdjac1.o  $(LIBSUFFIX)hybrd.o   $(LIBSUFFIX)lmder1.o \
-$(LIBSUFFIX)lmdif.o   $(LIBSUFFIX)lmstr.o   $(LIBSUFFIX)qrsolv.o  $(LIBSUFFIX)rwupdt.o \
-$(LIBSUFFIX)dpmpar.o  $(LIBSUFFIX)fdjac2.o  $(LIBSUFFIX)hybrj1.o  $(LIBSUFFIX)lmder.o \
-$(LIBSUFFIX)lmpar.o   $(LIBSUFFIX)qform.o   $(LIBSUFFIX)r1mpyq.o  $(LIBSUFFIX)covar.o $(LIBSUFFIX)covar1.o \
-$(LIBSUFFIX)chkder_.o $(LIBSUFFIX)enorm_.o  $(LIBSUFFIX)hybrd1_.o $(LIBSUFFIX)hybrj_.o \
-$(LIBSUFFIX)lmdif1_.o $(LIBSUFFIX)lmstr1_.o $(LIBSUFFIX)qrfac_.o  $(LIBSUFFIX)r1updt_.o \
-$(LIBSUFFIX)dogleg_.o $(LIBSUFFIX)fdjac1_.o $(LIBSUFFIX)hybrd_.o  $(LIBSUFFIX)lmder1_.o \
-$(LIBSUFFIX)lmdif_.o  $(LIBSUFFIX)lmstr_.o  $(LIBSUFFIX)qrsolv_.o $(LIBSUFFIX)rwupdt_.o \
-$(LIBSUFFIX)dpmpar_.o $(LIBSUFFIX)fdjac2_.o $(LIBSUFFIX)hybrj1_.o $(LIBSUFFIX)lmder_.o \
-$(LIBSUFFIX)lmpar_.o  $(LIBSUFFIX)qform_.o  $(LIBSUFFIX)r1mpyq_.o $(LIBSUFFIX)covar_.o
+SRCS = $(wildcard *.c)
+OBJS = $(addprefix $(LIBSUFFIX),$(SRCS:.c=.o))
 
 # target dir for install
 DESTDIR ?= /usr/local
