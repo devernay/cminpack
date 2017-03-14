@@ -1,8 +1,14 @@
 PACKAGE=cminpack
-VERSION=1.3.5
+VERSION=1.3.7-dev
 
-CC=gcc
-CFLAGS= -O3 -g -Wall -Wextra
+### Use compiler flags from environment if available, else set defaults:
+ifneq ($(origin CC), environment)
+CC = gcc
+endif
+
+ifneq ($(origin CFLAGS), environment)
+CFLAGS = -O3 -g -Wall -Wextra
+endif
 
 ### The default configuration is to compile the double precision version
 
@@ -50,7 +56,7 @@ $(LIBSUFFIX)dpmpar_.o $(LIBSUFFIX)fdjac2_.o $(LIBSUFFIX)hybrj1_.o $(LIBSUFFIX)lm
 $(LIBSUFFIX)lmpar_.o  $(LIBSUFFIX)qform_.o  $(LIBSUFFIX)r1mpyq_.o $(LIBSUFFIX)covar_.o
 
 # target dir for install
-DESTDIR=/usr/local
+DESTDIR ?= /usr/local
 #
 #  Static library target
 #
