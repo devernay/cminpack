@@ -96,33 +96,33 @@ checkfail:
 	$(MAKE) -C examples checkfail
 
 $(LIB): $(OBJS)
-	ar r $@ $^
+	$(AR) r $@ $^
 	ranlib $@
 
 $(LIBSUFFIX)%.o: %.c
-	${CC} ${CFLAGS} -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 install: $(LIB)
-	cp $(LIB) ${DESTDIR}/lib
-	chmod 644 ${DESTDIR}/lib/$(LIB)
-	ranlib -t ${DESTDIR}/lib/$(LIB) # might be unnecessary
-	cp minpack.h ${DESTDIR}/include
-	chmod 644 ${DESTDIR}/include/minpack.h
-	cp cminpack.h ${DESTDIR}/include
-	chmod 644 ${DESTDIR}/include/cminpack.h
+	cp $(LIB) $(DESTDIR)/lib
+	chmod 644 $(DESTDIR)/lib/$(LIB)
+	ranlib -t $(DESTDIR)/lib/$(LIB) # might be unnecessary
+	cp minpack.h $(DESTDIR)/include
+	chmod 644 $(DESTDIR)/include/minpack.h
+	cp cminpack.h $(DESTDIR)/include
+	chmod 644 $(DESTDIR)/include/cminpack.h
 
 clean:
-	rm -f $(OBJS) $(LIB)
-	make -C examples clean
-	make -C fortran clean
+	$(RM) -f $(OBJS) $(LIB)
+	$(MAKE) -C examples clean
+	$(MAKE) -C fortran clean
 
 veryclean: clean
-	rm -f *.o libcminpack*.a *.gcno *.gcda *~ #*#
-	make -C examples veryclean
-	make -C examples veryclean LIBSUFFIX=s
-	make -C examples veryclean LIBSUFFIX=h
-	make -C examples veryclean LIBSUFFIX=l
-	make -C fortran veryclean
+	$(RM) -f *.o libcminpack*.a *.gcno *.gcda *~ #*#
+	$(MAKE) -C examples veryclean
+	$(MAKE) -C examples veryclean LIBSUFFIX=s
+	$(MAKE) -C examples veryclean LIBSUFFIX=h
+	$(MAKE) -C examples veryclean LIBSUFFIX=l
+	$(MAKE) -C fortran veryclean
 
 .PHONY: dist all double lapack longdouble float half fortran cuda check checkhalf checkfail clean veryclean
 
@@ -132,4 +132,4 @@ dist:
 	mkdir $(PACKAGE)-$(VERSION)
 	env COPYFILE_DISABLE=true COPY_EXTENDED_ATTRIBUTES_DISABLE=true tar --exclude-from dist-exclude --exclude $(PACKAGE)-$(VERSION) -cf - . | (cd $(PACKAGE)-$(VERSION); tar xf -)
 	tar zcvf $(PACKAGE)-$(VERSION).tar.gz $(PACKAGE)-$(VERSION)
-	rm -rf $(PACKAGE)-$(VERSION)
+	$(RM) -rf $(PACKAGE)-$(VERSION)
