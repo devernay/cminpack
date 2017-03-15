@@ -140,3 +140,7 @@ History
  - Added documentation from Debian man pages
  - Wrote pure C version
  - Added covar() and covar_(), and use it in tlmdef/tlmdif
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/devernay/cminpack/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
