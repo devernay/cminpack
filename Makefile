@@ -76,33 +76,11 @@ float:
 half:
 	$(MAKE) LIBSUFFIX=h CFLAGS="$(CFLAGS_H)" LDADD="$(LDADD_H)" CC="$(CC_H)"
 
-fortran:
-	$(MAKE) -C fortran
+fortran cuda:
+	$(MAKE) -C $@
 
-cuda:
-	$(MAKE) -C cuda
-
-check:
-	$(MAKE) -C examples check
-
-checkdouble:
-	$(MAKE) -C examples checkdouble
-
-checklapack:
-	$(MAKE) -C examples checklapack
-
-checklongdouble:
-	$(MAKE) -C examples checklongdouble
-
-checkfloat:
-	$(MAKE) -C examples checkfloat
-
-checkhalf:
-	$(MAKE) -C examples checkhalf
-
-checkfail:
-	$(MAKE) -C examples checkfail
-
+check checkdouble checklapack checklongdouble checkfloat checkhalf checkfail:
+	$(MAKE) -C examples $@
 
 $(LIB):  $(OBJS)
 	$(AR) r $@ $(OBJS); $(RANLIB) $@
