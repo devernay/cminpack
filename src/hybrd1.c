@@ -62,57 +62,60 @@
  */
 __cminpack_attr__
 int __cminpack_func__(hybrd1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, real *
-        fvec, real tol, real *wa, int lwa)
+                              fvec, real tol, real *wa, int lwa)
 {
-    /* Initialized data */
+	/* Initialized data */
 
-    const real factor = 100.;
+	const real factor = 100.;
 
-    /* Local variables */
-    int j, ml, lr, mu, mode, nfev;
-    real xtol;
-    int index;
-    real epsfcn;
-    int maxfev, nprint;
-    int info;
+	/* Local variables */
+	int j, ml, lr, mu, mode, nfev;
+	real xtol;
+	int index;
+	real epsfcn;
+	int maxfev, nprint;
+	int info;
 
-    /* Parameter adjustments */
-    --fvec;
-    --x;
-    --wa;
+	/* Parameter adjustments */
+	--fvec;
+	--x;
+	--wa;
 
-    /* Function Body */
+	/* Function Body */
 
-/*     check the input parameters for errors. */
+	/*     check the input parameters for errors. */
 
-    if (n <= 0 || tol < 0. || lwa < n * (n * 3 + 13) / 2) {
-        return 0;
-    }
+	if (n <= 0 || tol < 0. || lwa < n * (n * 3 + 13) / 2)
+	{
+		return 0;
+	}
 
-/*     call hybrd. */
+	/*     call hybrd. */
 
-    maxfev = (n + 1) * 200;
-    xtol = tol;
-    ml = n - 1;
-    mu = n - 1;
-    epsfcn = 0.;
-    mode = 2;
-    for (j = 1; j <= n; ++j) {
-        wa[j] = 1.;
-    }
-    nprint = 0;
-    lr = n * (n + 1) / 2;
-    index = n * 6 + lr;
-    info = __cminpack_func__(hybrd)(__cminpack_param_fcn_nn__ p, n, &x[1], &fvec[1], xtol, maxfev, ml, mu, epsfcn, &
-            wa[1], mode, factor, nprint, &nfev, &wa[index + 1], n, &
-            wa[n * 6 + 1], lr, &wa[n + 1], &wa[(n << 1) + 1], &wa[n * 3
-            + 1], &wa[(n << 2) + 1], &wa[n * 5 + 1]);
-    if (info == 5) {
-        info = 4;
-    }
-    return info;
+	maxfev = (n + 1) * 200;
+	xtol = tol;
+	ml = n - 1;
+	mu = n - 1;
+	epsfcn = 0.;
+	mode = 2;
+	for (j = 1; j <= n; ++j)
+	{
+		wa[j] = 1.;
+	}
+	nprint = 0;
+	lr = n * (n + 1) / 2;
+	index = n * 6 + lr;
+	info = __cminpack_func__(hybrd)(__cminpack_param_fcn_nn__ p, n, &x[1], &fvec[1], xtol, maxfev, ml, mu, epsfcn, &
+	                                wa[1], mode, factor, nprint, &nfev, &wa[index + 1], n, &
+	                                wa[n * 6 + 1], lr, &wa[n + 1], &wa[(n << 1) + 1], &wa[n * 3
+	                                        + 1], &wa[(n << 2) + 1], &wa[n * 5 + 1]);
+	if (info == 5)
+	{
+		info = 4;
+	}
+	return info;
 
-/*     last card of subroutine hybrd1. */
+	/*     last card of subroutine hybrd1. */
 
 } /* hybrd1_ */
 

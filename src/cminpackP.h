@@ -9,22 +9,22 @@
 #define __CMINPACKP_H__
 
 #ifndef __CMINPACK_H__
-#error "cminpackP.h in an internal cminpack header, and must be included after all other headers (including cminpack.h)"
+	#error "cminpackP.h in an internal cminpack header, and must be included after all other headers (including cminpack.h)"
 #endif
 
 #if (defined (USE_CBLAS) || defined (USE_LAPACK)) && !defined (__cminpack_double__)
-#error "cminpack can use cblas and lapack only in double precision mode"
+	#error "cminpack can use cblas and lapack only in double precision mode"
 #endif
 
 #ifdef USE_CBLAS
-#ifdef __APPLE__
-#include <Accelerate/Accelerate.h>
+	#ifdef __APPLE__
+		#include <Accelerate/Accelerate.h>
+	#else
+		#include <cblas.h>
+	#endif
+	#define __cminpack_enorm__(n,x) cblas_dnrm2(n,x,1)
 #else
-#include <cblas.h>
-#endif
-#define __cminpack_enorm__(n,x) cblas_dnrm2(n,x,1)
-#else
-#define __cminpack_enorm__(n,x) __cminpack_func__(enorm)(n,x)
+	#define __cminpack_enorm__(n,x) __cminpack_func__(enorm)(n,x)
 #endif
 
 #ifdef USE_LAPACK
@@ -32,19 +32,19 @@
 #include <Accelerate/Accelerate.h>
 #else
 #if defined(__LP64__) /* In LP64 match sizes with the 32 bit ABI */
-typedef int 		__CLPK_integer;
-typedef int 		__CLPK_logical;
-typedef float 		__CLPK_real;
-typedef double 		__CLPK_doublereal;
-typedef __CLPK_logical 	(*__CLPK_L_fp)();
-typedef int 		__CLPK_ftnlen;
+	typedef int 		__CLPK_integer;
+	typedef int 		__CLPK_logical;
+	typedef float 		__CLPK_real;
+	typedef double 		__CLPK_doublereal;
+	typedef __CLPK_logical 	(*__CLPK_L_fp)();
+	typedef int 		__CLPK_ftnlen;
 #else
-typedef long int 	__CLPK_integer;
-typedef long int 	__CLPK_logical;
-typedef float 		__CLPK_real;
-typedef double 		__CLPK_doublereal;
-typedef __CLPK_logical 	(*__CLPK_L_fp)();
-typedef long int 	__CLPK_ftnlen;
+	typedef long int 	__CLPK_integer;
+	typedef long int 	__CLPK_logical;
+	typedef float 		__CLPK_real;
+	typedef double 		__CLPK_doublereal;
+	typedef __CLPK_logical 	(*__CLPK_L_fp)();
+	typedef long int 	__CLPK_ftnlen;
 #endif
 //extern void dlartg_(double *f, double *g, double *cs, double *sn, double *r__);
 int dlartg_(__CLPK_doublereal *f, __CLPK_doublereal *g, __CLPK_doublereal *cs,
