@@ -10,9 +10,9 @@
 
 __cminpack_attr__
 void __cminpack_func__(lmpar)(int n, real *r, int ldr,
-	const int *ipvt, const real *diag, const real *qtb, real delta,
-	real *par, real *x, real *sdiag, real *wa1,
-	real *wa2)
+        const int *ipvt, const real *diag, const real *qtb, real delta,
+        real *par, real *x, real *sdiag, real *wa1,
+        real *wa2)
 {
     /* Initialized data */
 
@@ -136,13 +136,13 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
 
     nsing = n;
     for (j = 0; j < n; ++j) {
-	wa1[j] = qtb[j];
-	if (r[j + j * ldr] == 0. && nsing == n) {
-	    nsing = j;
-	}
-	if (nsing < n) {
-	    wa1[j] = 0.;
-	}
+        wa1[j] = qtb[j];
+        if (r[j + j * ldr] == 0. && nsing == n) {
+            nsing = j;
+        }
+        if (nsing < n) {
+            wa1[j] = 0.;
+        }
     }
 # ifdef USE_CBLAS
     cblas_dtrsv(CblasColMajor, CblasUpper, CblasNoTrans, CblasNonUnit, nsing, r, ldr, wa1, 1);
@@ -163,8 +163,8 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
     }
 # endif
     for (j = 0; j < n; ++j) {
-	l = ipvt[j]-1;
-	x[l] = wa1[j];
+        l = ipvt[j]-1;
+        x[l] = wa1[j];
     }
 
 /*     initialize the iteration counter. */
@@ -173,12 +173,12 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
 
     iter = 0;
     for (j = 0; j < n; ++j) {
-	wa2[j] = diag[j] * x[j];
+        wa2[j] = diag[j] * x[j];
     }
     dxnorm = __cminpack_enorm__(n, wa2);
     fp = dxnorm - delta;
     if (fp <= p1 * delta) {
-	goto TERMINATE;
+        goto TERMINATE;
     }
 
 /*     if the jacobian is not rank deficient, the newton */
@@ -330,7 +330,7 @@ TERMINATE:
 /*     termination. */
 
     if (iter == 0) {
-	*par = 0.;
+        *par = 0.;
     }
 
 /*     last card of subroutine lmpar. */

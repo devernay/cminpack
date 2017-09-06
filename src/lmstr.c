@@ -10,11 +10,11 @@
 
 __cminpack_attr__
 int __cminpack_func__(lmstr)(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x,
-	real *fvec, real *fjac, int ldfjac, real ftol,
-	real xtol, real gtol, int maxfev, real *
-	diag, int mode, real factor, int nprint,
-	int *nfev, int *njev, int *ipvt, real *qtf,
-	real *wa1, real *wa2, real *wa3, real *wa4)
+        real *fvec, real *fjac, int ldfjac, real ftol,
+        real xtol, real gtol, int maxfev, real *
+        diag, int mode, real factor, int nprint,
+        int *nfev, int *njev, int *ipvt, real *qtf,
+        real *wa1, real *wa2, real *wa3, real *wa4)
 {
     /* Initialized data */
 
@@ -37,7 +37,7 @@ int __cminpack_func__(lmstr)(__cminpack_decl_fcnderstr_mn__ void *p, int m, int 
     real delta = 0.;
     real ratio;
     real fnorm, gnorm, pnorm, xnorm = 0., fnorm1, actred, dirder,
-	    epsmch, prered;
+            epsmch, prered;
     int info;
 
 /*     ********** */
@@ -229,8 +229,8 @@ int __cminpack_func__(lmstr)(__cminpack_decl_fcnderstr_mn__ void *p, int m, int 
 /*     check the input parameters for errors. */
 
     if (n <= 0 || m < n || ldfjac < n || ftol < 0. || xtol < 0. ||
-	    gtol < 0. || maxfev <= 0 || factor <= 0.) {
-	goto TERMINATE;
+            gtol < 0. || maxfev <= 0 || factor <= 0.) {
+        goto TERMINATE;
     }
     if (mode == 2) {
         for (j = 0; j < n; ++j) {
@@ -246,7 +246,7 @@ int __cminpack_func__(lmstr)(__cminpack_decl_fcnderstr_mn__ void *p, int m, int 
     iflag = fcnderstr_mn(p, m, n, x, fvec, wa3, 1);
     *nfev = 1;
     if (iflag < 0) {
-	goto TERMINATE;
+        goto TERMINATE;
     }
     fnorm = __cminpack_enorm__(m, fvec);
 
@@ -537,10 +537,10 @@ TERMINATE:
 /*     termination, either normal or user imposed. */
 
     if (iflag < 0) {
-	info = iflag;
+        info = iflag;
     }
     if (nprint > 0) {
-	fcnderstr_mn(p, m, n, x, fvec, wa3, 0);
+        fcnderstr_mn(p, m, n, x, fvec, wa3, 0);
     }
     return info;
 

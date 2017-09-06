@@ -1,6 +1,6 @@
 /* hybrj1.f -- translated by f2c (version 20020621).
    You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
+        -lf2c -lm   (in that order)
 */
 
 #include "minpack.h"
@@ -14,8 +14,8 @@
 
 __minpack_attr__
 void __minpack_func__(hybrj1)(__minpack_decl_fcnder_nn__ const int *n, real *x, real *
-	fvec, real *fjac, const int *ldfjac, const real *tol, int *
-	info, real *wa, const int *lwa)
+        fvec, real *fjac, const int *ldfjac, const real *tol, int *
+        info, real *wa, const int *lwa)
 {
     /* Initialized data */
 
@@ -135,7 +135,7 @@ void __minpack_func__(hybrj1)(__minpack_decl_fcnder_nn__ const int *n, real *x, 
 /*     check the input parameters for errors. */
 
     if (*n <= 0 || *ldfjac < *n || *tol < 0. || *lwa < *n * (*n + 13) / 2) {
-	/* goto L20; */
+        /* goto L20; */
         return;
     }
 
@@ -146,17 +146,17 @@ void __minpack_func__(hybrj1)(__minpack_decl_fcnder_nn__ const int *n, real *x, 
     mode = 2;
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	wa[j] = 1.;
+        wa[j] = 1.;
 /* L10: */
     }
     nprint = 0;
     lr = *n * (*n + 1) / 2;
     __minpack_func__(hybrj)(__minpack_param_fcnder_nn__ n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &xtol, &
-	    maxfev, &wa[1], &mode, &factor, &nprint, info, &nfev, &njev, &wa[*
-	    n * 6 + 1], &lr, &wa[*n + 1], &wa[(*n << 1) + 1], &wa[*n * 3 + 1],
-	     &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);
+            maxfev, &wa[1], &mode, &factor, &nprint, info, &nfev, &njev, &wa[*
+            n * 6 + 1], &lr, &wa[*n + 1], &wa[(*n << 1) + 1], &wa[*n * 3 + 1],
+             &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);
     if (*info == 5) {
-	*info = 4;
+        *info = 4;
     }
 /* L20: */
     return;

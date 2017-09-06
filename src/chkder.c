@@ -13,8 +13,8 @@
 
 __cminpack_attr__
 void __cminpack_func__(chkder)(int m, int n, const real *x,
-	real *fvec, real *fjac, int ldfjac, real *xp,
-	real *fvecp, int mode, real *err)
+        real *fvec, real *fjac, int ldfjac, real *xp,
+        real *fvecp, int mode, real *err)
 {
     /* Local variables */
     int i, j;
@@ -128,33 +128,33 @@ void __cminpack_func__(chkder)(int m, int n, const real *x,
     epsf = factor * epsmch;
     epslog = log10e * log(eps);
     for (i = 0; i < m; ++i) {
-	err[i] = 0.;
+        err[i] = 0.;
     }
     for (j = 0; j < n; ++j) {
-	temp = fabs(x[j]);
-	if (temp == 0.) {
-	    temp = 1.;
-	}
-	for (i = 0; i < m; ++i) {
-	    err[i] += temp * fjac[i + j * ldfjac];
-	}
+        temp = fabs(x[j]);
+        if (temp == 0.) {
+            temp = 1.;
+        }
+        for (i = 0; i < m; ++i) {
+            err[i] += temp * fjac[i + j * ldfjac];
+        }
     }
     for (i = 0; i < m; ++i) {
-	temp = 1.;
-	if (fvec[i] != 0. && fvecp[i] != 0. &&
+        temp = 1.;
+        if (fvec[i] != 0. && fvecp[i] != 0. &&
             fabs(fvecp[i] - fvec[i]) >= epsf * fabs(fvec[i]))
-		 {
-	    temp = eps * fabs((fvecp[i] - fvec[i]) / eps - err[i])
-		    / (fabs(fvec[i]) +
+                 {
+            temp = eps * fabs((fvecp[i] - fvec[i]) / eps - err[i])
+                    / (fabs(fvec[i]) +
                        fabs(fvecp[i]));
-	}
-	err[i] = 1.;
-	if (temp > epsmch && temp < eps) {
-	    err[i] = (log10e * log(temp) - epslog) / epslog;
-	}
-	if (temp >= eps) {
-	    err[i] = 0.;
-	}
+        }
+        err[i] = 1.;
+        if (temp > epsmch && temp < eps) {
+            err[i] = (log10e * log(temp) - epslog) / epslog;
+        }
+        if (temp >= eps) {
+            err[i] = 0.;
+        }
     }
 
 /*     last card of subroutine chkder. */

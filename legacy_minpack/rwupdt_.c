@@ -1,7 +1,7 @@
 
 /* rwupdt.f -- translated by f2c (version 20020621).
    You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
+        -lf2c -lm   (in that order)
 */
 
 #include "minpack.h"
@@ -15,8 +15,8 @@
 
 __minpack_attr__
 void __minpack_func__(rwupdt)(const int *n, real *r__, const int *ldr,
-	const real *w, real *b, real *alpha, real *cos__,
-	real *sin__)
+        const real *w, real *b, real *alpha, real *cos__,
+        real *sin__)
 {
     /* Initialized data */
 
@@ -105,58 +105,58 @@ void __minpack_func__(rwupdt)(const int *n, real *r__, const int *ldr,
 
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	rowj = w[j];
-	jm1 = j - 1;
+        rowj = w[j];
+        jm1 = j - 1;
 
 /*        apply the previous transformations to */
 /*        r(i,j), i=1,2,...,j-1, and to w(j). */
 
-	if (jm1 < 1) {
-	    goto L20;
-	}
-	i__2 = jm1;
-	for (i__ = 1; i__ <= i__2; ++i__) {
-	    temp = cos__[i__] * r__[i__ + j * r_dim1] + sin__[i__] * rowj;
-	    rowj = -sin__[i__] * r__[i__ + j * r_dim1] + cos__[i__] * rowj;
-	    r__[i__ + j * r_dim1] = temp;
+        if (jm1 < 1) {
+            goto L20;
+        }
+        i__2 = jm1;
+        for (i__ = 1; i__ <= i__2; ++i__) {
+            temp = cos__[i__] * r__[i__ + j * r_dim1] + sin__[i__] * rowj;
+            rowj = -sin__[i__] * r__[i__ + j * r_dim1] + cos__[i__] * rowj;
+            r__[i__ + j * r_dim1] = temp;
 /* L10: */
-	}
+        }
 L20:
 
 /*        determine a givens rotation which eliminates w(j). */
 
-	cos__[j] = 1.;
-	sin__[j] = 0.;
-	if (rowj == 0.) {
-	    goto L50;
-	}
-	if ((d__1 = r__[j + j * r_dim1], abs(d__1)) >= abs(rowj)) {
-	    goto L30;
-	}
-	cotan = r__[j + j * r_dim1] / rowj;
+        cos__[j] = 1.;
+        sin__[j] = 0.;
+        if (rowj == 0.) {
+            goto L50;
+        }
+        if ((d__1 = r__[j + j * r_dim1], abs(d__1)) >= abs(rowj)) {
+            goto L30;
+        }
+        cotan = r__[j + j * r_dim1] / rowj;
 /* Computing 2nd power */
-	d__1 = cotan;
-	sin__[j] = p5 / sqrt(p25 + p25 * (d__1 * d__1));
-	cos__[j] = sin__[j] * cotan;
-	goto L40;
+        d__1 = cotan;
+        sin__[j] = p5 / sqrt(p25 + p25 * (d__1 * d__1));
+        cos__[j] = sin__[j] * cotan;
+        goto L40;
 L30:
-	tan__ = rowj / r__[j + j * r_dim1];
+        tan__ = rowj / r__[j + j * r_dim1];
 /* Computing 2nd power */
-	d__1 = tan__;
-	cos__[j] = p5 / sqrt(p25 + p25 * (d__1 * d__1));
-	sin__[j] = cos__[j] * tan__;
+        d__1 = tan__;
+        cos__[j] = p5 / sqrt(p25 + p25 * (d__1 * d__1));
+        sin__[j] = cos__[j] * tan__;
 L40:
 
 /*        apply the current transformation to r(j,j), b(j), and alpha. */
 
-	r__[j + j * r_dim1] = cos__[j] * r__[j + j * r_dim1] + sin__[j] *
-		rowj;
-	temp = cos__[j] * b[j] + sin__[j] * *alpha;
-	*alpha = -sin__[j] * b[j] + cos__[j] * *alpha;
-	b[j] = temp;
+        r__[j + j * r_dim1] = cos__[j] * r__[j + j * r_dim1] + sin__[j] *
+                rowj;
+        temp = cos__[j] * b[j] + sin__[j] * *alpha;
+        *alpha = -sin__[j] * b[j] + cos__[j] * *alpha;
+        b[j] = temp;
 L50:
 /* L60: */
-	;
+        ;
     }
     return;
 

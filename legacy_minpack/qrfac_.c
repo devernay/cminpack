@@ -1,6 +1,6 @@
 /* qrfac.f -- translated by f2c (version 20020621).
    You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
+        -lf2c -lm   (in that order)
 */
 
 #include "minpack.h"
@@ -14,8 +14,8 @@
 
 __minpack_attr__
 void __minpack_func__(qrfac)(const int *m, const int *n, real *a, const int *
-	lda, const int *pivot, int *ipvt, const int *lipvt, real *rdiag,
-	 real *acnorm, real *wa)
+        lda, const int *pivot, int *ipvt, const int *lipvt, real *rdiag,
+         real *acnorm, real *wa)
 {
     /* Initialized data */
 
@@ -130,12 +130,12 @@ void __minpack_func__(qrfac)(const int *m, const int *n, real *a, const int *
 
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	acnorm[j] = __minpack_func__(enorm)(m, &a[j * a_dim1 + 1]);
-	rdiag[j] = acnorm[j];
-	wa[j] = rdiag[j];
-	if (*pivot) {
-	    ipvt[j] = j;
-	}
+        acnorm[j] = __minpack_func__(enorm)(m, &a[j * a_dim1 + 1]);
+        rdiag[j] = acnorm[j];
+        wa[j] = rdiag[j];
+        if (*pivot) {
+            ipvt[j] = j;
+        }
 /* L10: */
     }
 
@@ -144,99 +144,99 @@ void __minpack_func__(qrfac)(const int *m, const int *n, real *a, const int *
     minmn = min(*m,*n);
     i__1 = minmn;
     for (j = 1; j <= i__1; ++j) {
-	if (! (*pivot)) {
-	    goto L40;
-	}
+        if (! (*pivot)) {
+            goto L40;
+        }
 
 /*        bring the column of largest norm into the pivot position. */
 
-	kmax = j;
-	i__2 = *n;
-	for (k = j; k <= i__2; ++k) {
-	    if (rdiag[k] > rdiag[kmax]) {
-		kmax = k;
-	    }
+        kmax = j;
+        i__2 = *n;
+        for (k = j; k <= i__2; ++k) {
+            if (rdiag[k] > rdiag[kmax]) {
+                kmax = k;
+            }
 /* L20: */
-	}
-	if (kmax == j) {
-	    goto L40;
-	}
-	i__2 = *m;
-	for (i__ = 1; i__ <= i__2; ++i__) {
-	    temp = a[i__ + j * a_dim1];
-	    a[i__ + j * a_dim1] = a[i__ + kmax * a_dim1];
-	    a[i__ + kmax * a_dim1] = temp;
+        }
+        if (kmax == j) {
+            goto L40;
+        }
+        i__2 = *m;
+        for (i__ = 1; i__ <= i__2; ++i__) {
+            temp = a[i__ + j * a_dim1];
+            a[i__ + j * a_dim1] = a[i__ + kmax * a_dim1];
+            a[i__ + kmax * a_dim1] = temp;
 /* L30: */
-	}
-	rdiag[kmax] = rdiag[j];
-	wa[kmax] = wa[j];
-	k = ipvt[j];
-	ipvt[j] = ipvt[kmax];
-	ipvt[kmax] = k;
+        }
+        rdiag[kmax] = rdiag[j];
+        wa[kmax] = wa[j];
+        k = ipvt[j];
+        ipvt[j] = ipvt[kmax];
+        ipvt[kmax] = k;
 L40:
 
 /*        compute the householder transformation to reduce the */
 /*        j-th column of a to a multiple of the j-th unit vector. */
 
-	i__2 = *m - j + 1;
-	ajnorm = __minpack_func__(enorm)(&i__2, &a[j + j * a_dim1]);
-	if (ajnorm == 0.) {
-	    goto L100;
-	}
-	if (a[j + j * a_dim1] < 0.) {
-	    ajnorm = -ajnorm;
-	}
-	i__2 = *m;
-	for (i__ = j; i__ <= i__2; ++i__) {
-	    a[i__ + j * a_dim1] /= ajnorm;
+        i__2 = *m - j + 1;
+        ajnorm = __minpack_func__(enorm)(&i__2, &a[j + j * a_dim1]);
+        if (ajnorm == 0.) {
+            goto L100;
+        }
+        if (a[j + j * a_dim1] < 0.) {
+            ajnorm = -ajnorm;
+        }
+        i__2 = *m;
+        for (i__ = j; i__ <= i__2; ++i__) {
+            a[i__ + j * a_dim1] /= ajnorm;
 /* L50: */
-	}
-	a[j + j * a_dim1] += 1.;
+        }
+        a[j + j * a_dim1] += 1.;
 
 /*        apply the transformation to the remaining columns */
 /*        and update the norms. */
 
-	jp1 = j + 1;
-	if (*n < jp1) {
-	    goto L100;
-	}
-	i__2 = *n;
-	for (k = jp1; k <= i__2; ++k) {
-	    sum = 0.;
-	    i__3 = *m;
-	    for (i__ = j; i__ <= i__3; ++i__) {
-		sum += a[i__ + j * a_dim1] * a[i__ + k * a_dim1];
+        jp1 = j + 1;
+        if (*n < jp1) {
+            goto L100;
+        }
+        i__2 = *n;
+        for (k = jp1; k <= i__2; ++k) {
+            sum = 0.;
+            i__3 = *m;
+            for (i__ = j; i__ <= i__3; ++i__) {
+                sum += a[i__ + j * a_dim1] * a[i__ + k * a_dim1];
 /* L60: */
-	    }
-	    temp = sum / a[j + j * a_dim1];
-	    i__3 = *m;
-	    for (i__ = j; i__ <= i__3; ++i__) {
-		a[i__ + k * a_dim1] -= temp * a[i__ + j * a_dim1];
+            }
+            temp = sum / a[j + j * a_dim1];
+            i__3 = *m;
+            for (i__ = j; i__ <= i__3; ++i__) {
+                a[i__ + k * a_dim1] -= temp * a[i__ + j * a_dim1];
 /* L70: */
-	    }
-	    if (! (*pivot) || rdiag[k] == 0.) {
-		goto L80;
-	    }
-	    temp = a[j + k * a_dim1] / rdiag[k];
+            }
+            if (! (*pivot) || rdiag[k] == 0.) {
+                goto L80;
+            }
+            temp = a[j + k * a_dim1] / rdiag[k];
 /* Computing MAX */
 /* Computing 2nd power */
-	    d__3 = temp;
-	    d__1 = 0., d__2 = 1. - d__3 * d__3;
-	    rdiag[k] *= sqrt((max(d__1,d__2)));
+            d__3 = temp;
+            d__1 = 0., d__2 = 1. - d__3 * d__3;
+            rdiag[k] *= sqrt((max(d__1,d__2)));
 /* Computing 2nd power */
-	    d__1 = rdiag[k] / wa[k];
-	    if (p05 * (d__1 * d__1) > epsmch) {
-		goto L80;
-	    }
-	    i__3 = *m - j;
-	    rdiag[k] = __minpack_func__(enorm)(&i__3, &a[jp1 + k * a_dim1]);
-	    wa[k] = rdiag[k];
+            d__1 = rdiag[k] / wa[k];
+            if (p05 * (d__1 * d__1) > epsmch) {
+                goto L80;
+            }
+            i__3 = *m - j;
+            rdiag[k] = __minpack_func__(enorm)(&i__3, &a[jp1 + k * a_dim1]);
+            wa[k] = rdiag[k];
 L80:
 /* L90: */
-	    ;
-	}
+            ;
+        }
 L100:
-	rdiag[j] = -ajnorm;
+        rdiag[j] = -ajnorm;
 /* L110: */
     }
     return;

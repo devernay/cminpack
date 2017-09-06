@@ -8,8 +8,8 @@
 
 __cminpack_attr__
 int __cminpack_func__(fdjac2)(__cminpack_decl_fcn_mn__ void *p, int m, int n, real *x,
-	const real *fvec, real *fjac, int ldfjac,
-	real epsfcn, real *wa)
+        const real *fvec, real *fjac, int ldfjac,
+        real epsfcn, real *wa)
 {
     /* Local variables */
     real h;
@@ -99,24 +99,24 @@ int __cminpack_func__(fdjac2)(__cminpack_decl_fcn_mn__ void *p, int m, int n, re
 
     eps = sqrt((max(epsfcn,epsmch)));
     for (j = 0; j < n; ++j) {
-	temp = x[j];
-	h = eps * fabs(temp);
-	if (h == 0.) {
-	    h = eps;
-	}
-	x[j] = temp + h;
+        temp = x[j];
+        h = eps * fabs(temp);
+        if (h == 0.) {
+            h = eps;
+        }
+        x[j] = temp + h;
         /* the last parameter of fcn_mn() is set to 2 to differentiate
            calls made to compute the function from calls made to compute
            the Jacobian (see fcn() in examples/lmfdrv.c, and how njev
            is used to compute the number of Jacobian evaluations) */
-	iflag = fcn_mn(p, m, n, x, wa, 2);
-	if (iflag < 0) {
+        iflag = fcn_mn(p, m, n, x, wa, 2);
+        if (iflag < 0) {
             return iflag;
-	}
-	x[j] = temp;
-	for (i = 0; i < m; ++i) {
-	    fjac[i + j * ldfjac] = (wa[i] - fvec[i]) / h;
-	}
+        }
+        x[j] = temp;
+        for (i = 0; i < m; ++i) {
+            fjac[i + j * ldfjac] = (wa[i] - fvec[i]) / h;
+        }
     }
     return 0;
 

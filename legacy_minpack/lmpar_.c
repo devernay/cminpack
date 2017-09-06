@@ -1,6 +1,6 @@
 /* lmpar.f -- translated by f2c (version 20020621).
    You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
+        -lf2c -lm   (in that order)
 */
 
 #include "minpack.h"
@@ -14,9 +14,9 @@
 
 __minpack_attr__
 void __minpack_func__(lmpar)(const int *n, real *r__, const int *ldr,
-	const int *ipvt, const real *diag, const real *qtb, const real *delta,
-	real *par, real *x, real *sdiag, real *wa1,
-	real *wa2)
+        const int *ipvt, const real *diag, const real *qtb, const real *delta,
+        real *par, real *x, real *sdiag, real *wa1,
+        real *wa2)
 {
     /* Table of constant values */
 
@@ -160,41 +160,41 @@ void __minpack_func__(lmpar)(const int *n, real *r__, const int *ldr,
     nsing = *n;
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	wa1[j] = qtb[j];
-	if (r__[j + j * r_dim1] == 0. && nsing == *n) {
-	    nsing = j - 1;
-	}
-	if (nsing < *n) {
-	    wa1[j] = 0.;
-	}
+        wa1[j] = qtb[j];
+        if (r__[j + j * r_dim1] == 0. && nsing == *n) {
+            nsing = j - 1;
+        }
+        if (nsing < *n) {
+            wa1[j] = 0.;
+        }
 /* L10: */
     }
     if (nsing < 1) {
-	goto L50;
+        goto L50;
     }
     i__1 = nsing;
     for (k = 1; k <= i__1; ++k) {
-	j = nsing - k + 1;
-	wa1[j] /= r__[j + j * r_dim1];
-	temp = wa1[j];
-	jm1 = j - 1;
-	if (jm1 < 1) {
-	    goto L30;
-	}
-	i__2 = jm1;
-	for (i__ = 1; i__ <= i__2; ++i__) {
-	    wa1[i__] -= r__[i__ + j * r_dim1] * temp;
+        j = nsing - k + 1;
+        wa1[j] /= r__[j + j * r_dim1];
+        temp = wa1[j];
+        jm1 = j - 1;
+        if (jm1 < 1) {
+            goto L30;
+        }
+        i__2 = jm1;
+        for (i__ = 1; i__ <= i__2; ++i__) {
+            wa1[i__] -= r__[i__ + j * r_dim1] * temp;
 /* L20: */
-	}
+        }
 L30:
 /* L40: */
-	;
+        ;
     }
 L50:
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	l = ipvt[j];
-	x[l] = wa1[j];
+        l = ipvt[j];
+        x[l] = wa1[j];
 /* L60: */
     }
 
@@ -205,13 +205,13 @@ L50:
     iter = 0;
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	wa2[j] = diag[j] * x[j];
+        wa2[j] = diag[j] * x[j];
 /* L70: */
     }
     dxnorm = __minpack_func__(enorm)(n, &wa2[1]);
     fp = dxnorm - *delta;
     if (fp <= p1 * *delta) {
-	goto L220;
+        goto L220;
     }
 
 /*     if the jacobian is not rank deficient, the newton */
@@ -220,28 +220,28 @@ L50:
 
     parl = 0.;
     if (nsing < *n) {
-	goto L120;
+        goto L120;
     }
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	l = ipvt[j];
-	wa1[j] = diag[l] * (wa2[l] / dxnorm);
+        l = ipvt[j];
+        wa1[j] = diag[l] * (wa2[l] / dxnorm);
 /* L80: */
     }
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	sum = 0.;
-	jm1 = j - 1;
-	if (jm1 < 1) {
-	    goto L100;
-	}
-	i__2 = jm1;
-	for (i__ = 1; i__ <= i__2; ++i__) {
-	    sum += r__[i__ + j * r_dim1] * wa1[i__];
+        sum = 0.;
+        jm1 = j - 1;
+        if (jm1 < 1) {
+            goto L100;
+        }
+        i__2 = jm1;
+        for (i__ = 1; i__ <= i__2; ++i__) {
+            sum += r__[i__ + j * r_dim1] * wa1[i__];
 /* L90: */
-	}
+        }
 L100:
-	wa1[j] = (wa1[j] - sum) / r__[j + j * r_dim1];
+        wa1[j] = (wa1[j] - sum) / r__[j + j * r_dim1];
 /* L110: */
     }
     temp = __minpack_func__(enorm)(n, &wa1[1]);
@@ -252,20 +252,20 @@ L120:
 
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	sum = 0.;
-	i__2 = j;
-	for (i__ = 1; i__ <= i__2; ++i__) {
-	    sum += r__[i__ + j * r_dim1] * qtb[i__];
+        sum = 0.;
+        i__2 = j;
+        for (i__ = 1; i__ <= i__2; ++i__) {
+            sum += r__[i__ + j * r_dim1] * qtb[i__];
 /* L130: */
-	}
-	l = ipvt[j];
-	wa1[j] = sum / diag[l];
+        }
+        l = ipvt[j];
+        wa1[j] = sum / diag[l];
 /* L140: */
     }
     gnorm = __minpack_func__(enorm)(n, &wa1[1]);
     paru = gnorm / *delta;
     if (paru == 0.) {
-	paru = dwarf / min(*delta,(real)p1);
+        paru = dwarf / min(*delta,(real)p1);
     }
 
 /*     if the input par lies outside of the interval (parl,paru), */
@@ -274,7 +274,7 @@ L120:
     *par = max(*par,parl);
     *par = min(*par,paru);
     if (*par == 0.) {
-	*par = gnorm / dxnorm;
+        *par = gnorm / dxnorm;
     }
 
 /*     beginning of an iteration. */
@@ -286,20 +286,20 @@ L150:
 
     if (*par == 0.) {
 /* Computing MAX */
-	d__1 = dwarf, d__2 = p001 * paru;
-	*par = max(d__1,d__2);
+        d__1 = dwarf, d__2 = p001 * paru;
+        *par = max(d__1,d__2);
     }
     temp = sqrt(*par);
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	wa1[j] = temp * diag[j];
+        wa1[j] = temp * diag[j];
 /* L160: */
     }
     __minpack_func__(qrsolv)(n, &r__[r_offset], ldr, &ipvt[1], &wa1[1], &qtb[1], &x[1], &sdiag[
-	    1], &wa2[1]);
+            1], &wa2[1]);
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	wa2[j] = diag[j] * x[j];
+        wa2[j] = diag[j] * x[j];
 /* L170: */
     }
     dxnorm = __minpack_func__(enorm)(n, &wa2[1]);
@@ -311,34 +311,34 @@ L150:
 /*        is zero or the number of iterations has reached 10. */
 
     if (abs(fp) <= p1 * *delta || (parl == 0. && fp <= temp && temp < 0.) ||
-	     iter == 10) {
-	goto L220;
+             iter == 10) {
+        goto L220;
     }
 
 /*        compute the newton correction. */
 
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	l = ipvt[j];
-	wa1[j] = diag[l] * (wa2[l] / dxnorm);
+        l = ipvt[j];
+        wa1[j] = diag[l] * (wa2[l] / dxnorm);
 /* L180: */
     }
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	wa1[j] /= sdiag[j];
-	temp = wa1[j];
-	jp1 = j + 1;
-	if (*n < jp1) {
-	    goto L200;
-	}
-	i__2 = *n;
-	for (i__ = jp1; i__ <= i__2; ++i__) {
-	    wa1[i__] -= r__[i__ + j * r_dim1] * temp;
+        wa1[j] /= sdiag[j];
+        temp = wa1[j];
+        jp1 = j + 1;
+        if (*n < jp1) {
+            goto L200;
+        }
+        i__2 = *n;
+        for (i__ = jp1; i__ <= i__2; ++i__) {
+            wa1[i__] -= r__[i__ + j * r_dim1] * temp;
 /* L190: */
-	}
+        }
 L200:
 /* L210: */
-	;
+        ;
     }
     temp = __minpack_func__(enorm)(n, &wa1[1]);
     parc = fp / *delta / temp / temp;
@@ -346,10 +346,10 @@ L200:
 /*        depending on the sign of the function, update parl or paru. */
 
     if (fp > 0.) {
-	parl = max(parl,*par);
+        parl = max(parl,*par);
     }
     if (fp < 0.) {
-	paru = min(paru,*par);
+        paru = min(paru,*par);
     }
 
 /*        compute an improved estimate for par. */
@@ -366,7 +366,7 @@ L220:
 /*     termination. */
 
     if (iter == 0) {
-	*par = 0.;
+        *par = 0.;
     }
     return;
 

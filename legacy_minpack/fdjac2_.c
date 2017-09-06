@@ -1,6 +1,6 @@
 /* fdjac2.f -- translated by f2c (version 20020621).
    You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
+        -lf2c -lm   (in that order)
 */
 
 #include "minpack.h"
@@ -13,8 +13,8 @@
 
 __minpack_attr__
 void __minpack_func__(fdjac2)(__minpack_decl_fcn_mn__ const int *m, const int *n, real *x,
-	const real *fvec, real *fjac, const int *ldfjac, int *iflag,
-	const real *epsfcn, real *wa)
+        const real *fvec, real *fjac, const int *ldfjac, int *iflag,
+        const real *epsfcn, real *wa)
 {
     /* Table of constant values */
 
@@ -120,23 +120,23 @@ void __minpack_func__(fdjac2)(__minpack_decl_fcn_mn__ const int *m, const int *n
     eps = sqrt((max(*epsfcn,epsmch)));
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	temp = x[j];
-	h__ = eps * fabs(temp);
-	if (h__ == 0.) {
-	    h__ = eps;
-	}
-	x[j] = temp + h__;
-	fcn_mn(m, n, &x[1], &wa[1], iflag);
-	if (*iflag < 0) {
-	    /* goto L30; */
+        temp = x[j];
+        h__ = eps * fabs(temp);
+        if (h__ == 0.) {
+            h__ = eps;
+        }
+        x[j] = temp + h__;
+        fcn_mn(m, n, &x[1], &wa[1], iflag);
+        if (*iflag < 0) {
+            /* goto L30; */
             return;
-	}
-	x[j] = temp;
-	i__2 = *m;
-	for (i__ = 1; i__ <= i__2; ++i__) {
-	    fjac[i__ + j * fjac_dim1] = (wa[i__] - fvec[i__]) / h__;
+        }
+        x[j] = temp;
+        i__2 = *m;
+        for (i__ = 1; i__ <= i__2; ++i__) {
+            fjac[i__ + j * fjac_dim1] = (wa[i__] - fvec[i__]) / h__;
 /* L10: */
-	}
+        }
 /* L20: */
     }
 /* L30: */

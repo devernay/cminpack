@@ -7,8 +7,8 @@
 
 __cminpack_attr__
 int __cminpack_func__(lmstr1)(__cminpack_decl_fcnderstr_mn__ void *p, int m, int n, real *x,
-	real *fvec, real *fjac, int ldfjac, real tol,
-	int *ipvt, real *wa, int lwa)
+        real *fvec, real *fjac, int ldfjac, real tol,
+        int *ipvt, real *wa, int lwa)
 {
     /* Initialized data */
 
@@ -157,11 +157,11 @@ int __cminpack_func__(lmstr1)(__cminpack_decl_fcnderstr_mn__ void *p, int m, int
     mode = 1;
     nprint = 0;
     info = __cminpack_func__(lmstr)(__cminpack_param_fcnderstr_mn__ p, m, n, x, fvec, fjac, ldfjac,
-	    ftol, xtol, gtol, maxfev, wa, mode, factor, nprint,
-	    &nfev, &njev, ipvt, &wa[n], &wa[(n << 1)], &
-	    wa[n * 3], &wa[(n << 2)], &wa[n * 5]);
+            ftol, xtol, gtol, maxfev, wa, mode, factor, nprint,
+            &nfev, &njev, ipvt, &wa[n], &wa[(n << 1)], &
+            wa[n * 3], &wa[(n << 2)], &wa[n * 5]);
     if (info == 8) {
-	info = 4;
+        info = 4;
     }
     return info;
 

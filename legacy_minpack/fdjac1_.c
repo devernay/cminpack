@@ -1,6 +1,6 @@
 /* fdjac1.f -- translated by f2c (version 20020621).
    You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
+        -lf2c -lm   (in that order)
 */
 
 #include "minpack.h"
@@ -13,8 +13,8 @@
 
 __minpack_attr__
 void __minpack_func__(fdjac1)(__minpack_decl_fcn_nn__ const int *n, real *x, const real *
-	fvec, real *fjac, const int *ldfjac, int *iflag, const int *ml,
-	const int *mu, const real *epsfcn, real *wa1, real *wa2)
+        fvec, real *fjac, const int *ldfjac, int *iflag, const int *ml,
+        const int *mu, const real *epsfcn, real *wa1, real *wa2)
 {
     /* Table of constant values */
 
@@ -133,29 +133,29 @@ void __minpack_func__(fdjac1)(__minpack_decl_fcn_nn__ const int *n, real *x, con
     eps = sqrt((max(*epsfcn,epsmch)));
     msum = *ml + *mu + 1;
     if (msum < *n) {
-	goto L40;
+        goto L40;
     }
 
 /*        computation of dense approximate jacobian. */
 
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	temp = x[j];
-	h__ = eps * fabs(temp);
-	if (h__ == 0.) {
-	    h__ = eps;
-	}
-	x[j] = temp + h__;
-	fcn_nn(n, &x[1], &wa1[1], iflag);
-	if (*iflag < 0) {
-	    goto L30;
-	}
-	x[j] = temp;
-	i__2 = *n;
-	for (i__ = 1; i__ <= i__2; ++i__) {
-	    fjac[i__ + j * fjac_dim1] = (wa1[i__] - fvec[i__]) / h__;
+        temp = x[j];
+        h__ = eps * fabs(temp);
+        if (h__ == 0.) {
+            h__ = eps;
+        }
+        x[j] = temp + h__;
+        fcn_nn(n, &x[1], &wa1[1], iflag);
+        if (*iflag < 0) {
+            goto L30;
+        }
+        x[j] = temp;
+        i__2 = *n;
+        for (i__ = 1; i__ <= i__2; ++i__) {
+            fjac[i__ + j * fjac_dim1] = (wa1[i__] - fvec[i__]) / h__;
 /* L10: */
-	}
+        }
 /* L20: */
     }
 L30:
@@ -167,40 +167,40 @@ L40:
 
     i__1 = msum;
     for (k = 1; k <= i__1; ++k) {
-	i__2 = *n;
-	i__3 = msum;
-	for (j = k; j <= i__2; j += i__3) {
-	    wa2[j] = x[j];
-	    h__ = eps * fabs(wa2[j]);
-	    if (h__ == 0.) {
-		h__ = eps;
-	    }
-	    x[j] = wa2[j] + h__;
+        i__2 = *n;
+        i__3 = msum;
+        for (j = k; j <= i__2; j += i__3) {
+            wa2[j] = x[j];
+            h__ = eps * fabs(wa2[j]);
+            if (h__ == 0.) {
+                h__ = eps;
+            }
+            x[j] = wa2[j] + h__;
 /* L60: */
-	}
-	fcn_nn(n, &x[1], &wa1[1], iflag);
-	if (*iflag < 0) {
-	    /* goto L100; */
+        }
+        fcn_nn(n, &x[1], &wa1[1], iflag);
+        if (*iflag < 0) {
+            /* goto L100; */
             return;
-	}
-	i__3 = *n;
-	i__2 = msum;
-	for (j = k; j <= i__3; j += i__2) {
-	    x[j] = wa2[j];
-	    h__ = eps * fabs(wa2[j]);
-	    if (h__ == 0.) {
-		h__ = eps;
-	    }
-	    i__4 = *n;
-	    for (i__ = 1; i__ <= i__4; ++i__) {
-		fjac[i__ + j * fjac_dim1] = 0.;
-		if (i__ >= j - *mu && i__ <= j + *ml) {
-		    fjac[i__ + j * fjac_dim1] = (wa1[i__] - fvec[i__]) / h__;
-		}
+        }
+        i__3 = *n;
+        i__2 = msum;
+        for (j = k; j <= i__3; j += i__2) {
+            x[j] = wa2[j];
+            h__ = eps * fabs(wa2[j]);
+            if (h__ == 0.) {
+                h__ = eps;
+            }
+            i__4 = *n;
+            for (i__ = 1; i__ <= i__4; ++i__) {
+                fjac[i__ + j * fjac_dim1] = 0.;
+                if (i__ >= j - *mu && i__ <= j + *ml) {
+                    fjac[i__ + j * fjac_dim1] = (wa1[i__] - fvec[i__]) / h__;
+                }
 /* L70: */
-	    }
+            }
 /* L80: */
-	}
+        }
 /* L90: */
     }
 /* L100: */

@@ -10,8 +10,8 @@
 
 __cminpack_attr__
 void __cminpack_func__(rwupdt)(int n, real *r, int ldr,
-	const real *w, real *b, real *alpha, real *cos,
-	real *sin)
+        const real *w, real *b, real *alpha, real *cos,
+        real *sin)
 {
     /* Initialized data */
 
@@ -98,13 +98,13 @@ void __cminpack_func__(rwupdt)(int n, real *r, int ldr,
     /* Function Body */
 
     for (j = 1; j <= n; ++j) {
-	rowj = w[j];
-	jm1 = j - 1;
+        rowj = w[j];
+        jm1 = j - 1;
 
 /*        apply the previous transformations to */
 /*        r(i,j), i=1,2,...,j-1, and to w(j). */
 
-	if (jm1 >= 1) {
+        if (jm1 >= 1) {
             for (i = 1; i <= jm1; ++i) {
                 temp = cos[i] * r[i + j * r_dim1] + sin[i] * rowj;
                 rowj = -sin[i] * r[i + j * r_dim1] + cos[i] * rowj;
@@ -114,9 +114,9 @@ void __cminpack_func__(rwupdt)(int n, real *r, int ldr,
 
 /*        determine a givens rotation which eliminates w(j). */
 
-	cos[j] = 1.;
-	sin[j] = 0.;
-	if (rowj != 0.) {
+        cos[j] = 1.;
+        sin[j] = 0.;
+        if (rowj != 0.) {
             if (fabs(r[j + j * r_dim1]) < fabs(rowj)) {
                 cotan = r[j + j * r_dim1] / rowj;
                 sin[j] = p5 / sqrt(p25 + p25 * (cotan * cotan));

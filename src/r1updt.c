@@ -10,7 +10,7 @@
 
 __cminpack_attr__
 void __cminpack_func__(r1updt)(int m, int n, real *s, int
-	ls, const real *u, real *v, real *w, int *sing)
+        ls, const real *u, real *v, real *w, int *sing)
 {
     /* Initialized data */
 
@@ -112,8 +112,8 @@ void __cminpack_func__(r1updt)(int m, int n, real *s, int
 
     l = jj;
     for (i = n; i <= m; ++i) {
-	w[i] = s[l];
-	++l;
+        w[i] = s[l];
+        ++l;
     }
 
 /*     rotate the vector v into a multiple of the n-th unit vector */
@@ -167,7 +167,7 @@ void __cminpack_func__(r1updt)(int m, int n, real *s, int
 /*     add the spike from the rank 1 update to w. */
 
     for (i = 1; i <= m; ++i) {
-	w[i] += v[n] * u[i];
+        w[i] += v[n] * u[i];
     }
 
 /*     eliminate the spike. */
@@ -224,11 +224,11 @@ void __cminpack_func__(r1updt)(int m, int n, real *s, int
 
     l = jj;
     for (i = n; i <= m; ++i) {
-	s[l] = w[i];
-	++l;
+        s[l] = w[i];
+        ++l;
     }
     if (s[jj] == 0.) {
-	*sing = TRUE_;
+        *sing = TRUE_;
     }
 
 /*     last card of subroutine r1updt. */

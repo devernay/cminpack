@@ -11,8 +11,8 @@
 
 __cminpack_attr__
 void __cminpack_func__(dogleg)(int n, const real *r, int lr,
-	const real *diag, const real *qtb, real delta, real *x,
-	real *wa1, real *wa2)
+        const real *diag, const real *qtb, real delta, real *x,
+        real *wa1, real *wa2)
 {
     /* System generated locals */
     real d1, d2, d3, d4;
@@ -99,19 +99,19 @@ void __cminpack_func__(dogleg)(int n, const real *r, int lr,
 
     jj = n * (n + 1) / 2 + 1;
     for (k = 1; k <= n; ++k) {
-	j = n - k + 1;
-	jp1 = j + 1;
-	jj -= k;
-	l = jj + 1;
-	sum = 0.;
-	if (n >= jp1) {
+        j = n - k + 1;
+        jp1 = j + 1;
+        jj -= k;
+        l = jj + 1;
+        sum = 0.;
+        if (n >= jp1) {
             for (i = jp1; i <= n; ++i) {
                 sum += r[l] * x[i];
                 ++l;
             }
         }
-	temp = r[jj];
-	if (temp == 0.) {
+        temp = r[jj];
+        if (temp == 0.) {
             l = j;
             for (i = 1; i <= j; ++i) {
                 /* Computing MAX */
@@ -124,14 +124,14 @@ void __cminpack_func__(dogleg)(int n, const real *r, int lr,
                 temp = epsmch;
             }
         }
-	x[j] = (qtb[j] - sum) / temp;
+        x[j] = (qtb[j] - sum) / temp;
     }
 
 /*     test whether the gauss-newton direction is acceptable. */
 
     for (j = 1; j <= n; ++j) {
-	wa1[j] = 0.;
-	wa2[j] = diag[j] * x[j];
+        wa1[j] = 0.;
+        wa2[j] = diag[j] * x[j];
     }
     qnorm = __cminpack_enorm__(n, &wa2[1]);
     if (qnorm <= delta) {
@@ -143,12 +143,12 @@ void __cminpack_func__(dogleg)(int n, const real *r, int lr,
 
     l = 1;
     for (j = 1; j <= n; ++j) {
-	temp = qtb[j];
-	for (i = j; i <= n; ++i) {
-	    wa1[i] += r[l] * temp;
-	    ++l;
-	}
-	wa1[j] /= diag[j];
+        temp = qtb[j];
+        for (i = j; i <= n; ++i) {
+            wa1[i] += r[l] * temp;
+            ++l;
+        }
+        wa1[j] /= diag[j];
     }
 
 /*     calculate the norm of the scaled gradient and test for */
@@ -210,7 +210,7 @@ void __cminpack_func__(dogleg)(int n, const real *r, int lr,
 
     temp = (1. - alpha) * min(sgnorm,delta);
     for (j = 1; j <= n; ++j) {
-	x[j] = temp * wa1[j] + alpha * x[j];
+        x[j] = temp * wa1[j] + alpha * x[j];
     }
 
 /*     last card of subroutine dogleg. */

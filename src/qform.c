@@ -9,7 +9,7 @@
 
 __cminpack_attr__
 void __cminpack_func__(qform)(int m, int n, real *q, int
-	ldq, real *wa)
+        ldq, real *wa)
 {
     /* System generated locals */
     int q_dim1, q_offset;
@@ -91,13 +91,13 @@ void __cminpack_func__(qform)(int m, int n, real *q, int
 /*     accumulate q from its factored form. */
 
     for (l = 1; l <= minmn; ++l) {
-	k = minmn - l + 1;
-	for (i = k; i <= m; ++i) {
-	    wa[i] = q[i + k * q_dim1];
-	    q[i + k * q_dim1] = 0.;
-	}
-	q[k + k * q_dim1] = 1.;
-	if (wa[k] != 0.) {
+        k = minmn - l + 1;
+        for (i = k; i <= m; ++i) {
+            wa[i] = q[i + k * q_dim1];
+            q[i + k * q_dim1] = 0.;
+        }
+        q[k + k * q_dim1] = 1.;
+        if (wa[k] != 0.) {
             for (j = k; j <= m; ++j) {
                 sum = 0.;
                 for (i = k; i <= m; ++i) {

@@ -9,7 +9,7 @@
 
 __cminpack_attr__
 void __cminpack_func__(r1mpyq)(int m, int n, real *a, int
-	lda, const real *v, const real *w)
+        lda, const real *v, const real *w)
 {
     /* System generated locals */
     int a_dim1, a_offset;
@@ -83,37 +83,37 @@ void __cminpack_func__(r1mpyq)(int m, int n, real *a, int
         return;
     }
     for (nmj = 1; nmj <= nm1; ++nmj) {
-	j = n - nmj;
-	if (fabs(v[j]) > 1.) {
-	    cos = 1. / v[j];
-	    sin = sqrt(1. - cos * cos);
-	} else {
-	    sin = v[j];
-	    cos = sqrt(1. - sin * sin);
-	}
-	for (i = 1; i <= m; ++i) {
-	    temp = cos * a[i + j * a_dim1] - sin * a[i + n * a_dim1];
-	    a[i + n * a_dim1] = sin * a[i + j * a_dim1] + cos * a[
-		    i + n * a_dim1];
-	    a[i + j * a_dim1] = temp;
-	}
+        j = n - nmj;
+        if (fabs(v[j]) > 1.) {
+            cos = 1. / v[j];
+            sin = sqrt(1. - cos * cos);
+        } else {
+            sin = v[j];
+            cos = sqrt(1. - sin * sin);
+        }
+        for (i = 1; i <= m; ++i) {
+            temp = cos * a[i + j * a_dim1] - sin * a[i + n * a_dim1];
+            a[i + n * a_dim1] = sin * a[i + j * a_dim1] + cos * a[
+                    i + n * a_dim1];
+            a[i + j * a_dim1] = temp;
+        }
     }
 
 /*     apply the second set of givens rotations to a. */
 
     for (j = 1; j <= nm1; ++j) {
-	if (fabs(w[j]) > 1.) {
-	    cos = 1. / w[j];
-	    sin = sqrt(1. - cos * cos);
-	} else {
-	    sin = w[j];
-	    cos = sqrt(1. - sin * sin);
-	}
-	for (i = 1; i <= m; ++i) {
-	    temp = cos * a[i + j * a_dim1] + sin * a[i + n * a_dim1];
-	    a[i + n * a_dim1] = -sin * a[i + j * a_dim1] + cos * a[i + n * a_dim1];
-	    a[i + j * a_dim1] = temp;
-	}
+        if (fabs(w[j]) > 1.) {
+            cos = 1. / w[j];
+            sin = sqrt(1. - cos * cos);
+        } else {
+            sin = w[j];
+            cos = sqrt(1. - sin * sin);
+        }
+        for (i = 1; i <= m; ++i) {
+            temp = cos * a[i + j * a_dim1] + sin * a[i + n * a_dim1];
+            a[i + n * a_dim1] = -sin * a[i + j * a_dim1] + cos * a[i + n * a_dim1];
+            a[i + j * a_dim1] = temp;
+        }
     }
 
 /*     last card of subroutine r1mpyq. */

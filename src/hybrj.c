@@ -9,11 +9,11 @@
 
 __cminpack_attr__
 int __cminpack_func__(hybrj)(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
-	fvec, real *fjac, int ldfjac, real xtol, int
-	maxfev, real *diag, int mode, real factor, int
-	nprint, int *nfev, int *njev, real *r,
-	int lr, real *qtf, real *wa1, real *wa2,
-	real *wa3, real *wa4)
+        fvec, real *fjac, int ldfjac, real xtol, int
+        maxfev, real *diag, int mode, real factor, int
+        nprint, int *nfev, int *njev, real *r,
+        int lr, real *qtf, real *wa1, real *wa2,
+        real *wa3, real *wa4)
 {
     /* Initialized data */
 
@@ -215,8 +215,8 @@ int __cminpack_func__(hybrj)(__cminpack_decl_fcnder_nn__ void *p, int n, real *x
 /*     check the input parameters for errors. */
 
     if (n <= 0 || ldfjac < n || xtol < 0. || maxfev <= 0 || factor <=
-	    0. || lr < n * (n + 1) / 2) {
-	goto TERMINATE;
+            0. || lr < n * (n + 1) / 2) {
+        goto TERMINATE;
     }
     if (mode == 2) {
         for (j = 1; j <= n; ++j) {
@@ -232,7 +232,7 @@ int __cminpack_func__(hybrj)(__cminpack_decl_fcnder_nn__ void *p, int n, real *x
     iflag = fcnder_nn(p, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, 1);
     *nfev = 1;
     if (iflag < 0) {
-	goto TERMINATE;
+        goto TERMINATE;
     }
     fnorm = __cminpack_enorm__(n, &fvec[1]);
 
@@ -536,10 +536,10 @@ TERMINATE:
 /*     termination, either normal or user imposed. */
 
     if (iflag < 0) {
-	info = iflag;
+        info = iflag;
     }
     if (nprint > 0) {
-	fcnder_nn(p, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, 0);
+        fcnder_nn(p, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, 0);
     }
     return info;
 

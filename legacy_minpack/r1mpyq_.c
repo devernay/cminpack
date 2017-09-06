@@ -1,6 +1,6 @@
 /* r1mpyq.f -- translated by f2c (version 20020621).
    You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
+        -lf2c -lm   (in that order)
 */
 
 #include "minpack.h"
@@ -14,7 +14,7 @@
 
 __minpack_attr__
 void __minpack_func__(r1mpyq)(const int *m, const int *n, real *a, const int *
-	lda, const real *v, const real *w)
+        lda, const real *v, const real *w)
 {
     /* System generated locals */
     int a_dim1, a_offset, i__1, i__2;
@@ -86,31 +86,31 @@ void __minpack_func__(r1mpyq)(const int *m, const int *n, real *a, const int *
 
     nm1 = *n - 1;
     if (nm1 < 1) {
-	/* goto L50; */
+        /* goto L50; */
         return;
     }
     i__1 = nm1;
     for (nmj = 1; nmj <= i__1; ++nmj) {
-	j = *n - nmj;
-	if ((d__1 = v[j], abs(d__1)) > 1.) {
-	    cos__ = 1. / v[j];
+        j = *n - nmj;
+        if ((d__1 = v[j], abs(d__1)) > 1.) {
+            cos__ = 1. / v[j];
 /* Computing 2nd power */
-	    d__2 = cos__;
-	    sin__ = sqrt(1. - d__2 * d__2);
-	} else {
-	    sin__ = v[j];
+            d__2 = cos__;
+            sin__ = sqrt(1. - d__2 * d__2);
+        } else {
+            sin__ = v[j];
 /* Computing 2nd power */
-	    d__2 = sin__;
-	    cos__ = sqrt(1. - d__2 * d__2);
-	}
-	i__2 = *m;
-	for (i__ = 1; i__ <= i__2; ++i__) {
-	    temp = cos__ * a[i__ + j * a_dim1] - sin__ * a[i__ + *n * a_dim1];
-	    a[i__ + *n * a_dim1] = sin__ * a[i__ + j * a_dim1] + cos__ * a[
-		    i__ + *n * a_dim1];
-	    a[i__ + j * a_dim1] = temp;
+            d__2 = sin__;
+            cos__ = sqrt(1. - d__2 * d__2);
+        }
+        i__2 = *m;
+        for (i__ = 1; i__ <= i__2; ++i__) {
+            temp = cos__ * a[i__ + j * a_dim1] - sin__ * a[i__ + *n * a_dim1];
+            a[i__ + *n * a_dim1] = sin__ * a[i__ + j * a_dim1] + cos__ * a[
+                    i__ + *n * a_dim1];
+            a[i__ + j * a_dim1] = temp;
 /* L10: */
-	}
+        }
 /* L20: */
     }
 
@@ -118,25 +118,25 @@ void __minpack_func__(r1mpyq)(const int *m, const int *n, real *a, const int *
 
     i__1 = nm1;
     for (j = 1; j <= i__1; ++j) {
-	if ((d__1 = w[j], abs(d__1)) > 1.) {
-	    cos__ = 1. / w[j];
+        if ((d__1 = w[j], abs(d__1)) > 1.) {
+            cos__ = 1. / w[j];
 /* Computing 2nd power */
-	    d__2 = cos__;
-	    sin__ = sqrt(1. - d__2 * d__2);
-	} else {
-	    sin__ = w[j];
+            d__2 = cos__;
+            sin__ = sqrt(1. - d__2 * d__2);
+        } else {
+            sin__ = w[j];
 /* Computing 2nd power */
-	    d__2 = sin__;
-	    cos__ = sqrt(1. - d__2 * d__2);
-	}
-	i__2 = *m;
-	for (i__ = 1; i__ <= i__2; ++i__) {
-	    temp = cos__ * a[i__ + j * a_dim1] + sin__ * a[i__ + *n * a_dim1];
-	    a[i__ + *n * a_dim1] = -sin__ * a[i__ + j * a_dim1] + cos__ * a[
-		    i__ + *n * a_dim1];
-	    a[i__ + j * a_dim1] = temp;
+            d__2 = sin__;
+            cos__ = sqrt(1. - d__2 * d__2);
+        }
+        i__2 = *m;
+        for (i__ = 1; i__ <= i__2; ++i__) {
+            temp = cos__ * a[i__ + j * a_dim1] + sin__ * a[i__ + *n * a_dim1];
+            a[i__ + *n * a_dim1] = -sin__ * a[i__ + j * a_dim1] + cos__ * a[
+                    i__ + *n * a_dim1];
+            a[i__ + j * a_dim1] = temp;
 /* L30: */
-	}
+        }
 /* L40: */
     }
 /* L50: */

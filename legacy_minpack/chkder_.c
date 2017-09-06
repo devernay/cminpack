@@ -1,6 +1,6 @@
 /* chkder.f -- translated by f2c (version 20020621).
    You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
+        -lf2c -lm   (in that order)
 */
 
 #include "minpack.h"
@@ -18,8 +18,8 @@
 
 __minpack_attr__
 void __minpack_func__(chkder)(const int *m, const int *n, const real *x,
-	real *fvec, real *fjac, const int *ldfjac, real *xp,
-	real *fvecp, const int *mode, real *err)
+        real *fvec, real *fjac, const int *ldfjac, real *xp,
+        real *fvecp, const int *mode, real *err)
 {
     /* Initialized data */
 
@@ -133,18 +133,18 @@ void __minpack_func__(chkder)(const int *m, const int *n, const real *x,
     eps = sqrt(epsmch);
 
     if (*mode == 2) {
-	goto L20;
+        goto L20;
     }
 
 /*        mode = 1. */
 
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	temp = eps * fabs(x[j]);
-	if (temp == 0.) {
-	    temp = eps;
-	}
-	xp[j] = x[j] + temp;
+        temp = eps * fabs(x[j]);
+        if (temp == 0.) {
+            temp = eps;
+        }
+        xp[j] = x[j] + temp;
 /* L10: */
     }
     /* goto L70; */
@@ -157,39 +157,39 @@ L20:
     epslog = log10e * log(eps);
     i__1 = *m;
     for (i__ = 1; i__ <= i__1; ++i__) {
-	err[i__] = 0.;
+        err[i__] = 0.;
 /* L30: */
     }
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	temp = fabs(x[j]);
-	if (temp == 0.) {
-	    temp = 1.;
-	}
-	i__2 = *m;
-	for (i__ = 1; i__ <= i__2; ++i__) {
-	    err[i__] += temp * fjac[i__ + j * fjac_dim1];
+        temp = fabs(x[j]);
+        if (temp == 0.) {
+            temp = 1.;
+        }
+        i__2 = *m;
+        for (i__ = 1; i__ <= i__2; ++i__) {
+            err[i__] += temp * fjac[i__ + j * fjac_dim1];
 /* L40: */
-	}
+        }
 /* L50: */
     }
     i__1 = *m;
     for (i__ = 1; i__ <= i__1; ++i__) {
-	temp = 1.;
-	if (fvec[i__] != 0. && fvecp[i__] != 0. && fabs(fvecp[i__] -
-		fvec[i__]) >= epsf * fabs(fvec[i__]))
-		 {
-	    temp = eps * fabs((fvecp[i__] - fvec[i__]) / eps - err[i__])
-		    / (fabs(fvec[i__]) +
+        temp = 1.;
+        if (fvec[i__] != 0. && fvecp[i__] != 0. && fabs(fvecp[i__] -
+                fvec[i__]) >= epsf * fabs(fvec[i__]))
+                 {
+            temp = eps * fabs((fvecp[i__] - fvec[i__]) / eps - err[i__])
+                    / (fabs(fvec[i__]) +
                        fabs(fvecp[i__]));
-	}
-	err[i__] = 1.;
-	if (temp > epsmch && temp < eps) {
-	    err[i__] = (log10e * log(temp) - epslog) / epslog;
-	}
-	if (temp >= eps) {
-	    err[i__] = 0.;
-	}
+        }
+        err[i__] = 1.;
+        if (temp > epsmch && temp < eps) {
+            err[i__] = (log10e * log(temp) - epslog) / epslog;
+        }
+        if (temp >= eps) {
+            err[i__] = 0.;
+        }
 /* L60: */
     }
 /* L70: */

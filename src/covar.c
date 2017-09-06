@@ -8,7 +8,7 @@
 
 __cminpack_attr__
 void __cminpack_func__(covar)(int n, real *r, int ldr,
-	const int *ipvt, real tol, real *wa)
+        const int *ipvt, real tol, real *wa)
 {
     /* Local variables */
     int i, j, k, l, ii, jj;
@@ -86,11 +86,11 @@ void __cminpack_func__(covar)(int n, real *r, int ldr,
 
     l = -1;
     for (k = 0; k < n; ++k) {
-	if (fabs(r[k + k * ldr]) <= tolr) {
-	    break;
-	}
-	r[k + k * ldr] = 1. / r[k + k * ldr];
-	if (k > 0) {
+        if (fabs(r[k + k * ldr]) <= tolr) {
+            break;
+        }
+        r[k + k * ldr] = 1. / r[k + k * ldr];
+        if (k > 0) {
             for (j = 0; j < k; ++j) {
                 // coverity[copy_paste_error]
                 temp = r[k + k * ldr] * r[j + k * ldr];
@@ -100,7 +100,7 @@ void __cminpack_func__(covar)(int n, real *r, int ldr,
                 }
             }
         }
-	l = k;
+        l = k;
     }
 
 /*     form the full upper triangle of the inverse of (r transpose)*r */
@@ -127,30 +127,30 @@ void __cminpack_func__(covar)(int n, real *r, int ldr,
 /*     in the strict lower triangle of r and in wa. */
 
     for (j = 0; j < n; ++j) {
-	jj = ipvt[j]-1;
-	sing = j > l;
-	for (i = 0; i <= j; ++i) {
-	    if (sing) {
-		r[i + j * ldr] = 0.;
-	    }
-	    ii = ipvt[i]-1;
-	    if (ii > jj) {
-		r[ii + jj * ldr] = r[i + j * ldr];
-	    }
-	    else if (ii < jj) {
-		r[jj + ii * ldr] = r[i + j * ldr];
-	    }
-	}
-	wa[jj] = r[j + j * ldr];
+        jj = ipvt[j]-1;
+        sing = j > l;
+        for (i = 0; i <= j; ++i) {
+            if (sing) {
+                r[i + j * ldr] = 0.;
+            }
+            ii = ipvt[i]-1;
+            if (ii > jj) {
+                r[ii + jj * ldr] = r[i + j * ldr];
+            }
+            else if (ii < jj) {
+                r[jj + ii * ldr] = r[i + j * ldr];
+            }
+        }
+        wa[jj] = r[j + j * ldr];
     }
 
 /*     symmetrize the covariance matrix in r. */
 
     for (j = 0; j < n; ++j) {
-	for (i = 0; i < j; ++i) {
-	    r[i + j * ldr] = r[j + i * ldr];
-	}
-	r[j + j * ldr] = wa[j];
+        for (i = 0; i < j; ++i) {
+            r[i + j * ldr] = r[j + i * ldr];
+        }
+        r[j + j * ldr] = wa[j];
     }
 
 /*     last card of subroutine covar. */

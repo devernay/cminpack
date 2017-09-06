@@ -8,8 +8,8 @@
 
 __cminpack_attr__
 void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
-	const int *ipvt, const real *diag, const real *qtb, real *x,
-	real *sdiag, real *wa)
+        const int *ipvt, const real *diag, const real *qtb, real *x,
+        real *sdiag, real *wa)
 {
     /* Initialized data */
 
@@ -104,11 +104,11 @@ void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
 /*     in particular, save the diagonal elements of r in x. */
 
     for (j = 0; j < n; ++j) {
-	for (i = j; i < n; ++i) {
-	    r[i + j * ldr] = r[j + i * ldr];
-	}
-	x[j] = r[j + j * ldr];
-	wa[j] = qtb[j];
+        for (i = j; i < n; ++i) {
+            r[i + j * ldr] = r[j + i * ldr];
+        }
+        x[j] = r[j + j * ldr];
+        wa[j] = qtb[j];
     }
 
 /*     eliminate the diagonal matrix d using a givens rotation. */
@@ -118,8 +118,8 @@ void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
 /*        prepare the row of d to be eliminated, locating the */
 /*        diagonal element using p from the qr factorization. */
 
-	l = ipvt[j]-1;
-	if (diag[l] != 0.) {
+        l = ipvt[j]-1;
+        if (diag[l] != 0.) {
             for (k = j; k < n; ++k) {
                 sdiag[k] = 0.;
             }
@@ -179,8 +179,8 @@ void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
 /*        store the diagonal element of s and restore */
 /*        the corresponding diagonal element of r. */
 
-	sdiag[j] = r[j + j * ldr];
-	r[j + j * ldr] = x[j];
+        sdiag[j] = r[j + j * ldr];
+        r[j + j * ldr] = x[j];
     }
 
 /*     solve the triangular system for z. if the system is */
@@ -188,12 +188,12 @@ void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
 
     nsing = n;
     for (j = 0; j < n; ++j) {
-	if (sdiag[j] == 0. && nsing == n) {
-	    nsing = j;
-	}
-	if (nsing < n) {
-	    wa[j] = 0.;
-	}
+        if (sdiag[j] == 0. && nsing == n) {
+            nsing = j;
+        }
+        if (nsing < n) {
+            wa[j] = 0.;
+        }
     }
     if (nsing >= 1) {
         for (k = 1; k <= nsing; ++k) {
@@ -211,8 +211,8 @@ void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
 /*     permute the components of z back to components of x. */
 
     for (j = 0; j < n; ++j) {
-	l = ipvt[j]-1;
-	x[l] = wa[j];
+        l = ipvt[j]-1;
+        x[l] = wa[j];
     }
     return;
 

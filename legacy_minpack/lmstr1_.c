@@ -1,6 +1,6 @@
 /* lmstr1.f -- translated by f2c (version 20020621).
    You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
+        -lf2c -lm   (in that order)
 */
 
 #include "minpack.h"
@@ -14,8 +14,8 @@
 
 __minpack_attr__
 void __minpack_func__(lmstr1)(__minpack_decl_fcnderstr_mn__  const int *m, const int *n, real *x,
-	real *fvec, real *fjac, const int *ldfjac, const real *tol,
-	int *info, int *ipvt, real *wa, const int *lwa)
+        real *fvec, real *fjac, const int *ldfjac, const real *tol,
+        int *info, int *ipvt, real *wa, const int *lwa)
 {
     /* Initialized data */
 
@@ -165,8 +165,8 @@ void __minpack_func__(lmstr1)(__minpack_decl_fcnderstr_mn__  const int *m, const
 /*     check the input parameters for errors. */
 
     if (*n <= 0 || *m < *n || *ldfjac < *n || *tol < 0. || *lwa < *n * 5 + *
-	    m) {
-	/* goto L10; */
+            m) {
+        /* goto L10; */
         return;
     }
 
@@ -179,11 +179,11 @@ void __minpack_func__(lmstr1)(__minpack_decl_fcnderstr_mn__  const int *m, const
     mode = 1;
     nprint = 0;
     __minpack_func__(lmstr)(__minpack_param_fcnderstr_mn__ m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &
-	    ftol, &xtol, &gtol, &maxfev, &wa[1], &mode, &factor, &nprint,
-	    info, &nfev, &njev, &ipvt[1], &wa[*n + 1], &wa[(*n << 1) + 1], &
-	    wa[*n * 3 + 1], &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);
+            ftol, &xtol, &gtol, &maxfev, &wa[1], &mode, &factor, &nprint,
+            info, &nfev, &njev, &ipvt[1], &wa[*n + 1], &wa[(*n << 1) + 1], &
+            wa[*n * 3 + 1], &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);
     if (*info == 8) {
-	*info = 4;
+        *info = 4;
     }
 /* L10: */
     return;

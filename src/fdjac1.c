@@ -9,8 +9,8 @@
 
 __cminpack_attr__
 int __cminpack_func__(fdjac1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, const real *
-	fvec, real *fjac, int ldfjac, int ml,
-	int mu, real epsfcn, real *wa1, real *wa2)
+        fvec, real *fjac, int ldfjac, int ml,
+        int mu, real epsfcn, real *wa1, real *wa2)
 {
     /* System generated locals */
     int fjac_dim1, fjac_offset;
@@ -155,31 +155,31 @@ int __cminpack_func__(fdjac1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, 
 /*        computation of banded approximate jacobian. */
 
     for (k = 1; k <= msum; ++k) {
-	for (j = k; j <= n; j += msum) {
-	    wa2[j] = x[j];
-	    h = eps * fabs(wa2[j]);
-	    if (h == 0.) {
-		h = eps;
-	    }
-	    x[j] = wa2[j] + h;
-	}
-	iflag = fcn_nn(p, n, &x[1], &wa1[1], 1);
-	if (iflag < 0) {
+        for (j = k; j <= n; j += msum) {
+            wa2[j] = x[j];
+            h = eps * fabs(wa2[j]);
+            if (h == 0.) {
+                h = eps;
+            }
+            x[j] = wa2[j] + h;
+        }
+        iflag = fcn_nn(p, n, &x[1], &wa1[1], 1);
+        if (iflag < 0) {
             return iflag;
-	}
-	for (j = k; j <= n; j += msum) {
-	    x[j] = wa2[j];
-	    h = eps * fabs(wa2[j]);
-	    if (h == 0.) {
-		h = eps;
-	    }
-	    for (i = 1; i <= n; ++i) {
-		fjac[i + j * fjac_dim1] = 0.;
-		if (i >= j - mu && i <= j + ml) {
-		    fjac[i + j * fjac_dim1] = (wa1[i] - fvec[i]) / h;
-		}
-	    }
-	}
+        }
+        for (j = k; j <= n; j += msum) {
+            x[j] = wa2[j];
+            h = eps * fabs(wa2[j]);
+            if (h == 0.) {
+                h = eps;
+            }
+            for (i = 1; i <= n; ++i) {
+                fjac[i + j * fjac_dim1] = 0.;
+                if (i >= j - mu && i <= j + ml) {
+                    fjac[i + j * fjac_dim1] = (wa1[i] - fvec[i]) / h;
+                }
+            }
+        }
     }
     return 0;
 

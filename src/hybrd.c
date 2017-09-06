@@ -149,11 +149,11 @@
 
 __cminpack_attr__
 int __cminpack_func__(hybrd)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, real *
-	fvec, real xtol, int maxfev, int ml, int mu,
-	real epsfcn, real *diag, int mode, real
-	factor, int nprint, int *nfev, real *
-	fjac, int ldfjac, real *r, int lr, real *qtf,
-	real *wa1, real *wa2, real *wa3, real *wa4)
+        fvec, real xtol, int maxfev, int ml, int mu,
+        real epsfcn, real *diag, int mode, real
+        factor, int nprint, int *nfev, real *
+        fjac, int ldfjac, real *r, int lr, real *qtf,
+        real *wa1, real *wa2, real *wa3, real *wa4)
 {
     /* Initialized data */
 
@@ -211,8 +211,8 @@ int __cminpack_func__(hybrd)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, r
 /*     check the input parameters for errors. */
 
     if (n <= 0 || xtol < 0. || maxfev <= 0 || ml < 0 || mu < 0 ||
-	    factor <= 0. || ldfjac < n || lr < n * (n + 1) / 2) {
-	goto TERMINATE;
+            factor <= 0. || ldfjac < n || lr < n * (n + 1) / 2) {
+        goto TERMINATE;
     }
     if (mode == 2) {
         for (j = 1; j <= n; ++j) {
@@ -228,7 +228,7 @@ int __cminpack_func__(hybrd)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, r
     iflag = fcn_nn(p, n, &x[1], &fvec[1], 1);
     *nfev = 1;
     if (iflag < 0) {
-	goto TERMINATE;
+        goto TERMINATE;
     }
     fnorm = __cminpack_enorm__(n, &fvec[1]);
 
@@ -541,10 +541,10 @@ TERMINATE:
 /*     termination, either normal or user imposed. */
 
     if (iflag < 0) {
-	info = iflag;
+        info = iflag;
     }
     if (nprint > 0) {
-	fcn_nn(p, n, &x[1], &fvec[1], 0);
+        fcn_nn(p, n, &x[1], &fvec[1], 0);
     }
     return info;
 

@@ -1,6 +1,6 @@
 /* lmdif.f -- translated by f2c (version 20020621).
    You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
+        -lf2c -lm   (in that order)
 */
 
 #include "minpack.h"
@@ -14,12 +14,12 @@
 
 __minpack_attr__
 void __minpack_func__(lmdif)(__minpack_decl_fcn_mn__ const int *m, const int *n, real *x,
-	real *fvec, const real *ftol, const real *xtol, const real *
-	gtol, const int *maxfev, const real *epsfcn, real *diag, const int *
-	mode, const real *factor, const int *nprint, int *info, int *
-	nfev, real *fjac, const int *ldfjac, int *ipvt, real *
-	qtf, real *wa1, real *wa2, real *wa3, real *
-	wa4)
+        real *fvec, const real *ftol, const real *xtol, const real *
+        gtol, const int *maxfev, const real *epsfcn, real *diag, const int *
+        mode, const real *factor, const int *nprint, int *info, int *
+        nfev, real *fjac, const int *ldfjac, int *ipvt, real *
+        qtf, real *wa1, real *wa2, real *wa3, real *
+        wa4)
 {
     /* Table of constant values */
 
@@ -256,17 +256,17 @@ void __minpack_func__(lmdif)(__minpack_decl_fcn_mn__ const int *m, const int *n,
 /*     check the input parameters for errors. */
 
     if (*n <= 0 || *m < *n || *ldfjac < *m || *ftol < 0. || *xtol < 0. ||
-	    *gtol < 0. || *maxfev <= 0 || *factor <= 0.) {
-	goto L300;
+            *gtol < 0. || *maxfev <= 0 || *factor <= 0.) {
+        goto L300;
     }
     if (*mode != 2) {
-	goto L20;
+        goto L20;
     }
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	if (diag[j] <= 0.) {
-	    goto L300;
-	}
+        if (diag[j] <= 0.) {
+            goto L300;
+        }
 /* L10: */
     }
 L20:
@@ -278,7 +278,7 @@ L20:
     fcn_mn(m, n, &x[1], &fvec[1], &iflag);
     *nfev = 1;
     if (iflag < 0) {
-	goto L300;
+        goto L300;
     }
     fnorm = __minpack_func__(enorm)(m, &fvec[1]);
 
@@ -295,46 +295,46 @@ L30:
 
     iflag = 2;
     __minpack_func__(fdjac2)(__minpack_param_fcn_mn__ m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &
-	    iflag, epsfcn, &wa4[1]);
+            iflag, epsfcn, &wa4[1]);
     *nfev += *n;
     if (iflag < 0) {
-	goto L300;
+        goto L300;
     }
 
 /*        if requested, call fcn to enable printing of iterates. */
 
     if (*nprint <= 0) {
-	goto L40;
+        goto L40;
     }
     iflag = 0;
     if ((iter - 1) % *nprint == 0) {
-	fcn_mn(m, n, &x[1], &fvec[1], &iflag);
+        fcn_mn(m, n, &x[1], &fvec[1], &iflag);
     }
     if (iflag < 0) {
-	goto L300;
+        goto L300;
     }
 L40:
 
 /*        compute the qr factorization of the jacobian. */
 
     __minpack_func__(qrfac)(m, n, &fjac[fjac_offset], ldfjac, &c_true, &ipvt[1], n, &wa1[1], &
-	    wa2[1], &wa3[1]);
+            wa2[1], &wa3[1]);
 
 /*        on the first iteration and if mode is 1, scale according */
 /*        to the norms of the columns of the initial jacobian. */
 
     if (iter != 1) {
-	goto L80;
+        goto L80;
     }
     if (*mode == 2) {
-	goto L60;
+        goto L60;
     }
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	diag[j] = wa2[j];
-	if (wa2[j] == 0.) {
-	    diag[j] = 1.;
-	}
+        diag[j] = wa2[j];
+        if (wa2[j] == 0.) {
+            diag[j] = 1.;
+        }
 /* L50: */
     }
 L60:
@@ -344,13 +344,13 @@ L60:
 
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	wa3[j] = diag[j] * x[j];
+        wa3[j] = diag[j] * x[j];
 /* L70: */
     }
     xnorm = __minpack_func__(enorm)(n, &wa3[1]);
     delta = *factor * xnorm;
     if (delta == 0.) {
-	delta = *factor;
+        delta = *factor;
     }
 L80:
 
@@ -359,29 +359,29 @@ L80:
 
     i__1 = *m;
     for (i__ = 1; i__ <= i__1; ++i__) {
-	wa4[i__] = fvec[i__];
+        wa4[i__] = fvec[i__];
 /* L90: */
     }
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	if (fjac[j + j * fjac_dim1] == 0.) {
-	    goto L120;
-	}
-	sum = 0.;
-	i__2 = *m;
-	for (i__ = j; i__ <= i__2; ++i__) {
-	    sum += fjac[i__ + j * fjac_dim1] * wa4[i__];
+        if (fjac[j + j * fjac_dim1] == 0.) {
+            goto L120;
+        }
+        sum = 0.;
+        i__2 = *m;
+        for (i__ = j; i__ <= i__2; ++i__) {
+            sum += fjac[i__ + j * fjac_dim1] * wa4[i__];
 /* L100: */
-	}
-	temp = -sum / fjac[j + j * fjac_dim1];
-	i__2 = *m;
-	for (i__ = j; i__ <= i__2; ++i__) {
-	    wa4[i__] += fjac[i__ + j * fjac_dim1] * temp;
+        }
+        temp = -sum / fjac[j + j * fjac_dim1];
+        i__2 = *m;
+        for (i__ = j; i__ <= i__2; ++i__) {
+            wa4[i__] += fjac[i__ + j * fjac_dim1] * temp;
 /* L110: */
-	}
+        }
 L120:
-	fjac[j + j * fjac_dim1] = wa1[j];
-	qtf[j] = wa4[j];
+        fjac[j + j * fjac_dim1] = wa1[j];
+        qtf[j] = wa4[j];
 /* L130: */
     }
 
@@ -389,48 +389,48 @@ L120:
 
     gnorm = 0.;
     if (fnorm == 0.) {
-	goto L170;
+        goto L170;
     }
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	l = ipvt[j];
-	if (wa2[l] == 0.) {
-	    goto L150;
-	}
-	sum = 0.;
-	i__2 = j;
-	for (i__ = 1; i__ <= i__2; ++i__) {
-	    sum += fjac[i__ + j * fjac_dim1] * (qtf[i__] / fnorm);
+        l = ipvt[j];
+        if (wa2[l] == 0.) {
+            goto L150;
+        }
+        sum = 0.;
+        i__2 = j;
+        for (i__ = 1; i__ <= i__2; ++i__) {
+            sum += fjac[i__ + j * fjac_dim1] * (qtf[i__] / fnorm);
 /* L140: */
-	}
+        }
 /* Computing MAX */
-	d__2 = gnorm, d__3 = fabs(sum / wa2[l]);
-	gnorm = max(d__2,d__3);
+        d__2 = gnorm, d__3 = fabs(sum / wa2[l]);
+        gnorm = max(d__2,d__3);
 L150:
 /* L160: */
-	;
+        ;
     }
 L170:
 
 /*        test for convergence of the gradient norm. */
 
     if (gnorm <= *gtol) {
-	*info = 4;
+        *info = 4;
     }
     if (*info != 0) {
-	goto L300;
+        goto L300;
     }
 
 /*        rescale if necessary. */
 
     if (*mode == 2) {
-	goto L190;
+        goto L190;
     }
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 /* Computing MAX */
-	d__1 = diag[j], d__2 = wa2[j];
-	diag[j] = max(d__1,d__2);
+        d__1 = diag[j], d__2 = wa2[j];
+        diag[j] = max(d__1,d__2);
 /* L180: */
     }
 L190:
@@ -442,15 +442,15 @@ L200:
 /*           determine the levenberg-marquardt parameter. */
 
     __minpack_func__(lmpar)(n, &fjac[fjac_offset], ldfjac, &ipvt[1], &diag[1], &qtf[1], &delta,
-	     &par, &wa1[1], &wa2[1], &wa3[1], &wa4[1]);
+             &par, &wa1[1], &wa2[1], &wa3[1], &wa4[1]);
 
 /*           store the direction p and x + p. calculate the norm of p. */
 
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	wa1[j] = -wa1[j];
-	wa2[j] = x[j] + wa1[j];
-	wa3[j] = diag[j] * wa1[j];
+        wa1[j] = -wa1[j];
+        wa2[j] = x[j] + wa1[j];
+        wa3[j] = diag[j] * wa1[j];
 /* L210: */
     }
     pnorm = __minpack_func__(enorm)(n, &wa3[1]);
@@ -458,7 +458,7 @@ L200:
 /*           on the first iteration, adjust the initial step bound. */
 
     if (iter == 1) {
-	delta = min(delta,pnorm);
+        delta = min(delta,pnorm);
     }
 
 /*           evaluate the function at x + p and calculate its norm. */
@@ -467,7 +467,7 @@ L200:
     fcn_mn(m, n, &wa2[1], &wa4[1], &iflag);
     ++(*nfev);
     if (iflag < 0) {
-	goto L300;
+        goto L300;
     }
     fnorm1 = __minpack_func__(enorm)(m, &wa4[1]);
 
@@ -476,8 +476,8 @@ L200:
     actred = -1.;
     if (p1 * fnorm1 < fnorm) {
 /* Computing 2nd power */
-	d__1 = fnorm1 / fnorm;
-	actred = 1. - d__1 * d__1;
+        d__1 = fnorm1 / fnorm;
+        actred = 1. - d__1 * d__1;
     }
 
 /*           compute the scaled predicted reduction and */
@@ -485,14 +485,14 @@ L200:
 
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	wa3[j] = 0.;
-	l = ipvt[j];
-	temp = wa1[l];
-	i__2 = j;
-	for (i__ = 1; i__ <= i__2; ++i__) {
-	    wa3[i__] += fjac[i__ + j * fjac_dim1] * temp;
+        wa3[j] = 0.;
+        l = ipvt[j];
+        temp = wa1[l];
+        i__2 = j;
+        for (i__ = 1; i__ <= i__2; ++i__) {
+            wa3[i__] += fjac[i__ + j * fjac_dim1] * temp;
 /* L220: */
-	}
+        }
 /* L230: */
     }
     temp1 = __minpack_func__(enorm)(n, &wa3[1]) / fnorm;
@@ -513,21 +513,21 @@ L200:
 
     ratio = 0.;
     if (prered != 0.) {
-	ratio = actred / prered;
+        ratio = actred / prered;
     }
 
 /*           update the step bound. */
 
     if (ratio > p25) {
-	goto L240;
+        goto L240;
     }
     if (actred >= 0.) {
-	temp = p5;
+        temp = p5;
     } else {
-	temp = p5 * dirder / (dirder + p5 * actred);
+        temp = p5 * dirder / (dirder + p5 * actred);
     }
     if (p1 * fnorm1 >= fnorm || temp < p1) {
-	temp = p1;
+        temp = p1;
     }
 /* Computing MIN */
     d__1 = delta, d__2 = pnorm / p1;
@@ -536,7 +536,7 @@ L200:
     goto L260;
 L240:
     if (par != 0. && ratio < p75) {
-	goto L250;
+        goto L250;
     }
     delta = pnorm / p5;
     par = p5 * par;
@@ -546,20 +546,20 @@ L260:
 /*           test for successful iteration. */
 
     if (ratio < p0001) {
-	goto L290;
+        goto L290;
     }
 
 /*           successful iteration. update x, fvec, and their norms. */
 
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
-	x[j] = wa2[j];
-	wa2[j] = diag[j] * x[j];
+        x[j] = wa2[j];
+        wa2[j] = diag[j] * x[j];
 /* L270: */
     }
     i__1 = *m;
     for (i__ = 1; i__ <= i__1; ++i__) {
-	fvec[i__] = wa4[i__];
+        fvec[i__] = wa4[i__];
 /* L280: */
     }
     xnorm = __minpack_func__(enorm)(n, &wa2[1]);
@@ -570,41 +570,41 @@ L290:
 /*           tests for convergence. */
 
     if (fabs(actred) <= *ftol && prered <= *ftol && p5 * ratio <= 1.) {
-	*info = 1;
+        *info = 1;
     }
     if (delta <= *xtol * xnorm) {
-	*info = 2;
+        *info = 2;
     }
     if (fabs(actred) <= *ftol && prered <= *ftol && p5 * ratio <= 1. && *info
-	    == 2) {
-	*info = 3;
+            == 2) {
+        *info = 3;
     }
     if (*info != 0) {
-	goto L300;
+        goto L300;
     }
 
 /*           tests for termination and stringent tolerances. */
 
     if (*nfev >= *maxfev) {
-	*info = 5;
+        *info = 5;
     }
     if (fabs(actred) <= epsmch && prered <= epsmch && p5 * ratio <= 1.) {
-	*info = 6;
+        *info = 6;
     }
     if (delta <= epsmch * xnorm) {
-	*info = 7;
+        *info = 7;
     }
     if (gnorm <= epsmch) {
-	*info = 8;
+        *info = 8;
     }
     if (*info != 0) {
-	goto L300;
+        goto L300;
     }
 
 /*           end of the inner loop. repeat if iteration unsuccessful. */
 
     if (ratio < p0001) {
-	goto L200;
+        goto L200;
     }
 
 /*        end of the outer loop. */
@@ -615,11 +615,11 @@ L300:
 /*     termination, either normal or user imposed. */
 
     if (iflag < 0) {
-	*info = iflag;
+        *info = iflag;
     }
     iflag = 0;
     if (*nprint > 0) {
-	fcn_mn(m, n, &x[1], &fvec[1], &iflag);
+        fcn_mn(m, n, &x[1], &fvec[1], &iflag);
     }
     return;
 

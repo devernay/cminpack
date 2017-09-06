@@ -108,7 +108,7 @@ real __cminpack_func__(enorm)(int n, const real *x)
     x3max = 0.;
     agiant = rgiant / (real)n;
     for (i = 0; i < n; ++i) {
-	xabs = fabs(x[i]);
+        xabs = fabs(x[i]);
         if (xabs >= agiant) {
 /*              sum for large components. */
             if (xabs > x1max) {
@@ -133,7 +133,7 @@ real __cminpack_func__(enorm)(int n, const real *x)
                 d1 = xabs / x3max;
                 s3 += d1 * d1;
             }
-	} else {
+        } else {
 /*           sum for intermediate components. */
             /* Computing 2nd power */
             s2 += xabs * xabs;
