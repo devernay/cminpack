@@ -1,16 +1,17 @@
-/* lmpar.f -- translated by f2c (version 20020621).
-   You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
-*/
+
 
 #include "cminpack.h"
 #include <math.h>
 #include "cminpackP.h"
 
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 __cminpack_attr__
-void __cminpack_func__(lmpar)(int n, real *r, int ldr, 
-	const int *ipvt, const real *diag, const real *qtb, real delta, 
-	real *par, real *x, real *sdiag, real *wa1, 
+void __cminpack_func__(lmpar)(int n, real *r, int ldr,
+	const int *ipvt, const real *diag, const real *qtb, real delta,
+	real *par, real *x, real *sdiag, real *wa1,
 	real *wa2)
 {
     /* Initialized data */
@@ -336,3 +337,5 @@ TERMINATE:
 
 } /* lmpar_ */
 
+
+/** @}*/

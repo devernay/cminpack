@@ -2,6 +2,10 @@
 #include <float.h>
 #include "cminpackP.h"
 
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 #define DPMPAR(type,X) _DPMPAR(type,X)
 #define _DPMPAR(type,X) type ## _ ## X
 
@@ -189,3 +193,5 @@ real __cminpack_func__(dpmpar)(int i)
 #undef dmach
 
 
+
+/** @}*/

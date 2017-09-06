@@ -7,6 +7,10 @@
 #include <math.h>
 #include "minpackP.h"
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 __minpack_attr__
 void __minpack_func__(hybrd1)(__minpack_decl_fcn_nn__  const int *n, real *x, real *
 	fvec, const real *tol, int *info, real *wa, const int *lwa)
@@ -142,7 +146,7 @@ void __minpack_func__(hybrd1)(__minpack_decl_fcn_nn__  const int *n, real *x, re
     index = *n * 6 + lr;
     __minpack_func__(hybrd)(__minpack_param_fcn_nn__ n, &x[1], &fvec[1], &xtol, &maxfev, &ml, &mu, &epsfcn, &
 	    wa[1], &mode, &factor, &nprint, info, &nfev, &wa[index + 1], n, &
-	    wa[*n * 6 + 1], &lr, &wa[*n + 1], &wa[(*n << 1) + 1], &wa[*n * 3 
+	    wa[*n * 6 + 1], &lr, &wa[*n + 1], &wa[(*n << 1) + 1], &wa[*n * 3
 	    + 1], &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);
     if (*info == 5) {
 	*info = 4;
@@ -154,3 +158,5 @@ void __minpack_func__(hybrd1)(__minpack_decl_fcn_nn__  const int *n, real *x, re
 
 } /* hybrd1_ */
 
+
+/** @}*/

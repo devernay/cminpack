@@ -2,6 +2,10 @@
 #include <math.h>
 #include "cminpackP.h"
 
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 /*
   About the values for rdwarf and rgiant.
 
@@ -27,7 +31,7 @@
  Any suggestion is welcome. Half CMINPACK is really only a
  proof-of-concept anyway.
 
- See the example/tenorm*c, which computes these values 
+ See the example/tenorm*c, which computes these values
 */
 #define double_dwarf (1.82691291192569e-153)
 #define double_giant (1.34078079299426e+153)
@@ -155,3 +159,5 @@ real __cminpack_func__(enorm)(int n, const real *x)
 #endif /* !USE_CBLAS */
 } /* enorm_ */
 
+
+/** @}*/

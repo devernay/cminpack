@@ -2,14 +2,18 @@
 #include <math.h>
 #include "cminpackP.h"
 
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 #define log10e 0.43429448190325182765
 #define factor 100.
 
 /* Table of constant values */
 
 __cminpack_attr__
-void __cminpack_func__(chkder)(int m, int n, const real *x, 
-	real *fvec, real *fjac, int ldfjac, real *xp, 
+void __cminpack_func__(chkder)(int m, int n, const real *x,
+	real *fvec, real *fjac, int ldfjac, real *xp,
 	real *fvecp, int mode, real *err)
 {
     /* Local variables */
@@ -140,7 +144,7 @@ void __cminpack_func__(chkder)(int m, int n, const real *x,
 	if (fvec[i] != 0. && fvecp[i] != 0. &&
             fabs(fvecp[i] - fvec[i]) >= epsf * fabs(fvec[i]))
 		 {
-	    temp = eps * fabs((fvecp[i] - fvec[i]) / eps - err[i]) 
+	    temp = eps * fabs((fvecp[i] - fvec[i]) / eps - err[i])
 		    / (fabs(fvec[i]) +
                        fabs(fvecp[i]));
 	}
@@ -157,3 +161,5 @@ void __cminpack_func__(chkder)(int m, int n, const real *x,
 
 } /* chkder_ */
 
+
+/** @}*/

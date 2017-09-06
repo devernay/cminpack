@@ -6,6 +6,10 @@
 #include "minpack.h"
 #include "minpackP.h"
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 #define DPMPAR(type,X) _DPMPAR(type,X)
 #define _DPMPAR(type,X) type ## _ ## X
 
@@ -194,3 +198,5 @@ real __minpack_func__(dpmpar)(const int *i)
 #undef dmach
 
 
+
+/** @}*/

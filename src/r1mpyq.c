@@ -1,11 +1,11 @@
-/* r1mpyq.f -- translated by f2c (version 20020621).
-   You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
-*/
 
 #include "cminpack.h"
 #include <math.h>
 #include "cminpackP.h"
+
+/** \addtogroup C-MINPACK
+ *  @{
+ */
 
 __cminpack_attr__
 void __cminpack_func__(r1mpyq)(int m, int n, real *a, int
@@ -120,3 +120,5 @@ void __cminpack_func__(r1mpyq)(int m, int n, real *a, int
 
 } /* r1mpyq_ */
 
+
+/** @}*/

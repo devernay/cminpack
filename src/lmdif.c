@@ -2,8 +2,12 @@
 #include <math.h>
 #include "cminpackP.h"
 
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 __cminpack_attr__
-int __cminpack_func__(lmdif)(__cminpack_decl_fcn_mn__ void *p, int m, int n, real *x, 
+int __cminpack_func__(lmdif)(__cminpack_decl_fcn_mn__ void *p, int m, int n, real *x,
 	real *fvec, real ftol, real xtol, real
 	gtol, int maxfev, real epsfcn, real *diag, int
 	mode, real factor, int nprint, int *
@@ -225,7 +229,7 @@ int __cminpack_func__(lmdif)(__cminpack_decl_fcn_mn__ void *p, int m, int n, rea
 
 /*     check the input parameters for errors. */
 
-    if (n <= 0 || m < n || ldfjac < m || ftol < 0. || xtol < 0. || 
+    if (n <= 0 || m < n || ldfjac < m || ftol < 0. || xtol < 0. ||
 	    gtol < 0. || maxfev <= 0 || factor <= 0.) {
 	goto TERMINATE;
     }
@@ -528,3 +532,5 @@ TERMINATE:
 
 } /* lmdif_ */
 
+
+/** @}*/

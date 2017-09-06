@@ -7,9 +7,13 @@
 #include <math.h>
 #include "minpackP.h"
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 __minpack_attr__
 void __minpack_func__(fdjac1)(__minpack_decl_fcn_nn__ const int *n, real *x, const real *
-	fvec, real *fjac, const int *ldfjac, int *iflag, const int *ml, 
+	fvec, real *fjac, const int *ldfjac, int *iflag, const int *ml,
 	const int *mu, const real *epsfcn, real *wa1, real *wa2)
 {
     /* Table of constant values */
@@ -207,3 +211,5 @@ L40:
 
 } /* fdjac1_ */
 
+
+/** @}*/

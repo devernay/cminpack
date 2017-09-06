@@ -1,18 +1,19 @@
-/* hybrd.f -- translated by f2c (version 20020621).
-   You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
-*/
 
 #include "cminpack.h"
 #include <math.h>
 #include "cminpackP.h"
 
+
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 __cminpack_attr__
 int __cminpack_func__(hybrd)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, real *
-	fvec, real xtol, int maxfev, int ml, int mu, 
+	fvec, real xtol, int maxfev, int ml, int mu,
 	real epsfcn, real *diag, int mode, real
 	factor, int nprint, int *nfev, real *
-	fjac, int ldfjac, real *r, int lr, real *qtf, 
+	fjac, int ldfjac, real *r, int lr, real *qtf,
 	real *wa1, real *wa2, real *wa3, real *wa4)
 {
     /* Initialized data */
@@ -568,3 +569,5 @@ TERMINATE:
 
 } /* hybrd_ */
 
+
+/** @}*/

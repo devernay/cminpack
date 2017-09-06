@@ -1,17 +1,17 @@
-/* dogleg.f -- translated by f2c (version 20020621).
-   You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
-*/
 
 #include "cminpack.h"
 #include <math.h>
 #include "cminpackP.h"
 
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 /* Table of constant values */
 
 __cminpack_attr__
-void __cminpack_func__(dogleg)(int n, const real *r, int lr, 
-	const real *diag, const real *qtb, real delta, real *x, 
+void __cminpack_func__(dogleg)(int n, const real *r, int lr,
+	const real *diag, const real *qtb, real delta, real *x,
 	real *wa1, real *wa2)
 {
     /* System generated locals */
@@ -217,3 +217,5 @@ void __cminpack_func__(dogleg)(int n, const real *r, int lr,
 
 } /* dogleg_ */
 
+
+/** @}*/

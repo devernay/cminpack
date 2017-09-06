@@ -7,14 +7,18 @@
 #include <math.h>
 #include "minpackP.h"
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 #define log10e 0.43429448190325182765
 #define factor 100.
 
 /* Table of constant values */
 
 __minpack_attr__
-void __minpack_func__(chkder)(const int *m, const int *n, const real *x, 
-	real *fvec, real *fjac, const int *ldfjac, real *xp, 
+void __minpack_func__(chkder)(const int *m, const int *n, const real *x,
+	real *fvec, real *fjac, const int *ldfjac, real *xp,
 	real *fvecp, const int *mode, real *err)
 {
     /* Initialized data */
@@ -172,10 +176,10 @@ L20:
     i__1 = *m;
     for (i__ = 1; i__ <= i__1; ++i__) {
 	temp = 1.;
-	if (fvec[i__] != 0. && fvecp[i__] != 0. && fabs(fvecp[i__] - 
+	if (fvec[i__] != 0. && fvecp[i__] != 0. && fabs(fvecp[i__] -
 		fvec[i__]) >= epsf * fabs(fvec[i__]))
 		 {
-	    temp = eps * fabs((fvecp[i__] - fvec[i__]) / eps - err[i__]) 
+	    temp = eps * fabs((fvecp[i__] - fvec[i__]) / eps - err[i__])
 		    / (fabs(fvec[i__]) +
                        fabs(fvecp[i__]));
 	}
@@ -196,3 +200,5 @@ L20:
 
 } /* chkder_ */
 
+
+/** @}*/

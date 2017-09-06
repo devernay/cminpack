@@ -1,3 +1,9 @@
+
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
+
 #ifndef __MINPACK_H__
 #define __MINPACK_H__
 
@@ -304,3 +310,5 @@ void __minpack_func__(covar)(const int *n, __minpack_real__ *r, const int *ldr,
 
 
 #endif /* __MINPACK_H__ */
+
+/** @}*/

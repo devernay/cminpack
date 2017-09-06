@@ -2,9 +2,13 @@
 #include <math.h>
 #include "cminpackP.h"
 
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 __cminpack_attr__
-void __cminpack_func__(qrsolv)(int n, real *r, int ldr, 
-	const int *ipvt, const real *diag, const real *qtb, real *x, 
+void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
+	const int *ipvt, const real *diag, const real *qtb, real *x,
 	real *sdiag, real *wa)
 {
     /* Initialized data */
@@ -216,3 +220,5 @@ void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
 
 } /* qrsolv_ */
 
+
+/** @}*/

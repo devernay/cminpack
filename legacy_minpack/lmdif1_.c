@@ -8,9 +8,13 @@
 #include "minpackP.h"
 
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 __minpack_attr__
-void __minpack_func__(lmdif1)(__minpack_decl_fcn_mn__  const int *m, const int *n, real *x, 
-	real *fvec, const real *tol, int *info, int *iwa, 
+void __minpack_func__(lmdif1)(__minpack_decl_fcn_mn__  const int *m, const int *n, real *x,
+	real *fvec, const real *tol, int *info, int *iwa,
 	real *wa, const int *lwa)
 {
     /* Initialized data */
@@ -148,8 +152,8 @@ void __minpack_func__(lmdif1)(__minpack_decl_fcn_mn__  const int *m, const int *
     nprint = 0;
     mp5n = *m + *n * 5;
     __minpack_func__(lmdif)(__minpack_param_fcn_mn__ m, n, &x[1], &fvec[1], &ftol, &xtol, &gtol, &maxfev, &
-	    epsfcn, &wa[1], &mode, &factor, &nprint, info, &nfev, &wa[mp5n + 
-	    1], m, &iwa[1], &wa[*n + 1], &wa[(*n << 1) + 1], &wa[*n * 3 + 1], 
+	    epsfcn, &wa[1], &mode, &factor, &nprint, info, &nfev, &wa[mp5n +
+	    1], m, &iwa[1], &wa[*n + 1], &wa[(*n << 1) + 1], &wa[*n * 3 + 1],
 	    &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);
     if (*info == 8) {
 	*info = 4;
@@ -161,3 +165,5 @@ void __minpack_func__(lmdif1)(__minpack_decl_fcn_mn__  const int *m, const int *
 
 } /* lmdif1_ */
 
+
+/** @}*/

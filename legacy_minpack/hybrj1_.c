@@ -7,6 +7,10 @@
 #include <math.h>
 #include "minpackP.h"
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 
 __minpack_attr__
 void __minpack_func__(hybrj1)(__minpack_decl_fcnder_nn__ const int *n, real *x, real *
@@ -161,3 +165,5 @@ void __minpack_func__(hybrj1)(__minpack_decl_fcnder_nn__ const int *n, real *x, 
 
 } /* hybrj1_ */
 
+
+/** @}*/

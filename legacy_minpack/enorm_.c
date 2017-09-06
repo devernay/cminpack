@@ -8,6 +8,10 @@
 
 #include "minpackP.h"
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 /*
   About the values for rdwarf and rgiant.
 
@@ -33,7 +37,7 @@
  Any suggestion is welcome. Half CMINPACK is really only a
  proof-of-concept anyway.
 
- See the example/tenorm*c, which computes these values 
+ See the example/tenorm*c, which computes these values
 */
 #define double_dwarf (1.82691291192569e-153)
 #define double_giant (1.34078079299426e+153)
@@ -197,3 +201,5 @@ L130:
 
 } /* enorm_ */
 
+
+/** @}*/

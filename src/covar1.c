@@ -2,6 +2,10 @@
 #include <math.h>
 #include "cminpackP.h"
 
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 /* covar1 estimates the variance-covariance matrix:
    C = sigma**2 (JtJ)**+
    where (JtJ)**+ is the inverse of JtJ or the pseudo-inverse of JtJ (in case J does not have full rank),
@@ -9,7 +13,7 @@
    where fsumsq is the residual sum of squares and k is the rank of J.
 */
 __cminpack_attr__
-int __cminpack_func__(covar1)(int m, int n, real fsumsq, real *r, int ldr, 
+int __cminpack_func__(covar1)(int m, int n, real fsumsq, real *r, int ldr,
 	const int *ipvt, real tol, real *wa)
 {
     /* Local variables */
@@ -164,3 +168,5 @@ int __cminpack_func__(covar1)(int m, int n, real fsumsq, real *r, int ldr,
     return l + 1;
 } /* covar_ */
 
+
+/** @}*/

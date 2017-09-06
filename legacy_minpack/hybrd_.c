@@ -7,12 +7,16 @@
 #include <math.h>
 #include "minpackP.h"
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 __minpack_attr__
 void __minpack_func__(hybrd)(__minpack_decl_fcn_nn__ const int *n, real *x, real *
-	fvec, const real *xtol, const int *maxfev, const int *ml, const int *mu, 
+	fvec, const real *xtol, const int *maxfev, const int *ml, const int *mu,
 	const real *epsfcn, real *diag, const int *mode, const real *
 	factor, const int *nprint, int *info, int *nfev, real *
-	fjac, const int *ldfjac, real *r__, const int *lr, real *qtf, 
+	fjac, const int *ldfjac, real *r__, const int *lr, real *qtf,
 	real *wa1, real *wa2, real *wa3, real *wa4)
 {
     /* Table of constant values */
@@ -629,3 +633,5 @@ L300:
 
 } /* hybrd_ */
 
+
+/** @}*/

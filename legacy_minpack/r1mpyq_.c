@@ -7,6 +7,10 @@
 #include <math.h>
 #include "minpackP.h"
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 
 __minpack_attr__
 void __minpack_func__(r1mpyq)(const int *m, const int *n, real *a, const int *
@@ -142,3 +146,5 @@ void __minpack_func__(r1mpyq)(const int *m, const int *n, real *a, const int *
 
 } /* r1mpyq_ */
 
+
+/** @}*/

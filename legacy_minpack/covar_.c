@@ -10,12 +10,16 @@
 		http://www.netlib.org/f2c/libf2c.zip
 */
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 #include "minpack.h"
 #include <math.h>
 #include "minpackP.h"
 
 __minpack_attr__
-void __minpack_func__(covar)(const int *n, real *r__, const int *ldr, 
+void __minpack_func__(covar)(const int *n, real *r__, const int *ldr,
 	const int *ipvt, const real *tol, real *wa)
 {
     /* System generated locals */
@@ -208,3 +212,5 @@ L110:
 
 } /* covar_ */
 
+
+/** @}*/

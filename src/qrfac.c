@@ -7,6 +7,10 @@
 #endif
 #include "cminpackP.h"
 
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 __cminpack_attr__
 void __cminpack_func__(qrfac)(int m, int n, real *a, int
 	lda, int pivot, int *ipvt, int lipvt, real *rdiag,
@@ -37,7 +41,7 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
         /* set all columns free */
         memset(jpvt, 0, sizeof(int)*n);
     }
-    
+
     /* query optimal size of work */
     lwork = -1;
     if (pivot) {
@@ -49,20 +53,20 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
         lwork = (int)tau[0];
         assert( lwork >= 1 && lwork >= n );
     }
-    
+
     assert( info == 0 );
-    
+
     /* alloc work area */
     work = (double *)malloc(sizeof(double)*lwork);
     assert(work != NULL);
-    
+
     /* set acnorm first (from the doc of qrfac, acnorm may point to the same area as rdiag) */
     if (acnorm != rdiag) {
         for (j = 0; j < n; ++j) {
             acnorm[j] = __cminpack_enorm__(m, &a[j * lda]);
         }
     }
-    
+
     /* QR decomposition */
     if (pivot) {
         dgeqp3_(&m_,&n_,a,&lda_,jpvt,tau,work,&lwork,&info);
@@ -70,13 +74,13 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
         dgeqrf_(&m_,&n_,a,&lda_,tau,work,&lwork,&info);
     }
     assert(info == 0);
-    
+
     /* set rdiag, before the diagonal is replaced */
     memset(rdiag, 0, sizeof(double)*n);
     for(i=0 ; i<n ; ++i) {
         rdiag[i] = a[i*lda+i];
     }
-    
+
     /* modify lower trinagular part to look like qrfac's output */
     for(i=0 ; i<ltau ; ++i) {
         k = i*lda+i;
@@ -87,7 +91,7 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
             a[k] *= t;
         }
     }
-    
+
     free(work);
     if (pivot) {
         /* convert back jpvt to ipvt */
@@ -283,3 +287,5 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
 #endif /* !USE_LAPACK */
 } /* qrfac_ */
 
+
+/** @}*/

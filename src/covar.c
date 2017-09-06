@@ -2,8 +2,12 @@
 #include <math.h>
 #include "cminpackP.h"
 
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 __cminpack_attr__
-void __cminpack_func__(covar)(int n, real *r, int ldr, 
+void __cminpack_func__(covar)(int n, real *r, int ldr,
 	const int *ipvt, real tol, real *wa)
 {
     /* Local variables */
@@ -153,3 +157,5 @@ void __cminpack_func__(covar)(int n, real *r, int ldr,
 
 } /* covar_ */
 
+
+/** @}*/

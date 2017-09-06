@@ -7,13 +7,17 @@
 #include <math.h>
 #include "minpackP.h"
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 
 __minpack_attr__
 void __minpack_func__(hybrj)(__minpack_decl_fcnder_nn__  const int *n, real *x, real *
 	fvec, real *fjac, const int *ldfjac, const real *xtol, const int *
 	maxfev, real *diag, const int *mode, const real *factor, const int *
-	nprint, int *info, int *nfev, int *njev, real *r__, 
-	const int *lr, real *qtf, real *wa1, real *wa2, 
+	nprint, int *info, int *nfev, int *njev, real *r__,
+	const int *lr, real *qtf, real *wa1, real *wa2,
 	real *wa3, real *wa4)
 {
     /* Initialized data */
@@ -216,7 +220,7 @@ void __minpack_func__(hybrj)(__minpack_decl_fcnder_nn__  const int *n, real *x, 
 
 /*     check the input parameters for errors. */
 
-    if (*n <= 0 || *ldfjac < *n || *xtol < 0. || *maxfev <= 0 || *factor <= 
+    if (*n <= 0 || *ldfjac < *n || *xtol < 0. || *maxfev <= 0 || *factor <=
 	    0. || *lr < *n * (*n + 1) / 2) {
 	goto L300;
     }
@@ -606,3 +610,5 @@ L300:
 
 } /* hybrj_ */
 
+
+/** @}*/

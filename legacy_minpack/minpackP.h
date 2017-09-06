@@ -1,4 +1,11 @@
 /* Internal header file for cminpack, by Frederic Devernay. */
+
+
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
+
 #ifndef __MINPACKP_H__
 #define __MINPACKP_H__
 
@@ -48,3 +55,5 @@ extern long double ellpkl ( long double );
 #define FALSE_ (0)
 
 #endif /* !__MINPACKP_H__ */
+
+/** @}*/

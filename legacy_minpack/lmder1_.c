@@ -8,9 +8,13 @@
 #include "minpackP.h"
 
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 __minpack_attr__
-void __minpack_func__(lmder1)(__minpack_decl_fcnder_mn__ const int *m, const int *n, real *x, 
-	real *fvec, real *fjac, const int *ldfjac, const real *tol, 
+void __minpack_func__(lmder1)(__minpack_decl_fcnder_mn__ const int *m, const int *n, real *x,
+	real *fvec, real *fjac, const int *ldfjac, const real *tol,
 	int *info, int *ipvt, real *wa, const int *lwa)
 {
     /* Initialized data */
@@ -175,7 +179,7 @@ void __minpack_func__(lmder1)(__minpack_decl_fcnder_mn__ const int *m, const int
     mode = 1;
     nprint = 0;
     __minpack_func__(lmder)(__minpack_param_fcnder_mn__ m, n, &x[1], &fvec[1], &fjac[fjac_offset], ldfjac, &
-	    ftol, &xtol, &gtol, &maxfev, &wa[1], &mode, &factor, &nprint, 
+	    ftol, &xtol, &gtol, &maxfev, &wa[1], &mode, &factor, &nprint,
 	    info, &nfev, &njev, &ipvt[1], &wa[*n + 1], &wa[(*n << 1) + 1], &
 	    wa[*n * 3 + 1], &wa[(*n << 2) + 1], &wa[*n * 5 + 1]);
     if (*info == 8) {
@@ -188,3 +192,5 @@ void __minpack_func__(lmder1)(__minpack_decl_fcnder_mn__ const int *m, const int
 
 } /* lmder1_ */
 
+
+/** @}*/

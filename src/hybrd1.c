@@ -1,10 +1,10 @@
-/* hybrd1.f -- translated by f2c (version 20020621).
-   You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
-*/
 
 #include "cminpack.h"
 #include "cminpackP.h"
+
+/** \addtogroup C-MINPACK
+ *  @{
+ */
 
 __cminpack_attr__
 int __cminpack_func__(hybrd1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, real *
@@ -135,7 +135,7 @@ int __cminpack_func__(hybrd1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, 
     index = n * 6 + lr;
     info = __cminpack_func__(hybrd)(__cminpack_param_fcn_nn__ p, n, &x[1], &fvec[1], xtol, maxfev, ml, mu, epsfcn, &
 	    wa[1], mode, factor, nprint, &nfev, &wa[index + 1], n, &
-	    wa[n * 6 + 1], lr, &wa[n + 1], &wa[(n << 1) + 1], &wa[n * 3 
+	    wa[n * 6 + 1], lr, &wa[n + 1], &wa[(n << 1) + 1], &wa[n * 3
 	    + 1], &wa[(n << 2) + 1], &wa[n * 5 + 1]);
     if (info == 5) {
 	info = 4;
@@ -146,3 +146,5 @@ int __cminpack_func__(hybrd1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, 
 
 } /* hybrd1_ */
 
+
+/** @}*/

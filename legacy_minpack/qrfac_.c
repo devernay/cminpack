@@ -7,6 +7,10 @@
 #include <math.h>
 #include "minpackP.h"
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 
 __minpack_attr__
 void __minpack_func__(qrfac)(const int *m, const int *n, real *a, const int *
@@ -241,3 +245,5 @@ L100:
 
 } /* qrfac_ */
 
+
+/** @}*/

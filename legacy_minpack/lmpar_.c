@@ -7,11 +7,15 @@
 #include <math.h>
 #include "minpackP.h"
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 
 __minpack_attr__
-void __minpack_func__(lmpar)(const int *n, real *r__, const int *ldr, 
-	const int *ipvt, const real *diag, const real *qtb, const real *delta, 
-	real *par, real *x, real *sdiag, real *wa1, 
+void __minpack_func__(lmpar)(const int *n, real *r__, const int *ldr,
+	const int *ipvt, const real *diag, const real *qtb, const real *delta,
+	real *par, real *x, real *sdiag, real *wa1,
 	real *wa2)
 {
     /* Table of constant values */
@@ -370,3 +374,5 @@ L220:
 
 } /* lmpar_ */
 
+
+/** @}*/

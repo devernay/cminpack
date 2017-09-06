@@ -2,12 +2,16 @@
 #include <math.h>
 #include "cminpackP.h"
 
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 __cminpack_attr__
-int __cminpack_func__(lmder)(__cminpack_decl_fcnder_mn__ void *p, int m, int n, real *x, 
+int __cminpack_func__(lmder)(__cminpack_decl_fcnder_mn__ void *p, int m, int n, real *x,
 	real *fvec, real *fjac, int ldfjac, real ftol,
 	real xtol, real gtol, int maxfev, real *
 	diag, int mode, real factor, int nprint,
-	int *nfev, int *njev, int *ipvt, real *qtf, 
+	int *nfev, int *njev, int *ipvt, real *qtf,
 	real *wa1, real *wa2, real *wa3, real *wa4)
 {
     /* Initialized data */
@@ -29,7 +33,7 @@ int __cminpack_func__(lmder)(__cminpack_decl_fcnder_mn__ void *p, int m, int n, 
     int iflag;
     real delta = 0.;
     real ratio;
-    real fnorm, gnorm, pnorm, xnorm = 0., fnorm1, actred, dirder, 
+    real fnorm, gnorm, pnorm, xnorm = 0., fnorm1, actred, dirder,
 	    epsmch, prered;
     int info;
 
@@ -222,7 +226,7 @@ int __cminpack_func__(lmder)(__cminpack_decl_fcnder_mn__ void *p, int m, int n, 
 
 /*     check the input parameters for errors. */
 
-    if (n <= 0 || m < n || ldfjac < m || ftol < 0. || xtol < 0. || 
+    if (n <= 0 || m < n || ldfjac < m || ftol < 0. || xtol < 0. ||
 	    gtol < 0. || maxfev <= 0 || factor <= 0.) {
 	goto TERMINATE;
     }
@@ -524,3 +528,5 @@ TERMINATE:
 
 } /* lmder_ */
 
+
+/** @}*/

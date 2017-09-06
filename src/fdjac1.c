@@ -1,15 +1,15 @@
-/* fdjac1.f -- translated by f2c (version 20020621).
-   You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
-*/
 
 #include "cminpack.h"
 #include <math.h>
 #include "cminpackP.h"
 
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 __cminpack_attr__
 int __cminpack_func__(fdjac1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, const real *
-	fvec, real *fjac, int ldfjac, int ml, 
+	fvec, real *fjac, int ldfjac, int ml,
 	int mu, real epsfcn, real *wa1, real *wa2)
 {
     /* System generated locals */
@@ -187,3 +187,5 @@ int __cminpack_func__(fdjac1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, 
 
 } /* fdjac1_ */
 
+
+/** @}*/

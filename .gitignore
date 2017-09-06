@@ -341,3 +341,4 @@ cminpack.pc
 CTestTestfile.cmake
 
 CMakeCache.txt
+/docs/html

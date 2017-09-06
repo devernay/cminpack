@@ -7,13 +7,17 @@
 #include <math.h>
 #include "minpackP.h"
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 
 __minpack_attr__
-void __minpack_func__(lmder)(__minpack_decl_fcnder_mn__ const int *m, const int *n, real *x, 
+void __minpack_func__(lmder)(__minpack_decl_fcnder_mn__ const int *m, const int *n, real *x,
 	real *fvec, real *fjac, const int *ldfjac, const real *ftol,
 	const real *xtol, const real *gtol, const int *maxfev, real *
 	diag, const int *mode, const real *factor, const int *nprint, int *
-	info, int *nfev, int *njev, int *ipvt, real *qtf, 
+	info, int *nfev, int *njev, int *ipvt, real *qtf,
 	real *wa1, real *wa2, real *wa3, real *wa4)
 {
     /* Table of constant values */
@@ -41,7 +45,7 @@ void __minpack_func__(lmder)(__minpack_decl_fcnder_mn__ const int *m, const int 
     int iflag;
     real delta;
     real ratio;
-    real fnorm, gnorm, pnorm, xnorm = 0, fnorm1, actred, dirder, 
+    real fnorm, gnorm, pnorm, xnorm = 0, fnorm1, actred, dirder,
 	    epsmch, prered;
 
 /*     ********** */
@@ -248,7 +252,7 @@ void __minpack_func__(lmder)(__minpack_decl_fcnder_mn__ const int *m, const int 
 
 /*     check the input parameters for errors. */
 
-    if (*n <= 0 || *m < *n || *ldfjac < *m || *ftol < 0. || *xtol < 0. || 
+    if (*n <= 0 || *m < *n || *ldfjac < *m || *ftol < 0. || *xtol < 0. ||
 	    *gtol < 0. || *maxfev <= 0 || *factor <= 0.) {
 	goto L300;
     }
@@ -567,7 +571,7 @@ L290:
     if (delta <= *xtol * xnorm) {
 	*info = 2;
     }
-    if (fabs(actred) <= *ftol && prered <= *ftol && p5 * ratio <= 1. && *info 
+    if (fabs(actred) <= *ftol && prered <= *ftol && p5 * ratio <= 1. && *info
 	    == 2) {
 	*info = 3;
     }
@@ -619,3 +623,5 @@ L300:
 
 } /* lmder_ */
 
+
+/** @}*/

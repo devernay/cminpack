@@ -7,6 +7,10 @@
 #include <math.h>
 #include "minpackP.h"
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 
 __minpack_attr__
 void __minpack_func__(qform)(const int *m, const int *n, real *q, const int *
@@ -142,3 +146,5 @@ L110:
 
 } /* qform_ */
 
+
+/** @}*/

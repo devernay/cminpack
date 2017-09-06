@@ -1,18 +1,18 @@
-/* hybrj.f -- translated by f2c (version 20020621).
-   You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
-*/
 
 #include "cminpack.h"
 #include <math.h>
 #include "cminpackP.h"
 
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 __cminpack_attr__
 int __cminpack_func__(hybrj)(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
 	fvec, real *fjac, int ldfjac, real xtol, int
 	maxfev, real *diag, int mode, real factor, int
-	nprint, int *nfev, int *njev, real *r, 
-	int lr, real *qtf, real *wa1, real *wa2, 
+	nprint, int *nfev, int *njev, real *r,
+	int lr, real *qtf, real *wa1, real *wa2,
 	real *wa3, real *wa4)
 {
     /* Initialized data */
@@ -214,7 +214,7 @@ int __cminpack_func__(hybrj)(__cminpack_decl_fcnder_nn__ void *p, int n, real *x
 
 /*     check the input parameters for errors. */
 
-    if (n <= 0 || ldfjac < n || xtol < 0. || maxfev <= 0 || factor <= 
+    if (n <= 0 || ldfjac < n || xtol < 0. || maxfev <= 0 || factor <=
 	    0. || lr < n * (n + 1) / 2) {
 	goto TERMINATE;
     }
@@ -547,3 +547,5 @@ TERMINATE:
 
 } /* hybrj_ */
 
+
+/** @}*/

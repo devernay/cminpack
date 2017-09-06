@@ -1,3 +1,4 @@
+
 /* rwupdt.f -- translated by f2c (version 20020621).
    You must link the resulting object file with the libraries:
 	-lf2c -lm   (in that order)
@@ -7,10 +8,14 @@
 #include <math.h>
 #include "minpackP.h"
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 
 __minpack_attr__
-void __minpack_func__(rwupdt)(const int *n, real *r__, const int *ldr, 
-	const real *w, real *b, real *alpha, real *cos__, 
+void __minpack_func__(rwupdt)(const int *n, real *r__, const int *ldr,
+	const real *w, real *b, real *alpha, real *cos__,
 	real *sin__)
 {
     /* Initialized data */
@@ -144,7 +149,7 @@ L40:
 
 /*        apply the current transformation to r(j,j), b(j), and alpha. */
 
-	r__[j + j * r_dim1] = cos__[j] * r__[j + j * r_dim1] + sin__[j] * 
+	r__[j + j * r_dim1] = cos__[j] * r__[j + j * r_dim1] + sin__[j] *
 		rowj;
 	temp = cos__[j] * b[j] + sin__[j] * *alpha;
 	*alpha = -sin__[j] * b[j] + cos__[j] * *alpha;
@@ -159,3 +164,5 @@ L50:
 
 } /* rwupdt_ */
 
+
+/** @}*/

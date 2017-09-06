@@ -2,8 +2,12 @@
 #include <math.h>
 #include "cminpackP.h"
 
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 __cminpack_attr__
-int __cminpack_func__(fdjac2)(__cminpack_decl_fcn_mn__ void *p, int m, int n, real *x, 
+int __cminpack_func__(fdjac2)(__cminpack_decl_fcn_mn__ void *p, int m, int n, real *x,
 	const real *fvec, real *fjac, int ldfjac,
 	real epsfcn, real *wa)
 {
@@ -120,3 +124,5 @@ int __cminpack_func__(fdjac2)(__cminpack_decl_fcn_mn__ void *p, int m, int n, re
 
 } /* fdjac2_ */
 
+
+/** @}*/

@@ -1,4 +1,10 @@
 /* Internal header file for cminpack, by Frederic Devernay. */
+
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
+
 #ifndef __CMINPACKP_H__
 #define __CMINPACKP_H__
 
@@ -56,3 +62,5 @@ int dgeqrf_(__CLPK_integer *m, __CLPK_integer *n, __CLPK_doublereal *a, __CLPK_i
 #include "../legacy_minpack/minpackP.h"
 
 #endif /* !__CMINPACKP_H__ */
+
+/** @}*/

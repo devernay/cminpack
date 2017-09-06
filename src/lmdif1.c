@@ -1,9 +1,13 @@
 #include "cminpack.h"
 #include "cminpackP.h"
 
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 __cminpack_attr__
-int __cminpack_func__(lmdif1)(__cminpack_decl_fcn_mn__ void *p, int m, int n, real *x, 
-	real *fvec, real tol, int *iwa, 
+int __cminpack_func__(lmdif1)(__cminpack_decl_fcn_mn__ void *p, int m, int n, real *x,
+	real *fvec, real tol, int *iwa,
 	real *wa, int lwa)
 {
     /* Initialized data */
@@ -134,7 +138,7 @@ int __cminpack_func__(lmdif1)(__cminpack_decl_fcn_mn__ void *p, int m, int n, re
     mp5n = m + n * 5;
     info = __cminpack_func__(lmdif)(__cminpack_param_fcn_mn__ p, m, n, x, fvec, ftol, xtol, gtol, maxfev,
 	    epsfcn, wa, mode, factor, nprint, &nfev, &wa[mp5n],
-            m, iwa, &wa[n], &wa[(n << 1)], &wa[n * 3], 
+            m, iwa, &wa[n], &wa[(n << 1)], &wa[n * 3],
 	    &wa[(n << 2)], &wa[n * 5]);
     if (info == 8) {
 	info = 4;
@@ -145,3 +149,5 @@ int __cminpack_func__(lmdif1)(__cminpack_decl_fcn_mn__ void *p, int m, int n, re
 
 } /* lmdif1_ */
 
+
+/** @}*/

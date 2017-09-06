@@ -1,10 +1,12 @@
-/* hybrj1.f -- translated by f2c (version 20020621).
-   You must link the resulting object file with the libraries:
-	-lf2c -lm   (in that order)
-*/
 
 #include "cminpack.h"
 #include "cminpackP.h"
+
+
+/** \addtogroup C-MINPACK
+ *  @{
+ */
+
 
 __cminpack_attr__
 int __cminpack_func__(hybrj1)(__cminpack_decl_fcnder_nn__ void *p, int n, real *x, real *
@@ -156,3 +158,5 @@ int __cminpack_func__(hybrj1)(__cminpack_decl_fcnder_nn__ void *p, int n, real *
 
 } /* hybrj1_ */
 
+
+/** @}*/

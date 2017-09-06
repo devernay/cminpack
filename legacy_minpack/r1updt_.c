@@ -7,6 +7,10 @@
 #include <math.h>
 #include "minpackP.h"
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 __minpack_attr__
 void __minpack_func__(r1updt)(const int *m, const int *n, real *s, const int *
 	ls, const real *u, real *v, real *w, int *sing)
@@ -277,3 +281,5 @@ L140:
 
 } /* r1updt_ */
 
+
+/** @}*/

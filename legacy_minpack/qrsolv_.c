@@ -7,10 +7,14 @@
 #include <math.h>
 #include "minpackP.h"
 
+/** \addtogroup MINPACK-Legacy
+ *  @{
+ */
+
 
 __minpack_attr__
-void __minpack_func__(qrsolv)(const int *n, real *r__, const int *ldr, 
-	const int *ipvt, const real *diag, const real *qtb, real *x, 
+void __minpack_func__(qrsolv)(const int *n, real *r__, const int *ldr,
+	const int *ipvt, const real *diag, const real *qtb, real *x,
 	real *sdiag, real *wa)
 {
     /* Initialized data */
@@ -166,7 +170,7 @@ void __minpack_func__(qrsolv)(const int *n, real *r__, const int *ldr,
 	    if (sdiag[k] == 0.) {
 		goto L70;
 	    }
-	    if ((d__1 = r__[k + k * r_dim1], abs(d__1)) >= (d__2 = sdiag[k], 
+	    if ((d__1 = r__[k + k * r_dim1], abs(d__1)) >= (d__2 = sdiag[k],
 		    abs(d__2))) {
 		goto L40;
 	    }
@@ -271,3 +275,5 @@ L150:
 
 } /* qrsolv_ */
 
+
+/** @}*/
