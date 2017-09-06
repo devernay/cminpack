@@ -40,18 +40,25 @@ RANLIB=ranlib
 LIB=libcminpack$(LIBSUFFIX).a
 
 OBJS = \
-$(LIBSUFFIX)chkder.o  $(LIBSUFFIX)enorm.o   $(LIBSUFFIX)hybrd1.o  $(LIBSUFFIX)hybrj.o  \
-$(LIBSUFFIX)lmdif1.o  $(LIBSUFFIX)lmstr1.o  $(LIBSUFFIX)qrfac.o   $(LIBSUFFIX)r1updt.o \
-$(LIBSUFFIX)dogleg.o  $(LIBSUFFIX)fdjac1.o  $(LIBSUFFIX)hybrd.o   $(LIBSUFFIX)lmder1.o \
-$(LIBSUFFIX)lmdif.o   $(LIBSUFFIX)lmstr.o   $(LIBSUFFIX)qrsolv.o  $(LIBSUFFIX)rwupdt.o \
-$(LIBSUFFIX)dpmpar.o  $(LIBSUFFIX)fdjac2.o  $(LIBSUFFIX)hybrj1.o  $(LIBSUFFIX)lmder.o \
-$(LIBSUFFIX)lmpar.o   $(LIBSUFFIX)qform.o   $(LIBSUFFIX)r1mpyq.o  $(LIBSUFFIX)covar.o $(LIBSUFFIX)covar1.o \
-$(LIBSUFFIX)chkder_.o $(LIBSUFFIX)enorm_.o  $(LIBSUFFIX)hybrd1_.o $(LIBSUFFIX)hybrj_.o \
-$(LIBSUFFIX)lmdif1_.o $(LIBSUFFIX)lmstr1_.o $(LIBSUFFIX)qrfac_.o  $(LIBSUFFIX)r1updt_.o \
-$(LIBSUFFIX)dogleg_.o $(LIBSUFFIX)fdjac1_.o $(LIBSUFFIX)hybrd_.o  $(LIBSUFFIX)lmder1_.o \
-$(LIBSUFFIX)lmdif_.o  $(LIBSUFFIX)lmstr_.o  $(LIBSUFFIX)qrsolv_.o $(LIBSUFFIX)rwupdt_.o \
-$(LIBSUFFIX)dpmpar_.o $(LIBSUFFIX)fdjac2_.o $(LIBSUFFIX)hybrj1_.o $(LIBSUFFIX)lmder_.o \
-$(LIBSUFFIX)lmpar_.o  $(LIBSUFFIX)qform_.o  $(LIBSUFFIX)r1mpyq_.o $(LIBSUFFIX)covar_.o
+src/$(LIBSUFFIX)chkder.o  src/$(LIBSUFFIX)enorm.o   src/$(LIBSUFFIX)hybrd1.o  src/$(LIBSUFFIX)hybrj.o  \
+src/$(LIBSUFFIX)lmdif1.o  src/$(LIBSUFFIX)lmstr1.o  src/$(LIBSUFFIX)qrfac.o   src/$(LIBSUFFIX)r1updt.o \
+src/$(LIBSUFFIX)dogleg.o  src/$(LIBSUFFIX)fdjac1.o  src/$(LIBSUFFIX)hybrd.o   src/$(LIBSUFFIX)lmder1.o \
+src/$(LIBSUFFIX)lmdif.o   src/$(LIBSUFFIX)lmstr.o   src/$(LIBSUFFIX)qrsolv.o  src/$(LIBSUFFIX)rwupdt.o \
+src/$(LIBSUFFIX)dpmpar.o  src/$(LIBSUFFIX)fdjac2.o  src/$(LIBSUFFIX)hybrj1.o  src/$(LIBSUFFIX)lmder.o \
+src/$(LIBSUFFIX)lmpar.o   src/$(LIBSUFFIX)qform.o   src/$(LIBSUFFIX)r1mpyq.o  src/$(LIBSUFFIX)covar.o \
+src/$(LIBSUFFIX)covar1.o \
+legacy_minpack/$(LIBSUFFIX)chkder_.o legacy_minpack/$(LIBSUFFIX)enorm_.o  \
+legacy_minpack/$(LIBSUFFIX)hybrd1_.o legacy_minpack/$(LIBSUFFIX)hybrj_.o  \
+legacy_minpack/$(LIBSUFFIX)lmdif1_.o legacy_minpack/$(LIBSUFFIX)lmstr1_.o \
+legacy_minpack/$(LIBSUFFIX)qrfac_.o  legacy_minpack/$(LIBSUFFIX)r1updt_.o \
+legacy_minpack/$(LIBSUFFIX)dogleg_.o legacy_minpack/$(LIBSUFFIX)fdjac1_.o \
+legacy_minpack/$(LIBSUFFIX)hybrd_.o  legacy_minpack/$(LIBSUFFIX)lmder1_.o \
+legacy_minpack/$(LIBSUFFIX)lmdif_.o  legacy_minpack/$(LIBSUFFIX)lmstr_.o  \
+legacy_minpack/$(LIBSUFFIX)qrsolv_.o legacy_minpack/$(LIBSUFFIX)rwupdt_.o \
+legacy_minpack/$(LIBSUFFIX)dpmpar_.o legacy_minpack/$(LIBSUFFIX)fdjac2_.o \
+legacy_minpack/$(LIBSUFFIX)hybrj1_.o legacy_minpack/$(LIBSUFFIX)lmder_.o  \
+legacy_minpack/$(LIBSUFFIX)lmpar_.o  legacy_minpack/$(LIBSUFFIX)qform_.o  \
+legacy_minpack/$(LIBSUFFIX)r1mpyq_.o legacy_minpack/$(LIBSUFFIX)covar_.o
 
 # target dir for install
 DESTDIR=/usr/local
@@ -104,6 +111,8 @@ clean:
 
 veryclean: clean
 	rm -f *.o libcminpack*.a *.gcno *.gcda *~ #*#
+	rm -f legacy_minpack/*.o libcminpack*.a legacy_minpack/*.gcno legacy_minpack/*.gcda *~ #*#
+	rm -f src/*.o libcminpack*.a src/*.gcno src/*.gcda *~ #*#
 	$(MAKE) -C examples veryclean
 	$(MAKE) -C examples veryclean LIBSUFFIX=s
 	$(MAKE) -C examples veryclean LIBSUFFIX=h

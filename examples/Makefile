@@ -1,4 +1,4 @@
-#!/usr/bin/make 
+#!/usr/bin/make
 
 # pick up your FORTRAN compiler
 #F77=g77
@@ -13,7 +13,7 @@ F77=gfortran
 MINPACK=../libcminpack$(LIBSUFFIX).a
 CC=gcc
 CFLAGS=-g -Wall
-CPPFLAGS=-I..
+CPPFLAGS=-I..  -I../src -I../legacy_minpack
 
 FMINPACK=../fortran/libminpack.a
 
@@ -242,7 +242,7 @@ checkdouble: checkdoublec ../fortran/libminpack.a
 checklongdoublec:
 	$(MAKE) -C .. longdouble 2>&1 > /dev/null
 	$(MAKE) clean LIBSUFFIX=ld 2>&1 > /dev/null
-	-$(MAKE) ctest LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)" 
+	-$(MAKE) ctest LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)"
 	$(MAKE) clean LIBSUFFIX=ld 2>&1 > /dev/null
 	-$(MAKE) -k ctestdrv LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)"
 	$(MAKE) clean LIBSUFFIX=ld 2>&1 > /dev/null
@@ -251,13 +251,13 @@ checklongdouble: checklongdoublec
 	$(MAKE) clean LIBSUFFIX=ld 2>&1 > /dev/null
 	-$(MAKE) test LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)"
 	$(MAKE) clean LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)" 2>&1 > /dev/null
-	-$(MAKE) -k testdrv LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)" 
+	-$(MAKE) -k testdrv LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)"
 	$(MAKE) clean LIBSUFFIX=ld 2>&1 > /dev/null
 
 checkfloatc:
 	$(MAKE) -C .. float 2>&1 > /dev/null
 	$(MAKE) clean LIBSUFFIX=s 2>&1 > /dev/null
-	-$(MAKE) ctest LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 
+	-$(MAKE) ctest LIBSUFFIX=s CFLAGS="$(CFLAGS_F)"
 	$(MAKE) clean LIBSUFFIX=s 2>&1 > /dev/null
 	-$(MAKE) -k ctestdrv LIBSUFFIX=s CFLAGS="$(CFLAGS_F)"
 	$(MAKE) clean LIBSUFFIX=s 2>&1 > /dev/null
@@ -266,7 +266,7 @@ checkfloat: checkfloatc
 	$(MAKE) clean LIBSUFFIX=s 2>&1 > /dev/null
 	-$(MAKE) test LIBSUFFIX=s CFLAGS="$(CFLAGS_F)"
 	$(MAKE) clean LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 2>&1 > /dev/null
-	-$(MAKE) -k testdrv LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 
+	-$(MAKE) -k testdrv LIBSUFFIX=s CFLAGS="$(CFLAGS_F)"
 	$(MAKE) clean LIBSUFFIX=s 2>&1 > /dev/null
 
 checklapack:
