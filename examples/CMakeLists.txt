@@ -3,7 +3,7 @@ option (BUILD_EXAMPLES_FORTRAN "Build the FORTRAN examples and tests." OFF)
 
 if (BUILD_EXAMPLES)
   # Make sure the compiler can find include files from our cminpack library.
-  include_directories (${CMINPACK_SOURCE_DIR})
+  include_directories (${CMINPACK_SOURCE_DIR} ${CMINPACK_SOURCE_DIR}/src)
 
   # Make sure the linker can find the cminpack library once it is built.
   link_directories (${CMINPACK_BINARY_DIR})
@@ -22,8 +22,8 @@ if (BUILD_EXAMPLES)
     get_target_property(TEST_LOC ${testname} LOCATION)
     add_test(${testname} "${CMAKE_COMMAND}"
       -DTEST=${TEST_LOC}
-      -DOUTPUT=${TEST_OUTPUT} 
-      -DREFERENCE=${TEST_REFERENCE} 
+      -DOUTPUT=${TEST_OUTPUT}
+      -DREFERENCE=${TEST_REFERENCE}
       -DINTDIR=${CMAKE_CFG_INTDIR}
       -P "${CMINPACK_SOURCE_DIR}/examples/runtest.cmake")
   endmacro(add_minpack_test)

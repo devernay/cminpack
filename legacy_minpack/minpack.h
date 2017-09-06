@@ -1,7 +1,7 @@
 #ifndef __MINPACK_H__
 #define __MINPACK_H__
 
-#include "cminpack.h"
+#include "../src/cminpack.h"
 
 /* The default floating-point type is "double" for C/C++ and "float" for CUDA,
    but you can change this by defining one of the following symbols when
@@ -92,7 +92,7 @@ extern "C" {
 /*  version), the output iflag value is the return value of the function. */
 /* If iflag=0, the function shoulkd just print the current values (see */
 /* the nprint parameters below). */
-  
+
 /* for hybrd1 and hybrd: */
 /*         calculate the functions at x and */
 /*         return this vector in fvec. */
@@ -154,14 +154,14 @@ void MINPACK_EXPORT __minpack_func__(hybrd)( __minpack_decl_fcn_nn__
 	      const __minpack_real__ *factor, const int *nprint, int *info, int *nfev,
 	      __minpack_real__ *fjac, const int *ldfjac, __minpack_real__ *r, const int *lr, __minpack_real__ *qtf,
 	      __minpack_real__ *wa1, __minpack_real__ *wa2, __minpack_real__ *wa3, __minpack_real__ *wa4);
-  
+
 /* find a zero of a system of N nonlinear functions in N variables by
    a modification of the Powell hybrid method (user-supplied Jacobian) */
 __minpack_attr__
 void MINPACK_EXPORT __minpack_func__(hybrj1)( __minpack_decl_fcnder_nn__ const int *n, __minpack_real__ *x,
 	       __minpack_real__ *fvec, __minpack_real__ *fjec, const int *ldfjac, const __minpack_real__ *tol,
 	       int *info, __minpack_real__ *wa, const int *lwa );
-          
+
 /* find a zero of a system of N nonlinear functions in N variables by
    a modification of the Powell hybrid method (user-supplied Jacobian,
    more general) */
@@ -234,7 +234,7 @@ void MINPACK_EXPORT __minpack_func__(lmstr)( __minpack_decl_fcnderstr_mn__ const
 	      const int *nprint, int *info, int *nfev, int *njev, int *ipvt,
 	      __minpack_real__ *qtf, __minpack_real__ *wa1, __minpack_real__ *wa2, __minpack_real__ *wa3,
 	      __minpack_real__ *wa4 );
- 
+
 __minpack_attr__
 void MINPACK_EXPORT __minpack_func__(chkder)( const int *m, const int *n, const __minpack_real__ *x, __minpack_real__ *fvec, __minpack_real__ *fjec,
 	       const int *ldfjac, __minpack_real__ *xp, __minpack_real__ *fvecp, const int *mode,
@@ -266,16 +266,16 @@ void MINPACK_EXPORT __minpack_func__(fdjac1)(__minpack_decl_fcn_nn__
 
 /* internal MINPACK subroutines */
 __minpack_attr__
-void __minpack_func__(dogleg)(const int *n, const __minpack_real__ *r, const int *lr, 
-             const __minpack_real__ *diag, const __minpack_real__ *qtb, const __minpack_real__ *delta, __minpack_real__ *x, 
+void __minpack_func__(dogleg)(const int *n, const __minpack_real__ *r, const int *lr,
+             const __minpack_real__ *diag, const __minpack_real__ *qtb, const __minpack_real__ *delta, __minpack_real__ *x,
              __minpack_real__ *wa1, __minpack_real__ *wa2);
 __minpack_attr__
 void __minpack_func__(qrfac)(const int *m, const int *n, __minpack_real__ *a, const int *
             lda, const int *pivot, int *ipvt, const int *lipvt, __minpack_real__ *rdiag,
             __minpack_real__ *acnorm, __minpack_real__ *wa);
 __minpack_attr__
-void __minpack_func__(qrsolv)(const int *n, __minpack_real__ *r, const int *ldr, 
-             const int *ipvt, const __minpack_real__ *diag, const __minpack_real__ *qtb, __minpack_real__ *x, 
+void __minpack_func__(qrsolv)(const int *n, __minpack_real__ *r, const int *ldr,
+             const int *ipvt, const __minpack_real__ *diag, const __minpack_real__ *qtb, __minpack_real__ *x,
              __minpack_real__ *sdiag, __minpack_real__ *wa);
 __minpack_attr__
 void __minpack_func__(qform)(const int *m, const int *n, __minpack_real__ *q, const int *
@@ -287,16 +287,16 @@ __minpack_attr__
 void __minpack_func__(r1mpyq)(const int *m, const int *n, __minpack_real__ *a, const int *
              lda, const __minpack_real__ *v, const __minpack_real__ *w);
 __minpack_attr__
-void __minpack_func__(lmpar)(const int *n, __minpack_real__ *r, const int *ldr, 
-            const int *ipvt, const __minpack_real__ *diag, const __minpack_real__ *qtb, const __minpack_real__ *delta, 
-            __minpack_real__ *par, __minpack_real__ *x, __minpack_real__ *sdiag, __minpack_real__ *wa1, 
+void __minpack_func__(lmpar)(const int *n, __minpack_real__ *r, const int *ldr,
+            const int *ipvt, const __minpack_real__ *diag, const __minpack_real__ *qtb, const __minpack_real__ *delta,
+            __minpack_real__ *par, __minpack_real__ *x, __minpack_real__ *sdiag, __minpack_real__ *wa1,
             __minpack_real__ *wa2);
 __minpack_attr__
-void __minpack_func__(rwupdt)(const int *n, __minpack_real__ *r, const int *ldr, 
-             const __minpack_real__ *w, __minpack_real__ *b, __minpack_real__ *alpha, __minpack_real__ *cos, 
+void __minpack_func__(rwupdt)(const int *n, __minpack_real__ *r, const int *ldr,
+             const __minpack_real__ *w, __minpack_real__ *b, __minpack_real__ *alpha, __minpack_real__ *cos,
              __minpack_real__ *sin);
 __minpack_attr__
-void __minpack_func__(covar)(const int *n, __minpack_real__ *r, const int *ldr, 
+void __minpack_func__(covar)(const int *n, __minpack_real__ *r, const int *ldr,
            const int *ipvt, const __minpack_real__ *tol, __minpack_real__ *wa);
 #ifdef __cplusplus
 }

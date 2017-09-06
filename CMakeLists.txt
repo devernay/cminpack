@@ -49,17 +49,21 @@ if(NOT "${CMAKE_PREFIX_PATH}" STREQUAL "")
 endif()
 
 set (cminpack_srcs
-  cminpack.h cminpackP.h
-  chkder.c  enorm.c   hybrd1.c  hybrj.c   lmdif1.c  lmstr1.c  qrfac.c   r1updt.c
-  dogleg.c  fdjac1.c  hybrd.c   lmder1.c  lmdif.c   lmstr.c   qrsolv.c  rwupdt.c
-  dpmpar.c  fdjac2.c  hybrj1.c  lmder.c   lmpar.c   qform.c   r1mpyq.c  covar.c covar1.c
-  minpack.h
-  chkder_.c enorm_.c  hybrd1_.c hybrj_.c  lmdif1_.c lmstr1_.c qrfac_.c  r1updt_.c
-  dogleg_.c fdjac1_.c hybrd_.c  lmder1_.c lmdif_.c  lmstr_.c  qrsolv_.c rwupdt_.c
-  dpmpar_.c fdjac2_.c hybrj1_.c lmder_.c  lmpar_.c  qform_.c  r1mpyq_.c covar_.c
+  src/cminpack.h src/cminpackP.h
+  src/chkder.c   src/enorm.c   src/hybrd1.c  src/hybrj.c   src/lmdif1.c  src/lmstr1.c  src/qrfac.c   src/r1updt.c
+  src/dogleg.c   src/fdjac1.c  src/hybrd.c   src/lmder1.c  src/lmdif.c   src/lmstr.c   src/qrsolv.c  src/rwupdt.c
+  src/dpmpar.c   src/fdjac2.c  src/hybrj1.c  src/lmder.c   src/lmpar.c   src/qform.c   src/r1mpyq.c  src/covar.c
+  src/covar1.c
+  legacy_minpack/minpack.h
+  legacy_minpack/chkder_.c legacy_minpack/enorm_.c  legacy_minpack/hybrd1_.c legacy_minpack/hybrj_.c
+  legacy_minpack/lmdif1_.c legacy_minpack/lmstr1_.c legacy_minpack/qrfac_.c  legacy_minpack/r1updt_.c
+  legacy_minpack/dogleg_.c legacy_minpack/fdjac1_.c legacy_minpack/hybrd_.c  legacy_minpack/lmder1_.c
+  legacy_minpack/lmdif_.c  legacy_minpack/lmstr_.c  legacy_minpack/qrsolv_.c legacy_minpack/rwupdt_.c
+  legacy_minpack/dpmpar_.c legacy_minpack/fdjac2_.c legacy_minpack/hybrj1_.c legacy_minpack/lmder_.c
+  legacy_minpack/lmpar_.c  legacy_minpack/qform_.c  legacy_minpack/r1mpyq_.c legacy_minpack/covar_.c
   )
 set (cminpack_hdrs
-    cminpack.h minpack.h)
+    src/cminpack.h legacy_minpack/minpack.h)
 
 add_library (cminpack ${cminpack_srcs})
 

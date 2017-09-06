@@ -334,3 +334,10 @@ examples/tlmdif1
 examples/tlmstr
 
 examples/tlmstr1
+CMakeFiles
+*.cmake
+cmake_install.cmake
+cminpack.pc
+CTestTestfile.cmake
+
+CMakeCache.txt

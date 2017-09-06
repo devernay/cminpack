@@ -53,6 +53,6 @@ int dgeqrf_(__CLPK_integer *m, __CLPK_integer *n, __CLPK_doublereal *a, __CLPK_i
 #endif
 #endif
 
-#include "minpackP.h"
+#include "../legacy_minpack/minpackP.h"
 
 #endif /* !__CMINPACKP_H__ */
