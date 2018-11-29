@@ -63,6 +63,8 @@ set (cminpack_hdrs
 
 add_library (cminpack ${cminpack_srcs})
 
+target_include_directories(cminpack PUBLIC ${PROJECT_SOURCE_DIR})
+
 if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
   TARGET_LINK_LIBRARIES(cminpack m)
 endif()
