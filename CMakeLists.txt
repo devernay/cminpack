@@ -5,6 +5,8 @@ cmake_minimum_required (VERSION 2.8.9)
 project (CMINPACK)
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
+set (CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
 include(${PROJECT_SOURCE_DIR}/cmake/cminpack_utils.cmake)
 # Set version and OS-specific settings
 set(CMINPACK_VERSION 1.3.6 CACHE STRING "CMinpack version")
@@ -34,7 +36,7 @@ else ()
   endif(WIN32)
 endif ()
 
-option(USE_BLAS "Compile cminpack using a blas library if possible" ON)
+option(USE_BLAS "Compile cminpack using cblas library if possible" ON)
 
 #set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../build)
 
@@ -61,16 +63,24 @@ if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
   TARGET_LINK_LIBRARIES(cminpack m)
 endif()
 
-# Link with a BLAS library if requested
-if (USE_BLAS)
-  if (NOT BUILD_SHARED_LIBS)
-    set(BLA_STATIC True)
+
+include (CheckLibraryExists)
+include (CheckFunctionExists)
+check_function_exists (sqrt HAVE_SQRT_NO_LIBM)
+if (NOT HAVE_SQRT_NO_LIBM)
+  check_library_exists ("m" sqrt "" HAVE_LIBM)
+  if (HAVE_LIBM)
+    target_link_libraries(cminpack PUBLIC m)
   endif()
-  find_package(BLAS)
-  if (BLAS_FOUND)
-    target_link_libraries(cminpack PUBLIC ${BLAS_LIBRARIES})
-    set_target_properties(cminpack PROPERTIES LINK_FLAGS "${BLAS_LINKER_FLAGS}")
-    target_compile_definitions(cminpack PUBLIC -DUSE_CBLAS)
+endif ()
+
+# Link with CBLAS library if requested
+if (USE_BLAS)
+  find_package (CBLAS)
+  if (CBLAS_FOUND)
+    target_link_libraries(cminpack PUBLIC ${CBLAS_LIBRARIES})
+    set_target_properties(cminpack PROPERTIES LINK_FLAGS "${CBLAS_LINKER_FLAGS}")
+    target_compile_definitions(cminpack PUBLIC USE_CBLAS)
   endif()
 endif()
 

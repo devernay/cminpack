@@ -1,7 +1,7 @@
 set(PKG_DESC "CMinPack")
 set(PKG_EXTERNAL_DEPS "")
 set(pkg_conf_file ${CMAKE_CURRENT_BINARY_DIR}/cminpack.pc)
-if (USE_BLAS AND BLAS_FOUND)
+if (USE_BLAS AND CBLAS_FOUND)
     set(PC_CMINPACK_CFLAGS "-DUSE_CBLAS")
     if (NOT "${BLAS_LIBRARIES}" STREQUAL "")
         string(REPLACE ";" " -l" PC_CMINPACK_LIBRARIES "${BLAS_LIBRARIES}")
