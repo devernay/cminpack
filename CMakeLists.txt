@@ -1,7 +1,7 @@
 # The name of our project is "CMINPACK". CMakeLists files in this project can
 # refer to the root source directory of the project as ${CMINPACK_SOURCE_DIR} and
 # to the root binary directory of the project as ${CMINPACK_BINARY_DIR}.
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 2.8.9)
 project (CMINPACK)
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
@@ -19,12 +19,6 @@ ADD_CUSTOM_TARGET (uninstall "${CMAKE_COMMAND}" -P
     "${PROJECT_BINARY_DIR}/uninstall_target.cmake")
 
 enable_testing()
-
-if (OS_LINUX OR ${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
-  option (USE_FPIC "Use the -fPIC compiler flag." ON)
-else (OS_LINUX)
-  option (USE_FPIC "Use the -fPIC compiler flag." OFF)
-endif (OS_LINUX)
 
 option (BUILD_SHARED_LIBS "Build shared libraries instead of static." OFF)
 if (BUILD_SHARED_LIBS)
@@ -87,9 +81,7 @@ install (TARGETS cminpack
 install (FILES ${cminpack_hdrs} DESTINATION ${CMINPACK_INCLUDE_INSTALL_DIR}
     COMPONENT cminpack_hdrs)
 
-if (USE_FPIC AND NOT BUILD_SHARED_LIBS)
-  set_target_properties (cminpack PROPERTIES COMPILE_FLAGS -fPIC)
-endif ()
+set_target_properties (cminpack PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 set_target_properties(cminpack PROPERTIES VERSION ${CMINPACK_VERSION} SOVERSION ${CMINPACK_SOVERSION})
 
