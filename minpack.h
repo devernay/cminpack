@@ -296,7 +296,7 @@ void __minpack_func__(rwupdt)(const int *n, __minpack_real__ *r, const int *ldr,
              const __minpack_real__ *w, __minpack_real__ *b, __minpack_real__ *alpha, __minpack_real__ *cos, 
              __minpack_real__ *sin);
 __minpack_attr__
-void __minpack_func__(covar)(const int *n, __minpack_real__ *r, const int *ldr, 
+void MINPACK_EXPORT __minpack_func__(covar)(const int *n, __minpack_real__ *r, const int *ldr,
            const int *ipvt, const __minpack_real__ *tol, __minpack_real__ *wa);
 #ifdef __cplusplus
 }
