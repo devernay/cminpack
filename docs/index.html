@@ -94,21 +94,21 @@ which came from the FORTRAN version:</p>
   <li><a href="https://github.com/devernay/cminpack/archive/v1.3.7.tar.gz">cminpack-1.3.7.tar.gz</a> (not yet released)</li> 
   <li><a href="https://github.com/devernay/cminpack/archive/v1.3.6.tar.gz">cminpack-1.3.6.tar.gz</a> (latest version)</li> 
   <li><a href="https://github.com/devernay/cminpack/archive/v1.3.5.tar.gz">cminpack-1.3.5.tar.gz</a></li> 
-  <li><a href="cminpack-1.3.4.tar.gz">cminpack-1.3.4.tar.gz</a></li> 
-  <li><a href="cminpack-1.3.3.tar.gz">cminpack-1.3.3.tar.gz</a></li> 
-  <li><a href="cminpack-1.3.2.tar.gz">cminpack-1.3.2.tar.gz</a></li> 
-  <li><a href="cminpack-1.3.1.tar.gz">cminpack-1.3.1.tar.gz</a></li> 
-  <li><a href="cminpack-1.2.2.tar.gz">cminpack-1.2.2.tar.gz</a></li>
-  <li><a href="cminpack-1.2.1.tar.gz">cminpack-1.2.1.tar.gz</a></li>
-  <li><a href="cminpack-1.2.0.tar.gz">cminpack-1.2.0.tar.gz</a></li>
-  <li><a href="cminpack-1.1.5.tar.gz">cminpack-1.1.5.tar.gz</a></li>
-  <li><a href="cminpack-1.1.4.tar.gz">cminpack-1.1.4.tar.gz</a></li>
-  <li><a href="cminpack-1.1.3.tar.gz">cminpack-1.1.3.tar.gz</a></li>
-  <li><a href="cminpack-1.1.1.tar.gz">cminpack-1.1.1.tar.gz</a></li>
-  <li><a href="cminpack-1.0.4.tar.gz">cminpack-1.0.4.tar.gz</a></li>
-  <li><a href="cminpack-1.0.3.tar.gz">cminpack-1.0.3.tar.gz</a></li>
-  <li><a href="cminpack-1.0.2.tar.gz">cminpack-1.0.2.tar.gz</a></li>
-  <li><a href="cminpack-1.0.1.tar.gz">cminpack-1.0.1.tar.gz</a></li>
+  <li><a href="http://devernay.free.fr/hacks/cminpack/cminpack-1.3.4.tar.gz">cminpack-1.3.4.tar.gz</a></li> 
+  <li><a href="http://devernay.free.fr/hacks/cminpack/cminpack-1.3.3.tar.gz">cminpack-1.3.3.tar.gz</a></li> 
+  <li><a href="http://devernay.free.fr/hacks/cminpack/cminpack-1.3.2.tar.gz">cminpack-1.3.2.tar.gz</a></li> 
+  <li><a href="http://devernay.free.fr/hacks/cminpack/cminpack-1.3.1.tar.gz">cminpack-1.3.1.tar.gz</a></li> 
+  <li><a href="http://devernay.free.fr/hacks/cminpack/cminpack-1.2.2.tar.gz">cminpack-1.2.2.tar.gz</a></li>
+  <li><a href="http://devernay.free.fr/hacks/cminpack/cminpack-1.2.1.tar.gz">cminpack-1.2.1.tar.gz</a></li>
+  <li><a href="http://devernay.free.fr/hacks/cminpack/cminpack-1.2.0.tar.gz">cminpack-1.2.0.tar.gz</a></li>
+  <li><a href="http://devernay.free.fr/hacks/cminpack/cminpack-1.1.5.tar.gz">cminpack-1.1.5.tar.gz</a></li>
+  <li><a href="http://devernay.free.fr/hacks/cminpack/cminpack-1.1.4.tar.gz">cminpack-1.1.4.tar.gz</a></li>
+  <li><a href="http://devernay.free.fr/hacks/cminpack/cminpack-1.1.3.tar.gz">cminpack-1.1.3.tar.gz</a></li>
+  <li><a href="http://devernay.free.fr/hacks/cminpack/cminpack-1.1.1.tar.gz">cminpack-1.1.1.tar.gz</a></li>
+  <li><a href="http://devernay.free.fr/hacks/cminpack/cminpack-1.0.4.tar.gz">cminpack-1.0.4.tar.gz</a></li>
+  <li><a href="http://devernay.free.fr/hacks/cminpack/cminpack-1.0.3.tar.gz">cminpack-1.0.3.tar.gz</a></li>
+  <li><a href="http://devernay.free.fr/hacks/cminpack/cminpack-1.0.2.tar.gz">cminpack-1.0.2.tar.gz</a></li>
+  <li><a href="http://devernay.free.fr/hacks/cminpack/cminpack-1.0.1.tar.gz">cminpack-1.0.1.tar.gz</a></li>
 </ul>
 
 
@@ -154,9 +154,9 @@ which came from the FORTRAN version:</p>
 
 <p>Note that box constraints can easily be simulated in C++ Minpack, using a change of variables in the function (that hint was found in the <a href="http://apps.jcns.fz-juelich.de/doku/sc/lmfit:constraints">lmfit documentation</a>).</p>
 
-<p>For example, say you want <code>xmin[j] < x[j] < xmax[j]</code>, just apply the following change of variable at the beginning of <code>fcn</code> on the variables vector, and also on the computed solution after the optimization was performed:</p>
+<p>For example, say you want <code>xmin[j] &lt; x[j] &lt; xmax[j]</code>, just apply the following change of variable at the beginning of <code>fcn</code> on the variables vector, and also on the computed solution after the optimization was performed:</p>
 <pre>
-  for (j = 0; j < 3; ++j) {
+  for (j = 0; j &lt; 3; ++j) {
     real xmiddle = (xmin[j]+xmax[j])/2.;
     real xwidth = (xmax[j]-xmin[j])/2.;
     real th =  tanh((x[j]-xmiddle)/xwidth);
@@ -196,11 +196,11 @@ which came from the FORTRAN version:</p>
   <li>by John Burkardt: <a href="http://people.sc.fsu.edu/~jburkardt/cpp_src/minpack/minpack.html">C++</a>, <a href="http://people.sc.fsu.edu/~jburkardt/f77_src/minpack/minpack.html">FORTRAN77</a>, <a href="http://people.sc.fsu.edu/~jburkardt/f_src/minpack/minpack.html">FORTRAN90</a>.</li>
   <li>by Steve Verrill: <a href="http://www1.fpl.fs.fed.us/Minpack_f77.java">Java</a> (<a href="http://www1.fpl.fs.fed.us/optimization/Minpack_f77.html">documentation</a>, <a href="http://www1.fpl.fs.fed.us/minpack.prob.html">problems</a>).</li>
   <li>by Alan Miller: <a href="http://jblevins.org/mirror/amiller/lm.zip">FORTRAN90</a>.</li>
-  <li><a href="http://quantlib.org/">Quantlib</a> has a C++ MINPACK hidden deep inside (<a href="https://github.com/lballabio/quantlib/blob/master/QuantLib/ql/math/optimization/lmdif.cpp">C++</a>, <a href="https://github.com/lballabio/quantlib/blob/master/QuantLib/ql/math/optimization/lmdif.hpp">header</a>, <a href="http://www.quantcode.com/modules/mydownloads/singlefile.php?cid=10&lid=436">tutorial</a>).</li>
+  <li><a href="http://quantlib.org/">Quantlib</a> has a C++ MINPACK hidden deep inside (<a href="https://github.com/lballabio/quantlib/blob/master/QuantLib/ql/math/optimization/lmdif.cpp">C++</a>, <a href="https://github.com/lballabio/quantlib/blob/master/QuantLib/ql/math/optimization/lmdif.hpp">header</a>, <a href="http://www.quantcode.com/modules/mydownloads/singlefile.php?cid=10&amp;lid=436">tutorial</a>).</li>
   <li>GPL-licensed implementations of MINPACK algorithms in C are availaible from the <a href="http://www.gnu.org/software/gsl/">GNU Scientific Library</a>.</li>
   <li>Python library scipy, module <code>scipy.optimize.leastsq</code>,</li>
   <li><a href="http://www.ittvis.com/">IDL</a>, add-on <a href="http://cow.physics.wisc.edu/~craigm/idl/fitting.html">MPFIT</a>.</li>
-  <li><a href="http://www.r-project.org/">R</a> has the <a href="http://cran.r-project.org/web/packages/minpack.lm/index.html"">minpack.lm</a> package.</li>
+  <li><a href="http://www.r-project.org/">R</a> has the <a href="http://cran.r-project.org/web/packages/minpack.lm/index.html">minpack.lm</a> package.</li>
   <li><a href="http://eigen.tuxfamily.org/">Eigen</a> has an unsupported <a href="http://eigen.tuxfamily.org/dox/unsupported/group__NonLinearOptimization__Module.html">nonlinear optimization</a> module based on cminpack.</li>
   <li><a href="http://ceres-solver.org/">Ceres Solver</a> is not derived from MINPACK, but is probably the best available alternative, with lots of features (New BSD License).</li>
 </ul>
@@ -234,7 +234,7 @@ which came from the FORTRAN version:</p>
 
 <p>There is now a very powerful alternative to MINPACK, which is the <a href="http://ceres-solver.org/">Ceres Solver</a>. You may want to consider using Ceres for any new project.</p>
 
-<p>The main feature that's missing on cminpack is the possibility to add constraints on variables. Simple boundary constraints should be enough, as implemented in <a href="http://www.alglib.net/optimization/levenbergmarquardt.php">ALGLIB</a> or <a href="http://www.physics.wisc.edu/~craigm/idl/cmpfit.html">MPFIT</a>.<p>
+<p>The main feature that's missing on cminpack is the possibility to add constraints on variables. Simple boundary constraints should be enough, as implemented in <a href="http://www.alglib.net/optimization/levenbergmarquardt.php">ALGLIB</a> or <a href="http://www.physics.wisc.edu/~craigm/idl/cmpfit.html">MPFIT</a>.</p>
 
 <p><a href="http://www.ics.forth.gr/~lourakis/levmar/">levmar</a> also has linear constraints, but they shouldn't be necessary since linear constraints can be changed to box constraints by a simple change of variables. If you really need nonlinear constraints, and no reparameterization of variables (which may be able to linearize these constraints), you should consider using <a href="http://ab-initio.mit.edu/wiki/index.php/NLopt">NLopt</a> instead of cminpack.</p>
 
