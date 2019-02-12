@@ -264,6 +264,14 @@ void MINPACK_EXPORT __minpack_func__(fdjac1)(__minpack_decl_fcn_nn__
 	     int *iflag, const int *ml, const int *mu, const __minpack_real__ *epsfcn, __minpack_real__ *wa1,
 	     __minpack_real__ *wa2);
 
+/* compute inverse(JtJ) after a run of lmdif or lmder. The covariance
+   matrix is obtained by scaling the result by enorm(y)**2/(m-n). If
+   JtJ is singular and k = rank(J), the pseudo-inverse is computed,
+   and the result has to be scaled by enorm(y)**2/(m-k). */
+__minpack_attr__
+void MINPACK_EXPORT __minpack_func__(covar)(const int *n, __minpack_real__ *r, const int *ldr,
+           const int *ipvt, const __minpack_real__ *tol, __minpack_real__ *wa);
+
 /* internal MINPACK subroutines */
 __minpack_attr__
 void __minpack_func__(dogleg)(const int *n, const __minpack_real__ *r, const int *lr, 
@@ -295,9 +303,6 @@ __minpack_attr__
 void __minpack_func__(rwupdt)(const int *n, __minpack_real__ *r, const int *ldr, 
              const __minpack_real__ *w, __minpack_real__ *b, __minpack_real__ *alpha, __minpack_real__ *cos, 
              __minpack_real__ *sin);
-__minpack_attr__
-void MINPACK_EXPORT __minpack_func__(covar)(const int *n, __minpack_real__ *r, const int *ldr,
-           const int *ipvt, const __minpack_real__ *tol, __minpack_real__ *wa);
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
