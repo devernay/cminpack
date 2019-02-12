@@ -23,18 +23,6 @@ ADD_CUSTOM_TARGET (uninstall "${CMAKE_COMMAND}" -P
 enable_testing()
 
 option (BUILD_SHARED_LIBS "Build shared libraries instead of static." OFF)
-if (BUILD_SHARED_LIBS)
-  message (STATUS "Building shared libraries.")
-else ()
-  message (STATUS "Building static libraries.")
-  set(CMAKE_RELEASE_POSTFIX _s)
-  set(CMAKE_RELWITHDEBINFO_POSTFIX _s)
-  set(CMAKE_DEBUG_POSTFIX _s)
-  set(CMAKE_MINSIZEREL_POSTFIX _s)
-  if(WIN32)
-    add_definitions(-DCMINPACK_NO_DLL)
-  endif(WIN32)
-endif ()
 
 option(USE_BLAS "Compile cminpack using cblas library if possible" ON)
 
@@ -59,6 +47,21 @@ set (cminpack_hdrs
 
 add_library (cminpack ${cminpack_srcs})
 
+
+if (BUILD_SHARED_LIBS)
+  message (STATUS "Building shared libraries.")
+else (BUILD_SHARED_LIBS)
+  message (STATUS "Building static libraries.")
+  set(CMAKE_RELEASE_POSTFIX _s)
+  set(CMAKE_RELWITHDEBINFO_POSTFIX _s)
+  set(CMAKE_DEBUG_POSTFIX _s)
+  set(CMAKE_MINSIZEREL_POSTFIX _s)
+  if(WIN32)
+	target_compile_definitions(cminpack PUBLIC CMINPACK_NO_DLL)
+  endif(WIN32)
+endif (BUILD_SHARED_LIBS)
+
+target_include_directories(cminpack INTERFACE ${PROJECT_SOURCE_DIR})
 if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
   TARGET_LINK_LIBRARIES(cminpack m)
 endif()
