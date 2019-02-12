@@ -23,7 +23,7 @@ Manolis Lourakis -- lourakis at ics forth gr, July 2002
 
 Repackaging by Frederic Devernay -- frederic dot devernay at m4x dot org
 
-The project home page is at http://devernay.free.fr/hacks/cminpack/
+The project home page is at http://devernay.github.io/cminpack
 
 History
 ------
