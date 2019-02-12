@@ -19,9 +19,8 @@ if (BUILD_EXAMPLES)
   macro(add_minpack_test testname reference)
     set(TEST_OUTPUT "${CMINPACK_BINARY_DIR}/examples/${testname}.out")
     set(TEST_REFERENCE "${CMINPACK_SOURCE_DIR}/examples/ref/${reference}.ref")
-    get_target_property(TEST_LOC ${testname} LOCATION)
     add_test(${testname} "${CMAKE_COMMAND}"
-      -DTEST=${TEST_LOC}
+      -DTEST=${CMAKE_CURRENT_BINARY_DIR}/${testname}${CMAKE_EXECUTABLE_SUFFIX}
       -DOUTPUT=${TEST_OUTPUT} 
       -DREFERENCE=${TEST_REFERENCE} 
       -DINTDIR=${CMAKE_CFG_INTDIR}
