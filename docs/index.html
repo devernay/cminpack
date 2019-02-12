@@ -234,14 +234,14 @@ which came from the FORTRAN version:</p>
 
 <p>There is now a very powerful alternative to MINPACK, which is the <a href="http://ceres-solver.org/">Ceres Solver</a>. You may want to consider using Ceres for any new project.</p>
 
-<p>The main feature that's missing on cminpack is the possibility to add constraints on variables. Simple boundary constraints should be enough, as implemented in <a href="http://www.alglib.net/optimization/levenbergmarquardt.php">ALGLIB</a> or <a href="http://www.physics.wisc.edu/~craigm/idl/cmpfit.html">MPFIT</a>.</p>
+<p>The main feature that's missing on cminpack is the possibility to add constraints on variables. Simple boundary constraints should be enough, as implemented in <a href="http://www.alglib.net/optimization/levenbergmarquardt.php">ALGLIB</a> or <a href="http://www.physics.wisc.edu/~craigm/idl/cmpfit.html">MPFIT</a>, and they can easily be implemented using the hack above (section "Simulating box constraints").</p>
 
-<p><a href="http://www.ics.forth.gr/~lourakis/levmar/">levmar</a> also has linear constraints, but they shouldn't be necessary since linear constraints can be changed to box constraints by a simple change of variables. If you really need nonlinear constraints, and no reparameterization of variables (which may be able to linearize these constraints), you should consider using <a href="http://ab-initio.mit.edu/wiki/index.php/NLopt">NLopt</a> instead of cminpack.</p>
+<p><a href="http://www.ics.forth.gr/~lourakis/levmar/">levmar</a> also has linear constraints, but they should not be necessary since linear constraints can be changed to box constraints by a simple change of variables. If you really need nonlinear constraints, and no reparameterization of variables (which may be able to linearize these constraints), you should consider using <a href="http://ab-initio.mit.edu/wiki/index.php/NLopt">NLopt</a> instead of cminpack.</p>
 
-<p>Please <a href="/email.html">contact me</a> for any suggestion or request.</p>
+<p>Please file a <a href="https://github.com/devernay/cminpack/issues">GitHub issue</a> for any suggestion or request.</p>
 
 <address>
-<a href="/email.html">Fr&eacute;d&eacute;ric Devernay</a></address>
+<a href="http://devernay.free.fr/email.html">Fr&eacute;d&eacute;ric Devernay</a></address>
      
 <hr />
 
