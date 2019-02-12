@@ -11,10 +11,14 @@ void fcn(const int *n, const real *x, real *fvec, int *iflag);
 
 int main()
 {
+#if defined(__MINGW32__) || (defined(_MSC_VER) && (_MSC_VER < 1900))
+  _set_output_format(_TWO_DIGIT_EXPONENT);
+#endif
   int j, n, info, lwa;
   real tol, fnorm;
   real x[9], fvec[9], wa[180];
   int one=1;
+
 
   n = 9;
 

@@ -21,6 +21,9 @@ int fcn(void *p, int m, int n, const real *x, real *fvec,
 
 int main()
 {
+#if defined(__MINGW32__) || (defined(_MSC_VER) && (_MSC_VER < 1900))
+  _set_output_format(_TWO_DIGIT_EXPONENT);
+#endif
   int i, ldfjac;
   real x[3], fvec[15], fjac[15*3], xp[3], fvecp[15], 
     err[15];
