@@ -28,6 +28,11 @@ The project home page is at http://devernay.free.fr/hacks/cminpack/
 History
 ------
 
+* version 1.3.7 (//):
+  - Makefile cleanups #11
+  - Cmake-related fixes #20 #21 #23 #27 #28
+  - Add Appveyor CI #24
+
 * version 1.3.6 (24/02/2017):
  - Fix FreeBSD build #6
  - CMake: install CMinpackConfig.cmake rather than FindCMinpack.cmake #8
