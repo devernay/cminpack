@@ -315,7 +315,7 @@ veryclean: clean
 	-rm -f *.o *.gcno *.gcda *.out *~ #*#
 	-rm -rf $(PGM:=.dSYM) $(CPGM:=.dSYM) $(CDRVPGM:=.dSYM) $(FPGM:=.dSYM)
 
-${FSRCGEN}: ../doc/minpack-documentation.txt
+${FSRCGEN}: ../docs/minpack-documentation.txt
 	cat $< | awk  '					\
 	/DRIVER FOR [A-Z1]+ EXAMPLE/{				\
 	    pgm=tolower($$4);					\

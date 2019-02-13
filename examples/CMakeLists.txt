@@ -56,10 +56,10 @@ if (BUILD_EXAMPLES_FORTRAN)
     get_target_property (GENF77TESTS_EXE genf77tests LOCATION)
     add_custom_command (
       OUTPUT ${FPGM_SRCS}
-      COMMAND ${GENF77TESTS_EXE} ${CMINPACK_SOURCE_DIR}/doc/minpack-documentation.txt
+      COMMAND ${GENF77TESTS_EXE} ${CMINPACK_SOURCE_DIR}/docs/minpack-documentation.txt
       WORKING_DIRECTORY ${CMINPACK_SOURCE_DIR}/examples
       DEPENDS genf77tests
-      MAIN_DEPENDENCY ${CMINPACK_SOURCE_DIR}/doc/minpack-documentation.txt
+      MAIN_DEPENDENCY ${CMINPACK_SOURCE_DIR}/docs/minpack-documentation.txt
       )
     foreach (source ${FPGM})
       add_executable (${source} ${source}.f)
