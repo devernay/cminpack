@@ -14,7 +14,9 @@ int main()
   int j, n, ldfjac, info, lwa;
   real tol, fnorm;
   real x[9], fvec[9], fjac[9*9], wa[99];
-
+#if defined(__MINGW32__) || (defined(_MSC_VER) && (_MSC_VER < 1900))
+  _set_output_format(_TWO_DIGIT_EXPONENT);
+#endif
   n = 9;
 
 /*      the following starting values provide a rough solution. */

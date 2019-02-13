@@ -19,6 +19,9 @@ int fcn(void *p, int m, int n, const real *x, real *fvec, int iflag);
 
 int main()
 {
+#if defined(__MINGW32__) || (defined(_MSC_VER) && (_MSC_VER < 1900))
+  _set_output_format(_TWO_DIGIT_EXPONENT);
+#endif
   int i, j, maxfev, mode, nprint, info, nfev, ldfjac;
   int ipvt[3];
   real ftol, xtol, gtol, epsfcn, factor, fnorm;
@@ -34,6 +37,7 @@ int main()
   real covfac;
   real fjac1[15*3];
 #endif
+
   fcndata_t data;
   data.m = m;
   data.y = y;
