@@ -14,29 +14,29 @@ set(CMINPACK_DEFINITIONS ${PC_CMINPACK_CFLAGS_OTHER})
 
 find_path(CMINPACK_INCLUDE_DIR cminpack.h
           HINTS ${PC_CMINPACK_INCLUDEDIR} ${PC_CMINPACK_INCLUDE_DIRS} "${CMINPACK_ROOT}" "$ENV{CMINPACK_ROOT}"
-          PATHS "$ENV{PROGRAMFILES}/CMinpack" "$ENV{PROGRAMW6432}/CMinpack" 
+          PATHS "$ENV{PROGRAMFILES}/CMinpack" "$ENV{PROGRAMW6432}/CMinpack"
           PATH_SUFFIXES include/cminpack-1)
 
 # Prefer static libraries in Windows over shared ones
 if(WIN32)
-  find_library(CMINPACK_LIBRARY 
+  find_library(CMINPACK_LIBRARY
                NAMES cminpack_s cminpack
                HINTS ${PC_CMINPACK_LIBDIR} ${PC_CMINPACK_LIBRARY_DIRS} "${CMINPACK_ROOT}" "$ENV{CMINPACK_ROOT}"
-               PATHS "$ENV{PROGRAMFILES}/CMinpack" "$ENV{PROGRAMW6432}/CMinpack" 
+               PATHS "$ENV{PROGRAMFILES}/CMinpack" "$ENV{PROGRAMW6432}/CMinpack"
                PATH_SUFFIXES lib)
 
-  find_library(CMINPACK_LIBRARY_DEBUG 
+  find_library(CMINPACK_LIBRARY_DEBUG
                NAMES cminpack_s-gd cminpack-gd cminpack_s cminpack
                HINTS ${PC_CMINPACK_LIBDIR} ${PC_CMINPACK_LIBRARY_DIRS} "${CMINPACK_ROOT}" "$ENV{CMINPACK_ROOT}"
-               PATHS "$ENV{PROGRAMFILES}/CMinpack" "$ENV{PROGRAMW6432}/CMinpack" 
+               PATHS "$ENV{PROGRAMFILES}/CMinpack" "$ENV{PROGRAMW6432}/CMinpack"
                PATH_SUFFIXES lib)
 else(WIN32)
-  find_library(CMINPACK_LIBRARY 
+  find_library(CMINPACK_LIBRARY
                NAMES cminpack
                HINTS ${PC_CMINPACK_LIBDIR} ${PC_CMINPACK_LIBRARY_DIRS} "${CMINPACK_ROOT}" "$ENV{CMINPACK_ROOT}"
                PATH_SUFFIXES lib)
 
-  find_library(CMINPACK_LIBRARY_DEBUG 
+  find_library(CMINPACK_LIBRARY_DEBUG
                NAMES cminpack-gd cminpack
                HINTS ${PC_CMINPACK_LIBDIR} ${PC_CMINPACK_LIBRARY_DIRS} "${CMINPACK_ROOT}" "$ENV{CMINPACK_ROOT}"
                PATH_SUFFIXES lib)
@@ -48,7 +48,9 @@ endif(NOT CMINPACK_LIBRARY_DEBUG)
 
 set(CMINPACK_INCLUDE_DIRS ${CMINPACK_INCLUDE_DIR})
 set(CMINPACK_LIBRARIES optimized ${CMINPACK_LIBRARY} debug ${CMINPACK_LIBRARY_DEBUG})
-list(APPEND CMINPACK_LIBRARIES "${PC_CMINPACK_LIBRARIES}")
+if(NOT WIN32)
+  list(APPEND CMINPACK_LIBRARIES "${PC_CMINPACK_LIBRARIES}")
+endif(NOT WIN32)
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(CMinpack DEFAULT_MSG
