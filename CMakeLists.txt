@@ -2,7 +2,7 @@
 # refer to the root source directory of the project as ${CMINPACK_SOURCE_DIR} and
 # to the root binary directory of the project as ${CMINPACK_BINARY_DIR}.
 cmake_minimum_required (VERSION 2.8.9)
-project (CMINPACK)
+project (CMINPACK C)
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
 set (CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
