@@ -26,7 +26,7 @@ if(WIN32)
                PATH_SUFFIXES lib)
 
   find_library(CMINPACK_LIBRARY_DEBUG 
-               NAMES cminpack_s-gd cminpack-gd cminpack_s cminpack
+               NAMES cminpack_s-gd cminpack-gd cminpack_s_d cminpack_d
                HINTS ${PC_CMINPACK_LIBDIR} ${PC_CMINPACK_LIBRARY_DIRS} "${CMINPACK_ROOT}" "$ENV{CMINPACK_ROOT}"
                PATHS "$ENV{PROGRAMFILES}/CMinpack" "$ENV{PROGRAMW6432}/CMinpack" 
                PATH_SUFFIXES lib)
