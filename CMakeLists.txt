@@ -45,8 +45,6 @@ set (cminpack_srcs
 set (cminpack_hdrs
     cminpack.h minpack.h)
 
-add_library (cminpack ${cminpack_srcs})
-
 
 if (BUILD_SHARED_LIBS)
   message (STATUS "Building shared libraries.")
@@ -67,10 +65,13 @@ else (BUILD_SHARED_LIBS)
   if (NOT DEFINED CMAKE_MINSIZEREL_POSTFIX)
     set(CMAKE_MINSIZEREL_POSTFIX _s)
   endif()
-  if(WIN32)
-	target_compile_definitions(cminpack PUBLIC CMINPACK_NO_DLL)
-  endif(WIN32)
 endif (BUILD_SHARED_LIBS)
+
+add_library (cminpack ${cminpack_srcs})
+
+if(NOT BUILD_SHARED_LIBS AND WIN32)
+	target_compile_definitions(cminpack PUBLIC CMINPACK_NO_DLL)
+endif(NOT BUILD_SHARED_LIBS AND WIN32)
 
 target_include_directories(cminpack INTERFACE ${PROJECT_SOURCE_DIR})
 if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
