@@ -2,6 +2,11 @@
 # refer to the root source directory of the project as ${CMINPACK_SOURCE_DIR} and
 # to the root binary directory of the project as ${CMINPACK_BINARY_DIR}.
 cmake_minimum_required (VERSION 2.8.9)
+
+if (NOT DEFINED CMAKE_BUILD_TYPE)
+  set (CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
+endif ()
+
 project (CMINPACK C)
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
