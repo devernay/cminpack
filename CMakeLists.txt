@@ -10,7 +10,7 @@ endif ()
 project (CMINPACK C)
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
-set (CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+list (APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 include(${PROJECT_SOURCE_DIR}/cmake/cminpack_utils.cmake)
 # Set version and OS-specific settings
