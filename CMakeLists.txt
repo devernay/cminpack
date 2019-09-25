@@ -1,7 +1,7 @@
 # The name of our project is "CMINPACK". CMakeLists files in this project can
 # refer to the root source directory of the project as ${CMINPACK_SOURCE_DIR} and
 # to the root binary directory of the project as ${CMINPACK_BINARY_DIR}.
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 3.0)
 project (CMINPACK)
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
@@ -22,9 +22,9 @@ enable_testing()
 
 if (OS_LINUX OR ${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
   option (USE_FPIC "Use the -fPIC compiler flag." ON)
-else (OS_LINUX)
+else (OS_LINUX OR ${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
   option (USE_FPIC "Use the -fPIC compiler flag." OFF)
-endif (OS_LINUX)
+endif (OS_LINUX OR ${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
 
 option (BUILD_SHARED_LIBS "Build shared libraries instead of static." OFF)
 if (BUILD_SHARED_LIBS)
@@ -63,6 +63,8 @@ set (cminpack_hdrs
 
 add_library (cminpack ${cminpack_srcs})
 
+target_include_directories(cminpack PUBLIC $<INSTALL_INTERFACE:include>)
+
 if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
   TARGET_LINK_LIBRARIES(cminpack m)
 endif()
@@ -80,7 +82,7 @@ if (USE_BLAS)
   endif()
 endif()
 
-install (TARGETS cminpack
+install (TARGETS cminpack EXPORT CMinpackConfig
    LIBRARY DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
    ARCHIVE DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
    RUNTIME DESTINATION bin COMPONENT library)
