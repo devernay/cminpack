@@ -19,14 +19,9 @@ if (BUILD_EXAMPLES)
   macro(add_minpack_test testname reference)
     set(TEST_OUTPUT "${CMINPACK_BINARY_DIR}/examples/${testname}.out")
     set(TEST_REFERENCE "${CMINPACK_SOURCE_DIR}/examples/ref/${reference}.ref")
-    if (MSVC)
-      set(TEST_LOC ${CMAKE_CURRENT_BINARY_DIR}/Release/${testname}${CMAKE_EXECUTABLE_SUFFIX})
-    else ()
-      set(TEST_LOC ${CMAKE_CURRENT_BINARY_DIR}/${testname}${CMAKE_EXECUTABLE_SUFFIX})
-    endif ()
-    add_test(${testname} "${CMAKE_COMMAND}"
+    add_test(NAME ${testname} COMMAND "${CMAKE_COMMAND}"
       -DCMAKE_CROSSCOMPILING_EMULATOR=${CMAKE_CROSSCOMPILING_EMULATOR}
-      -DTEST=${TEST_LOC}
+      -DTEST=$<TARGET_FILE:${testname}>
       -DOUTPUT=${TEST_OUTPUT} 
       -DREFERENCE=${TEST_REFERENCE} 
       -DINTDIR=${CMAKE_CFG_INTDIR}

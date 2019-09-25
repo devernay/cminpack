@@ -1,7 +1,7 @@
 # The name of our project is "CMINPACK". CMakeLists files in this project can
 # refer to the root source directory of the project as ${CMINPACK_SOURCE_DIR} and
 # to the root binary directory of the project as ${CMINPACK_BINARY_DIR}.
-cmake_minimum_required (VERSION 2.8.9)
+cmake_minimum_required (VERSION 3.0.0)
 
 if (NOT DEFINED CMAKE_BUILD_TYPE)
   set (CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
@@ -78,7 +78,11 @@ if(NOT BUILD_SHARED_LIBS AND WIN32)
 	target_compile_definitions(cminpack PUBLIC CMINPACK_NO_DLL)
 endif(NOT BUILD_SHARED_LIBS AND WIN32)
 
-target_include_directories(cminpack INTERFACE ${PROJECT_SOURCE_DIR})
+target_include_directories(cminpack INTERFACE
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
+        $<INSTALL_INTERFACE:include>
+       )
+
 if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
   TARGET_LINK_LIBRARIES(cminpack m)
 endif()
@@ -104,7 +108,7 @@ if (USE_BLAS)
   endif()
 endif()
 
-install (TARGETS cminpack
+install (TARGETS cminpack EXPORT CMinpackConfig
    LIBRARY DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
    ARCHIVE DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
    RUNTIME DESTINATION bin COMPONENT library)
