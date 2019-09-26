@@ -13,4 +13,4 @@ configure_file(cminpack.pc.in ${pkg_conf_file} @ONLY)
 install(FILES ${pkg_conf_file}
     DESTINATION ${CMINPACK_LIB_INSTALL_DIR}/pkgconfig/ COMPONENT pkgconfig)
 
-install(FILES CMinpackConfig.cmake DESTINATION share/cmake/CMinpack)
+install(EXPORT CMinpackConfig DESTINATION share/cminpack NAMESPACE cminpack::)
