@@ -80,8 +80,8 @@ endif(NOT BUILD_SHARED_LIBS AND WIN32)
 
 target_include_directories(cminpack INTERFACE
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
-        $<INSTALL_INTERFACE:include>
-       )
+        $<INSTALL_INTERFACE:${CMINPACK_INCLUDE_INSTALL_DIR}/>
+        )
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
   TARGET_LINK_LIBRARIES(cminpack m)
