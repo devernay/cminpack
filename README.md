@@ -32,6 +32,7 @@ History
   - Makefile cleanups #11
   - Cmake-related fixes #20 #21 #23 #27 #28
   - Add Appveyor CI #24
+  - Add support for single-precision CBLAS and LAPACK #40
 
 * version 1.3.6 (24/02/2017):
  - Fix FreeBSD build #6
