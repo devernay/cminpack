@@ -50,7 +50,7 @@ __cminpack_attr__
 real __cminpack_func__(enorm)(int n, const real *x)
 {
 #ifdef USE_CBLAS
-    return cblas_dnrm2(n, x, 1);
+    return __cminpack_cblas__(nrm2)(n, x, 1);
 #else /* !USE_CBLAS */
     /* System generated locals */
     real ret_val, d1;

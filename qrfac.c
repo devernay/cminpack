@@ -19,12 +19,12 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
     __CLPK_integer *jpvt;
 
     int i, j, k;
-    double t;
-    double* tau = wa;
+    real t;
+    real* tau = wa;
     const __CLPK_integer ltau = m > n ? n : m;
     __CLPK_integer lwork = -1;
     __CLPK_integer info = 0;
-    double* work;
+    real* work;
 
     if (pivot) {
         assert( lipvt >= n );
@@ -41,11 +41,11 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
     /* query optimal size of work */
     lwork = -1;
     if (pivot) {
-        dgeqp3_(&m_,&n_,a,&lda_,jpvt,tau,tau,&lwork,&info);
+        __cminpack_lapack__(geqp3_)(&m_,&n_,a,&lda_,jpvt,tau,tau,&lwork,&info);
         lwork = (int)tau[0];
         assert( lwork >= 3*n+1  );
     } else {
-        dgeqrf_(&m_,&n_,a,&lda_,tau,tau,&lwork,&info);
+        __cminpack_lapack__(geqrf_)(&m_,&n_,a,&lda_,tau,tau,&lwork,&info);
         lwork = (int)tau[0];
         assert( lwork >= 1 && lwork >= n );
     }
@@ -53,7 +53,7 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
     assert( info == 0 );
     
     /* alloc work area */
-    work = (double *)malloc(sizeof(double)*lwork);
+    work = (real *)malloc(sizeof(real)*lwork);
     assert(work != NULL);
     
     /* set acnorm first (from the doc of qrfac, acnorm may point to the same area as rdiag) */
@@ -65,14 +65,14 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
     
     /* QR decomposition */
     if (pivot) {
-        dgeqp3_(&m_,&n_,a,&lda_,jpvt,tau,work,&lwork,&info);
+        __cminpack_lapack__(geqp3_)(&m_,&n_,a,&lda_,jpvt,tau,work,&lwork,&info);
     } else {
-        dgeqrf_(&m_,&n_,a,&lda_,tau,work,&lwork,&info);
+        __cminpack_lapack__(geqrf_)(&m_,&n_,a,&lda_,tau,work,&lwork,&info);
     }
     assert(info == 0);
     
     /* set rdiag, before the diagonal is replaced */
-    memset(rdiag, 0, sizeof(double)*n);
+    memset(rdiag, 0, sizeof(real)*n);
     for(i=0 ; i<n ; ++i) {
         rdiag[i] = a[i*lda+i];
     }
