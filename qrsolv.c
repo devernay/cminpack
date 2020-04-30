@@ -133,7 +133,7 @@ void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
 
                 if (sdiag[k] != 0.) {
 #                 ifdef USE_LAPACK
-                    dlartg_( &r[k + k * ldr], &sdiag[k], &cos, &sin, &temp );
+                    __cminpack_lapack__(lartg_)( &r[k + k * ldr], &sdiag[k], &cos, &sin, &temp );
 #                 else /* !USE_LAPACK */
                     if (fabs(r[k + k * ldr]) < fabs(sdiag[k])) {
                         real cotan;
@@ -157,7 +157,7 @@ void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
 
 /*           accumulate the tranformation in the row of s. */
 #                 ifdef USE_CBLAS
-                    cblas_drot( n-k, &r[k + k * ldr], 1, &sdiag[k], 1, cos, sin );
+                    __cminpack_cblas__(rot)( n-k, &r[k + k * ldr], 1, &sdiag[k], 1, cos, sin );
 #                 else /* !USE_CBLAS */
                     r[k + k * ldr] = cos * r[k + k * ldr] + sin * sdiag[k];
                     if (n > k+1) {

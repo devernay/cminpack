@@ -144,7 +144,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
 	}
     }
 # ifdef USE_CBLAS
-    cblas_dtrsv(CblasColMajor, CblasUpper, CblasNoTrans, CblasNonUnit, nsing, r, ldr, wa1, 1);
+    __cminpack_cblas__(trsv)(CblasColMajor, CblasUpper, CblasNoTrans, CblasNonUnit, nsing, r, ldr, wa1, 1);
 # else
     if (nsing >= 1) {
         int k;
@@ -191,7 +191,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
             wa1[j] = diag[l] * (wa2[l] / dxnorm);
         }
 #     ifdef USE_CBLAS
-        cblas_dtrsv(CblasColMajor, CblasUpper, CblasTrans, CblasNonUnit, n, r, ldr, wa1, 1);
+        __cminpack_cblas__(trsv)(CblasColMajor, CblasUpper, CblasTrans, CblasNonUnit, n, r, ldr, wa1, 1);
 #     else
         for (j = 0; j < n; ++j) {
             real sum = 0.;
@@ -213,7 +213,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
     for (j = 0; j < n; ++j) {
         real sum;
 #     ifdef USE_CBLAS
-        sum = cblas_ddot(j+1, &r[j*ldr], 1, qtb, 1);
+        sum = __cminpack_cblas__(dot)(j+1, &r[j*ldr], 1, qtb, 1);
 #     else
         int i;
         sum = 0.;
@@ -282,11 +282,11 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
             wa1[j] = 0.;
         }
         /* exchange the diagonal of r with sdiag */
-        cblas_dswap(n, r, ldr+1, sdiag, 1);
+        __cminpack_cblas__(swap)(n, r, ldr+1, sdiag, 1);
         /* solve lower(r).x = wa1, result id put in wa1 */
-        cblas_dtrsv(CblasColMajor, CblasLower, CblasNoTrans, CblasNonUnit, nsing, r, ldr, wa1, 1);
+        __cminpack_cblas__(trsv)(CblasColMajor, CblasLower, CblasNoTrans, CblasNonUnit, nsing, r, ldr, wa1, 1);
         /* exchange the diagonal of r with sdiag */
-        cblas_dswap( n, r, ldr+1, sdiag, 1);
+        __cminpack_cblas__(swap)(n, r, ldr+1, sdiag, 1);
 #     else /* !USE_CBLAS */
         for (j = 0; j < n; ++j) {
             l = ipvt[j]-1;
