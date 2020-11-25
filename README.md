@@ -125,7 +125,7 @@ History
  - Support for shared library building using CMake, thanks to Goeffrey
    Biggs and Radu Bogdan Rusu from Willow Garage. Shared libraries can be
    enabled using cmake options, as in;
- cmake -DUSE_FPIC=ON -DSHARED_LIBS=ON -DBUILD_EXAMPLES=OFF path_to_sources
+ cmake -DUSE_FPIC=ON -DBUILD_SHARED_LIBS=ON -DBUILD_EXAMPLES=OFF path_to_sources
 
 * version 1.0.3 (18/03/2010):
  - Added CMake support.
