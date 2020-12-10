@@ -28,7 +28,7 @@ The project home page is at http://devernay.github.io/cminpack
 History
 ------
 
-* version 1.3.7 (//):
+* version 1.3.7 (09/12/2020):
   - Makefile cleanups #11
   - Cmake-related fixes #20 #21 #23 #27 #28
   - Add Appveyor CI #24
