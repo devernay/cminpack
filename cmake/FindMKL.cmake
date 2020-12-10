@@ -77,7 +77,7 @@
 # Théodore PAPADOPOULO (papadop.AT.inria.fr)
 
 
-set(CMAKE_FIND_DEBUG_MODE 1)
+#set(CMAKE_FIND_DEBUG_MODE 1)
 
 # Find MKL ROOT
 find_path(MKL_ROOT_DIR NAMES include/mkl_cblas.h PATHS $ENV{MKLROOT})
