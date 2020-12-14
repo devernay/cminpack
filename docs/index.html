@@ -113,7 +113,13 @@ which came from the FORTRAN version:</p>
 </ul>
 
 
-<p>GitHub repository: <a href="https://github.com/devernay/cminpack">https://github.com/devernay/cminpack</a></p> 
+<p>GitHub repository: <a href="https://github.com/devernay/cminpack">https://github.com/devernay/cminpack</a></p>
+
+<h3>Building CMinpack</h3>
+
+<p>CMinpack can be built with CMake.  By default, CMake will build a single precision library named <code>cminpacks</code>, and a double precision library named <code>cminpack</code>.  You can choose to build only one of the single, double, or long double precision variants by setting <code>CMINPACK_PRECISION</code> to one of "s", "d", or "ld" respectively (e.g. <code>cmake -DCMINPACK_PRECISION=d ..</code>).</p>
+
+<p>The source distribution also contains a Makefile which can be used to build cminpack for double precision (the default, <code>make</code> or <code>make double</code>) for single-precision (<code>make float</code>), half-precision (<code>make half</code>), long double precision (<code>make longdouble</code>), and even CUDA (<code>make cuda</code>), or using LAPACK for linear algebra (<code>make lapack</code>). Unit tests are also provided, but results may depend on the platform (<code>make checkdouble checkfloat checkhalf checklongdouble checklapack</code>).</p>
 
 <h3>Using CMinpack</h3>
 
