@@ -85,11 +85,11 @@ void __cminpack_func__(r1mpyq)(int m, int n, real *a, int
     for (nmj = 1; nmj <= nm1; ++nmj) {
 	j = n - nmj;
 	if (fabs(v[j]) > 1.) {
-	    cos = 1. / v[j];
-	    sin = sqrt(1. - cos * cos);
+	    cos = 1 / v[j];
+	    sin = sqrt(1 - cos * cos);
 	} else {
 	    sin = v[j];
-	    cos = sqrt(1. - sin * sin);
+	    cos = sqrt(1 - sin * sin);
 	}
 	for (i = 1; i <= m; ++i) {
 	    temp = cos * a[i + j * a_dim1] - sin * a[i + n * a_dim1];
@@ -103,11 +103,11 @@ void __cminpack_func__(r1mpyq)(int m, int n, real *a, int
 
     for (j = 1; j <= nm1; ++j) {
 	if (fabs(w[j]) > 1.) {
-	    cos = 1. / w[j];
-	    sin = sqrt(1. - cos * cos);
+	    cos = 1 / w[j];
+	    sin = sqrt(1 - cos * cos);
 	} else {
 	    sin = w[j];
-	    cos = sqrt(1. - sin * sin);
+	    cos = sqrt(1 - sin * sin);
 	}
 	for (i = 1; i <= m; ++i) {
 	    temp = cos * a[i + j * a_dim1] + sin * a[i + n * a_dim1];

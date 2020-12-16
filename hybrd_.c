@@ -22,8 +22,8 @@ void __minpack_func__(hybrd)(__minpack_decl_fcn_nn__ const int *n, real *x, real
 
     /* Initialized data */
 
-#define p1 .1
-#define p5 .5
+#define p1 ((real).1)
+#define p5 ((real).5)
 #define p001 .001
 #define p0001 1e-4
 
@@ -453,7 +453,7 @@ L190:
     if (fnorm1 < fnorm) {
 /* Computing 2nd power */
 	d__1 = fnorm1 / fnorm;
-	actred = 1. - d__1 * d__1;
+	actred = 1 - d__1 * d__1;
     }
 
 /*           compute the scaled predicted reduction. */
@@ -476,7 +476,7 @@ L190:
     if (temp < fnorm) {
 /* Computing 2nd power */
 	d__1 = temp / fnorm;
-	prered = 1. - d__1 * d__1;
+	prered = 1 - d__1 * d__1;
     }
 
 /*           compute the ratio of the actual to the predicted */
@@ -504,7 +504,7 @@ L230:
 	d__1 = delta, d__2 = pnorm / p5;
 	delta = max(d__1,d__2);
     }
-    if (fabs(ratio - 1.) <= p1) {
+    if (fabs(ratio - 1) <= p1) {
 	delta = pnorm / p5;
     }
 L240:

@@ -13,9 +13,9 @@ int __cminpack_func__(lmdif)(__cminpack_decl_fcn_mn__ void *p, int m, int n, rea
 {
     /* Initialized data */
 
-#define p1 .1
-#define p5 .5
-#define p25 .25
+#define p1 ((real).1)
+#define p5 ((real).5)
+#define p25 ((real).25)
 #define p75 .75
 #define p0001 1e-4
 
@@ -405,7 +405,7 @@ int __cminpack_func__(lmdif)(__cminpack_decl_fcn_mn__ void *p, int m, int n, rea
             if (p1 * fnorm1 < fnorm) {
                 /* Computing 2nd power */
                 d1 = fnorm1 / fnorm;
-                actred = 1. - d1 * d1;
+                actred = 1 - d1 * d1;
             }
 
 /*           compute the scaled predicted reduction and */

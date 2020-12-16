@@ -109,7 +109,7 @@ void __minpack_func__(covar)(const int *n, real *r__, const int *ldr,
 	if (fabs(r__[k + k * r_dim1]) <= tolr) {
 	    goto L50;
 	}
-	r__[k + k * r_dim1] = 1. / r__[k + k * r_dim1];
+	r__[k + k * r_dim1] = 1 / r__[k + k * r_dim1];
 	km1 = k - 1;
 	if (km1 < 1) {
 	    goto L30;

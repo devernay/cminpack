@@ -245,7 +245,7 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
             for (i = j; i < m; ++i) {
                 a[i + j * lda] /= ajnorm;
             }
-            a[j + j * lda] += 1.;
+            a[j + j * lda] += 1;
 
 /*        apply the transformation to the remaining columns */
 /*        and update the norms. */
@@ -264,7 +264,7 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
                     if (pivot && rdiag[k] != 0.) {
                         temp = a[j + k * lda] / rdiag[k];
                         /* Computing MAX */
-                        d1 = 1. - temp * temp;
+                        d1 = 1 - temp * temp;
                         rdiag[k] *= sqrt((max((real)0.,d1)));
                         /* Computing 2nd power */
                         d1 = rdiag[k] / wa[k];
