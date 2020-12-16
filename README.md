@@ -29,6 +29,8 @@ History
 ------
 
 * version 1.3.8 (//2021):
+ - cmake now builds by default the single-, double-, and extended-precision versions #45
+ - Avoid promoting to doubles in all operations for the single-precision version #47
 
 * version 1.3.7 (09/12/2020):
   - Makefile cleanups #11
