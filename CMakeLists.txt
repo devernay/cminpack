@@ -29,6 +29,7 @@ enable_testing ()
 
 option (BUILD_SHARED_LIBS "Build shared libraries instead of static." OFF)
 option (USE_BLAS "Compile cminpack using cblas library if possible" ON)
+set (CMINPACK_PRECISION "all" CACHE STRING "Precision variants to build ('s', 'd', 'ld', 'all')")
 
 #set (CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../build)
 
@@ -48,6 +49,16 @@ set (cminpack_srcs
   )
 set (cminpack_hdrs
   cminpack.h minpack.h)
+
+if (${CMINPACK_PRECISION} STREQUAL s)
+  set (cminpack_libs cminpacks)
+elseif (${CMINPACK_PRECISION} STREQUAL d)
+  set (cminpack_libs cminpack)
+elseif (${CMINPACK_PRECISION} STREQUAL ld)
+  set (cminpack_libs cminpackld)
+elseif (${CMINPACK_PRECISION} STREQUAL all)
+  set (cminpack_libs cminpacks;cminpack)
+endif ()
 
 if (BUILD_SHARED_LIBS)
   message (STATUS "Building shared libraries.")
@@ -70,53 +81,75 @@ else ()
   endif ()
 endif ()
 
-add_library (cminpack ${cminpack_srcs})
-
-if (NOT BUILD_SHARED_LIBS AND WIN32)
-  target_compile_definitions (cminpack PUBLIC CMINPACK_NO_DLL)
-endif ()
-
-target_include_directories (cminpack INTERFACE
-  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
-  $<INSTALL_INTERFACE:${CMINPACK_INCLUDE_INSTALL_DIR}/>
-  )
-
-if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
-  target_link_libraries (cminpack m)
-endif ()
-
-include (CheckLibraryExists)
-include (CheckFunctionExists)
-check_function_exists (sqrt HAVE_SQRT_NO_LIBM)
-if (NOT HAVE_SQRT_NO_LIBM)
-  check_library_exists ("m" sqrt "" HAVE_LIBM)
-  if (HAVE_LIBM)
-    target_link_libraries (cminpack PUBLIC m)
+foreach (cminpack_lib ${cminpack_libs})
+  add_library (${cminpack_lib} ${cminpack_srcs})
+  if (${cminpack_lib} STREQUAL "cminpacks")
+    target_compile_definitions (cminpacks PUBLIC __cminpack_float__)
+  elseif (${cminpack_lib} STREQUAL "cminpackld")
+    target_compile_definitions (cminpackld PUBLIC __cminpack_long_double__)
   endif ()
-endif ()
 
-# Link with CBLAS library if requested
-if (USE_BLAS)
-  find_package (CBLAS)
-  if (CBLAS_FOUND)
-    target_link_libraries (cminpack PUBLIC ${CBLAS_LIBRARIES})
-    set_target_properties (cminpack PROPERTIES LINK_FLAGS "${CBLAS_LINKER_FLAGS}")
-    target_compile_definitions (cminpack PUBLIC USE_CBLAS)
+  if (NOT BUILD_SHARED_LIBS AND WIN32)
+    target_compile_definitions (${cminpack_lib} PUBLIC CMINPACK_NO_DLL)
   endif ()
-endif ()
 
-install (TARGETS cminpack EXPORT CMinpackConfig
-  LIBRARY DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
-  ARCHIVE DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
-  RUNTIME DESTINATION bin COMPONENT library)
-install (FILES ${cminpack_hdrs} DESTINATION ${CMINPACK_INCLUDE_INSTALL_DIR}
-  COMPONENT cminpack_hdrs)
+  target_include_directories (${cminpack_lib} INTERFACE
+    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
+    $<INSTALL_INTERFACE:${CMINPACK_INCLUDE_INSTALL_DIR}/>
+    )
 
-set_target_properties (cminpack PROPERTIES
-  POSITION_INDEPENDENT_CODE ON
-  VERSION ${CMINPACK_VERSION}
-  SOVERSION ${CMINPACK_SOVERSION}
-  )
+  if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
+    target_link_libraries (${cminpack_lib} m)
+  endif ()
 
-add_subdirectory (cmake)
+  include (CheckLibraryExists)
+  include (CheckFunctionExists)
+  check_function_exists (sqrt HAVE_SQRT_NO_LIBM)
+  if (NOT HAVE_SQRT_NO_LIBM)
+    check_library_exists ("m" sqrt "" HAVE_LIBM)
+    if (HAVE_LIBM)
+      target_link_libraries (${cminpack_lib} PUBLIC m)
+    endif ()
+  endif ()
+
+  # Link with CBLAS library if requested
+  if (USE_BLAS)
+    find_package (CBLAS)
+    if (CBLAS_FOUND)
+      target_link_libraries (${cminpack_lib} PUBLIC ${CBLAS_LIBRARIES})
+      set_target_properties (${cminpack_lib} PROPERTIES LINK_FLAGS "${CBLAS_LINKER_FLAGS}")
+      target_compile_definitions (${cminpack_lib} PUBLIC USE_CBLAS)
+    endif ()
+  endif ()
+
+  install (TARGETS ${cminpack_lib} EXPORT CMinpackConfig
+    LIBRARY DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
+    ARCHIVE DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
+    RUNTIME DESTINATION bin COMPONENT library)
+  install (FILES ${cminpack_hdrs} DESTINATION ${CMINPACK_INCLUDE_INSTALL_DIR}
+    COMPONENT cminpack_hdrs)
+
+  set_target_properties (${cminpack_lib} PROPERTIES
+    POSITION_INDEPENDENT_CODE ON
+    VERSION ${CMINPACK_VERSION}
+    SOVERSION ${CMINPACK_SOVERSION}
+    )
+
+  set (pkg_conf_file ${CMAKE_CURRENT_BINARY_DIR}/${cminpack_lib}.pc)
+  if (USE_BLAS AND CBLAS_FOUND)
+      set (PC_CMINPACK_CFLAGS "-DUSE_CBLAS")
+      if (NOT "${BLAS_LIBRARIES}" STREQUAL "")
+          string (REPLACE ";" " -l" PC_CMINPACK_LIBRARIES "${BLAS_LIBRARIES}")
+          set (PC_CMINPACK_LIBRARIES "-l${PC_CMINPACK_LIBRARIES}")
+      endif ()
+      set (PC_CMINPACK_LDFLAGS "${BLAS_LINKER_FLAGS}")
+  endif ()
+  configure_file (cmake/cminpack.pc.in ${pkg_conf_file} @ONLY)
+  install (FILES ${pkg_conf_file}
+    DESTINATION ${CMINPACK_LIB_INSTALL_DIR}/pkgconfig/ COMPONENT pkgconfig)
+
+endforeach ()
+
+install (EXPORT CMinpackConfig DESTINATION share/cminpack NAMESPACE cminpack::)
+
 add_subdirectory (examples)

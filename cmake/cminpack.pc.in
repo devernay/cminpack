@@ -4,9 +4,9 @@ exec_prefix=${prefix}
 libdir=${prefix}/@CMINPACK_LIB_INSTALL_DIR@
 includedir=${prefix}/@CMINPACK_INCLUDE_INSTALL_DIR@
 
-Name: @PROJECT_NAME@
-Description: @PKG_DESC@
+Name: CMinPack
+Description: CMinPack
 Version: @CMINPACK_VERSION@
-Requires: @PKG_EXTERNAL_DEPS@
-Libs: -L${libdir} -lcminpack -lm @PC_CMINPACK_LIBRARIES@ @PC_CMINPACK_LDFLAGS@
+Requires:
+Libs: -L${libdir} -l@cminpack_lib@ -lm @PC_CMINPACK_LIBRARIES@ @PC_CMINPACK_LDFLAGS@
 Cflags: -I${includedir} @CMINPACK_CFLAGS@
