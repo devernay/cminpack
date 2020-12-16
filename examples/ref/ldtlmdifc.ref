@@ -1,0 +1,14 @@
+      final l2 norm of the residuals     0.09063596
+
+      number of function evaluations        25
+
+      exit parameter                         1
+
+      final approximate solution
+
+          0.08241056       1.133036       2.343695
+      covariance
+
+        0.0001531199    0.002869831   -0.002656551
+         0.002869831     0.09480247    -0.09098321
+        -0.002656551    -0.09098321     0.08778068
