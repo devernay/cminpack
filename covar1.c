@@ -91,7 +91,7 @@ int __cminpack_func__(covar1)(int m, int n, real fsumsq, real *r, int ldr,
 	if (fabs(r[k + k * ldr]) <= tolr) {
 	    break;
 	}
-	r[k + k * ldr] = 1. / r[k + k * ldr];
+	r[k + k * ldr] = 1 / r[k + k * ldr];
 	if (k > 0) {
             for (j = 0; j < k; ++j) {
                 // coverity[copy_paste_error]

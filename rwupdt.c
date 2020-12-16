@@ -14,8 +14,8 @@ void __cminpack_func__(rwupdt)(int n, real *r, int ldr,
 {
     /* Initialized data */
 
-#define p5 .5
-#define p25 .25
+#define p5 ((real).5)
+#define p25 ((real).25)
 
     /* System generated locals */
     int r_dim1, r_offset;

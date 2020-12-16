@@ -225,17 +225,17 @@ L40:
     d__3 = *delta / qnorm;
 /* Computing 2nd power */
     d__4 = sgnorm / *delta;
-    temp = temp - *delta / qnorm * (d__1 * d__1) + sqrt(d__2 * d__2 + (1. - 
-	    d__3 * d__3) * (1. - d__4 * d__4));
+    temp = temp - *delta / qnorm * (d__1 * d__1) + sqrt(d__2 * d__2 + (1 - 
+	    d__3 * d__3) * (1 - d__4 * d__4));
 /* Computing 2nd power */
     d__1 = sgnorm / *delta;
-    alpha = *delta / qnorm * (1. - d__1 * d__1) / temp;
+    alpha = *delta / qnorm * (1 - d__1 * d__1) / temp;
 L120:
 
 /*     form appropriate convex combination of the gauss-newton */
 /*     direction and the scaled gradient direction. */
 
-    temp = (1. - alpha) * min(sgnorm,*delta);
+    temp = (1 - alpha) * min(sgnorm,*delta);
     i__1 = *n;
     for (j = 1; j <= i__1; ++j) {
 	x[j] = temp * wa1[j] + alpha * x[j];

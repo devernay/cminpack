@@ -89,15 +89,15 @@ void __minpack_func__(r1mpyq)(const int *m, const int *n, real *a, const int *
     for (nmj = 1; nmj <= i__1; ++nmj) {
 	j = *n - nmj;
 	if ((d__1 = v[j], abs(d__1)) > 1.) {
-	    cos__ = 1. / v[j];
+	    cos__ = 1 / v[j];
 /* Computing 2nd power */
 	    d__2 = cos__;
-	    sin__ = sqrt(1. - d__2 * d__2);
+	    sin__ = sqrt(1 - d__2 * d__2);
 	} else {
 	    sin__ = v[j];
 /* Computing 2nd power */
 	    d__2 = sin__;
-	    cos__ = sqrt(1. - d__2 * d__2);
+	    cos__ = sqrt(1 - d__2 * d__2);
 	}
 	i__2 = *m;
 	for (i__ = 1; i__ <= i__2; ++i__) {
@@ -115,15 +115,15 @@ void __minpack_func__(r1mpyq)(const int *m, const int *n, real *a, const int *
     i__1 = nm1;
     for (j = 1; j <= i__1; ++j) {
 	if ((d__1 = w[j], abs(d__1)) > 1.) {
-	    cos__ = 1. / w[j];
+	    cos__ = 1 / w[j];
 /* Computing 2nd power */
 	    d__2 = cos__;
-	    sin__ = sqrt(1. - d__2 * d__2);
+	    sin__ = sqrt(1 - d__2 * d__2);
 	} else {
 	    sin__ = w[j];
 /* Computing 2nd power */
 	    d__2 = sin__;
-	    cos__ = sqrt(1. - d__2 * d__2);
+	    cos__ = sqrt(1 - d__2 * d__2);
 	}
 	i__2 = *m;
 	for (i__ = 1; i__ <= i__2; ++i__) {

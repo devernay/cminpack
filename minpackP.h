@@ -36,10 +36,22 @@
 #define atan(x) atanl(x)
 #define floor(x) floorl(x)
 #define ceil(x) ceill(x)
-extern long double floorl ( long double );
-extern long double ellpkl ( long double );
 #else
 #define realm real
+#ifdef __cminpack_float__
+#define fabs(x) fabsf(x)
+#define sqrt(x) sqrtf(x)
+#define log(x) logf(x)
+#define exp(x) expf(x)
+#define sin(x) sinf(x)
+#define cos(x) cosf(x)
+#define tan(x) tanf(x)
+#define asin(x) asinf(x)
+#define acos(x) acosf(x)
+#define atan(x) atanf(x)
+#define floor(x) floorf(x)
+#define ceil(x) ceilf(x)
+#endif
 #endif
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))

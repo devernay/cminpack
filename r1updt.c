@@ -13,8 +13,8 @@ void __cminpack_func__(r1updt)(int m, int n, real *s, int
 {
     /* Initialized data */
 
-#define p5 .5
-#define p25 .25
+#define p5 ((real).5)
+#define p25 ((real).25)
 
     /* Local variables */
     int i, j, l, jj, nm1;
@@ -135,7 +135,7 @@ void __cminpack_func__(r1updt)(int m, int n, real *s, int
                     cos = sin * cotan;
                     tau = 1.;
                     if (fabs(cos) * giant > 1.) {
-                        tau = 1. / cos;
+                        tau = 1 / cos;
                     }
                 } else {
                     tan = v[j] / v[n];
@@ -185,7 +185,7 @@ void __cminpack_func__(r1updt)(int m, int n, real *s, int
                     cos = sin * cotan;
                     tau = 1.;
                     if (fabs(cos) * giant > 1.) {
-                        tau = 1. / cos;
+                        tau = 1 / cos;
                     }
                 } else {
                     tan = w[j] / s[jj];

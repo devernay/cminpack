@@ -20,8 +20,8 @@ void __minpack_func__(lmpar)(const int *n, real *r__, const int *ldr,
 
     /* Initialized data */
 
-#define p1 .1
-#define p001 .001
+#define p1 ((real).1)
+#define p001 ((real).001)
 
     /* System generated locals */
     int r_dim1, r_offset, i__1, i__2;

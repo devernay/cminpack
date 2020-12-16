@@ -128,7 +128,7 @@ real __minpack_func__(enorm)(const int *n, const real *x)
 	}
 /* Computing 2nd power */
 	d__1 = x1max / xabs;
-	s1 = 1. + s1 * (d__1 * d__1);
+	s1 = 1 + s1 * (d__1 * d__1);
 	x1max = xabs;
 	goto L20;
 L10:
@@ -146,7 +146,7 @@ L30:
 	}
 /* Computing 2nd power */
 	d__1 = x3max / xabs;
-	s3 = 1. + s3 * (d__1 * d__1);
+	s3 = 1 + s3 * (d__1 * d__1);
 	x3max = xabs;
 	goto L50;
 L40:
@@ -182,7 +182,7 @@ L100:
 	goto L110;
     }
     if (s2 >= x3max) {
-	ret_val = sqrt(s2 * (1. + x3max / s2 * (x3max * s3)));
+	ret_val = sqrt(s2 * (1 + x3max / s2 * (x3max * s3)));
     } else {
 	ret_val = sqrt(x3max * (s2 / x3max + x3max * s3));
     }

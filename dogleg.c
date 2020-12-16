@@ -198,17 +198,17 @@ void __cminpack_func__(dogleg)(int n, const real *r, int lr,
             d4 = sgnorm / delta;
             temp = temp - delta / qnorm * (d1 * d1)
                    + sqrt(d2 * d2
-                          + (1. - d3 * d3) * (1. - d4 * d4));
+                          + (1 - d3 * d3) * (1 - d4 * d4));
             /* Computing 2nd power */
             d1 = sgnorm / delta;
-            alpha = delta / qnorm * (1. - d1 * d1) / temp;
+            alpha = delta / qnorm * (1 - d1 * d1) / temp;
         }
     }
 
 /*     form appropriate convex combination of the gauss-newton */
 /*     direction and the scaled gradient direction. */
 
-    temp = (1. - alpha) * min(sgnorm,delta);
+    temp = (1 - alpha) * min(sgnorm,delta);
     for (j = 1; j <= n; ++j) {
 	x[j] = temp * wa1[j] + alpha * x[j];
     }

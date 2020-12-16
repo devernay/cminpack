@@ -17,8 +17,8 @@ int __cminpack_func__(hybrd)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, r
 {
     /* Initialized data */
 
-#define p1 .1
-#define p5 .5
+#define p1 ((real).1)
+#define p5 ((real).5)
 #define p001 .001
 #define p0001 1e-4
 
@@ -408,7 +408,7 @@ int __cminpack_func__(hybrd)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, r
             if (fnorm1 < fnorm) {
                 /* Computing 2nd power */
                 d1 = fnorm1 / fnorm;
-                actred = 1. - d1 * d1;
+                actred = 1 - d1 * d1;
             }
 
 /*           compute the scaled predicted reduction. */
@@ -427,7 +427,7 @@ int __cminpack_func__(hybrd)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, r
             if (temp < fnorm) {
                 /* Computing 2nd power */
                 d1 = temp / fnorm;
-                prered = 1. - d1 * d1;
+                prered = 1 - d1 * d1;
             }
 
 /*           compute the ratio of the actual to the predicted */
@@ -452,7 +452,7 @@ int __cminpack_func__(hybrd)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, r
                     d1 = pnorm / p5;
                     delta = max(delta,d1);
                 }
-                if (fabs(ratio - 1.) <= p1) {
+                if (fabs(ratio - 1) <= p1) {
                     delta = pnorm / p5;
                 }
             }

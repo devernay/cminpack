@@ -2,8 +2,8 @@
 #include <math.h>
 #include "cminpackP.h"
 
-#define log10e 0.43429448190325182765
-#define factor 100.
+#define log10e ((real)0.434294481903251827651128918916605082)
+#define factor ((real)100.)
 
 /* Table of constant values */
 
