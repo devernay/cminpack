@@ -1,0 +1,1204 @@
+
+
+
+
+      problem    1      dimension    2
+
+
+      initial l2 norm of the residuals  4.9193496e+00
+
+      final l2 norm of the residuals    0.0000000e+00
+
+      number of function evaluations          16
+
+      number of jacobian evaluations           3
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.0000000e+00  1.0000000e+00
+
+
+
+
+      problem    1      dimension    2
+
+
+      initial l2 norm of the residuals  1.3400631e+03
+
+      final l2 norm of the residuals    0.0000000e+00
+
+      number of function evaluations           7
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.0000000e+00  1.0000000e+00
+
+
+
+
+      problem    1      dimension    2
+
+
+      initial l2 norm of the residuals  1.4300005e+05
+
+      final l2 norm of the residuals    2.6237693e-16
+
+      number of function evaluations           7
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.0000000e+00  1.0000000e+00
+
+
+
+
+      problem    2      dimension    4
+
+
+      initial l2 norm of the residuals  1.4662878e+01
+
+      final l2 norm of the residuals    1.0965660e-43
+
+      number of function evaluations         126
+
+      number of jacobian evaluations           5
+
+      exit parameter                           4
+
+      final approximate solution
+
+       9.2134084e-23 -9.2134084e-24  1.6022069e-22  1.6022069e-22
+
+
+
+
+      problem    2      dimension    4
+
+
+      initial l2 norm of the residuals  1.2709839e+03
+
+      final l2 norm of the residuals    6.0574582e-42
+
+      number of function evaluations         125
+
+      number of jacobian evaluations           4
+
+      exit parameter                           4
+
+      final approximate solution
+
+       2.9423593e-22 -2.9423593e-23 -9.5371000e-22 -9.5371000e-22
+
+
+
+
+      problem    2      dimension    4
+
+
+      initial l2 norm of the residuals  1.2688790e+05
+
+      final l2 norm of the residuals    3.6871121e-41
+
+      number of function evaluations         169
+
+      number of jacobian evaluations           9
+
+      exit parameter                           4
+
+      final approximate solution
+
+       4.4226549e-21 -4.4226549e-22  1.0331732e-21  1.0331732e-21
+
+
+
+
+      problem    3      dimension    2
+
+
+      initial l2 norm of the residuals  1.0654866e+00
+
+      final l2 norm of the residuals    1.1585631e-10
+
+      number of function evaluations         170
+
+      number of jacobian evaluations           6
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.0981593e-05  9.1061467e+00
+
+
+
+
+      problem    3      dimension    2
+
+
+      initial l2 norm of the residuals  1.0000000e+00
+
+      final l2 norm of the residuals    1.0842022e-19
+
+      number of function evaluations          11
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.0981593e-05  9.1061467e+00
+
+
+
+
+      problem    4      dimension    4
+
+
+      initial l2 norm of the residuals  8.5505574e+03
+
+      final l2 norm of the residuals    1.0569600e-11
+
+      number of function evaluations          87
+
+      number of jacobian evaluations           2
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -9.6797402e-01  9.4713914e-01 -9.6951631e-01  9.5124767e-01
+
+
+
+
+      problem    4      dimension    4
+
+
+      initial l2 norm of the residuals  7.3498230e+06
+
+      final l2 norm of the residuals    4.3101277e-14
+
+      number of function evaluations         204
+
+      number of jacobian evaluations           8
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -9.6797402e-01  9.4713914e-01 -9.6951631e-01  9.5124767e-01
+
+
+
+
+      problem    4      dimension    4
+
+
+      initial l2 norm of the residuals  7.2730700e+09
+
+      final l2 norm of the residuals    3.4779835e-11
+
+      number of function evaluations         386
+
+      number of jacobian evaluations          35
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -9.6797402e-01  9.4713914e-01 -9.6951631e-01  9.5124767e-01
+
+
+
+
+      problem    5      dimension    3
+
+
+      initial l2 norm of the residuals  5.0000000e+01
+
+      final l2 norm of the residuals    2.7534492e-13
+
+      number of function evaluations          18
+
+      number of jacobian evaluations           3
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.0000000e+00 -1.6121092e-14  0.0000000e+00
+
+
+
+
+      problem    5      dimension    3
+
+
+      initial l2 norm of the residuals  1.0295630e+02
+
+      final l2 norm of the residuals    1.4599744e-12
+
+      number of function evaluations          21
+
+      number of jacobian evaluations           4
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.0000000e+00 -9.0059944e-14  0.0000000e+00
+
+
+
+
+      problem    5      dimension    3
+
+
+      initial l2 norm of the residuals  9.9126182e+02
+
+      final l2 norm of the residuals    4.7530476e-13
+
+      number of function evaluations          38
+
+      number of jacobian evaluations           8
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.0000000e+00  2.1305562e-14  0.0000000e+00
+
+
+
+
+      problem    6      dimension    6
+
+
+      initial l2 norm of the residuals  6.8485872e+01
+
+      final l2 norm of the residuals    5.7711673e-16
+
+      number of function evaluations          61
+
+      number of jacobian evaluations           6
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -1.5725086e-02  1.0124349e+00 -2.3299163e-01  1.2604301e+00 -1.5137289e+00
+       9.9299643e-01
+
+
+
+
+      problem    6      dimension    6
+
+
+      initial l2 norm of the residuals  3.5312586e+06
+
+      final l2 norm of the residuals    8.2109861e-16
+
+      number of function evaluations         140
+
+      number of jacobian evaluations           6
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -1.5725086e-02  1.0124349e+00 -2.3299163e-01  1.2604301e+00 -1.5137289e+00
+       9.9299643e-01
+
+
+
+
+      problem    6      dimension    9
+
+
+      initial l2 norm of the residuals  8.8789552e+01
+
+      final l2 norm of the residuals    4.7333350e-13
+
+      number of function evaluations          93
+
+      number of jacobian evaluations           4
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -1.5307037e-05  9.9978970e-01  1.4763964e-02  1.4634233e-01  1.0008211e+00
+      -2.6177311e+00  4.1044032e+00 -3.1436123e+00  1.0526264e+00
+
+
+
+
+      problem    6      dimension    9
+
+
+      initial l2 norm of the residuals  1.0151080e+07
+
+      final l2 norm of the residuals    3.3676416e-02
+
+      number of function evaluations         301
+
+      number of jacobian evaluations          13
+
+      exit parameter                           4
+
+      final approximate solution
+
+       3.1018658e-01  1.0889663e+00  1.3539024e+00 -1.1469368e+01  6.1188578e+01
+      -1.5974966e+02  2.2719004e+02 -1.6585335e+02  4.9614166e+01
+
+
+
+
+      problem    7      dimension    5
+
+
+      initial l2 norm of the residuals  2.2570657e-01
+
+      final l2 norm of the residuals    6.0446772e-13
+
+      number of function evaluations          10
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+       8.3751256e-02  3.1272930e-01  5.0000000e-01  6.8727070e-01  9.1624874e-01
+
+
+
+
+      problem    7      dimension    5
+
+
+      initial l2 norm of the residuals  4.1172432e+06
+
+      final l2 norm of the residuals    8.7599009e-13
+
+      number of function evaluations         142
+
+      number of jacobian evaluations          25
+
+      exit parameter                           1
+
+      final approximate solution
+
+       8.3751256e-02  5.0000000e-01  6.8727070e-01  9.1624874e-01  3.1272930e-01
+
+
+
+
+      problem    7      dimension    5
+
+
+      initial l2 norm of the residuals  5.6361303e+11
+
+      final l2 norm of the residuals    2.7446469e-14
+
+      number of function evaluations         252
+
+      number of jacobian evaluations          50
+
+      exit parameter                           1
+
+      final approximate solution
+
+       5.0000000e-01  3.1272930e-01  8.3751256e-02  6.8727070e-01  9.1624874e-01
+
+
+
+
+      problem    7      dimension    6
+
+
+      initial l2 norm of the residuals  2.1547198e-01
+
+      final l2 norm of the residuals    6.5096426e-13
+
+      number of function evaluations          14
+
+      number of jacobian evaluations           2
+
+      exit parameter                           1
+
+      final approximate solution
+
+       6.6876591e-02  3.6668230e-01  2.8874067e-01  7.1125933e-01  6.3331770e-01
+       9.3312341e-01
+
+
+
+
+      problem    7      dimension    6
+
+
+      initial l2 norm of the residuals  1.3079247e+08
+
+      final l2 norm of the residuals    1.1293830e-12
+
+      number of function evaluations          92
+
+      number of jacobian evaluations          13
+
+      exit parameter                           1
+
+      final approximate solution
+
+       9.3312341e-01  3.6668230e-01  6.6876591e-02  7.1125933e-01  2.8874067e-01
+       6.3331770e-01
+
+
+
+
+      problem    7      dimension    6
+
+
+      initial l2 norm of the residuals  1.8755789e+14
+
+      final l2 norm of the residuals    6.1076684e-13
+
+      number of function evaluations         137
+
+      number of jacobian evaluations          20
+
+      exit parameter                           1
+
+      final approximate solution
+
+       9.3312341e-01  6.3331770e-01  2.8874067e-01  3.6668230e-01  6.6876591e-02
+       7.1125933e-01
+
+
+
+
+      problem    7      dimension    7
+
+
+      initial l2 norm of the residuals  1.8376789e-01
+
+      final l2 norm of the residuals    2.2709397e-12
+
+      number of function evaluations          12
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+       5.8069150e-02  2.3517161e-01  3.3804409e-01  5.0000000e-01  6.6195591e-01
+       7.6482839e-01  9.4193085e-01
+
+
+
+
+      problem    7      dimension    7
+
+
+      initial l2 norm of the residuals  4.2693282e+09
+
+      final l2 norm of the residuals    6.3507454e-13
+
+      number of function evaluations         279
+
+      number of jacobian evaluations          47
+
+      exit parameter                           1
+
+      final approximate solution
+
+       2.3517161e-01  7.6482839e-01  5.8069150e-02  6.6195591e-01  9.4193085e-01
+       3.3804409e-01  5.0000000e-01
+
+
+
+
+      problem    7      dimension    7
+
+
+      initial l2 norm of the residuals  6.4143166e+16
+
+      final l2 norm of the residuals    6.7782527e+11
+
+      number of function evaluations          67
+
+      number of jacobian evaluations          13
+
+      exit parameter                           4
+
+      final approximate solution
+
+      -2.1047582e+00 -3.1408739e+01  2.9011612e+01  2.3034471e+01  2.8047581e+01
+       2.2965665e+01  1.7978208e+01
+
+
+
+
+      problem    7      dimension    8
+
+
+      initial l2 norm of the residuals  1.9651386e-01
+
+      final l2 norm of the residuals    6.4405122e-02
+
+      number of function evaluations          56
+
+      number of jacobian evaluations           8
+
+      exit parameter                           4
+
+      final approximate solution
+
+       4.9856400e-02  1.9863513e-01  2.6982882e-01  4.9927230e-01  5.0072770e-01
+       7.3017118e-01  8.0136487e-01  9.5014360e-01
+
+
+
+
+      problem    7      dimension    9
+
+
+      initial l2 norm of the residuals  1.6994993e-01
+
+      final l2 norm of the residuals    8.3793390e-14
+
+      number of function evaluations          25
+
+      number of jacobian evaluations           2
+
+      exit parameter                           1
+
+      final approximate solution
+
+       4.4205346e-02  1.9949067e-01  2.3561911e-01  4.1604691e-01  5.0000000e-01
+       5.8395309e-01  7.6438089e-01  8.0050933e-01  9.5579465e-01
+
+
+
+
+      problem    8      dimension   10
+
+
+      initial l2 norm of the residuals  1.6530216e+01
+
+      final l2 norm of the residuals    1.4636729e-18
+
+      number of function evaluations          12
+
+      number of jacobian evaluations           2
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+
+
+
+
+      problem    8      dimension   10
+
+
+      initial l2 norm of the residuals  9.7656240e+06
+
+      final l2 norm of the residuals    4.0661195e-18
+
+      number of function evaluations          12
+
+      number of jacobian evaluations           2
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+
+
+
+
+      problem    8      dimension   10
+
+
+      initial l2 norm of the residuals  9.7656250e+16
+
+      final l2 norm of the residuals    9.6343123e-18
+
+      number of function evaluations          15
+
+      number of jacobian evaluations           2
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+
+
+
+
+      problem    8      dimension   30
+
+
+      initial l2 norm of the residuals  8.3476044e+01
+
+      final l2 norm of the residuals    1.3604685e-16
+
+      number of function evaluations          12
+
+      number of jacobian evaluations           2
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+
+
+
+
+      problem    8      dimension   40
+
+
+      initial l2 norm of the residuals  1.2802636e+02
+
+      final l2 norm of the residuals    8.9376145e-17
+
+      number of function evaluations          13
+
+      number of jacobian evaluations           2
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+
+
+
+
+      problem    9      dimension   10
+
+
+      initial l2 norm of the residuals  2.8080582e-02
+
+      final l2 norm of the residuals    2.5152585e-15
+
+      number of function evaluations           6
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -4.3164983e-02 -8.1577157e-02 -1.1448571e-01 -1.4097358e-01 -1.5990870e-01
+      -1.6987720e-01 -1.6908998e-01 -1.5524954e-01 -1.2535589e-01 -7.5416534e-02
+
+
+
+
+      problem    9      dimension   10
+
+
+      initial l2 norm of the residuals  5.2555258e-01
+
+      final l2 norm of the residuals    1.7259752e-13
+
+      number of function evaluations           9
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -4.3164983e-02 -8.1577157e-02 -1.1448571e-01 -1.4097358e-01 -1.5990870e-01
+      -1.6987720e-01 -1.6908998e-01 -1.5524954e-01 -1.2535589e-01 -7.5416534e-02
+
+
+
+
+      problem    9      dimension   10
+
+
+      initial l2 norm of the residuals  1.0657390e+02
+
+      final l2 norm of the residuals    7.1343184e-12
+
+      number of function evaluations          44
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -4.3164983e-02 -8.1577157e-02 -1.1448571e-01 -1.4097358e-01 -1.5990870e-01
+      -1.6987720e-01 -1.6908998e-01 -1.5524954e-01 -1.2535589e-01 -7.5416534e-02
+
+
+
+
+      problem   10      dimension    1
+
+
+      initial l2 norm of the residuals  1.2792969e-01
+
+      final l2 norm of the residuals    4.0657581e-20
+
+      number of function evaluations           7
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -1.5281388e-01
+
+
+
+
+      problem   10      dimension    1
+
+
+      initial l2 norm of the residuals  2.5625000e+00
+
+      final l2 norm of the residuals    2.7105054e-20
+
+      number of function evaluations           8
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -1.5281388e-01
+
+
+
+
+      problem   10      dimension    1
+
+
+      initial l2 norm of the residuals  8.3611719e+02
+
+      final l2 norm of the residuals    4.0657581e-20
+
+      number of function evaluations          25
+
+      number of jacobian evaluations           2
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -1.5281388e-01
+
+
+
+
+      problem   10      dimension   10
+
+
+      initial l2 norm of the residuals  2.5182701e-01
+
+      final l2 norm of the residuals    8.6329069e-15
+
+      number of function evaluations           9
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -4.3164983e-02 -8.1577157e-02 -1.1448571e-01 -1.4097358e-01 -1.5990870e-01
+      -1.6987720e-01 -1.6908998e-01 -1.5524954e-01 -1.2535589e-01 -7.5416534e-02
+
+
+
+
+      problem   10      dimension   10
+
+
+      initial l2 norm of the residuals  6.1168330e+00
+
+      final l2 norm of the residuals    4.0860096e-15
+
+      number of function evaluations          10
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -4.3164983e-02 -8.1577157e-02 -1.1448571e-01 -1.4097358e-01 -1.5990870e-01
+      -1.6987720e-01 -1.6908998e-01 -1.5524954e-01 -1.2535589e-01 -7.5416534e-02
+
+
+
+
+      problem   10      dimension   10
+
+
+      initial l2 norm of the residuals  1.2693089e+03
+
+      final l2 norm of the residuals    2.7254806e-17
+
+      number of function evaluations          51
+
+      number of jacobian evaluations           3
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -4.3164983e-02 -8.1577157e-02 -1.1448571e-01 -1.4097358e-01 -1.5990870e-01
+      -1.6987720e-01 -1.6908998e-01 -1.5524954e-01 -1.2535589e-01 -7.5416534e-02
+
+
+
+
+      problem   11      dimension   10
+
+
+      initial l2 norm of the residuals  8.4117534e-02
+
+      final l2 norm of the residuals    5.2963921e-03
+
+      number of function evaluations          60
+
+      number of jacobian evaluations           7
+
+      exit parameter                           4
+
+      final approximate solution
+
+       5.5261544e-02  5.6957555e-02  5.8890667e-02  6.1136063e-02  6.3778558e-02
+       6.7004825e-02  2.0794103e-01  1.6426711e-01  8.6439479e-02  9.1335063e-02
+
+
+
+
+      problem   11      dimension   10
+
+
+      initial l2 norm of the residuals  2.0305195e+01
+
+      final l2 norm of the residuals    3.3454654e-13
+
+      number of function evaluations          36
+
+      number of jacobian evaluations           5
+
+      exit parameter                           1
+
+      final approximate solution
+
+       3.4396289e-02  3.5032316e-02  3.5719196e-02  3.6465224e-02  3.7280912e-02
+       3.8179863e-02  3.9180141e-02  4.0306503e-02  1.7972019e-01  1.5624088e-01
+
+
+
+
+      problem   11      dimension   10
+
+
+      initial l2 norm of the residuals  9.3369375e+01
+
+      final l2 norm of the residuals    1.5143551e-09
+
+      number of function evaluations          44
+
+      number of jacobian evaluations           4
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.8883952e+01  2.5167774e+01  1.8885275e+01  1.8886021e+01  1.8886837e+01
+       1.8887736e+01  1.8888736e+01  1.8889862e+01  1.9029276e+01  1.9005797e+01
+
+
+
+
+      problem   12      dimension   10
+
+
+      initial l2 norm of the residuals  2.2402135e+06
+
+      final l2 norm of the residuals    0.0000000e+00
+
+      number of function evaluations          22
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+
+
+
+
+      problem   12      dimension   10
+
+
+      initial l2 norm of the residuals  5.2234376e+07
+
+      final l2 norm of the residuals    1.2183033e-14
+
+      number of function evaluations          26
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+
+
+
+
+      problem   12      dimension   10
+
+
+      initial l2 norm of the residuals  1.5923646e+11
+
+      final l2 norm of the residuals    9.9855502e-12
+
+      number of function evaluations          35
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+       1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00  1.0000000e+00
+
+
+
+
+      problem   13      dimension   10
+
+
+      initial l2 norm of the residuals  4.5825757e+00
+
+      final l2 norm of the residuals    7.6228700e-11
+
+      number of function evaluations          13
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -5.7072213e-01 -6.8180695e-01 -7.0221008e-01 -7.0551063e-01 -7.0490616e-01
+      -7.0149661e-01 -6.9188932e-01 -6.6579651e-01 -5.9603511e-01 -4.1641226e-01
+
+
+
+
+      problem   13      dimension   10
+
+
+      initial l2 norm of the residuals  6.3910093e+02
+
+      final l2 norm of the residuals    2.3156807e-12
+
+      number of function evaluations          53
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -5.7072213e-01 -6.8180695e-01 -7.0221008e-01 -7.0551063e-01 -7.0490616e-01
+      -7.0149661e-01 -6.9188932e-01 -6.6579651e-01 -5.9603511e-01 -4.1641226e-01
+
+
+
+
+      problem   13      dimension   10
+
+
+      initial l2 norm of the residuals  6.3337583e+04
+
+      final l2 norm of the residuals    3.2465706e-12
+
+      number of function evaluations          23
+
+      number of jacobian evaluations           2
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -5.7072213e-01 -6.8180695e-01 -7.0221008e-01 -7.0551063e-01 -7.0490616e-01
+      -7.0149661e-01 -6.9188932e-01 -6.6579651e-01 -5.9603511e-01 -4.1641226e-01
+
+
+
+
+      problem   14      dimension   10
+
+
+      initial l2 norm of the residuals  1.8973666e+01
+
+      final l2 norm of the residuals    8.2517941e-11
+
+      number of function evaluations          23
+
+      number of jacobian evaluations           1
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -4.2830286e-01 -4.7659642e-01 -5.1965246e-01 -5.5809932e-01 -5.9250616e-01
+      -6.2450368e-01 -6.2323947e-01 -6.2139384e-01 -6.2045360e-01 -5.8646927e-01
+
+
+
+
+      problem   14      dimension   10
+
+
+      initial l2 norm of the residuals  1.7130922e+04
+
+      final l2 norm of the residuals    1.3555351e-10
+
+      number of function evaluations          27
+
+      number of jacobian evaluations           2
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -4.2830286e-01 -4.7659642e-01 -5.1965246e-01 -5.5809932e-01 -5.9250616e-01
+      -6.2450368e-01 -6.2323947e-01 -6.2139384e-01 -6.2045360e-01 -5.8646927e-01
+
+
+
+
+      problem   14      dimension   10
+
+
+      initial l2 norm of the residuals  1.5949860e+07
+
+      final l2 norm of the residuals    8.7598527e-11
+
+      number of function evaluations          39
+
+      number of jacobian evaluations           2
+
+      exit parameter                           1
+
+      final approximate solution
+
+      -4.2830286e-01 -4.7659642e-01 -5.1965246e-01 -5.5809932e-01 -5.9250616e-01
+      -6.2450368e-01 -6.2323947e-01 -6.2139384e-01 -6.2045360e-01 -5.8646927e-01
+ summary of 55 calls to hybrj1
+
+ nprob   n    nfev   njev  info  final l2 norm
+
+   1     2     16      3     1   0.0000000e+00
+   1     2      7      1     1   0.0000000e+00
+   1     2      7      1     1   2.6237693e-16
+   2     4    126      5     4   1.0965660e-43
+   2     4    125      4     4   6.0574582e-42
+   2     4    169      9     4   3.6871121e-41
+   3     2    170      6     1   1.1585631e-10
+   3     2     11      1     1   1.0842022e-19
+   4     4     87      2     1   1.0569600e-11
+   4     4    204      8     1   4.3101277e-14
+   4     4    386     35     1   3.4779835e-11
+   5     3     18      3     1   2.7534492e-13
+   5     3     21      4     1   1.4599744e-12
+   5     3     38      8     1   4.7530476e-13
+   6     6     61      6     1   5.7711673e-16
+   6     6    140      6     1   8.2109861e-16
+   6     9     93      4     1   4.7333350e-13
+   6     9    301     13     4   3.3676416e-02
+   7     5     10      1     1   6.0446772e-13
+   7     5    142     25     1   8.7599009e-13
+   7     5    252     50     1   2.7446469e-14
+   7     6     14      2     1   6.5096426e-13
+   7     6     92     13     1   1.1293830e-12
+   7     6    137     20     1   6.1076684e-13
+   7     7     12      1     1   2.2709397e-12
+   7     7    279     47     1   6.3507454e-13
+   7     7     67     13     4   6.7782527e+11
+   7     8     56      8     4   6.4405122e-02
+   7     9     25      2     1   8.3793390e-14
+   8    10     12      2     1   1.4636729e-18
+   8    10     12      2     1   4.0661195e-18
+   8    10     15      2     1   9.6343123e-18
+   8    30     12      2     1   1.3604685e-16
+   8    40     13      2     1   8.9376145e-17
+   9    10      6      1     1   2.5152585e-15
+   9    10      9      1     1   1.7259752e-13
+   9    10     44      1     1   7.1343184e-12
+  10     1      7      1     1   4.0657581e-20
+  10     1      8      1     1   2.7105054e-20
+  10     1     25      2     1   4.0657581e-20
+  10    10      9      1     1   8.6329069e-15
+  10    10     10      1     1   4.0860096e-15
+  10    10     51      3     1   2.7254806e-17
+  11    10     60      7     4   5.2963921e-03
+  11    10     36      5     1   3.3454654e-13
+  11    10     44      4     1   1.5143551e-09
+  12    10     22      1     1   0.0000000e+00
+  12    10     26      1     1   1.2183033e-14
+  12    10     35      1     1   9.9855502e-12
+  13    10     13      1     1   7.6228700e-11
+  13    10     53      1     1   2.3156807e-12
+  13    10     23      2     1   3.2465706e-12
+  14    10     23      1     1   8.2517941e-11
+  14    10     27      2     1   1.3555351e-10
+  14    10     39      2     1   8.7598527e-11

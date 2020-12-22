@@ -17,8 +17,8 @@
 #ifdef __cminpack_long_double__
 #define N1 3
 #define N2 367
-#define SQRTFAC 1.5
-#define FAC 10.
+#define SQRTFAC 1.5L
+#define FAC 10.L
 #define sqrt(x) sqrtl(x)
 #endif
 #ifdef __cminpack_float__

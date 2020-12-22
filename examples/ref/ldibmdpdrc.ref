@@ -1,0 +1,42 @@
+ MACHAR constants
+
+
+ ibeta =     2
+
+ it    =    64
+
+ irnd  =     5
+
+ ngrd  =     0
+
+ machep =   -63
+
+ negep =   -64
+
+ iexp =    15
+
+ minexp =-16382
+
+ maxexp = 16384
+
+ eps =  1.0842022e-19
+
+ epsneg =  5.4210109e-20
+
+ xmin =  0.0000000e+00
+
+ xmax =            inf
+
+
+
+ DPMPAR constants and relative differences
+
+
+ epsmch =  1.0842022e-19
+ rerr(1) =  0.0000000e+00
+
+ dwarf =  0.0000000e+00
+ rerr(2) =  0.0000000e+00
+
+ giant =            inf
+ rerr(3) =  0.0000000e+00
