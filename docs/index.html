@@ -91,8 +91,9 @@ which came from the FORTRAN version:</p>
 
 <h3>Download</h3>
 <ul>
-  <!--<li><a href="https://github.com/devernay/cminpack/archive/v1.3.8.tar.gz">cminpack-1.3.8.tar.gz</a></li>--> 
-  <li><a href="https://github.com/devernay/cminpack/archive/v1.3.7.tar.gz">cminpack-1.3.7.tar.gz</a> (latest version)</li> 
+  <!--<li><a href="https://github.com/devernay/cminpack/archive/v1.3.9.tar.gz">cminpack-1.3.9.tar.gz</a></li>--> 
+  <li><a href="https://github.com/devernay/cminpack/archive/v1.3.8.tar.gz">cminpack-1.3.8.tar.gz</a> (latest version)</li>
+  <li><a href="https://github.com/devernay/cminpack/archive/v1.3.7.tar.gz">cminpack-1.3.7.tar.gz</a></li> 
   <li><a href="https://github.com/devernay/cminpack/archive/v1.3.6.tar.gz">cminpack-1.3.6.tar.gz</a></li> 
   <li><a href="https://github.com/devernay/cminpack/archive/v1.3.5.tar.gz">cminpack-1.3.5.tar.gz</a></li> 
   <li><a href="http://devernay.free.fr/hacks/cminpack/cminpack-1.3.4.tar.gz">cminpack-1.3.4.tar.gz</a></li> 
@@ -214,7 +215,7 @@ which came from the FORTRAN version:</p>
 
 <h2>History</h2>
 <ul>
-  <li>1.3.8 (//2021): (not yet released).</li>
+  <li>1.3.8 (02/09/2021): CMake now builds by default the single-, double-, and extended-precision versions. Avoid promoting to doubles in all operations for the single-precision version.</li>
   <li>1.3.7 (09/12/2020): Makefile cleanups. Cmake-related fixes. Add Appveyor CI. Add support for single-precision CBLAS and LAPACK.</li>
   <li>1.3.6 (24/02/2017): Fix FreeBSD build. CMake: install CMinpackConfig.cmake rather than FindCMinpack.cmake, and add option USE_BLAS to compile with blas.</li>
   <li>1.3.5 (28/05/2016): Add support for compiling a long double version (Makefile only). CMake: static libraries now have the suffix <code>_s</code>.</li>

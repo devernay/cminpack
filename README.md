@@ -28,8 +28,8 @@ The project home page is at http://devernay.github.io/cminpack
 History
 ------
 
-* version 1.3.8 (//2021):
- - cmake now builds by default the single-, double-, and extended-precision versions #45 #48
+* version 1.3.8 (09/02/2021):
+ - CMake now builds by default the single-, double-, and extended-precision versions #45 #48
  - Avoid promoting to doubles in all operations for the single-precision version #47
 
 * version 1.3.7 (09/12/2020):
