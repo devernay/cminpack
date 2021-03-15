@@ -107,7 +107,9 @@ foreach (cminpack_lib ${cminpack_libs})
     target_compile_definitions (cminpackld PUBLIC __cminpack_long_double__)
   endif ()
 
-  if (NOT BUILD_SHARED_LIBS AND WIN32)
+  if (BUILD_SHARED_LIBS)
+    target_compile_definitions (${cminpack_lib} PRIVATE CMINPACK_DLL_EXPORTS)
+  else ()
     target_compile_definitions (${cminpack_lib} PUBLIC CMINPACK_NO_DLL)
   endif ()
 
