@@ -95,11 +95,7 @@ else()
     set(MKL_INCLUDE_DIR ${MKL_ROOT_DIR}/include)
 
     # set arguments to call the MKL provided tool for linking
-    set(MKL_LINK_TOOL ${MKL_ROOT_DIR}/bin/mkl_link_tool)
-
-    if (WIN32)
-        set(MKL_LINK_TOOL ${MKL_LINK_TOOL}.exe)
-    endif()
+    find_program(MKL_LINK_TOOL NAMES mkl_link_tool HINTS ${MKL_ROOT_DIR}/bin ${MKL_ROOT_DIR}/tools)
 
     # check that the tools exists or quit
     if (NOT EXISTS "${MKL_LINK_TOOL}")
