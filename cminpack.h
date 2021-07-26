@@ -115,7 +115,7 @@ building a DLL on windows.
 
 #ifdef __cminpack_double__
 #define __cminpack_func__(func) func
-#define __cminpack_cblas__(func) cblas_d ## func
+#define __cminpack_blas__(func) d ## func ## _
 #define __cminpack_lapack__(func) d ## func
 #endif
 
@@ -125,7 +125,7 @@ building a DLL on windows.
 
 #ifdef __cminpack_float__
 #define __cminpack_func__(func) s ## func
-#define __cminpack_cblas__(func) cblas_s ## func
+#define __cminpack_blas__(func) s ## func ## _
 #define __cminpack_lapack__(func) s ## func
 #endif
 

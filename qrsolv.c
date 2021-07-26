@@ -156,9 +156,9 @@ void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
                     wa[k] = temp;
 
 /*           accumulate the tranformation in the row of s. */
-#                 ifdef USE_CBLAS
-                    __cminpack_cblas__(rot)( n-k, &r[k + k * ldr], 1, &sdiag[k], 1, cos, sin );
-#                 else /* !USE_CBLAS */
+#                 ifdef USE_BLAS
+                    __cminpack_blas__(rot)( n-k, &r[k + k * ldr], 1, &sdiag[k], 1, cos, sin );
+#                 else /* !USE_BLAS */
                     r[k + k * ldr] = cos * r[k + k * ldr] + sin * sdiag[k];
                     if (n > k+1) {
                         for (i = k+1; i < n; ++i) {
@@ -167,7 +167,7 @@ void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
                             r[i + k * ldr] = temp;
                         }
                     }
-#                 endif /* !USE_CBLAS */
+#                 endif /* !USE_BLAS */
                 }
             }
         }

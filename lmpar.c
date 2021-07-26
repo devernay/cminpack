@@ -143,8 +143,8 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
 	    wa1[j] = 0.;
 	}
     }
-# ifdef USE_CBLAS
-    __cminpack_cblas__(trsv)(CblasColMajor, CblasUpper, CblasNoTrans, CblasNonUnit, nsing, r, ldr, wa1, 1);
+# ifdef USE_BLAS
+    __cminpack_blas__(trsv)("U", "N", "N", nsing, r, ldr, wa1, 1);
 # else
     if (nsing >= 1) {
         int k;
@@ -190,8 +190,8 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
             l = ipvt[j]-1;
             wa1[j] = diag[l] * (wa2[l] / dxnorm);
         }
-#     ifdef USE_CBLAS
-        __cminpack_cblas__(trsv)(CblasColMajor, CblasUpper, CblasTrans, CblasNonUnit, n, r, ldr, wa1, 1);
+#     ifdef USE_BLAS
+        __cminpack_blas__(trsv)("U", "T", "N", n, r, ldr, wa1, 1);
 #     else
         for (j = 0; j < n; ++j) {
             real sum = 0.;
@@ -212,8 +212,8 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
 
     for (j = 0; j < n; ++j) {
         real sum;
-#     ifdef USE_CBLAS
-        sum = __cminpack_cblas__(dot)(j+1, &r[j*ldr], 1, qtb, 1);
+#     ifdef USE_BLAS
+        sum = __cminpack_blas__(dot)(j+1, &r[j*ldr], 1, qtb, 1);
 #     else
         int i;
         sum = 0.;
@@ -273,7 +273,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
 
 /*        compute the newton correction. */
 
-#     ifdef USE_CBLAS
+#     ifdef USE_BLAS
         for (j = 0; j < nsing; ++j) {
             l = ipvt[j]-1;
             wa1[j] = diag[l] * (wa2[l] / dxnorm);
@@ -282,12 +282,12 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
             wa1[j] = 0.;
         }
         /* exchange the diagonal of r with sdiag */
-        __cminpack_cblas__(swap)(n, r, ldr+1, sdiag, 1);
+        __cminpack_blas__(swap)(n, r, ldr+1, sdiag, 1);
         /* solve lower(r).x = wa1, result id put in wa1 */
-        __cminpack_cblas__(trsv)(CblasColMajor, CblasLower, CblasNoTrans, CblasNonUnit, nsing, r, ldr, wa1, 1);
+        __cminpack_blas__(trsv)("L", "N", "N", nsing, r, ldr, wa1, 1);
         /* exchange the diagonal of r with sdiag */
-        __cminpack_cblas__(swap)(n, r, ldr+1, sdiag, 1);
-#     else /* !USE_CBLAS */
+        __cminpack_blas__(swap)(n, r, ldr+1, sdiag, 1);
+#     else /* !USE_BLAS */
         for (j = 0; j < n; ++j) {
             l = ipvt[j]-1;
             wa1[j] = diag[l] * (wa2[l] / dxnorm);
@@ -302,7 +302,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
                 }
             }
         }
-#     endif /* !USE_CBLAS */
+#     endif /* !USE_BLAS */
         temp = __cminpack_enorm__(n, wa1);
         parc = fp / delta / temp / temp;
 

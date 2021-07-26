@@ -25,8 +25,8 @@ FMINPACK=../fortran/libminpack.a
 ### configuration for the LAPACK/BLAS (double precision) version:
 ## make LIBSUFFIX= CFLAGS="-O3 -g -Wall -Wextra -D__cminpack_float__"
 #LIBSUFFIX=s
-#CFLAGS="-O3 -g -Wall -Wextra -DUSE_CBLAS -DUSE_LAPACK"
-CFLAGS_L=$(CFLAGS) -DUSE_CBLAS -DUSE_LAPACK
+#CFLAGS="-O3 -g -Wall -Wextra -DUSE_BLAS -DUSE_LAPACK"
+CFLAGS_L=$(CFLAGS) -DUSE_BLAS -DUSE_LAPACK
 LDADD_L=-framework vecLib
 
 ### configuration for the long double version:
