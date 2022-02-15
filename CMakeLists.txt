@@ -29,7 +29,7 @@ enable_testing ()
 
 option (BUILD_SHARED_LIBS "Build shared libraries instead of static." OFF)
 option (USE_BLAS "Compile cminpack using cblas library if possible" ON)
-set (CMINPACK_PRECISION "all" CACHE STRING "Precision variants to build ('s', 'd', 'ld', 'all')")
+option (CMINPACK_PRECISION "Precision variants to build ('s', 'd', 'ld', 'all')" "all")
 
 #set (CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../build)
 
