@@ -14,8 +14,8 @@ list (APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 include (${PROJECT_SOURCE_DIR}/cmake/cminpack_utils.cmake)
 # Set version and OS-specific settings
-set (CMINPACK_VERSION 1.3.9 STRING "CMinpack version")
-set (CMINPACK_SOVERSION 1 STRING "CMinpack API version")
+set (CMINPACK_VERSION 1.3.9)
+set (CMINPACK_SOVERSION 1) # CMinpack ABI version
 DISSECT_VERSION ()
 GET_OS_INFO ()
 
