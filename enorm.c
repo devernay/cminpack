@@ -49,9 +49,9 @@
 __cminpack_attr__
 real __cminpack_func__(enorm)(int n, const real *x)
 {
-#ifdef USE_CBLAS
-    return __cminpack_cblas__(nrm2)(n, x, 1);
-#else /* !USE_CBLAS */
+#ifdef USE_BLAS
+    return __cminpack_blas__(nrm2)(n, x, 1);
+#else /* !USE_BLAS */
     /* System generated locals */
     real ret_val, d1;
 
@@ -152,6 +152,6 @@ real __cminpack_func__(enorm)(int n, const real *x)
     return ret_val;
 
 /*     last card of function enorm. */
-#endif /* !USE_CBLAS */
+#endif /* !USE_BLAS */
 } /* enorm_ */
 

@@ -6,17 +6,28 @@
 #error "cminpackP.h in an internal cminpack header, and must be included after all other headers (including cminpack.h)"
 #endif
 
-#if (defined (USE_CBLAS) || defined (USE_LAPACK)) && !defined (__cminpack_double__) && !defined (__cminpack_float__)
+#if (defined (USE_BLAS) || defined (USE_LAPACK)) && !defined (__cminpack_double__) && !defined (__cminpack_float__)
 #error "cminpack can use cblas and lapack only in double or single precision mode"
 #endif
 
-#ifdef USE_CBLAS
-#ifdef __APPLE__
-#include <Accelerate/Accelerate.h>
-#else
-#include <cblas.h>
-#endif
-#define __cminpack_enorm__(n,x) __cminpack_cblas__(nrm2)(n,x,1)
+#ifdef USE_BLAS
+int __cminpack_blas__(dot)(
+  const int N, const __cminpack_real__ *X, const int incX,
+  const __cminpack_real__ *Y, const int incY);
+int __cminpack_blas__(nrm2)(
+  const int N, const __cminpack_real__ *X, const int incX);
+int __cminpack_blas__(swap)(
+  const int N, __cminpack_real__ *X, const int incX,
+  __cminpack_real__ *Y, const int incY);
+int __cminpack_blas__(rot)(
+  const int N, __cminpack_real__ *X, const int incX,
+  __cminpack_real__ *Y, const int incY, const __cminpack_real__ c, const __cminpack_real__ s);
+int __cminpack_blas__(trsv)(
+  const char *Uplo,
+  const char *TransA, const char *Diag,
+  const int N, const __cminpack_real__ *A, const int lda, __cminpack_real__ *X,
+  const int incX);
+#define __cminpack_enorm__(n,x) __cminpack_blas__(nrm2)(n,x,1)
 #else
 #define __cminpack_enorm__(n,x) __cminpack_func__(enorm)(n,x)
 #endif
