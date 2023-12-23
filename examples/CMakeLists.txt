@@ -28,10 +28,6 @@ if (BUILD_EXAMPLES)
       -P "${CMINPACK_SOURCE_DIR}/examples/runtest.cmake")
   endmacro(add_minpack_test)
 
-  if (WIN32 AND BUILD_SHARED_LIBS)
-    execute_process (COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/libcminpack${CMAKE_SHARED_LIBRARY_SUFFIX} ${CMAKE_CURRENT_BINARY_DIR})
-  endif ()
-
   foreach (source ${CPGM})
     add_executable (${source}_ ${source}_.c)
     target_link_libraries (${source}_ cminpack)
