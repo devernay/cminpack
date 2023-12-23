@@ -16,6 +16,5 @@ build_script:
   - cd build
   - cmake -G "Visual Studio 14 2015 Win64" -DBUILD_SHARED_LIBS:BOOL=ON ..
   - cmake --build . --config %CMAKE_CONFIG_TYPE%
-  - set PATH=%PATH%;%CD%\%CMAKE_CONFIG_TYPE%
 test_script:
   - ctest --output-on-failure -C Release

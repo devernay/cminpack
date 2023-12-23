@@ -101,6 +101,14 @@ endif ()
 
 foreach (cminpack_lib ${cminpack_libs})
   add_library (${cminpack_lib} ${cminpack_srcs})
+  
+  if (OS_WIN AND BUILD_SHARED_LIBS)
+    add_custom_command(
+      TARGET ${cminpack_lib} POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${cminpack_lib}>  ${CMAKE_CURRENT_BINARY_DIR}/examples
+    )
+  endif ()
+
   if (${cminpack_lib} STREQUAL "cminpacks")
     target_compile_definitions (cminpacks PUBLIC __cminpack_float__)
   elseif (${cminpack_lib} STREQUAL "cminpackld")
