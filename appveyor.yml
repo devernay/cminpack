@@ -1,20 +1,145 @@
 version: 1.0.{build}
 image:
-- Visual Studio 2015
+- Visual Studio 2022
 build:
   parallel: true
 environment:
   matrix:
-    - CMAKE_CONFIG_TYPE: "Release"
+    - job_name: MSVC toolchain
+      CMAKE_CONFIG_TYPE: "Release"
+      GENERATOR: Visual Studio 17 2022
+    
+    - job_name: MSYS2 x86_64 toolchain
+      CMAKE_CONFIG_TYPE: "Release"
+      SYS_MSYSTEM: 'MINGW64'
+      SYS_MENVIRONMENT: 'x86_64'
+      GENERATOR: MinGW Makefiles
+    
+    - job_name: MSYS2 UCRT64 toolchain
+      CMAKE_CONFIG_TYPE: "Release"
+      SYS_MSYSTEM: 'UCRT64'
+      SYS_MENVIRONMENT: 'ucrt-x86_64'
+      GENERATOR: MinGW Makefiles
+    
+    - job_name: MSYS2 CLANG64 toolchain
+      CMAKE_CONFIG_TYPE: "Release"
+      SYS_MSYSTEM: 'CLANG64'
+      SYS_MENVIRONMENT: 'clang-x86_64'
+      GENERATOR: MinGW Makefiles
 platform:
   - x64
-init:
+
+init: # Only MSVC toolchain will hit here
   # This is needed because reference files for tests must be checked-out with CRLF EOLs
   - git config --global core.autocrlf true
+
+for:
+  #
+  # init specific instructions for MSYS2 x86_64 toolchain
+  #
+  -
+    matrix:
+      only:
+        - job_name: MSYS2 x86_64 toolchain
+    
+    init:
+      # This is needed because reference files for tests must be checked-out with CRLF EOLs
+      - git config --global core.autocrlf true
+
+      #
+      # Following the guide on https://www.msys2.org/docs/ci#appveyor
+      # to build the project using MSYS2 toolchain on appveyor CI service
+      #
+      # Update MSYS2
+      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syuu" # Core update (in case any core packages are outdated)
+      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syuu" # Normal update
+      
+      # Setup MSYS2 environment
+      - set MSYSTEM=%SYS_MSYSTEM% # Start a 64 bit Mingw environment
+
+      # Install gcc on MSYS2
+      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-%SYS_MENVIRONMENT%-gcc"
+      # Install GNU Make on MSYS2
+      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-%SYS_MENVIRONMENT%-make"
+      
+      # Adjust system PATH environment variable
+      - set PATH=C:\msys64\%SYS_MSYSTEM%\bin;%PATH% # Place MSYS2 tools in front of system PATH
+
+  #
+  # init specific instructions for MSYS2 UCRT64 toolchain
+  #
+  -
+    matrix:
+      only:
+        - job_name: MSYS2 UCRT64 toolchain
+    
+    init:
+      # This is needed because reference files for tests must be checked-out with CRLF EOLs
+      - git config --global core.autocrlf true
+
+      #
+      # Following the guide on https://www.msys2.org/docs/ci#appveyor
+      # to build the project using MSYS2 toolchain on appveyor CI service
+      #
+      # Update MSYS2
+      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syuu" # Core update (in case any core packages are outdated)
+      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syuu" # Normal update
+      
+      # Setup MSYS2 environment
+      - set MSYSTEM=%SYS_MSYSTEM% # Start a 64 bit Mingw environment
+
+      # Install gcc on MSYS2
+      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-%SYS_MENVIRONMENT%-gcc"
+      # Install GNU Make on MSYS2
+      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-%SYS_MENVIRONMENT%-make"
+      
+      # Adjust system PATH environment variable
+      - set PATH=C:\msys64\%SYS_MSYSTEM%\bin;%PATH% # Place MSYS2 tools in front of system PATH
+
+  #
+  # init specific instructions for MSYS2 CLANG64 toolchain
+  #
+  -
+    matrix:
+      only:
+        - job_name: MSYS2 CLANG64 toolchain
+    
+    init:
+      # This is needed because reference files for tests must be checked-out with CRLF EOLs
+      - git config --global core.autocrlf true
+
+      #
+      # Following the guide on https://www.msys2.org/docs/ci#appveyor
+      # to build the project using MSYS2 toolchain on appveyor CI service
+      #
+      # Update MSYS2
+      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syuu" # Core update (in case any core packages are outdated)
+      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syuu" # Normal update
+      
+      # Setup MSYS2 environment
+      - set MSYSTEM=%SYS_MSYSTEM% # Start a 64 bit Mingw environment
+
+      # Install clang on MSYS2
+      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-%SYS_MENVIRONMENT%-clang"
+      # Install GNU Make on MSYS2
+      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-%SYS_MENVIRONMENT%-make"
+      
+      # Adjust system PATH environment variable
+      - set PATH=C:\msys64\%SYS_MSYSTEM%\bin;%PATH% # Place MSYS2 tools in front of system PATH
+
 build_script:
+  # Create build dir
   - mkdir build
+
+  # Change directory to build dir
   - cd build
-  - cmake -G "Visual Studio 14 2015 Win64" -DBUILD_SHARED_LIBS:BOOL=ON ..
+
+  # Configure to build the shared library
+  - cmake -G "%GENERATOR%" -DBUILD_SHARED_LIBS:BOOL=ON ..
+
+  # Perform the build
   - cmake --build . --config %CMAKE_CONFIG_TYPE%
 test_script:
-  - ctest --output-on-failure -C Release
+  
+  # Perform tests
+  - ctest --output-on-failure -C %CMAKE_CONFIG_TYPE%
