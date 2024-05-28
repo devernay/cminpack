@@ -28,7 +28,10 @@ The project home page is at http://devernay.github.io/cminpack
 History
 ------
 
-* version 1.3.9 (//):
+* version 1.3.9 (28/05/2024):
+  - CMake portability fixes #50 #53 #56 #57 #58 #62
+  - MKL-related fixes #51 #52
+  - Support more CI build configurations #59 #61
 
 * version 1.3.8 (09/02/2021):
   - CMake now builds by default the single-, double-, and extended-precision versions #45 #48
