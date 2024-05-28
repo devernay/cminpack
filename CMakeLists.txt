@@ -127,7 +127,7 @@ foreach (cminpack_lib ${cminpack_libs})
     )
 
   if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
-    target_link_libraries (${cminpack_lib} m)
+    target_link_libraries (${cminpack_lib} PUBLIC m)
   endif ()
 
   include (CheckLibraryExists)
