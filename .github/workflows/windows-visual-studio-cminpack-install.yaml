@@ -1,0 +1,41 @@
+name: MSVC - Install cminpack on Windows through CMake
+run-name: MSVC - Build, test and install cminpack on Windows through CMake
+on: [push]
+jobs:
+  cminpack-visual-studio:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+    strategy:
+      matrix:
+        ARCH: [ 'x64', 'Win32']
+        CMINPACK_BUILD_SHARED_LIBS: [ 'ON' , 'OFF' ]
+        CMINPACK_BUILD_TYPE: [ 'Release', 'Debug', 'RelWithDebInfo', 'MinSizeRel' ]
+        CMINPACK_PRECISION: [ 'd' ] # seems to be the only precision that the current tests reference work
+    env:
+      CMINPACK_BUILD_DIR: >-
+        %RUNNER_TEMP%\cminpack-build-arch-${{ matrix.ARCH }}-shared-libs-${{ matrix.CMINPACK_BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMINPACK_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
+      CMINPACK_INSTALL_DIR: >-
+        %RUNNER_TEMP%\cminpack-install-arch-${{ matrix.ARCH }}-shared-libs-${{ matrix.CMINPACK_BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMINPACK_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
+    steps:
+      - name: Checkout sources with CRLF EOLs for reference test files
+        run: git config --global core.autocrlf true
+      - name: Checkout repository to cminpack directory
+        uses: actions/checkout@v4
+        with:
+          path: cminpack
+      - name: Configure cminpack build
+        run: cmake -DBUILD_SHARED_LIBS=${{ matrix.CMINPACK_BUILD_SHARED_LIBS }} -DCMAKE_BUILD_TYPE=${{ matrix.CMINPACK_BUILD_TYPE }} -DCMINPACK_PRECISION=${{ matrix.CMINPACK_PRECISION }} -DUSE_BLAS=OFF -A ${{ matrix.ARCH }} --install-prefix ${{ env.CMINPACK_INSTALL_DIR }} -S cminpack -B ${{ env.CMINPACK_BUILD_DIR }}
+      - name: Build cminpack
+        run: cmake --build ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMINPACK_BUILD_TYPE }}
+      - name: Test cminpack
+        run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMINPACK_BUILD_TYPE }}
+      - name: Install cminpack
+        run: cmake --install ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMINPACK_BUILD_TYPE }}
+      - name: Delete checkout directory
+        run: rmdir /S /Q cminpack
+      - name: Delete build directory
+        run: rmdir /S /Q ${{ env.CMINPACK_BUILD_DIR }}
+      - name: Delete install directory
+        run: rmdir /S /Q ${{ env.CMINPACK_INSTALL_DIR }}
