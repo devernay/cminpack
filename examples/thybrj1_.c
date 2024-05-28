@@ -16,7 +16,7 @@ int main()
   real x[9], fvec[9], fjac[9*9], wa[99];
   int one=1;
 
-#if defined(__MINGW32__) || (defined(_MSC_VER) && (_MSC_VER < 1900))
+#if (defined(__MINGW32__) && !defined(_UCRT)) || (defined(_MSC_VER) && (_MSC_VER < 1900))
   _set_output_format(_TWO_DIGIT_EXPONENT);
 #endif
 

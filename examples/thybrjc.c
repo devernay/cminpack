@@ -18,7 +18,7 @@ int fcn(void *p, int n, const real *x, real *fvec, real *fjac, int ldfjac,
 
 int main()
 {
-#if defined(__MINGW32__) || (defined(_MSC_VER) && (_MSC_VER < 1900))
+#if (defined(__MINGW32__) && !defined(_UCRT)) || (defined(_MSC_VER) && (_MSC_VER < 1900))
   _set_output_format(_TWO_DIGIT_EXPONENT);
 #endif
 
