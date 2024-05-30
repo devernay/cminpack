@@ -29,10 +29,6 @@ environment:
 platform:
   - x64
 
-init: # Only MSVC toolchain will hit here
-  # This is needed because reference files for tests must be checked-out with CRLF EOLs
-  - git config --global core.autocrlf true
-
 for:
   #
   # init specific instructions for MSYS2 x86_64 toolchain
@@ -41,73 +37,10 @@ for:
     matrix:
       only:
         - job_name: MSYS2 x86_64 toolchain
-    
-    init:
-      # This is needed because reference files for tests must be checked-out with CRLF EOLs
-      - git config --global core.autocrlf true
-
-      #
-      # Following the guide on https://www.msys2.org/docs/ci#appveyor
-      # to build the project using MSYS2 toolchain on appveyor CI service
-      #
-      # Update MSYS2
-      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syuu" # Core update (in case any core packages are outdated)
-      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syuu" # Normal update
-      
-      # Setup MSYS2 environment
-      - set MSYSTEM=%SYS_MSYSTEM% # Start a 64 bit Mingw environment
-
-      # Install gcc on MSYS2
-      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-%SYS_MENVIRONMENT%-gcc"
-      # Install GNU Make on MSYS2
-      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-%SYS_MENVIRONMENT%-make"
-      
-      # Adjust system PATH environment variable
-      - set PATH=C:\msys64\%SYS_MSYSTEM%\bin;%PATH% # Place MSYS2 tools in front of system PATH
-
-  #
-  # init specific instructions for MSYS2 UCRT64 toolchain
-  #
-  -
-    matrix:
-      only:
         - job_name: MSYS2 UCRT64 toolchain
-    
-    init:
-      # This is needed because reference files for tests must be checked-out with CRLF EOLs
-      - git config --global core.autocrlf true
-
-      #
-      # Following the guide on https://www.msys2.org/docs/ci#appveyor
-      # to build the project using MSYS2 toolchain on appveyor CI service
-      #
-      # Update MSYS2
-      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syuu" # Core update (in case any core packages are outdated)
-      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -Syuu" # Normal update
-      
-      # Setup MSYS2 environment
-      - set MSYSTEM=%SYS_MSYSTEM% # Start a 64 bit Mingw environment
-
-      # Install gcc on MSYS2
-      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-%SYS_MENVIRONMENT%-gcc"
-      # Install GNU Make on MSYS2
-      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-%SYS_MENVIRONMENT%-make"
-      
-      # Adjust system PATH environment variable
-      - set PATH=C:\msys64\%SYS_MSYSTEM%\bin;%PATH% # Place MSYS2 tools in front of system PATH
-
-  #
-  # init specific instructions for MSYS2 CLANG64 toolchain
-  #
-  -
-    matrix:
-      only:
         - job_name: MSYS2 CLANG64 toolchain
     
     init:
-      # This is needed because reference files for tests must be checked-out with CRLF EOLs
-      - git config --global core.autocrlf true
-
       #
       # Following the guide on https://www.msys2.org/docs/ci#appveyor
       # to build the project using MSYS2 toolchain on appveyor CI service
@@ -119,10 +52,8 @@ for:
       # Setup MSYS2 environment
       - set MSYSTEM=%SYS_MSYSTEM% # Start a 64 bit Mingw environment
 
-      # Install clang on MSYS2
-      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-%SYS_MENVIRONMENT%-clang"
-      # Install GNU Make on MSYS2
-      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-%SYS_MENVIRONMENT%-make"
+      # Install C compiler + GNU Make on MSYS2
+      - C:\msys64\usr\bin\bash -lc "pacman --noconfirm -S mingw-w64-%SYS_MENVIRONMENT%-cc mingw-w64-%SYS_MENVIRONMENT%-make"
       
       # Adjust system PATH environment variable
       - set PATH=C:\msys64\%SYS_MSYSTEM%\bin;%PATH% # Place MSYS2 tools in front of system PATH
