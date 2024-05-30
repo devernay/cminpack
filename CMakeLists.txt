@@ -115,10 +115,10 @@ foreach (cminpack_lib_name ${cminpack_libs})
     )
   endif ()
 
-  if (${cminpack_lib} STREQUAL "cminpacks")
-    target_compile_definitions (cminpacks PUBLIC __cminpack_float__)
-  elseif (${cminpack_lib} STREQUAL "cminpackld")
-    target_compile_definitions (cminpackld PUBLIC __cminpack_long_double__)
+  if (${cminpack_lib_name} STREQUAL "cminpacks")
+    target_compile_definitions (${cminpack_lib} PUBLIC __cminpack_float__)
+  elseif (${cminpack_lib_name} STREQUAL "cminpackld")
+    target_compile_definitions (${cminpack_lib} PUBLIC __cminpack_long_double__)
   endif ()
 
   if (BUILD_SHARED_LIBS)
@@ -148,7 +148,7 @@ foreach (cminpack_lib_name ${cminpack_libs})
 
   # Link with BLAS library if requested
   if (USE_BLAS)
-    if (${cminpack_lib} STREQUAL cminpackld)
+    if (${cminpack_lib_name} STREQUAL cminpackld)
       message (WARNING "BLAS cannot be used for the extended precision version")
     else ()
       find_package (BLAS)
