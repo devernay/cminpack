@@ -9,4 +9,4 @@ Description: CMinPack
 Version: @CMINPACK_VERSION@
 Requires:
 Libs: -L${libdir} -l@cminpack_lib@ @PC_CMINPACK_LIBM@ @PC_CMINPACK_LIBBLAS@ @PC_CMINPACK_LDFLAGS@
-Cflags: -I${includedir} @CMINPACK_CFLAGS@
+Cflags: -I${includedir} @PC_CMINPACK_CFLAGS@ @CMINPACK_CFLAGS@

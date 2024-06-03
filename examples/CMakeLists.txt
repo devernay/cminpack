@@ -9,7 +9,13 @@ else()
   set(has_double_precision FALSE)
 endif()
 
-if (BUILD_EXAMPLES AND has_double_precision)
+if (USE_BLAS AND BLAS_FOUND)
+  set(is_using_blas TRUE)
+else()
+  set(is_using_blas FALSE)
+endif()
+
+if (BUILD_EXAMPLES AND has_double_precision AND NOT is_using_blas)
   # Make sure the compiler can find include files from our cminpack library.
   include_directories (${CMINPACK_SOURCE_DIR})
 
@@ -52,7 +58,7 @@ if (BUILD_EXAMPLES AND has_double_precision)
   endforeach(source)
 endif ()
 
-if (BUILD_EXAMPLES_FORTRAN AND has_double_precision)
+if (BUILD_EXAMPLES_FORTRAN AND has_double_precision AND NOT is_using_blas)
   enable_language (Fortran OPTIONAL)
   if (CMAKE_Fortran_COMPILER_WORKS)
     foreach (FPGM_item ${FPGM})

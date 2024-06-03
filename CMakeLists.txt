@@ -102,9 +102,14 @@ else ()
   endif ()
 endif ()
 
+set(cminpack_targets_to_export "")
+
 foreach (cminpack_lib_name ${cminpack_libs})
   
   set(cminpack_lib "${cminpack_lib_name}${cminpack_lib_suffix}")
+  list(APPEND cminpack_targets_to_export ${cminpack_lib})
+
+  set(PC_CMINPACK_CFLAGS "")
   
   add_library (${cminpack_lib} ${cminpack_srcs})
 
@@ -117,8 +122,10 @@ foreach (cminpack_lib_name ${cminpack_libs})
 
   if (${cminpack_lib_name} STREQUAL "cminpacks")
     target_compile_definitions (${cminpack_lib} PUBLIC __cminpack_float__)
+    list(APPEND PC_CMINPACK_CFLAGS "-D__cminpack_float__")
   elseif (${cminpack_lib_name} STREQUAL "cminpackld")
     target_compile_definitions (${cminpack_lib} PUBLIC __cminpack_long_double__)
+    list(APPEND PC_CMINPACK_CFLAGS "-D__cminpack_long_double__")
   endif ()
 
   if (BUILD_SHARED_LIBS)
@@ -154,42 +161,54 @@ foreach (cminpack_lib_name ${cminpack_libs})
       find_package (BLAS)
       if (BLAS_FOUND)
         target_link_libraries (${cminpack_lib} PUBLIC ${BLAS_LIBRARIES})
-        set_target_properties (${cminpack_lib} PROPERTIES LINK_FLAGS "${BLAS_LINKER_FLAGS}")
         target_compile_definitions (${cminpack_lib} PUBLIC USE_BLAS)
+        list(APPEND PC_CMINPACK_CFLAGS "-DUSE_BLAS")
       endif ()
     endif ()
   endif ()
 
-  install (TARGETS ${cminpack_lib} EXPORT CMinpackConfig
-    LIBRARY DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
-    ARCHIVE DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
-    RUNTIME DESTINATION bin COMPONENT library)
   install (FILES ${cminpack_hdrs} DESTINATION ${CMINPACK_INCLUDE_INSTALL_DIR}
     COMPONENT cminpack_hdrs)
 
-  set_target_properties (${cminpack_lib} PROPERTIES
-    POSITION_INDEPENDENT_CODE ON
-    VERSION ${CMINPACK_VERSION}
-    SOVERSION ${CMINPACK_SOVERSION}
+  if (USE_BLAS AND BLAS_FOUND)
+    set_target_properties (${cminpack_lib} PROPERTIES
+      LINK_FLAGS "${BLAS_LINKER_FLAGS}"
+      POSITION_INDEPENDENT_CODE ON
+      VERSION ${CMINPACK_VERSION}
+      SOVERSION ${CMINPACK_SOVERSION}
     )
+  else()
+    set_target_properties (${cminpack_lib} PROPERTIES
+      POSITION_INDEPENDENT_CODE ON
+      VERSION ${CMINPACK_VERSION}
+      SOVERSION ${CMINPACK_SOVERSION}
+    )
+  endif()
 
   set (pkg_conf_file ${CMAKE_CURRENT_BINARY_DIR}/${cminpack_lib}.pc)
   if (HAVE_LIBM)
     set (PC_CMINPACK_LIBM "-lm")
   endif ()
   if (USE_BLAS AND BLAS_FOUND)
-    set (PC_CMINPACK_CFLAGS "-DUSE_BLAS")
     if (NOT "${BLAS_LIBRARIES}" STREQUAL "")
       string (REPLACE ";" " -l" PC_CMINPACK_LIBBLAS "${BLAS_LIBRARIES}")
       set (PC_CMINPACK_LIBBLAS "-l${PC_CMINPACK_LIBBLAS}")
     endif ()
     set (PC_CMINPACK_LDFLAGS "${BLAS_LINKER_FLAGS}")
   endif ()
+
+  list(JOIN PC_CMINPACK_CFLAGS " " PC_CMINPACK_CFLAGS)
+
   configure_file (cmake/cminpack.pc.in ${pkg_conf_file} @ONLY)
   install (FILES ${pkg_conf_file}
     DESTINATION ${CMINPACK_LIB_INSTALL_DIR}/pkgconfig/ COMPONENT pkgconfig)
 
 endforeach ()
+
+install (TARGETS ${cminpack_targets_to_export} EXPORT CMinpackConfig
+LIBRARY DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
+ARCHIVE DESTINATION ${CMINPACK_LIB_INSTALL_DIR} COMPONENT library
+RUNTIME DESTINATION bin COMPONENT library)
 
 install (EXPORT CMinpackConfig DESTINATION share/cminpack NAMESPACE cminpack::)
 
