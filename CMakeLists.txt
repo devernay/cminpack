@@ -28,7 +28,7 @@ add_custom_target (uninstall "${CMAKE_COMMAND}" -P
 enable_testing ()
 
 option (BUILD_SHARED_LIBS "Build shared libraries instead of static." OFF)
-option (USE_BLAS "Compile cminpack using cblas library if possible" ON)
+option (USE_BLAS "Compile cminpack using cblas library if possible" OFF)
 set (CMINPACK_PRECISION "all" CACHE STRING "Precision variants to build ('s', 'd', 'ld', 'all')")
 
 #set (CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../build)
