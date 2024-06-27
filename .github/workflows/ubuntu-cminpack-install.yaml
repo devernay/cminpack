@@ -34,7 +34,7 @@ jobs:
         run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMAKE_BUILD_TYPE }}
         if: ${{ matrix.USE_BLAS == 'OFF' }}
       - name: Test cminpack with BLAS
-        run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMAKE_BUILD_TYPE }} --label-exclude tlmdifc
+        run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMAKE_BUILD_TYPE }} --exclude-regex tlmdifc
         if: ${{ matrix.USE_BLAS == 'ON' }}
       - name: Install cminpack
         run: cmake --install ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMAKE_BUILD_TYPE }}
