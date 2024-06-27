@@ -6,18 +6,18 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        CMINPACK_BUILD_SHARED_LIBS: [ 'ON' , 'OFF' ]
-        CMINPACK_BUILD_TYPE: [ 'Release', 'Debug', 'RelWithDebInfo', 'MinSizeRel' ]
+        BUILD_SHARED_LIBS: [ 'ON' , 'OFF' ]
+        CMAKE_BUILD_TYPE: [ 'Release', 'Debug', 'RelWithDebInfo', 'MinSizeRel' ]
         CMINPACK_PRECISION: [ 'd' ] # seems to be the only precision that the current tests reference work
         USE_BLAS: [ 'OFF' ]
         include:
-          - CMINPACK_BUILD_SHARED_LIBS: 'ON'
-            CMINPACK_BUILD_TYPE: 'RelWithDebInfo'
+          - BUILD_SHARED_LIBS: 'ON'
+            CMAKE_BUILD_TYPE: 'RelWithDebInfo'
             CMINPACK_PRECISION: 'd'
             USE_BLAS: 'ON'
     env:
-      CMINPACK_BUILD_DIR: $RUNNER_TEMP/cminpack-build-shared-libs-${{ matrix.CMINPACK_BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMINPACK_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
-      CMINPACK_INSTALL_DIR: $RUNNER_TEMP/cminpack-install-shared-libs-${{ matrix.CMINPACK_BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMINPACK_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
+      CMINPACK_BUILD_DIR: $RUNNER_TEMP/cminpack-build-shared-libs-${{ matrix.BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMAKE_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
+      CMINPACK_INSTALL_DIR: $RUNNER_TEMP/cminpack-install-shared-libs-${{ matrix.BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMAKE_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
     steps:
       - name: Install BLAS
         run: sudo apt-get install -y libopenblas-dev
@@ -27,13 +27,13 @@ jobs:
         with:
           path: cminpack
       - name: Configure cminpack build
-        run: cmake -G "Unix Makefiles" -DBUILD_SHARED_LIBS=${{ matrix.CMINPACK_BUILD_SHARED_LIBS }} -DCMAKE_BUILD_TYPE=${{ matrix.CMINPACK_BUILD_TYPE }} -DCMINPACK_PRECISION=${{ matrix.CMINPACK_PRECISION }} -DUSE_BLAS=${{ matrix.USE_BLAS }} --install-prefix ${{ env.CMINPACK_INSTALL_DIR }} -S cminpack -B ${{ env.CMINPACK_BUILD_DIR }}
+        run: cmake -G "Unix Makefiles" -DBUILD_SHARED_LIBS=${{ matrix.BUILD_SHARED_LIBS }} -DCMAKE_BUILD_TYPE=${{ matrix.CMAKE_BUILD_TYPE }} -DCMINPACK_PRECISION=${{ matrix.CMINPACK_PRECISION }} -DUSE_BLAS=${{ matrix.USE_BLAS }} --install-prefix ${{ env.CMINPACK_INSTALL_DIR }} -S cminpack -B ${{ env.CMINPACK_BUILD_DIR }}
       - name: Build cminpack
-        run: cmake --build ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMINPACK_BUILD_TYPE }}
+        run: cmake --build ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMAKE_BUILD_TYPE }}
       - name: Test cminpack
-        run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMINPACK_BUILD_TYPE }}
+        run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMAKE_BUILD_TYPE }}
       - name: Install cminpack
-        run: cmake --install ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMINPACK_BUILD_TYPE }}
+        run: cmake --install ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMAKE_BUILD_TYPE }}
       - name: Delete checkout directory
         run: rm -rf $RUNNER_TEMP/cminpack
       - name: Delete build directory
