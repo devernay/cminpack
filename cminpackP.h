@@ -14,25 +14,22 @@
 #ifndef __cminpack_blasint__
 #define __cminpack_blasint__ int
 #endif
-int __cminpack_blas__(dot)(
+__cminpack_real__ __cminpack_blas__(dot)(
   const __cminpack_blasint__ *N, const __cminpack_real__ *X, const __cminpack_blasint__ *incX,
   const __cminpack_real__ *Y, const __cminpack_blasint__ *incY);
-int __cminpack_blas__(nrm2)(
+__cminpack_real__ __cminpack_blas__(nrm2)(
   const __cminpack_blasint__ *N, const __cminpack_real__ *X, const __cminpack_blasint__ *incX);
-int __cminpack_blas__(swap)(
+void __cminpack_blas__(swap)(
   const __cminpack_blasint__ *N, __cminpack_real__ *X, const __cminpack_blasint__ *incX,
   __cminpack_real__ *Y, const __cminpack_blasint__ *incY);
-int __cminpack_blas__(rot)(
+void __cminpack_blas__(rot)(
   const __cminpack_blasint__ *N, __cminpack_real__ *X, const __cminpack_blasint__ *incX,
   __cminpack_real__ *Y, const __cminpack_blasint__ *incY, const __cminpack_real__ *c, const __cminpack_real__ *s);
-int __cminpack_blas__(trsv)(
+void __cminpack_blas__(trsv)(
   const char *Uplo,
   const char *TransA, const char *Diag,
   const __cminpack_blasint__ *N, const __cminpack_real__ *A, const __cminpack_blasint__ *lda, __cminpack_real__ *X,
   const __cminpack_blasint__ *incX);
-#define __cminpack_enorm__(n,x) __cminpack_blas__(nrm2)(n,x,1)
-#else
-#define __cminpack_enorm__(n,x) __cminpack_func__(enorm)(n,x)
 #endif
 
 #ifdef USE_LAPACK
@@ -50,14 +47,14 @@ typedef long int 	__CLPK_logical;
 typedef __CLPK_logical 	(*__CLPK_L_fp)();
 typedef long int 	__CLPK_ftnlen;
 #endif
-int __cminpack_lapack__(lartg_)(
+void __cminpack_lapack__(lartg_)(
   __cminpack_real__ *f, __cminpack_real__ *g, __cminpack_real__ *cs,
   __cminpack_real__ *sn, __cminpack_real__ *r__);
-int __cminpack_lapack__(geqp3_)(
+void __cminpack_lapack__(geqp3_)(
   __CLPK_integer *m, __CLPK_integer *n, __cminpack_real__ *a, __CLPK_integer * lda,
   __CLPK_integer *jpvt, __cminpack_real__ *tau, __cminpack_real__ *work, __CLPK_integer *lwork,
   __CLPK_integer *info);
-int __cminpack_lapack__(geqrf_)(
+void __cminpack_lapack__(geqrf_)(
   __CLPK_integer *m, __CLPK_integer *n, __cminpack_real__ *a, __CLPK_integer * lda,
   __cminpack_real__ *tau, __cminpack_real__ *work, __CLPK_integer *lwork, __CLPK_integer *info);
 #endif
