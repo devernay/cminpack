@@ -11,22 +11,25 @@
 #endif
 
 #ifdef USE_BLAS
+#ifndef __cminpack_blasint__
+#define __cminpack_blasint__ int
+#endif
 int __cminpack_blas__(dot)(
-  const int N, const __cminpack_real__ *X, const int incX,
-  const __cminpack_real__ *Y, const int incY);
+  const __cminpack_blasint__ *N, const __cminpack_real__ *X, const __cminpack_blasint__ *incX,
+  const __cminpack_real__ *Y, const __cminpack_blasint__ *incY);
 int __cminpack_blas__(nrm2)(
-  const int N, const __cminpack_real__ *X, const int incX);
+  const __cminpack_blasint__ *N, const __cminpack_real__ *X, const __cminpack_blasint__ *incX);
 int __cminpack_blas__(swap)(
-  const int N, __cminpack_real__ *X, const int incX,
-  __cminpack_real__ *Y, const int incY);
+  const __cminpack_blasint__ *N, __cminpack_real__ *X, const __cminpack_blasint__ *incX,
+  __cminpack_real__ *Y, const __cminpack_blasint__ *incY);
 int __cminpack_blas__(rot)(
-  const int N, __cminpack_real__ *X, const int incX,
-  __cminpack_real__ *Y, const int incY, const __cminpack_real__ c, const __cminpack_real__ s);
+  const __cminpack_blasint__ *N, __cminpack_real__ *X, const __cminpack_blasint__ *incX,
+  __cminpack_real__ *Y, const __cminpack_blasint__ *incY, const __cminpack_real__ *c, const __cminpack_real__ *s);
 int __cminpack_blas__(trsv)(
   const char *Uplo,
   const char *TransA, const char *Diag,
-  const int N, const __cminpack_real__ *A, const int lda, __cminpack_real__ *X,
-  const int incX);
+  const __cminpack_blasint__ *N, const __cminpack_real__ *A, const __cminpack_blasint__ *lda, __cminpack_real__ *X,
+  const __cminpack_blasint__ *incX);
 #define __cminpack_enorm__(n,x) __cminpack_blas__(nrm2)(n,x,1)
 #else
 #define __cminpack_enorm__(n,x) __cminpack_func__(enorm)(n,x)
