@@ -144,7 +144,10 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
 	}
     }
 # ifdef USE_BLAS
-    __cminpack_blas__(trsv)("U", "N", "N", nsing, r, ldr, wa1, 1);
+    const __cminpack_blasint__ c__1 = 1;
+    const __cminpack_blasint__ ldr_plus_1 = ldr + 1;
+
+    __cminpack_blas__(trsv)("U", "N", "N", &nsing, r, &ldr, wa1, &c__1);
 # else
     if (nsing >= 1) {
         int k;
@@ -174,7 +177,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
     for (j = 0; j < n; ++j) {
 	wa2[j] = diag[j] * x[j];
     }
-    dxnorm = __cminpack_enorm__(n, wa2);
+    dxnorm = __cminpack_func__(enorm)(n, wa2);
     fp = dxnorm - delta;
     if (fp <= p1 * delta) {
 	goto TERMINATE;
@@ -191,7 +194,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
             wa1[j] = diag[l] * (wa2[l] / dxnorm);
         }
 #     ifdef USE_BLAS
-        __cminpack_blas__(trsv)("U", "T", "N", n, r, ldr, wa1, 1);
+        __cminpack_blas__(trsv)("U", "T", "N", &n, r, &ldr, wa1, &c__1);
 #     else
         for (j = 0; j < n; ++j) {
             real sum = 0.;
@@ -204,7 +207,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
             wa1[j] = (wa1[j] - sum) / r[j + j * ldr];
         }
 #     endif
-        temp = __cminpack_enorm__(n, wa1);
+        temp = __cminpack_func__(enorm)(n, wa1);
         parl = fp / delta / temp / temp;
     }
 
@@ -213,7 +216,8 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
     for (j = 0; j < n; ++j) {
         real sum;
 #     ifdef USE_BLAS
-        sum = __cminpack_blas__(dot)(j+1, &r[j*ldr], 1, qtb, 1);
+        const __cminpack_blasint__ j_plus_1 = j + 1;
+        sum = __cminpack_blas__(dot)(&j_plus_1, &r[j*ldr], &c__1, qtb, &c__1);
 #     else
         int i;
         sum = 0.;
@@ -224,7 +228,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
         l = ipvt[j]-1;
         wa1[j] = sum / diag[l];
     }
-    gnorm = __cminpack_enorm__(n, wa1);
+    gnorm = __cminpack_func__(enorm)(n, wa1);
     paru = gnorm / delta;
     if (paru == 0.) {
         paru = dwarf / min(delta,(real)p1) /* / p001 ??? */;
@@ -259,7 +263,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
         for (j = 0; j < n; ++j) {
             wa2[j] = diag[j] * x[j];
         }
-        dxnorm = __cminpack_enorm__(n, wa2);
+        dxnorm = __cminpack_func__(enorm)(n, wa2);
         temp = fp;
         fp = dxnorm - delta;
 
@@ -282,11 +286,11 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
             wa1[j] = 0.;
         }
         /* exchange the diagonal of r with sdiag */
-        __cminpack_blas__(swap)(n, r, ldr+1, sdiag, 1);
+        __cminpack_blas__(swap)(&n, r, &ldr_plus_1, sdiag, &c__1);
         /* solve lower(r).x = wa1, result id put in wa1 */
-        __cminpack_blas__(trsv)("L", "N", "N", nsing, r, ldr, wa1, 1);
+        __cminpack_blas__(trsv)("L", "N", "N", &nsing, r, &ldr, wa1, &c__1);
         /* exchange the diagonal of r with sdiag */
-        __cminpack_blas__(swap)(n, r, ldr+1, sdiag, 1);
+        __cminpack_blas__(swap)(&n, r, &ldr_plus_1, sdiag, &c__1);
 #     else /* !USE_BLAS */
         for (j = 0; j < n; ++j) {
             l = ipvt[j]-1;
@@ -303,7 +307,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
             }
         }
 #     endif /* !USE_BLAS */
-        temp = __cminpack_enorm__(n, wa1);
+        temp = __cminpack_func__(enorm)(n, wa1);
         parc = fp / delta / temp / temp;
 
 /*        depending on the sign of the function, update parl or paru. */
