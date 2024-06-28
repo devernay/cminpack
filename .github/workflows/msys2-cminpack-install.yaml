@@ -56,7 +56,13 @@ jobs:
               $tries++;
             }
           }
-      
+
+          if (-not $install_succeeded)
+          {
+            Write-Host "Failed to install MSYS2 packages: ${{ env.MSYS2_PACKAGES_TO_INSTALL }}";
+            exit 1;
+          }
+
       - name: Place MSYS2 tools in front of system environment PATH variable
         run: echo C:\msys64\${{ matrix.MSYS2_CONFIG.sys }}\bin;%PATH% >> %GITHUB_PATH%
 
