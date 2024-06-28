@@ -157,7 +157,10 @@ void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
 
 /*           accumulate the tranformation in the row of s. */
 #                 ifdef USE_BLAS
-                    __cminpack_blas__(rot)( n-k, &r[k + k * ldr], 1, &sdiag[k], 1, cos, sin );
+                    const __cminpack_blasint__ n_minus_k = n - k;
+                    const __cminpack_blasint__ c__1 = 1;
+                    
+                    __cminpack_blas__(rot)(&n_minus_k, &r[k + k * ldr], &c__1, &sdiag[k], &c__1, &cos, &sin);
 #                 else /* !USE_BLAS */
                     r[k + k * ldr] = cos * r[k + k * ldr] + sin * sdiag[k];
                     if (n > k+1) {

@@ -242,7 +242,7 @@ int __cminpack_func__(lmder)(__cminpack_decl_fcnder_mn__ void *p, int m, int n, 
     if (iflag < 0) {
 	goto TERMINATE;
     }
-    fnorm = __cminpack_enorm__(m, fvec);
+    fnorm = __cminpack_func__(enorm)(m, fvec);
 
 /*     initialize levenberg-marquardt parameter and iteration counter. */
 
@@ -297,7 +297,7 @@ int __cminpack_func__(lmder)(__cminpack_decl_fcnder_mn__ void *p, int m, int n, 
             for (j = 0; j < n; ++j) {
                 wa3[j] = diag[j] * x[j];
             }
-            xnorm = __cminpack_enorm__(n, wa3);
+            xnorm = __cminpack_func__(enorm)(n, wa3);
             delta = factor * xnorm;
             if (delta == 0.) {
                 delta = factor;
@@ -378,7 +378,7 @@ int __cminpack_func__(lmder)(__cminpack_decl_fcnder_mn__ void *p, int m, int n, 
                 wa2[j] = x[j] + wa1[j];
                 wa3[j] = diag[j] * wa1[j];
             }
-            pnorm = __cminpack_enorm__(n, wa3);
+            pnorm = __cminpack_func__(enorm)(n, wa3);
 
 /*           on the first iteration, adjust the initial step bound. */
 
@@ -393,7 +393,7 @@ int __cminpack_func__(lmder)(__cminpack_decl_fcnder_mn__ void *p, int m, int n, 
             if (iflag < 0) {
                 goto TERMINATE;
             }
-            fnorm1 = __cminpack_enorm__(m, wa4);
+            fnorm1 = __cminpack_func__(enorm)(m, wa4);
 
 /*           compute the scaled actual reduction. */
 
@@ -415,7 +415,7 @@ int __cminpack_func__(lmder)(__cminpack_decl_fcnder_mn__ void *p, int m, int n, 
                     wa3[i] += fjac[i + j * ldfjac] * temp;
                 }
             }
-            temp1 = __cminpack_enorm__(n, wa3) / fnorm;
+            temp1 = __cminpack_func__(enorm)(n, wa3) / fnorm;
             temp2 = (sqrt(par) * pnorm) / fnorm;
             prered = temp1 * temp1 + temp2 * temp2 / p5;
             dirder = -(temp1 * temp1 + temp2 * temp2);
@@ -463,7 +463,7 @@ int __cminpack_func__(lmder)(__cminpack_decl_fcnder_mn__ void *p, int m, int n, 
                 for (i = 0; i < m; ++i) {
                     fvec[i] = wa4[i];
                 }
-                xnorm = __cminpack_enorm__(n, wa2);
+                xnorm = __cminpack_func__(enorm)(n, wa2);
                 fnorm = fnorm1;
                 ++iter;
             }

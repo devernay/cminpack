@@ -1,7 +1,7 @@
 # The name of our project is "CMINPACK". CMakeLists files in this project can
 # refer to the root source directory of the project as ${CMINPACK_SOURCE_DIR} and
 # to the root binary directory of the project as ${CMINPACK_BINARY_DIR}.
-cmake_minimum_required (VERSION 3.0.0)
+cmake_minimum_required (VERSION 3.5)
 
 if (NOT DEFINED CMAKE_BUILD_TYPE)
   set (CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
@@ -28,7 +28,8 @@ add_custom_target (uninstall "${CMAKE_COMMAND}" -P
 enable_testing ()
 
 option (BUILD_SHARED_LIBS "Build shared libraries instead of static." OFF)
-option (USE_BLAS "Compile cminpack using cblas library if possible" OFF)
+option (USE_BLAS "Compile cminpack using Fortran BLAS library if possible" OFF)
+
 set (CMINPACK_PRECISION "all" CACHE STRING "Precision variants to build ('s', 'd', 'ld', 'all')")
 
 #set (CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../build)
@@ -99,6 +100,10 @@ else ()
   endif ()
 endif ()
 
+if (USE_BLAS)
+  find_package(BLAS REQUIRED)
+endif ()
+
 foreach (cminpack_lib ${cminpack_libs})
   add_library (${cminpack_lib} ${cminpack_srcs})
   
@@ -143,15 +148,11 @@ foreach (cminpack_lib ${cminpack_libs})
   # Link with BLAS library if requested
   if (USE_BLAS)
     if (${cminpack_lib} STREQUAL cminpackld)
-      message (WARNING "BLAS cannot be used for the extended precision version")
-    else ()
-      find_package (BLAS)
-      if (BLAS_FOUND)
-        target_link_libraries (${cminpack_lib} PUBLIC ${BLAS_LIBRARIES})
-        set_target_properties (${cminpack_lib} PROPERTIES LINK_FLAGS "${BLAS_LINKER_FLAGS}")
-        target_compile_definitions (${cminpack_lib} PUBLIC USE_BLAS)
-      endif ()
+      message (SEND_ERROR "BLAS cannot be used for the extended precision version")
     endif ()
+    target_link_libraries (${cminpack_lib} PUBLIC ${BLAS_LIBRARIES})
+    set_target_properties (${cminpack_lib} PROPERTIES LINK_FLAGS "${BLAS_LINKER_FLAGS}")
+    target_compile_definitions (${cminpack_lib} PUBLIC USE_BLAS)
   endif ()
 
   install (TARGETS ${cminpack_lib} EXPORT CMinpackConfig
@@ -171,7 +172,7 @@ foreach (cminpack_lib ${cminpack_libs})
   if (HAVE_LIBM)
     set (PC_CMINPACK_LIBM "-lm")
   endif ()
-  if (USE_BLAS AND BLAS_FOUND)
+  if (USE_BLAS)
     set (PC_CMINPACK_CFLAGS "-DUSE_BLAS")
     if (NOT "${BLAS_LIBRARIES}" STREQUAL "")
       string (REPLACE ";" " -l" PC_CMINPACK_LIBBLAS "${BLAS_LIBRARIES}")
