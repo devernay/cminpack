@@ -1,0 +1,82 @@
+name: MSYS2 - Install cminpack on Windows through CMake
+run-name: MSYS2 - Build, test and install cminpack on Windows through CMake
+on: [push, pull_request]
+
+jobs:
+  cminpack-MSYS2:
+    name: cminpack (MSYS2 toolchains + CMake)
+    runs-on: windows-latest
+    
+    defaults:
+      run:
+        shell: cmd
+    
+    strategy:
+      matrix:
+        CMINPACK_BUILD_SHARED_LIBS: [ 'ON' , 'OFF' ]
+        CMINPACK_BUILD_TYPE: [ 'Release', 'Debug', 'RelWithDebInfo', 'MinSizeRel' ]
+        CMINPACK_PRECISION: [ 'd' ] # seems to be the only precision that the current tests reference work
+        MSYS2_CONFIG:
+              - { sys: mingw64, env: x86_64 }
+              - { sys: ucrt64, env: ucrt-x86_64 }
+              - { sys: clang64, env: clang-x86_64 }
+    
+    env:
+      CMINPACK_BUILD_DIR: >-
+        %RUNNER_TEMP%\cminpack-build-shared-libs-${{ matrix.CMINPACK_BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMINPACK_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
+      CMINPACK_INSTALL_DIR: >-
+        %RUNNER_TEMP%\cminpack-install-shared-libs-${{ matrix.CMINPACK_BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMINPACK_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
+    
+      MSYS2_PACKAGES_TO_INSTALL: "mingw-w64-${{ matrix.MSYS2_CONFIG.env }}-cc mingw-w64-${{ matrix.MSYS2_CONFIG.env }}-make"
+
+    steps:
+      - name: Checkout repository to cminpack directory
+        uses: actions/checkout@v4
+        with:
+          path: cminpack
+
+      # Installing tools from MSYS2 could fail
+      # on a high number of concurrent jobs.
+      # So, we keep retrying it for a few times
+      - name: Install C compiler + GNU Make from MSYS2
+        shell: pwsh
+        run: |
+          $install_succeeded = $false;
+          $max_tries = 10;
+          $tries = 0;
+          while ((-not $install_succeeded) -and ($tries -lt $max_tries))
+          {
+            try
+            {
+              & C:\msys64\usr\bin\bash.exe -lc "pacman -S ${{ env.MSYS2_PACKAGES_TO_INSTALL }} --noconfirm"
+              $install_succeeded = $true;
+            }
+            catch
+            {
+              $tries++;
+            }
+          }
+      
+      - name: Place MSYS2 tools in front of system environment PATH variable
+        run: echo C:\msys64\${{ matrix.MSYS2_CONFIG.sys }}\bin;%PATH% >> %GITHUB_PATH%
+
+      - name: Configure cminpack build
+        run: cmake -G "MinGW Makefiles" -DBUILD_SHARED_LIBS=${{ matrix.CMINPACK_BUILD_SHARED_LIBS }} -DCMAKE_BUILD_TYPE=${{ matrix.CMINPACK_BUILD_TYPE }} -DCMINPACK_PRECISION=${{ matrix.CMINPACK_PRECISION }} -DUSE_BLAS=OFF --install-prefix ${{ env.CMINPACK_INSTALL_DIR }} -S cminpack -B ${{ env.CMINPACK_BUILD_DIR }}
+      
+      - name: Build cminpack
+        run: cmake --build ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMINPACK_BUILD_TYPE }}
+      
+      - name: Test cminpack
+        run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMINPACK_BUILD_TYPE }}
+      
+      - name: Install cminpack
+        run: cmake --install ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMINPACK_BUILD_TYPE }}
+      
+      - name: Delete checkout directory
+        run: rmdir /S /Q cminpack
+      
+      - name: Delete build directory
+        run: rmdir /S /Q ${{ env.CMINPACK_BUILD_DIR }}
+      
+      - name: Delete install directory
+        run: rmdir /S /Q ${{ env.CMINPACK_INSTALL_DIR }}
