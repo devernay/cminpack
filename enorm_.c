@@ -194,6 +194,5 @@ L130:
     return ret_val;
 
 /*     last card of function enorm. */
-
 } /* enorm_ */
 
