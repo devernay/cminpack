@@ -1,9 +1,12 @@
 name: Install cminpack on Ubuntu through CMake
 run-name: Build, test and install cminpack on Ubuntu through CMake
-on: [push]
+on: [push, pull_request]
+
 jobs:
   cminpack-ubuntu:
+    name: cminpack (GCC toolchain + CMake)
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         BUILD_SHARED_LIBS: [ 'ON' , 'OFF' ]
@@ -15,32 +18,43 @@ jobs:
             CMAKE_BUILD_TYPE: 'RelWithDebInfo'
             CMINPACK_PRECISION: 'd'
             USE_BLAS: 'ON'
+    
     env:
       CMINPACK_BUILD_DIR: $RUNNER_TEMP/cminpack-build-shared-libs-${{ matrix.BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMAKE_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
       CMINPACK_INSTALL_DIR: $RUNNER_TEMP/cminpack-install-shared-libs-${{ matrix.BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMAKE_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
+    
     steps:
       - name: Install BLAS
         run: sudo apt-get install -y libopenblas-dev
         if: ${{ matrix.USE_BLAS == 'ON' }}
+      
       - name: Checkout repository to cminpack directory
         uses: actions/checkout@v4
         with:
           path: cminpack
+      
       - name: Configure cminpack build
         run: cmake -G "Unix Makefiles" -DBUILD_SHARED_LIBS=${{ matrix.BUILD_SHARED_LIBS }} -DCMAKE_BUILD_TYPE=${{ matrix.CMAKE_BUILD_TYPE }} -DCMINPACK_PRECISION=${{ matrix.CMINPACK_PRECISION }} -DUSE_BLAS=${{ matrix.USE_BLAS }} --install-prefix ${{ env.CMINPACK_INSTALL_DIR }} -S cminpack -B ${{ env.CMINPACK_BUILD_DIR }}
+      
       - name: Build cminpack
         run: cmake --build ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMAKE_BUILD_TYPE }}
+      
       - name: Test cminpack
         run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMAKE_BUILD_TYPE }}
         if: ${{ matrix.USE_BLAS == 'OFF' }}
+      
       - name: Test cminpack with BLAS
         run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMAKE_BUILD_TYPE }} --exclude-regex tlmdifc
         if: ${{ matrix.USE_BLAS == 'ON' }}
+      
       - name: Install cminpack
         run: cmake --install ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMAKE_BUILD_TYPE }}
+      
       - name: Delete checkout directory
         run: rm -rf $RUNNER_TEMP/cminpack
+      
       - name: Delete build directory
         run: rm -rf ${{ env.CMINPACK_BUILD_DIR }}
+      
       - name: Delete install directory
         run: rm -rf ${{ env.CMINPACK_INSTALL_DIR }}
