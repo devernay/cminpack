@@ -234,7 +234,7 @@ int __cminpack_func__(hybrj)(__cminpack_decl_fcnder_nn__ void *p, int n, real *x
     if (iflag < 0) {
 	goto TERMINATE;
     }
-    fnorm = __cminpack_enorm__(n, &fvec[1]);
+    fnorm = __cminpack_func__(enorm)(n, &fvec[1]);
 
 /*     initialize iteration counter and monitors. */
 
@@ -281,7 +281,7 @@ int __cminpack_func__(hybrj)(__cminpack_decl_fcnder_nn__ void *p, int n, real *x
             for (j = 1; j <= n; ++j) {
                 wa3[j] = diag[j] * x[j];
             }
-            xnorm = __cminpack_enorm__(n, &wa3[1]);
+            xnorm = __cminpack_func__(enorm)(n, &wa3[1]);
             delta = factor * xnorm;
             if (delta == 0.) {
                 delta = factor;
@@ -365,7 +365,7 @@ int __cminpack_func__(hybrj)(__cminpack_decl_fcnder_nn__ void *p, int n, real *x
                 wa2[j] = x[j] + wa1[j];
                 wa3[j] = diag[j] * wa1[j];
             }
-            pnorm = __cminpack_enorm__(n, &wa3[1]);
+            pnorm = __cminpack_func__(enorm)(n, &wa3[1]);
 
 /*           on the first iteration, adjust the initial step bound. */
 
@@ -380,7 +380,7 @@ int __cminpack_func__(hybrj)(__cminpack_decl_fcnder_nn__ void *p, int n, real *x
             if (iflag < 0) {
                 goto TERMINATE;
             }
-            fnorm1 = __cminpack_enorm__(n, &wa4[1]);
+            fnorm1 = __cminpack_func__(enorm)(n, &wa4[1]);
 
 /*           compute the scaled actual reduction. */
 
@@ -402,7 +402,7 @@ int __cminpack_func__(hybrj)(__cminpack_decl_fcnder_nn__ void *p, int n, real *x
                 }
                 wa3[i] = qtf[i] + sum;
             }
-            temp = __cminpack_enorm__(n, &wa3[1]);
+            temp = __cminpack_func__(enorm)(n, &wa3[1]);
             prered = 0.;
             if (temp < fnorm) {
                 /* Computing 2nd power */
@@ -448,7 +448,7 @@ int __cminpack_func__(hybrj)(__cminpack_decl_fcnder_nn__ void *p, int n, real *x
                     wa2[j] = diag[j] * x[j];
                     fvec[j] = wa4[j];
                 }
-                xnorm = __cminpack_enorm__(n, &wa2[1]);
+                xnorm = __cminpack_func__(enorm)(n, &wa2[1]);
                 fnorm = fnorm1;
                 ++iter;
             }

@@ -59,7 +59,7 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
     /* set acnorm first (from the doc of qrfac, acnorm may point to the same area as rdiag) */
     if (acnorm != rdiag) {
         for (j = 0; j < n; ++j) {
-            acnorm[j] = __cminpack_enorm__(m, &a[j * lda]);
+            acnorm[j] = __cminpack_func__(enorm)(m, &a[j * lda]);
         }
     }
     
@@ -198,7 +198,7 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
 /*     compute the initial column norms and initialize several arrays. */
 
     for (j = 0; j < n; ++j) {
-	acnorm[j] = __cminpack_enorm__(m, &a[j * lda + 0]);
+	acnorm[j] = __cminpack_func__(enorm)(m, &a[j * lda + 0]);
 	rdiag[j] = acnorm[j];
 	wa[j] = rdiag[j];
 	if (pivot) {
@@ -237,7 +237,7 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
 /*        compute the householder transformation to reduce the */
 /*        j-th column of a to a multiple of the j-th unit vector. */
 
-	ajnorm = __cminpack_enorm__(m - (j+1) + 1, &a[j + j * lda]);
+	ajnorm = __cminpack_func__(enorm)(m - (j+1) + 1, &a[j + j * lda]);
 	if (ajnorm != 0.) {
             if (a[j + j * lda] < 0.) {
                 ajnorm = -ajnorm;
@@ -269,7 +269,7 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
                         /* Computing 2nd power */
                         d1 = rdiag[k] / wa[k];
                         if (p05 * (d1 * d1) <= epsmch) {
-                            rdiag[k] = __cminpack_enorm__(m - (j+1), &a[jp1 + k * lda]);
+                            rdiag[k] = __cminpack_func__(enorm)(m - (j+1), &a[jp1 + k * lda]);
                             wa[k] = rdiag[k];
                         }
                     }
