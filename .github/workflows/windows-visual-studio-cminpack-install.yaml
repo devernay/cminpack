@@ -1,6 +1,6 @@
 name: MSVC - Install cminpack on Windows through CMake
 run-name: MSVC - Build, test and install cminpack on Windows through CMake
-on: [push]
+on: [push, pull_request]
 jobs:
   cminpack-visual-studio:
     runs-on: windows-latest
