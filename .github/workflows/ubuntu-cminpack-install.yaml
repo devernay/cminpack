@@ -1,6 +1,6 @@
 name: Install cminpack on Ubuntu through CMake
 run-name: Build, test and install cminpack on Ubuntu through CMake
-on: [push]
+on: [push, pull_request]
 jobs:
   cminpack-ubuntu:
     runs-on: ubuntu-latest
