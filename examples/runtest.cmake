@@ -27,7 +27,7 @@ if(NOT ${RET} EQUAL 0)
 endif()
 # result with reference
 execute_process(COMMAND "${CMAKE_COMMAND}"
-  -E compare_files  "${OUTPUT}" "${REFERENCE}"
+  -E compare_files --ignore-eol "${OUTPUT}" "${REFERENCE}"
   RESULT_VARIABLE RET)
 # if the test does not return 0, then fail it
 if(NOT ${RET} EQUAL 0)
