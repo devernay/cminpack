@@ -3,9 +3,100 @@ run-name: MSVC - Build, test and install cminpack on Windows through CMake
 on: [push, pull_request]
 
 jobs:
+  build-BLAS:
+    name: Build BLAS with MSVC ABI-compatible toolchain
+    runs-on: windows-latest
+
+    defaults:
+      run:
+        # we are going to use the newest PowerShell
+        # available from the Windows runner
+        # as default shell
+        shell: pwsh
+    
+    env:
+      BLAS_VERSION: '3.12.0'
+
+    steps:
+      # In order to build
+      # and test cminpack with BLAS,
+      # we build BLAS from source code.
+      #
+      # To build BLAS from the sources,
+      # we need a Fortran compiler
+      # that must be ABI-compatible
+      # with MSVC toolchain.
+      #
+      # We have a few (good) choices at the moment:
+      #   1. Intel LLVM Fortran compiler (ifx)
+      #   2. Intel classic Fortran compiler (ifort)
+      #   3. LLVM flang-new compiler
+      #
+      # The installation process for ifx or ifort
+      # on Windows is slow.
+      # Thus, we stick to
+      #   3. LLVM flang-new compiler.
+      #
+      # To use LLVM flang-new compiler,
+      # we have to:
+      #   - Install Ninja
+      #   - Setup MSVC dev-prompt for miniconda
+      #   - Setup miniconda
+      #     - Setup miniconda for powershell;
+      #     - Activate base environment;
+      #     - Install LLVM flang-new compiler from miniconda using conda-forge channel;
+      #     - Set conda environment variables.
+      #   - Set environment variables for CMake
+
+      - name: Install Ninja
+        run: choco install ninja
+
+      - uses: ilammy/msvc-dev-cmd@v1
+        name: Setup MSVC dev-prompt for miniconda
+
+      - name: Setup miniconda, activate base environment, install LLVM flang-new from conda-forge, and set conda specific environment variables
+        run: |
+          & "$env:CONDA\shell\condabin\conda-hook.ps1";
+          conda activate "$env:CONDA";
+          conda install --yes -c conda-forge -n base flang libflang libfortran-main;
+          Get-ChildItem env: | Where-Object { $_.Name.ToLower().Contains("conda") -or $_.Value.ToLower().Contains("conda") } | ForEach-Object { Add-Content $env:GITHUB_ENV ($_.Name + "=" + $_.Value); }
+      
+      - name: Set environment variables for CMake
+        run: |
+          Add-Content $env:GITHUB_ENV "FC=flang-new";
+          Add-Content $env:GITHUB_ENV "CC=clang-cl";
+          Add-Content $env:GITHUB_ENV "CXX=clang-cl";
+          Add-Content $env:GITHUB_ENV ("BLAS_SOURCE_DIR=" + (Join-Path -Path ${{ runner.temp }} -ChildPath "lapack-${{ env.BLAS_VERSION }}"));
+          Add-Content $env:GITHUB_ENV ("BLAS_BUILD_DIR=" + (Join-Path -Path ${{ runner.temp }} -ChildPath "build-${{ env.BLAS_VERSION }}"));
+          Add-Content $env:GITHUB_ENV ("BLAS_INSTALL_DIR=" + (Join-Path -Path ${{ github.workspace }} -ChildPath "blas"));
+      
+      - name: Download and extract BLAS
+        run: |
+          $blas_zip_file = Join-Path $env:RUNNER_TEMP -ChildPath blas.zip;
+          $ProgressPreference = 'SilentlyContinue';
+          Invoke-WebRequest -Uri https://github.com/Reference-LAPACK/lapack/archive/refs/tags/v${{ env.BLAS_VERSION }}.zip -OutFile $blas_zip_file;
+          Expand-Archive -Path $blas_zip_file -DestinationPath $env:RUNNER_TEMP;
+      
+      - name: Configure BLAS
+        run: cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF --install-prefix $env:BLAS_INSTALL_DIR -S $env:BLAS_SOURCE_DIR -B $env:BLAS_BUILD_DIR
+      
+      - name: Build BLAS
+        run: cmake --build $env:BLAS_BUILD_DIR --config Release
+
+      - name: Install BLAS
+        run: cmake --install $env:BLAS_BUILD_DIR --config Release
+      
+      - name: Upload the built BLAS library
+        uses: actions/upload-artifact@v4
+        with:
+          retention-days: 1
+          name: blas
+          path: blas # this is equal to environment variable "$env:BLAS_INSTALL_DIR" above
+
   cminpack-visual-studio:
     name: cminpack (MSVC toolchain + CMake)
     runs-on: windows-latest
+    needs: build-BLAS
     
     defaults:
       run:
@@ -13,25 +104,40 @@ jobs:
     
     strategy:
       matrix:
-        ARCH: [ 'x64', 'Win32']
         CMINPACK_BUILD_SHARED_LIBS: [ 'ON' , 'OFF' ]
         CMINPACK_BUILD_TYPE: [ 'Release', 'Debug', 'RelWithDebInfo', 'MinSizeRel' ]
         CMINPACK_PRECISION: [ 'd' ] # seems to be the only precision that the current tests reference work
-    
+        USE_BLAS: ['ON', 'OFF']
+
     env:
       CMINPACK_BUILD_DIR: >-
-        %RUNNER_TEMP%\cminpack-build-arch-${{ matrix.ARCH }}-shared-libs-${{ matrix.CMINPACK_BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMINPACK_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
+        %RUNNER_TEMP%\cminpack-build-shared-libs-${{ matrix.CMINPACK_BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMINPACK_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
       CMINPACK_INSTALL_DIR: >-
-        %RUNNER_TEMP%\cminpack-install-arch-${{ matrix.ARCH }}-shared-libs-${{ matrix.CMINPACK_BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMINPACK_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
-    
+        %RUNNER_TEMP%\cminpack-install-shared-libs-${{ matrix.CMINPACK_BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMINPACK_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
+
     steps:
+      - name: Download the built BLAS library
+        if: ${{ matrix.USE_BLAS == 'ON' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: blas
+          path: blas
+      
+      - name: Set CMAKE_PREFIX_PATH environment variable for CMake to account for BLAS
+        if: ${{ matrix.USE_BLAS == 'ON' }}
+        run: echo CMAKE_PREFIX_PATH=${{ github.workspace }}\blas >> %GITHUB_ENV%
+      
+      - name: Place BLAS bin directory on system PATH environment variable to run tests
+        if: ${{ matrix.USE_BLAS == 'ON' }}
+        run: echo ${{ github.workspace }}\blas\bin;%PATH% >> %GITHUB_PATH%
+
       - name: Checkout repository to cminpack directory
         uses: actions/checkout@v4
         with:
           path: cminpack
       
       - name: Configure cminpack build
-        run: cmake -DBUILD_SHARED_LIBS=${{ matrix.CMINPACK_BUILD_SHARED_LIBS }} -DCMAKE_BUILD_TYPE=${{ matrix.CMINPACK_BUILD_TYPE }} -DCMINPACK_PRECISION=${{ matrix.CMINPACK_PRECISION }} -DUSE_BLAS=OFF -A ${{ matrix.ARCH }} --install-prefix ${{ env.CMINPACK_INSTALL_DIR }} -S cminpack -B ${{ env.CMINPACK_BUILD_DIR }}
+        run: cmake -DBUILD_SHARED_LIBS=${{ matrix.CMINPACK_BUILD_SHARED_LIBS }} -DCMAKE_BUILD_TYPE=${{ matrix.CMINPACK_BUILD_TYPE }} -DCMINPACK_PRECISION=${{ matrix.CMINPACK_PRECISION }} -DUSE_BLAS=${{ matrix.USE_BLAS }} --install-prefix ${{ env.CMINPACK_INSTALL_DIR }} -S cminpack -B ${{ env.CMINPACK_BUILD_DIR }}
       
       - name: Build cminpack
         run: cmake --build ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMINPACK_BUILD_TYPE }}

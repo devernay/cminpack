@@ -12,12 +12,7 @@ jobs:
         BUILD_SHARED_LIBS: [ 'ON' , 'OFF' ]
         CMAKE_BUILD_TYPE: [ 'Release', 'Debug', 'RelWithDebInfo', 'MinSizeRel' ]
         CMINPACK_PRECISION: [ 'd' ] # seems to be the only precision that the current tests reference work
-        USE_BLAS: [ 'OFF' ]
-        include:
-          - BUILD_SHARED_LIBS: 'ON'
-            CMAKE_BUILD_TYPE: 'RelWithDebInfo'
-            CMINPACK_PRECISION: 'd'
-            USE_BLAS: 'ON'
+        USE_BLAS: [ 'ON', 'OFF' ]
     
     env:
       CMINPACK_BUILD_DIR: $RUNNER_TEMP/cminpack-build-shared-libs-${{ matrix.BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMAKE_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
@@ -25,7 +20,7 @@ jobs:
     
     steps:
       - name: Install BLAS
-        run: sudo apt-get install -y libopenblas-dev
+        run: sudo apt-get install -y libblas-dev
         if: ${{ matrix.USE_BLAS == 'ON' }}
       
       - name: Checkout repository to cminpack directory
@@ -41,11 +36,6 @@ jobs:
       
       - name: Test cminpack
         run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMAKE_BUILD_TYPE }}
-        if: ${{ matrix.USE_BLAS == 'OFF' }}
-      
-      - name: Test cminpack with BLAS
-        run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMAKE_BUILD_TYPE }} --exclude-regex tlmdifc
-        if: ${{ matrix.USE_BLAS == 'ON' }}
       
       - name: Install cminpack
         run: cmake --install ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMAKE_BUILD_TYPE }}
