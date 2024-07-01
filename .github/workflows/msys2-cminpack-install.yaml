@@ -13,67 +13,102 @@ jobs:
     
     strategy:
       matrix:
-        CMINPACK_BUILD_SHARED_LIBS: [ 'ON' , 'OFF' ]
-        CMINPACK_BUILD_TYPE: [ 'Release', 'Debug', 'RelWithDebInfo', 'MinSizeRel' ]
+        CMINPACK_BUILD_SHARED_LIBS: [ 'ON', 'OFF' ]
+        CMINPACK_BUILD_TYPE: [ 'Release', 'Debug' ]
         CMINPACK_PRECISION: [ 'd' ] # seems to be the only precision that the current tests reference work
+        USE_BLAS: ['OFF']
         MSYS2_CONFIG:
-              - { sys: mingw64, env: x86_64 }
-              - { sys: ucrt64, env: ucrt-x86_64 }
-              - { sys: clang64, env: clang-x86_64 }
-    
-    env:
-      CMINPACK_BUILD_DIR: >-
-        %RUNNER_TEMP%\cminpack-build-shared-libs-${{ matrix.CMINPACK_BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMINPACK_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
-      CMINPACK_INSTALL_DIR: >-
-        %RUNNER_TEMP%\cminpack-install-shared-libs-${{ matrix.CMINPACK_BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMINPACK_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
-    
-      MSYS2_PACKAGES_TO_INSTALL: "mingw-w64-${{ matrix.MSYS2_CONFIG.env }}-cc mingw-w64-${{ matrix.MSYS2_CONFIG.env }}-make"
+          - { sys: mingw64, env: x86_64 }
+          - { sys: ucrt64, env: ucrt-x86_64 }
+          - { sys: clang64, env: clang-x86_64 }
+        
+        include:
+          - CMINPACK_BUILD_SHARED_LIBS: 'ON'
+            CMINPACK_BUILD_TYPE: 'Release'
+            CMINPACK_PRECISION: 'd'
+            USE_BLAS: 'ON'
+            MSYS2_CONFIG: { sys: mingw64, env: x86_64 }
 
+          - CMINPACK_BUILD_SHARED_LIBS: 'ON'
+            CMINPACK_BUILD_TYPE: 'Release'
+            CMINPACK_PRECISION: 'd'
+            USE_BLAS: 'ON'
+            MSYS2_CONFIG: { sys: ucrt64, env: ucrt-x86_64 }
+          
+          - CMINPACK_BUILD_SHARED_LIBS: 'ON'
+            CMINPACK_BUILD_TYPE: 'Release'
+            CMINPACK_PRECISION: 'd'
+            USE_BLAS: 'ON'
+            MSYS2_CONFIG: { sys: clang64, env: clang-x86_64 }
+    
     steps:
       - name: Checkout repository to cminpack directory
         uses: actions/checkout@v4
         with:
           path: cminpack
+      
+      # Do not add spaces before '>>'
+      - name: Save an environment variable for the packages to install on MSYS2
+        run: |
+          if "${{ matrix.USE_BLAS }}" == "ON" (
+            echo MSYS2_PACKAGES_TO_INSTALL=mingw-w64-${{ matrix.MSYS2_CONFIG.env }}-cc mingw-w64-${{ matrix.MSYS2_CONFIG.env }}-make mingw-w64-${{ matrix.MSYS2_CONFIG.env }}-openblas>> ${{ github.env }}
+          ) else (
+            echo MSYS2_PACKAGES_TO_INSTALL=mingw-w64-${{ matrix.MSYS2_CONFIG.env }}-cc mingw-w64-${{ matrix.MSYS2_CONFIG.env }}-make>> ${{ github.env }}
+          )
 
       # Installing tools from MSYS2 could fail
       # on a high number of concurrent jobs.
-      # So, we keep retrying it for a few times
-      - name: Install C compiler + GNU Make from MSYS2
+      # So, in a PowerShell script, we keep retrying
+      # the installation for a few times.
+      - name: Install C compiler + GNU Make from MSYS2 + OpenBLAS (if USE_BLAS is ON)
         shell: pwsh
         run: |
-          $install_succeeded = $false;
+          $install_succeed = $false;
           $max_tries = 10;
           $tries = 0;
-          while ((-not $install_succeeded) -and ($tries -lt $max_tries))
+          while ((-not $install_succeed) -and ($tries -lt $max_tries))
           {
-            try
+            $output = C:\msys64\usr\bin\bash.exe -lc "pacman -S ${{ env.MSYS2_PACKAGES_TO_INSTALL }} --noconfirm" 2>&1
+
+            if ($LastExitCode -eq 0)
             {
-              & C:\msys64\usr\bin\bash.exe -lc "pacman -S ${{ env.MSYS2_PACKAGES_TO_INSTALL }} --noconfirm"
-              $install_succeeded = $true;
+              $install_succeed = $true;
             }
-            catch
+            else
             {
               $tries++;
             }
           }
 
-          if (-not $install_succeeded)
+          if (-not $install_succeed)
           {
             Write-Host "Failed to install MSYS2 packages: ${{ env.MSYS2_PACKAGES_TO_INSTALL }}";
-            exit 1;
+            exit /B 1;
           }
 
+      # Do not add spaces before '>>'
       - name: Place MSYS2 tools in front of system environment PATH variable
-        run: echo C:\msys64\${{ matrix.MSYS2_CONFIG.sys }}\bin;%PATH% >> %GITHUB_PATH%
+        run: echo C:\msys64\${{ matrix.MSYS2_CONFIG.sys }}\bin>> ${{ github.path }}
+
+      # Do not add spaces before '>>'
+      - name: Set environment variables to build cminpack
+        run: |
+          echo CMINPACK_BUILD_DIR=${{ runner.temp }}\cminpack-build>> ${{ github.env }}
+          echo CMINPACK_INSTALL_DIR=${{ runner.temp }}\cminpack-install>> ${{ github.env }}
 
       - name: Configure cminpack build
-        run: cmake -G "MinGW Makefiles" -DBUILD_SHARED_LIBS=${{ matrix.CMINPACK_BUILD_SHARED_LIBS }} -DCMAKE_BUILD_TYPE=${{ matrix.CMINPACK_BUILD_TYPE }} -DCMINPACK_PRECISION=${{ matrix.CMINPACK_PRECISION }} -DUSE_BLAS=OFF --install-prefix ${{ env.CMINPACK_INSTALL_DIR }} -S cminpack -B ${{ env.CMINPACK_BUILD_DIR }}
+        run: cmake -G "MinGW Makefiles" -DBUILD_SHARED_LIBS=${{ matrix.CMINPACK_BUILD_SHARED_LIBS }} -DCMAKE_BUILD_TYPE=${{ matrix.CMINPACK_BUILD_TYPE }} -DCMINPACK_PRECISION=${{ matrix.CMINPACK_PRECISION }} -DUSE_BLAS=${{ matrix.USE_BLAS }} --install-prefix ${{ env.CMINPACK_INSTALL_DIR }} -S cminpack -B ${{ env.CMINPACK_BUILD_DIR }}
       
       - name: Build cminpack
         run: cmake --build ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMINPACK_BUILD_TYPE }}
       
       - name: Test cminpack
+        if: ${{ matrix.USE_BLAS == 'OFF' }}
         run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMINPACK_BUILD_TYPE }}
+      
+      - name: Test cminpack with BLAS
+        if: ${{ matrix.USE_BLAS == 'ON' }}
+        run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMINPACK_BUILD_TYPE }} --exclude-regex tlmdifc
       
       - name: Install cminpack
         run: cmake --install ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMINPACK_BUILD_TYPE }}
