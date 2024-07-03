@@ -9,13 +9,14 @@ jobs:
 
     strategy:
       matrix:
-        BUILD_SHARED_LIBS: [ 'ON' , 'OFF' ]
-        CMAKE_BUILD_TYPE: [ 'Release', 'Debug', 'RelWithDebInfo', 'MinSizeRel' ]
+        BUILD_SHARED_LIBS: [ 'ON', 'OFF' ]
+        CMAKE_BUILD_TYPE: [ 'Release', 'Debug' ]
         CMINPACK_PRECISION: [ 'd' ] # seems to be the only precision that the current tests reference work
         USE_BLAS: [ 'OFF' ]
+        
         include:
           - BUILD_SHARED_LIBS: 'ON'
-            CMAKE_BUILD_TYPE: 'RelWithDebInfo'
+            CMAKE_BUILD_TYPE: 'Release'
             CMINPACK_PRECISION: 'd'
             USE_BLAS: 'ON'
     

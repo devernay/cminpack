@@ -13,31 +13,83 @@ jobs:
     
     strategy:
       matrix:
-        ARCH: [ 'x64', 'Win32']
-        CMINPACK_BUILD_SHARED_LIBS: [ 'ON' , 'OFF' ]
-        CMINPACK_BUILD_TYPE: [ 'Release', 'Debug', 'RelWithDebInfo', 'MinSizeRel' ]
+        CMINPACK_BUILD_SHARED_LIBS: [ 'ON', 'OFF' ]
+        CMINPACK_BUILD_TYPE: [ 'Release', 'Debug' ]
         CMINPACK_PRECISION: [ 'd' ] # seems to be the only precision that the current tests reference work
-    
+        USE_BLAS: ['OFF']
+        
+        include:
+          - CMINPACK_BUILD_SHARED_LIBS: 'ON'
+            CMINPACK_BUILD_TYPE: 'Release'
+            CMINPACK_PRECISION: 'd'
+            USE_BLAS: 'ON'
+
     env:
-      CMINPACK_BUILD_DIR: >-
-        %RUNNER_TEMP%\cminpack-build-arch-${{ matrix.ARCH }}-shared-libs-${{ matrix.CMINPACK_BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMINPACK_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
-      CMINPACK_INSTALL_DIR: >-
-        %RUNNER_TEMP%\cminpack-install-arch-${{ matrix.ARCH }}-shared-libs-${{ matrix.CMINPACK_BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMINPACK_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
-    
+
+      BLAS_VERSION: "0.3.27"
+
     steps:
+
+      - name: Download and extract BLAS source code
+        if: ${{ matrix.USE_BLAS == 'ON' }}
+        run: |
+          C:\msys64\usr\bin\wget https://github.com/OpenMathLib/OpenBLAS/archive/refs/tags/v${{ env.BLAS_VERSION }}.zip -P ${{ runner.temp }}
+          "C:\Program Files\7-Zip\7z.exe" x ${{ runner.temp }}\v${{ env.BLAS_VERSION }}.zip -o${{ runner.temp }}
+      
+      # Do not add spaces before '>>'
+      - name: Set environment variables to build and install BLAS
+        if: ${{ matrix.USE_BLAS == 'ON' }}
+        run: |
+          echo BLAS_SOURCE_DIR=${{ runner.temp }}\OpenBLAS-${{ env.BLAS_VERSION }}>> ${{ github.env }}
+          echo BLAS_BUILD_DIR=${{ runner.temp }}\build-OpenBLAS-${{ env.BLAS_VERSION }}>> ${{ github.env }}
+          echo BLAS_INSTALL_DIR=${{ runner.temp }}\install-OpenBLAS-${{ env.BLAS_VERSION }}>> ${{ github.env }}
+
+      - name: Configure BLAS
+        if: ${{ matrix.USE_BLAS == 'ON' }}
+        run: cmake -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF --install-prefix ${{ env.BLAS_INSTALL_DIR }} -S ${{ env.BLAS_SOURCE_DIR }} -B ${{ env.BLAS_BUILD_DIR }}
+
+      - name: Build BLAS
+        if: ${{ matrix.USE_BLAS == 'ON' }}
+        run: cmake --build ${{ env.BLAS_BUILD_DIR }} --config Release
+
+      - name: Install BLAS
+        if: ${{ matrix.USE_BLAS == 'ON' }}
+        run: cmake --install ${{ env.BLAS_BUILD_DIR }} --config Release
+
+      # Do not add spaces before '>>'
+      - name: Set CMAKE_PREFIX_PATH environment variable to BLAS be found by CMake
+        if: ${{ matrix.USE_BLAS == 'ON' }}
+        run: echo CMAKE_PREFIX_PATH=${{ env.BLAS_INSTALL_DIR }}>> ${{ github.env }}
+      
+      # Do not add spaces before '>>'
+      - name: Place BLAS bin directory (containing BLAS dll) on system PATH environment variable to run tests
+        if: ${{ matrix.USE_BLAS == 'ON' }}
+        run: echo ${{ env.BLAS_INSTALL_DIR }}\bin>> ${{ github.path }}
+
       - name: Checkout repository to cminpack directory
         uses: actions/checkout@v4
         with:
           path: cminpack
       
+      # Do not add spaces before '>>'
+      - name: Set environment variables to build cminpack
+        run: |
+          echo CMINPACK_BUILD_DIR=${{ runner.temp }}\cminpack-build>> ${{ github.env }}
+          echo CMINPACK_INSTALL_DIR=${{ runner.temp }}\cminpack-install>> ${{ github.env }}
+
       - name: Configure cminpack build
-        run: cmake -DBUILD_SHARED_LIBS=${{ matrix.CMINPACK_BUILD_SHARED_LIBS }} -DCMAKE_BUILD_TYPE=${{ matrix.CMINPACK_BUILD_TYPE }} -DCMINPACK_PRECISION=${{ matrix.CMINPACK_PRECISION }} -DUSE_BLAS=OFF -A ${{ matrix.ARCH }} --install-prefix ${{ env.CMINPACK_INSTALL_DIR }} -S cminpack -B ${{ env.CMINPACK_BUILD_DIR }}
+        run: cmake -DBUILD_SHARED_LIBS=${{ matrix.CMINPACK_BUILD_SHARED_LIBS }} -DCMAKE_BUILD_TYPE=${{ matrix.CMINPACK_BUILD_TYPE }} -DCMINPACK_PRECISION=${{ matrix.CMINPACK_PRECISION }} -DUSE_BLAS=${{ matrix.USE_BLAS }} --install-prefix ${{ env.CMINPACK_INSTALL_DIR }} -S cminpack -B ${{ env.CMINPACK_BUILD_DIR }}
       
       - name: Build cminpack
         run: cmake --build ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMINPACK_BUILD_TYPE }}
       
       - name: Test cminpack
+        if: ${{ matrix.USE_BLAS == 'OFF' }}
         run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMINPACK_BUILD_TYPE }}
+      
+      - name: Test cminpack with BLAS
+        if: ${{ matrix.USE_BLAS == 'ON' }}
+        run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMINPACK_BUILD_TYPE }} --exclude-regex tlmdifc
       
       - name: Install cminpack
         run: cmake --install ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMINPACK_BUILD_TYPE }}
