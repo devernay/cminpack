@@ -334,3 +334,17 @@ examples/tlmdif1
 examples/tlmstr
 
 examples/tlmstr1
+examples/ldibmdpdr_
+examples/ldtchkder_
+examples/ldtenorm_
+examples/ldtfdjac2_
+examples/ldthybrd1_
+examples/ldthybrd_
+examples/ldthybrj1_
+examples/ldthybrj_
+examples/ldtlmder1_
+examples/ldtlmder_
+examples/ldtlmdif1_
+examples/ldtlmdif_
+examples/ldtlmstr1_
+examples/ldtlmstr_
