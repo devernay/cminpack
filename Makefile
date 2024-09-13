@@ -1,5 +1,5 @@
 PACKAGE=cminpack
-VERSION=1.3.9
+VERSION=1.3.11
 
 CC=gcc
 CFLAGS= -O3 -g -Wall -Wextra

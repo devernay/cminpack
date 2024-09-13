@@ -28,6 +28,9 @@ The project home page is at http://devernay.github.io/cminpack
 History
 ------
 
+* version 1.3.11 (13/09/2024):
+  - Bump installed version number to 1.3.11 #75
+
 * version 1.3.10 (11/09/2024):
   - Disable BLAS by default #66 #70
   - Fix BLAS usage (broken by #58) #68
