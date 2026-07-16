@@ -38,6 +38,15 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
     target_link_libraries (${source}c cminpack)
     add_minpack_test(${source}c ${source}c)
   endforeach()
+
+  # Self-checking regression test for issue #76 (non-convergence / NaN in
+  # lmpar on a zero-residual problem). It needs no reference file: it exits
+  # non-zero if any solver fails to converge, produces NaN/Inf, or runs up to
+  # maxfev. See tissue76.c.
+  add_executable (tissue76 tissue76.c)
+  target_link_libraries (tissue76 cminpack)
+  add_test (NAME tissue76
+    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue76>)
 endif ()
 
 if (BUILD_EXAMPLES_FORTRAN AND TARGET cminpack)

@@ -311,6 +311,16 @@ L150:
 	goto L220;
     }
 
+/*        if dxnorm is zero, then d*x = 0 and the constraint ||d*x|| <= delta */
+/*        is trivially satisfied. the newton correction below divides by */
+/*        dxnorm (0/0), which would produce a NaN that then propagates back */
+/*        into lmder and prevents convergence (see cminpack issue #76). */
+/*        accept the current value of par. */
+
+    if (dxnorm == 0.) {
+	goto L220;
+    }
+
 /*        compute the newton correction. */
 
     i__1 = *n;

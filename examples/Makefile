@@ -196,9 +196,11 @@ testchkdrv: $(LIBSUFFIX)chkdrv_ | cmpfiles
 	@echo "*** Running CHK tests (calling MINPACK from C using $(MINPACK))"
 	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; $(DIFF) ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
 
-ctest: $(MINPACK) $(CPGM) | cmpfiles
+ctest: $(MINPACK) $(CPGM) $(LIBSUFFIX)tissue76 | cmpfiles
 	@echo "*** Running standard tests (calling CMINPACK from C using $(MINPACK))"
 	for x in $(CPGM); do echo $$x; $(VALGRIND) ./$$x > $$x.out; $(DIFF) ref/$$x.ref $$x.out ; done
+	@echo "*** Running issue #76 regression test (self-checking)"
+	$(VALGRIND) ./$(LIBSUFFIX)tissue76
 
 ctestdrv: $(MINPACK) $(CDRVPGM) ctestlmdrv ctesthydrv ctestchkdrv
 
@@ -325,7 +327,7 @@ checkfail: ../fortran/libminpack.a check
 	$(MAKE) -C ../fortran
 
 clean:
-	-rm -f $(PGM) $(FDRVPGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(FPGM) cmpfiles
+	-rm -f $(PGM) $(FDRVPGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(FPGM) cmpfiles $(LIBSUFFIX)tissue76
 
 veryclean: clean
 	-rm -f *.o *.gcno *.gcda *.out *~ #*#
