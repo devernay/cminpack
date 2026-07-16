@@ -33,6 +33,11 @@ History
     solution is the zero vector, by guarding a 0/0 division in `lmpar` #76
   - Compare test output using a numeric tolerance instead of an exact text
     match, so the tests pass across compilers and math libraries #37 #77
+  - Fix Windows linking: correct the DLL export/import macros and document
+    that static-library users define `CMINPACK_NO_DLL` #18
+  - Detect and link the CBLAS interface when `USE_BLAS` is enabled #12
+  - Add `cminpackcpp.hpp`, a header-only C++ wrapper so the solvers accept
+    lambdas, functors and `std::function` #74
 
 * version 1.3.11 (13/09/2024):
   - Bump installed version number to 1.3.11 #75

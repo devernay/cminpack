@@ -96,6 +96,8 @@ install: $(LIB)
 	chmod 644 ${DESTDIR}/include/minpack.h
 	cp cminpack.h ${DESTDIR}/include
 	chmod 644 ${DESTDIR}/include/cminpack.h
+	cp cminpackcpp.hpp ${DESTDIR}/include
+	chmod 644 ${DESTDIR}/include/cminpackcpp.hpp
 
 clean:
 	rm -f $(OBJS) $(LIB)

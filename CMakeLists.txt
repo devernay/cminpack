@@ -48,7 +48,7 @@ set (cminpack_srcs
   dpmpar_.c fdjac2_.c hybrj1_.c lmder_.c  lmpar_.c  qform_.c  r1mpyq_.c covar_.c
   )
 set (cminpack_hdrs
-  cminpack.h minpack.h)
+  cminpack.h cminpackcpp.hpp minpack.h)
 
 include (CheckTypeSize)
 check_type_size ("double" SIZEOF_DOUBLE)
@@ -103,6 +103,26 @@ set(cminpack_suffix "${CMAKE_${_CMAKE_BUILD_TYPE_UPPER}_POSTFIX}")
 
 if (USE_BLAS)
   find_package(BLAS REQUIRED)
+  # cminpack calls the C (CBLAS) interface (cblas_dnrm2, cblas_dtrsv, ...).
+  # find_package(BLAS) locates a BLAS that may only provide the Fortran
+  # interface, so the cblas_* symbols would be missing at link time
+  # (undefined reference to `cblas_dnrm2', see issue #12). Detect whether the
+  # located BLAS already provides CBLAS, and otherwise add a CBLAS library.
+  include (CheckFunctionExists)
+  set (CMAKE_REQUIRED_LIBRARIES ${BLAS_LIBRARIES})
+  check_function_exists (cblas_dnrm2 CMINPACK_BLAS_HAS_CBLAS)
+  unset (CMAKE_REQUIRED_LIBRARIES)
+  if (NOT CMINPACK_BLAS_HAS_CBLAS)
+    find_library (CBLAS_LIBRARY NAMES cblas openblas blis)
+    if (CBLAS_LIBRARY)
+      list (APPEND BLAS_LIBRARIES ${CBLAS_LIBRARY})
+    else ()
+      message (SEND_ERROR
+        "USE_BLAS is ON but the BLAS found does not provide the CBLAS "
+        "interface (cblas_dnrm2). Install a CBLAS library (e.g. libcblas or "
+        "OpenBLAS) or point CBLAS_LIBRARY at one.")
+    endif ()
+  endif ()
 endif ()
 
 foreach (cminpack_lib ${cminpack_libs})

@@ -160,6 +160,11 @@ REF=test.ref ctest.ref ftest.ref
 cmpfiles: cmpfiles.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ cmpfiles.c -lm
 
+# C++ wrapper test (issue #74). Uses the header-only cminpackcpp.hpp.
+CXX?=g++
+$(LIBSUFFIX)tcppwrap: tcppwrap.cpp $(MINPACK)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -std=c++11 -o $@ tcppwrap.cpp $(MINPACK) $(LDADD) -lm
+
 all:
 	@echo "*****************************************************"
 	@echo "Please type 'make check' to run all tests at once, or:"
@@ -196,11 +201,13 @@ testchkdrv: $(LIBSUFFIX)chkdrv_ | cmpfiles
 	@echo "*** Running CHK tests (calling MINPACK from C using $(MINPACK))"
 	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; $(DIFF) ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
 
-ctest: $(MINPACK) $(CPGM) $(LIBSUFFIX)tissue76 | cmpfiles
+ctest: $(MINPACK) $(CPGM) $(LIBSUFFIX)tissue76 $(LIBSUFFIX)tcppwrap | cmpfiles
 	@echo "*** Running standard tests (calling CMINPACK from C using $(MINPACK))"
 	for x in $(CPGM); do echo $$x; $(VALGRIND) ./$$x > $$x.out; $(DIFF) ref/$$x.ref $$x.out ; done
 	@echo "*** Running issue #76 regression test (self-checking)"
 	$(VALGRIND) ./$(LIBSUFFIX)tissue76
+	@echo "*** Running C++ wrapper test (self-checking)"
+	$(VALGRIND) ./$(LIBSUFFIX)tcppwrap
 
 ctestdrv: $(MINPACK) $(CDRVPGM) ctestlmdrv ctesthydrv ctestchkdrv
 
@@ -327,7 +334,7 @@ checkfail: ../fortran/libminpack.a check
 	$(MAKE) -C ../fortran
 
 clean:
-	-rm -f $(PGM) $(FDRVPGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(FPGM) cmpfiles $(LIBSUFFIX)tissue76
+	-rm -f $(PGM) $(FDRVPGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(FPGM) cmpfiles $(LIBSUFFIX)tissue76 $(LIBSUFFIX)tcppwrap
 
 veryclean: clean
 	-rm -f *.o *.gcno *.gcda *.out *~ #*#

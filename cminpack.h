@@ -36,15 +36,25 @@
 extern "C" {
 #endif /* __cplusplus */
 
-/* Cmake will define cminpack_EXPORTS on Windows when it
-configures to build a shared library. If you are going to use
-another build system on windows or create the visual studio
-projects by hand you need to define cminpack_EXPORTS when
-building a DLL on windows.
+/* Symbol visibility for Windows DLLs.
+
+   When building or using cminpack as a Windows DLL, the API symbols must be
+   marked with __declspec(dllexport) (when building the DLL) or
+   __declspec(dllimport) (when using it). This is controlled by two macros:
+
+   - define CMINPACK_DLL_EXPORTS when *building* the cminpack DLL;
+   - define CMINPACK_NO_DLL when building or using cminpack as a *static*
+     library on Windows (otherwise the header defaults to dllimport, which
+     makes the linker look for __imp_-prefixed symbols and fails with
+     "unresolved external symbol __imp_hybrd1" - see issue #18).
+
+   The bundled CMake build sets these automatically (CMINPACK_DLL_EXPORTS for
+   shared builds, CMINPACK_NO_DLL for static builds). If you use another build
+   system or hand-made Visual Studio projects, define them yourself.
 */
 #if defined (__GNUC__)
-#define CMINPACK_DECLSPEC_EXPORT  __declspec(__dllexport__)
-#define CMINPACK_DECLSPEC_IMPORT  __declspec(__dllimport__)
+#define CMINPACK_DECLSPEC_EXPORT  __declspec(dllexport)
+#define CMINPACK_DECLSPEC_IMPORT  __declspec(dllimport)
 #endif
 #if defined (_MSC_VER) || defined (__BORLANDC__)
 #define CMINPACK_DECLSPEC_EXPORT  __declspec(dllexport)
@@ -64,7 +74,7 @@ building a DLL on windows.
     #define  CMINPACK_EXPORT CMINPACK_DECLSPEC_EXPORT
   #else
     #define  CMINPACK_EXPORT CMINPACK_DECLSPEC_IMPORT
-  #endif /* cminpack_EXPORTS */
+  #endif /* CMINPACK_DLL_EXPORTS */
 #else /* defined (_WIN32) */
  #define CMINPACK_EXPORT
 #endif

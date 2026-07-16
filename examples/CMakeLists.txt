@@ -47,6 +47,18 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
   target_link_libraries (tissue76 cminpack)
   add_test (NAME tissue76
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue76>)
+
+  # C++ wrapper test (issue #74): accept lambdas/functors/std::function.
+  # Only built if a C++ compiler is available, since cminpack itself is C.
+  include (CheckLanguage)
+  check_language (CXX)
+  if (CMAKE_CXX_COMPILER)
+    enable_language (CXX)
+    add_executable (tcppwrap tcppwrap.cpp)
+    target_link_libraries (tcppwrap cminpack)
+    add_test (NAME tcppwrap
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tcppwrap>)
+  endif ()
 endif ()
 
 if (BUILD_EXAMPLES_FORTRAN AND TARGET cminpack)
