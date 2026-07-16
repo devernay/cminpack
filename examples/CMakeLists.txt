@@ -59,6 +59,37 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
     add_test (NAME tcppwrap
       COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tcppwrap>)
   endif ()
+
+  # Intensive driver tests: run cminpack on the difficult problems from More,
+  # Garbow and Hillstrom, reading the problem set from stdin. Their detailed
+  # output is platform/compiler-dependent (iteration counts and termination
+  # codes vary), so these are smoke tests -- run to completion, exit 0, no NaN
+  # -- rather than reference comparisons (see runsmoke.cmake).
+  macro(add_minpack_driver_smoketest testname inputfile)
+    add_test(NAME ${testname} COMMAND "${CMAKE_COMMAND}"
+      -DCMAKE_CROSSCOMPILING_EMULATOR=${CMAKE_CROSSCOMPILING_EMULATOR}
+      -DTEST=$<TARGET_FILE:${testname}>
+      -DOUTPUT=${CMINPACK_BINARY_DIR}/examples/${testname}.out
+      -DINPUT=${CMINPACK_SOURCE_DIR}/examples/testdata/${inputfile}
+      -DINTDIR=${CMAKE_CFG_INTDIR}
+      -P "${CMINPACK_SOURCE_DIR}/examples/runsmoke.cmake")
+  endmacro()
+
+  add_executable (lmddrvc lmddrv.c ssqipt.c ssqfcn.c ssqjac.c)
+  add_executable (lmfdrvc lmfdrv.c ssqipt.c ssqfcn.c)
+  add_executable (lmsdrvc lmsdrv.c ssqipt.c ssqfcn.c ssqjac.c)
+  add_executable (hyjdrvc hyjdrv.c neqipt.c vecfcn.c vecjac.c)
+  add_executable (hybdrvc hybdrv.c neqipt.c vecfcn.c)
+  add_executable (chkdrvc chkdrv.c neqipt.c vecfcn.c errjac.c)
+  foreach (drv lmddrvc lmfdrvc lmsdrvc hyjdrvc hybdrvc chkdrvc)
+    target_link_libraries (${drv} cminpack)
+  endforeach ()
+  add_minpack_driver_smoketest (lmddrvc ssq.data)
+  add_minpack_driver_smoketest (lmfdrvc ssq.data)
+  add_minpack_driver_smoketest (lmsdrvc ssq.data)
+  add_minpack_driver_smoketest (hyjdrvc neq.data)
+  add_minpack_driver_smoketest (hybdrvc neq.data)
+  add_minpack_driver_smoketest (chkdrvc chkder.data)
 endif ()
 
 if (BUILD_EXAMPLES_FORTRAN AND TARGET cminpack)

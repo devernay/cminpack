@@ -14,17 +14,26 @@ jobs:
         CMINPACK_PRECISION: [ 'd' ] # seems to be the only precision that the current tests reference work
         USE_BLAS: [ 'OFF' ]
         USE_LAPACK: [ 'OFF' ]
+        BUILD_EXAMPLES_FORTRAN: [ 'OFF' ]
         include:
           - BUILD_SHARED_LIBS: 'ON'
             CMAKE_BUILD_TYPE: 'RelWithDebInfo'
             CMINPACK_PRECISION: 'd'
             USE_BLAS: 'ON'
             USE_LAPACK: 'OFF'
+            BUILD_EXAMPLES_FORTRAN: 'OFF'
           - BUILD_SHARED_LIBS: 'ON'
             CMAKE_BUILD_TYPE: 'RelWithDebInfo'
             CMINPACK_PRECISION: 'd'
             USE_BLAS: 'ON'
             USE_LAPACK: 'ON'
+            BUILD_EXAMPLES_FORTRAN: 'OFF'
+          - BUILD_SHARED_LIBS: 'ON'
+            CMAKE_BUILD_TYPE: 'RelWithDebInfo'
+            CMINPACK_PRECISION: 'd'
+            USE_BLAS: 'OFF'
+            USE_LAPACK: 'OFF'
+            BUILD_EXAMPLES_FORTRAN: 'ON'
     
     env:
       CMINPACK_BUILD_DIR: $RUNNER_TEMP/cminpack-build-shared-libs-${{ matrix.BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMAKE_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
@@ -39,13 +48,17 @@ jobs:
         run: sudo apt-get install -y liblapack-dev
         if: ${{ matrix.USE_LAPACK == 'ON' }}
       
+      - name: Install FORTRAN compiler
+        run: sudo apt-get install -y gfortran
+        if: ${{ matrix.BUILD_EXAMPLES_FORTRAN == 'ON' }}
+      
       - name: Checkout repository to cminpack directory
         uses: actions/checkout@v4
         with:
           path: cminpack
       
       - name: Configure cminpack build
-        run: cmake -G "Unix Makefiles" -DBUILD_SHARED_LIBS=${{ matrix.BUILD_SHARED_LIBS }} -DCMAKE_BUILD_TYPE=${{ matrix.CMAKE_BUILD_TYPE }} -DCMINPACK_PRECISION=${{ matrix.CMINPACK_PRECISION }} -DUSE_BLAS=${{ matrix.USE_BLAS }} -DUSE_LAPACK=${{ matrix.USE_LAPACK }} --install-prefix ${{ env.CMINPACK_INSTALL_DIR }} -S cminpack -B ${{ env.CMINPACK_BUILD_DIR }}
+        run: cmake -G "Unix Makefiles" -DBUILD_SHARED_LIBS=${{ matrix.BUILD_SHARED_LIBS }} -DCMAKE_BUILD_TYPE=${{ matrix.CMAKE_BUILD_TYPE }} -DCMINPACK_PRECISION=${{ matrix.CMINPACK_PRECISION }} -DUSE_BLAS=${{ matrix.USE_BLAS }} -DUSE_LAPACK=${{ matrix.USE_LAPACK }} -DBUILD_EXAMPLES_FORTRAN=${{ matrix.BUILD_EXAMPLES_FORTRAN }} --install-prefix ${{ env.CMINPACK_INSTALL_DIR }} -S cminpack -B ${{ env.CMINPACK_BUILD_DIR }}
       
       - name: Build cminpack
         run: cmake --build ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMAKE_BUILD_TYPE }}
