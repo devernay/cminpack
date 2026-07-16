@@ -7,6 +7,7 @@
 #endif
 
 #include <float.h>
+#include <stddef.h> /* size_t, used for overflow-safe size checks */
 
 #define double_EPSILON DBL_EPSILON
 #define double_MIN DBL_MIN
@@ -53,6 +54,9 @@
 #define ceil(x) ceilf(x)
 #endif
 #endif
+/* NOTE: these function-like macros evaluate their arguments more than once, so
+   callers must pass side-effect-free, cheap expressions (cminpack's own code
+   always passes plain variables or precomputed temporaries such as d1/d2). */
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define abs(x) ((x) >= 0 ? (x) : -(x))

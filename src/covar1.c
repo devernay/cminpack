@@ -148,7 +148,19 @@ int __cminpack_func__(covar1)(int m, int n, real fsumsq, real *r, int ldr,
 
 /*     symmetrize the covariance matrix in r. */
 
-    temp = fsumsq / (m - (l + 1));
+    /* The residual variance estimate is fsumsq/(m - k), where k = l + 1 is the
+       estimated rank of the Jacobian. When k >= m there are no degrees of
+       freedom left (e.g. a square full-rank problem, m == n, or a
+       rank-deficient underdetermined one), so the estimate is undefined:
+       guard the division to avoid a 0/0 or divide-by-zero that would otherwise
+       produce Inf/NaN and corrupt the entire covariance matrix. In that case
+       report a zero variance; the rank returned by covar1 lets the caller
+       detect the m <= rank situation. */
+    if (m > l + 1) {
+        temp = fsumsq / (m - (l + 1));
+    } else {
+        temp = 0.;
+    }
     for (j = 0; j < n; ++j) {
 	for (i = 0; i < j; ++i) {
             r[j + i * ldr] *= temp;

@@ -202,7 +202,14 @@ L40:
 /* L110: */
     }
     temp = __minpack_func__(enorm)(n, &wa2[1]);
-    sgnorm = gnorm / temp / temp;
+    /* Guard temp == 0 (rank-deficient r maps the scaled gradient to ~0):
+       sgnorm = gnorm/temp/temp would be +Inf. sgnorm = delta reproduces the
+       same finite downstream result while avoiding the transient Inf. */
+    if (temp == 0.) {
+	sgnorm = *delta;
+    } else {
+	sgnorm = gnorm / temp / temp;
+    }
 
 /*     test whether the scaled gradient direction is acceptable. */
 

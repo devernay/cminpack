@@ -128,7 +128,7 @@ int __cminpack_func__(hybrj1)(__cminpack_decl_fcnder_nn__ void *p, int n, real *
 
 /*     check the input parameters for errors. */
 
-    if (n <= 0 || ldfjac < n || tol < 0. || lwa < n * (n + 13) / 2) {
+    if (n <= 0 || ldfjac < n || tol < 0. || (size_t)lwa < (size_t)n * (n + 13) / 2) {
         return 0;
     }
 

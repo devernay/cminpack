@@ -288,17 +288,21 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
 /*        compute the newton correction. */
 
 #     ifdef USE_BLAS
-        for (j = 0; j < nsing; ++j) {
+        /* S (the Cholesky factor of R^T.R + par*D^2 formed by qrsolv, with its
+           diagonal in sdiag and its strict lower triangle in r) is full rank
+           because par > 0, so the Newton correction is solved over ALL n
+           components. Using nsing here (the rank of the original R) would zero
+           out the trailing components and solve only the leading nsing block,
+           giving a wrong correction whenever the Jacobian was rank-deficient
+           (nsing < n). This now matches the non-BLAS / FORTRAN branch below. */
+        for (j = 0; j < n; ++j) {
             l = ipvt[j]-1;
             wa1[j] = diag[l] * (wa2[l] / dxnorm);
         }
-        for (j = nsing; j < n; ++j) {
-            wa1[j] = 0.;
-        }
         /* exchange the diagonal of r with sdiag */
         __cminpack_blas__(swap)(&n, r, &ldr_plus_1, sdiag, &c__1);
-        /* solve lower(r).x = wa1, result id put in wa1 */
-        __cminpack_blas__(trsv)("L", "N", "N", &nsing, r, &ldr, wa1, &c__1);
+        /* solve lower(s).x = wa1, result is put in wa1 */
+        __cminpack_blas__(trsv)("L", "N", "N", &n, r, &ldr, wa1, &c__1);
         /* exchange the diagonal of r with sdiag */
         __cminpack_blas__(swap)(&n, r, &ldr_plus_1, sdiag, &c__1);
 #     else /* !USE_BLAS */

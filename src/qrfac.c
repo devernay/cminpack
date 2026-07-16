@@ -34,8 +34,12 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
             /* __CLPK_integer is actually an int, just do a cast */
             jpvt = (__CLPK_integer *)ipvt;
         }
-        /* set all columns free */
-        memset(jpvt, 0, sizeof(int)*n);
+        /* set all columns free. Use sizeof(*jpvt) (== sizeof(__CLPK_integer)),
+           not sizeof(int): when __CLPK_integer is wider than int (an ILP64
+           LAPACK) jpvt is a separately allocated __CLPK_integer array, and
+           sizeof(int)*n would zero only part of it, leaving garbage in the
+           high words that geqp3 would treat as fixed (leading) columns. */
+        memset(jpvt, 0, sizeof(*jpvt)*n);
     }
     
     /* query optimal size of work */
@@ -52,7 +56,12 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
     
     assert( info == 0 );
     
-    /* alloc work area */
+    /* alloc work area.
+       NOTE: qrfac() returns void, so it has no way to report a LAPACK error
+       or an out-of-memory condition to its callers (lmder/lmstr/hybr*). The
+       asserts below catch these in debug builds but are compiled out under
+       NDEBUG; a robust fix would require adding an int error return to the
+       qrfac API (a breaking change), which is deliberately not done here. */
     work = (real *)malloc(sizeof(real)*lwork);
     assert(work != NULL);
     

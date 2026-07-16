@@ -217,7 +217,7 @@ void __minpack_func__(hybrj)(__minpack_decl_fcnder_nn__  const int *n, real *x, 
 /*     check the input parameters for errors. */
 
     if (*n <= 0 || *ldfjac < *n || *xtol < 0. || *maxfev <= 0 || *factor <= 
-	    0. || *lr < *n * (*n + 1) / 2) {
+	    0. || (size_t)*lr < (size_t)*n * (*n + 1) / 2) {
 	goto L300;
     }
     if (*mode != 2) {

@@ -118,7 +118,7 @@ int __cminpack_func__(lmdif1)(__cminpack_decl_fcn_mn__ void *p, int m, int n, re
 
 /*     check the input parameters for errors. */
 
-    if (n <= 0 || m < n || tol < 0. || lwa < m * n + n * 5 + m) {
+    if (n <= 0 || m < n || tol < 0. || (size_t)lwa < (size_t)m * n + n * 5 + m) {
         return 0;
     }
 

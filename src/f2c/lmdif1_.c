@@ -132,7 +132,7 @@ void __minpack_func__(lmdif1)(__minpack_decl_fcn_mn__  const int *m, const int *
 
 /*     check the input parameters for errors. */
 
-    if (*n <= 0 || *m < *n || *tol < 0. || *lwa < *m * *n + *n * 5 + *m) {
+    if (*n <= 0 || *m < *n || *tol < 0. || (size_t)*lwa < (size_t)*m * *n + *n * 5 + *m) {
 	/* goto L10; */
         return;
     }

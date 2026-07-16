@@ -130,7 +130,7 @@ void __minpack_func__(hybrj1)(__minpack_decl_fcnder_nn__ const int *n, real *x, 
 
 /*     check the input parameters for errors. */
 
-    if (*n <= 0 || *ldfjac < *n || *tol < 0. || *lwa < *n * (*n + 13) / 2) {
+    if (*n <= 0 || *ldfjac < *n || *tol < 0. || (size_t)*lwa < (size_t)*n * (*n + 13) / 2) {
 	/* goto L20; */
         return;
     }

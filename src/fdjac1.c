@@ -35,7 +35,7 @@ int __cminpack_func__(fdjac1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, 
 
 /*     the subroutine statement is */
 
-/*       subroutine fdjac1(fcn,n,x,fvec,fjac,ldfjac,iflag,ml,mu,epsfcn, */
+/*       subroutine fdjac1(fcn,n,x,fvec,fjac,ldfjac,ml,mu,epsfcn, */
 /*                         wa1,wa2) */
 
 /*     where */
@@ -73,8 +73,9 @@ int __cminpack_func__(fdjac1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, 
 /*       ldfjac is a positive integer input variable not less than n */
 /*         which specifies the leading dimension of the array fjac. */
 
-/*       iflag is an integer variable which can be used to terminate */
-/*         the execution of fdjac1. see description of fcn. */
+/*       fdjac1 returns iflag: a nonnegative value on success, or the negative */
+/*         value set by fcn if the user terminated execution. (In FORTRAN, */
+/*         iflag was instead an argument of fdjac1; see description of fcn.) */
 
 /*       ml is a nonnegative integer input variable which specifies */
 /*         the number of subdiagonals within the band of the */
@@ -163,7 +164,11 @@ int __cminpack_func__(fdjac1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, 
 	    }
 	    x[j] = wa2[j] + h;
 	}
-	iflag = fcn_nn(p, n, &x[1], &wa1[1], 1);
+	/* Pass iflag=2 to fcn (as in the dense branch above and in fdjac2) so the
+	   user function can distinguish Jacobian-evaluation calls from plain
+	   function evaluations; both fdjac1 branches must use the same value. The
+	   return value is stored in the local iflag and checked for termination. */
+	iflag = fcn_nn(p, n, &x[1], &wa1[1], 2);
 	if (iflag < 0) {
             return iflag;
 	}

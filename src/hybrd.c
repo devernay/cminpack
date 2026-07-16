@@ -227,7 +227,7 @@ int __cminpack_func__(hybrd)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, r
 /*     check the input parameters for errors. */
 
     if (n <= 0 || xtol < 0. || maxfev <= 0 || ml < 0 || mu < 0 ||
-	    factor <= 0. || ldfjac < n || lr < n * (n + 1) / 2) {
+	    factor <= 0. || ldfjac < n || (size_t)lr < (size_t)n * (n + 1) / 2) {
 	goto TERMINATE;
     }
     if (mode == 2) {

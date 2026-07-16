@@ -32,6 +32,21 @@ The project home page is at http://devernay.github.io/cminpack
 History
 ------
 
+* version 1.3.13 (16/07/2026):
+  - Fix a division by zero in `covar1` when the Jacobian rank equals the number
+    of residuals (m == rank, e.g. square full-rank problems), which produced
+    Inf/NaN throughout the covariance matrix
+  - Make the banded finite-difference branch of `fdjac1` call the user function
+    with iflag=2, like the dense branch, `fdjac2` and the FORTRAN version
+  - Fix the `USE_BLAS` Newton correction in `lmpar` to use all n components (it
+    was truncated to the original Jacobian rank, giving a wrong step for
+    rank-deficient problems)
+  - Fix the jpvt memset size in the `USE_LAPACK` `qrfac`, and make the
+    work-array size checks in `hybrd`, `hybrj`, `hybrd1`, `hybrj1` and `lmdif1`
+    overflow-safe (also in the f2c versions)
+  - Guard a harmless transient infinity in `dogleg` for rank-deficient
+    Jacobians (also in the f2c version)
+
 * version 1.3.12 (16/07/2026):
   - Fix non-convergence/NaN in `lmder`, `lmdif` and `lmstr` on problems whose
     solution is the zero vector, by guarding a 0/0 division in `lmpar` #76
