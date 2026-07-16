@@ -348,3 +348,14 @@ examples/ldtlmdif1_
 examples/ldtlmdif_
 examples/ldtlmstr1_
 examples/ldtlmstr_
+
+# comparison tool and self-checking tests (issues #37/#77, #76, #74)
+examples/cmpfiles
+examples/tissue76
+examples/stissue76
+examples/ldtissue76
+examples/htissue76
+examples/tcppwrap
+examples/stcppwrap
+examples/ldtcppwrap
+examples/htcppwrap
