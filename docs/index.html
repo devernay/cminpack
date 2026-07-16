@@ -228,7 +228,7 @@ which came from the FORTRAN version:</p>
 
 <h2>History</h2>
 <ul>
-  <li>1.3.12 (16/07/2026): Fix non-convergence/NaN in lmder, lmdif and lmstr on problems whose solution is the zero vector (guard a 0/0 division in lmpar). Compare test output using a numeric tolerance instead of an exact text match, so the tests pass across compilers and math libraries. Fix Windows DLL export/import macros and document CMINPACK_NO_DLL for static linking. Detect and link the CBLAS interface when USE_BLAS is enabled. Add cminpackcpp.hpp, a header-only C++ wrapper accepting lambdas, functors and std::function.</li>
+  <li>1.3.12 (16/07/2026): Fix non-convergence/NaN in lmder, lmdif and lmstr on problems whose solution is the zero vector (guard a 0/0 division in lmpar). Compare test output using a numeric tolerance instead of an exact text match, so the tests pass across compilers and math libraries. Fix Windows DLL export/import macros and document CMINPACK_NO_DLL for static linking. Detect and link the CBLAS interface when USE_BLAS is enabled. Add cminpackcpp.hpp, a header-only C++ wrapper accepting lambdas, functors and std::function. Make CMake the standard build system (the Makefile is kept for backward compatibility) and remove the unmaintained Xcode and Visual Studio project files. Move CI to GitHub Actions and remove the obsolete Travis CI, AppVeyor, Coveralls and Coverity configuration and badges.</li>
   <li>1.3.11 (13/09/2024): Bump installed version number to 1.3.11.</li>
   <li>1.3.10 (11/09/2024): Fix BLAS support and disable BLAS by default.</li>
   <li>1.3.9 (28/05/2024): Mainly CMake fixes.</li>

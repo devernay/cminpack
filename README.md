@@ -10,11 +10,15 @@ Check ftp://netlib.bell-labs.com/netlib/f2c for the latest
 f2c version. For general minpack info and test programs, see
 the accompanying readme.txt and http://www.netlib.org/minpack/.
 
-Type `make` to compile and `make install` to install in /usr/local
-or modify the makefile to suit your needs.
+CMake is the standard build system:
 
-This software has been tested on a RedHat 7.3 Linux machine -
-usual 'use at your own risk' warnings apply.
+    cmake -B build && cmake --build build
+
+and `ctest --test-dir build` runs the tests. See the project home page for
+build options (precision variants, BLAS/LAPACK, shared libraries). A plain
+`Makefile` is also provided for backward compatibility: type `make` to compile
+and `make install` to install in /usr/local, or modify the Makefile to suit
+your needs.
 
 Manolis Lourakis -- lourakis at ics forth gr, July 2002
 	Institute of Computer Science,
@@ -38,6 +42,11 @@ History
   - Detect and link the CBLAS interface when `USE_BLAS` is enabled #12
   - Add `cminpackcpp.hpp`, a header-only C++ wrapper so the solvers accept
     lambdas, functors and `std::function` #74
+  - Make CMake the standard build system (the `Makefile` is kept for backward
+    compatibility) and remove the unmaintained Xcode and Visual Studio project
+    files (`cminpack.xcodeproj`, `cminpack*.vcproj`/`.vcxproj`, `cminpack.sln`)
+  - Move CI to GitHub Actions and remove the obsolete Travis CI, AppVeyor,
+    Coveralls and Coverity configuration and badges
 
 * version 1.3.11 (13/09/2024):
   - Bump installed version number to 1.3.11 #75
