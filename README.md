@@ -46,6 +46,12 @@ History
     overflow-safe (also in the f2c versions)
   - Guard a harmless transient infinity in `dogleg` for rank-deficient
     Jacobians (also in the f2c version)
+  - Add a `USE_LAPACK` CMake option to build the LAPACK-based QR factorization
+    (`qrfac`), which was previously only reachable through the `Makefile`
+  - Exercise the BLAS and LAPACK builds in CI and run the full test suite
+    (including `tlmdifc`) for them; add the intensive driver programs
+    (`lmddrvc`, `lmfdrvc`, `lmsdrvc`, `hyjdrvc`, `hybdrvc`, `chkdrvc`) as smoke
+    tests and run the FORTRAN example tests in CI
 
 * version 1.3.12 (16/07/2026):
   - Fix non-convergence/NaN in `lmder`, `lmdif` and `lmstr` on problems whose
