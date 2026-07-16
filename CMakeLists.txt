@@ -29,6 +29,7 @@ enable_testing ()
 
 option (BUILD_SHARED_LIBS "Build shared libraries instead of static." OFF)
 option (USE_BLAS "Compile cminpack using Fortran BLAS library if possible" OFF)
+option (USE_LAPACK "Compile cminpack using LAPACK for the QR factorization (qrfac) if possible" OFF)
 set (CMINPACK_PRECISION "all" CACHE STRING "Precision variants to build ('s', 'd', 'ld', 'all')")
 
 #set (CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/../build)
@@ -125,6 +126,10 @@ if (USE_BLAS)
   endif ()
 endif ()
 
+if (USE_LAPACK)
+  find_package(LAPACK REQUIRED)
+endif ()
+
 foreach (cminpack_lib ${cminpack_libs})
   add_library (${cminpack_lib} ${cminpack_srcs})
   
@@ -179,6 +184,15 @@ foreach (cminpack_lib ${cminpack_libs})
     target_link_libraries (${cminpack_lib} PUBLIC ${BLAS_LIBRARIES})
     set_target_properties (${cminpack_lib} PROPERTIES LINK_FLAGS "${BLAS_LINKER_FLAGS}")
     target_compile_definitions (${cminpack_lib} PRIVATE USE_BLAS)
+  endif ()
+
+  # Link with LAPACK library if requested (used by qrfac)
+  if (USE_LAPACK)
+    if (${cminpack_lib} STREQUAL cminpackld)
+      message (SEND_ERROR "LAPACK cannot be used for the extended precision version")
+    endif ()
+    target_link_libraries (${cminpack_lib} PUBLIC ${LAPACK_LIBRARIES})
+    target_compile_definitions (${cminpack_lib} PRIVATE USE_LAPACK)
   endif ()
 
   install (TARGETS ${cminpack_lib} EXPORT CMinpackConfig
