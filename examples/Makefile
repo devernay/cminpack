@@ -1,5 +1,16 @@
 #!/usr/bin/make 
 
+# Tool used to compare test output against the reference files.
+# cmpfiles (built below from cmpfiles.c) is an in-tree, dependency-free
+# numeric comparator: it compares tokens with a relative/absolute tolerance,
+# which is portable across compilers, C runtimes and math libraries (the
+# least-significant digits of the printed results legitimately differ, see
+# issues #37 and #77). Alternatives (require the external "numdiff", or an
+# exact byte comparison) are kept below for reference.
+DIFF=diff -u
+DIFF=numdiff -a 1e-4 -r 1e-4
+DIFF=./cmpfiles
+
 # pick up your FORTRAN compiler
 #F77=g77
 F77=gfortran
@@ -144,6 +155,11 @@ CSRC=tchkderc.c thybrdc.c thybrd1c.c thybrjc.c thybrj1c.c tlmderc.c tlmder1c.c \
 CDRVSRC=lmddrv.c lmfdrv.c lmsdrv.c hyjdrv.c hybdrv.c
 REF=test.ref ctest.ref ftest.ref
 
+# cmpfiles is the tolerant numeric comparator used as $(DIFF). It is a
+# self-contained host tool and does not depend on the cminpack library.
+cmpfiles: cmpfiles.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ cmpfiles.c -lm
+
 all:
 	@echo "*****************************************************"
 	@echo "Please type 'make check' to run all tests at once, or:"
@@ -162,59 +178,59 @@ all:
 
 .PHONY: test ctest ctestdrv ctestlmdrv ctesthydrv ctestchkdrv ftest ftestdrv ftestlmdrv ftesthydrv ftestchkdrv check checkdoublec checkdouble checklongdoublec checklongdouble checkfloatc checkfloat checkhalfc checkhalf checkfail clean veryclean
 
-test: $(MINPACK) $(PGM)
+test: $(MINPACK) $(PGM) | cmpfiles
 	@echo "*** Running standard tests (calling MINPACK from C using $(MINPACK))"
-	for x in $(PGM); do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/`echo $$x.ref|sed -e s/_.ref/c.ref/` $$x.out ; done
+	for x in $(PGM); do echo $$x; $(VALGRIND) ./$$x > $$x.out; $(DIFF) ref/`echo $$x.ref|sed -e s/_.ref/c.ref/` $$x.out ; done
 
 testdrv: $(MINPACK) $(FDRVPGM) testlmdrv testhydrv testchkdrv
 
-testlmdrv: $(LIBSUFFIX)lmddrv_ $(LIBSUFFIX)lmfdrv_ $(LIBSUFFIX)lmsdrv_
+testlmdrv: $(LIBSUFFIX)lmddrv_ $(LIBSUFFIX)lmfdrv_ $(LIBSUFFIX)lmsdrv_ | cmpfiles
 	@echo "*** Running LM tests (calling MINPACK from C using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/ssq.data > $$x.out; diff -u ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/ssq.data > $$x.out; $(DIFF) ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
 
-testhydrv: $(LIBSUFFIX)hyjdrv_ $(LIBSUFFIX)hybdrv_
+testhydrv: $(LIBSUFFIX)hyjdrv_ $(LIBSUFFIX)hybdrv_ | cmpfiles
 	@echo "*** Running HY tests (calling MINPACK from C using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/neq.data > $$x.out; diff -u ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/neq.data > $$x.out; $(DIFF) ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
 
-testchkdrv: $(LIBSUFFIX)chkdrv_
+testchkdrv: $(LIBSUFFIX)chkdrv_ | cmpfiles
 	@echo "*** Running CHK tests (calling MINPACK from C using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; $(DIFF) ref/`echo $$x |sed -e s/_/c/`.ref $$x.out ; done
 
-ctest: $(MINPACK) $(CPGM)
+ctest: $(MINPACK) $(CPGM) | cmpfiles
 	@echo "*** Running standard tests (calling CMINPACK from C using $(MINPACK))"
-	for x in $(CPGM); do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $(CPGM); do echo $$x; $(VALGRIND) ./$$x > $$x.out; $(DIFF) ref/$$x.ref $$x.out ; done
 
 ctestdrv: $(MINPACK) $(CDRVPGM) ctestlmdrv ctesthydrv ctestchkdrv
 
-ctestlmdrv: $(LIBSUFFIX)lmddrvc $(LIBSUFFIX)lmfdrvc $(LIBSUFFIX)lmsdrvc
+ctestlmdrv: $(LIBSUFFIX)lmddrvc $(LIBSUFFIX)lmfdrvc $(LIBSUFFIX)lmsdrvc | cmpfiles
 	@echo "*** Running LM tests (calling CMINPACK from C using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/ssq.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/ssq.data > $$x.out; $(DIFF) ref/$$x.ref $$x.out ; done
 
-ctesthydrv: $(LIBSUFFIX)hyjdrvc $(LIBSUFFIX)hybdrvc
+ctesthydrv: $(LIBSUFFIX)hyjdrvc $(LIBSUFFIX)hybdrvc | cmpfiles
 	@echo "*** Running HY tests (calling CMINPACK from C using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/neq.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/neq.data > $$x.out; $(DIFF) ref/$$x.ref $$x.out ; done
 
-ctestchkdrv: $(LIBSUFFIX)chkdrvc
+ctestchkdrv: $(LIBSUFFIX)chkdrvc | cmpfiles
 	@echo "*** Running CHK tests (calling CMINPACK from C using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; $(DIFF) ref/$$x.ref $$x.out ; done
 
-ftest: $(MINPACK) $(FPGM)
+ftest: $(MINPACK) $(FPGM) | cmpfiles
 	@echo "*** Running standard tests (calling MINPACK from FORTRAN using $(MINPACK))"
-	for x in ${FPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in ${FPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; $(DIFF) ref/$$x.ref $$x.out ; done
 
 ftestdrv: $(MINPACK) $(DRVPGM) ftestlmdrv ftesthydrv ftestchkdrv
 
-ftestlmdrv: $(LIBSUFFIX)lmddrv $(LIBSUFFIX)lmfdrv $(LIBSUFFIX)lmsdrv
+ftestlmdrv: $(LIBSUFFIX)lmddrv $(LIBSUFFIX)lmfdrv $(LIBSUFFIX)lmsdrv | cmpfiles
 	@echo "*** Running LM tests (calling MINPACK from FORTRAN using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/ssq.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/ssq.data > $$x.out; $(DIFF) ref/$$x.ref $$x.out ; done
 
-ftesthydrv: $(LIBSUFFIX)hyjdrv $(LIBSUFFIX)hybdrv
+ftesthydrv: $(LIBSUFFIX)hyjdrv $(LIBSUFFIX)hybdrv | cmpfiles
 	@echo "*** Running HY tests (calling MINPACK from FORTRAN using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/neq.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/neq.data > $$x.out; $(DIFF) ref/$$x.ref $$x.out ; done
 
-ftestchkdrv: $(LIBSUFFIX)chkdrv
+ftestchkdrv: $(LIBSUFFIX)chkdrv | cmpfiles
 	@echo "*** Running CHK tests (calling MINPACK from FORTRAN using $(MINPACK))"
-	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; diff -u ref/$$x.ref $$x.out ; done
+	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; $(DIFF) ref/$$x.ref $$x.out ; done
 
 check: checkdouble checklongdouble checkfloat
 
@@ -309,7 +325,7 @@ checkfail: ../fortran/libminpack.a check
 	$(MAKE) -C ../fortran
 
 clean:
-	-rm -f $(PGM) $(FDRVPGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(FPGM)
+	-rm -f $(PGM) $(FDRVPGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(FPGM) cmpfiles
 
 veryclean: clean
 	-rm -f *.o *.gcno *.gcda *.out *~ #*#

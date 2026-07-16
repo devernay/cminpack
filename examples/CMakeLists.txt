@@ -11,7 +11,8 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
   set (FPGM tchkder thybrd thybrd1 thybrj thybrj1 tlmder tlmder1 tlmdif tlmdif1 tlmstr tlmstr1)
   set (CPGM ${FPGM} tfdjac2)
 
-  # cmpfiles could be used by runtest.cmake... for now it's unused
+  # cmpfiles is used by runtest.cmake to compare test output to the
+  # reference with a numeric tolerance (portable across platforms).
   add_executable (cmpfiles cmpfiles.c)
 
   # inspired by http://www.netlib.org/clapack/clapack-3.2.1-CMAKE/TESTING/CMakeLists.txt
@@ -24,6 +25,7 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
       -DTEST=$<TARGET_FILE:${testname}>
       -DOUTPUT=${TEST_OUTPUT} 
       -DREFERENCE=${TEST_REFERENCE} 
+      -DCMPFILES=$<TARGET_FILE:cmpfiles>
       -DINTDIR=${CMAKE_CFG_INTDIR}
       -P "${CMINPACK_SOURCE_DIR}/examples/runtest.cmake")
   endmacro()

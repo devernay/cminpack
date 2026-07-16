@@ -25,10 +25,19 @@ execute_process(COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} ${TEST}
 if(NOT ${RET} EQUAL 0)
   message(FATAL_ERROR "Test ${TEST} returned ${RET}")
 endif()
-# result with reference
-execute_process(COMMAND "${CMAKE_COMMAND}"
-  -E compare_files --ignore-eol "${OUTPUT}" "${REFERENCE}"
-  RESULT_VARIABLE RET)
+# compare result with reference, using a numeric tolerance where possible.
+# CMPFILES (built from cmpfiles.c) does a token-by-token comparison with a
+# relative/absolute tolerance, which is portable across compilers and math
+# libraries (see cminpack issues #37 and #77). If it is not available, fall
+# back to an exact byte comparison.
+if(CMPFILES AND EXISTS "${CMPFILES}")
+  execute_process(COMMAND "${CMPFILES}" "${OUTPUT}" "${REFERENCE}"
+    RESULT_VARIABLE RET)
+else()
+  execute_process(COMMAND "${CMAKE_COMMAND}"
+    -E compare_files --ignore-eol "${OUTPUT}" "${REFERENCE}"
+    RESULT_VARIABLE RET)
+endif()
 # if the test does not return 0, then fail it
 if(NOT ${RET} EQUAL 0)
   message(FATAL_ERROR "Test ${TEST} produced a result which is different from the reference}")
