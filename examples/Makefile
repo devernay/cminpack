@@ -24,7 +24,7 @@ F77=gfortran
 MINPACK=../libcminpack$(LIBSUFFIX).a
 CC=gcc
 CFLAGS=-g -Wall
-CPPFLAGS=-I..
+CPPFLAGS=-I../include
 
 FMINPACK=../fortran/libminpack.a
 

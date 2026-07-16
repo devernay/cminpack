@@ -3,7 +3,7 @@ option (BUILD_EXAMPLES_FORTRAN "Build the FORTRAN examples and tests." OFF)
 
 if (BUILD_EXAMPLES AND TARGET cminpack)
   # Make sure the compiler can find include files from our cminpack library.
-  include_directories (${CMINPACK_SOURCE_DIR})
+  include_directories (${CMINPACK_SOURCE_DIR}/include)
 
   # Make sure the linker can find the cminpack library once it is built.
   link_directories (${CMINPACK_BINARY_DIR})

@@ -4,6 +4,11 @@ VERSION=1.3.12
 CC=gcc
 CFLAGS= -O3 -g -Wall -Wextra
 
+# Public headers live in include/; sources in src/ (pure C) and src/f2c/ (f2c
+# conversions); internal headers (cminpackP.h, minpackP.h) live in src/.
+VPATH = src src/f2c
+INCLUDES = -Iinclude -Isrc
+
 ### The default configuration is to compile the double precision version
 
 ### configuration for the LAPACK/BLAS (double precision) version:
@@ -86,17 +91,17 @@ $(LIB):  $(OBJS)
 	$(AR) r $@ $(OBJS); $(RANLIB) $@
 
 $(LIBSUFFIX)%.o: %.c
-	${CC} ${CFLAGS} -c -o $@ $<
+	${CC} ${CFLAGS} ${INCLUDES} -c -o $@ $<
 
 install: $(LIB)
 	cp $(LIB) ${DESTDIR}/lib
 	chmod 644 ${DESTDIR}/lib/$(LIB)
 	$(RANLIB) -t ${DESTDIR}/lib/$(LIB) # might be unnecessary
-	cp minpack.h ${DESTDIR}/include
+	cp include/minpack.h ${DESTDIR}/include
 	chmod 644 ${DESTDIR}/include/minpack.h
-	cp cminpack.h ${DESTDIR}/include
+	cp include/cminpack.h ${DESTDIR}/include
 	chmod 644 ${DESTDIR}/include/cminpack.h
-	cp cminpackcpp.hpp ${DESTDIR}/include
+	cp include/cminpackcpp.hpp ${DESTDIR}/include
 	chmod 644 ${DESTDIR}/include/cminpackcpp.hpp
 
 clean:

@@ -1,5 +1,5 @@
 CC=nvcc
-CFLAGS= --compile  -I..
+CFLAGS= --compile  -I../include -I../src
 
 SOURCES = $(wildcard *.cu)
 OBJECTS = $(SOURCES:.cu=.o)

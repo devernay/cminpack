@@ -38,17 +38,17 @@ if (NOT "${CMAKE_PREFIX_PATH}" STREQUAL "")
 endif ()
 
 set (cminpack_srcs
-  cminpack.h cminpackP.h
-  chkder.c  enorm.c   hybrd1.c  hybrj.c   lmdif1.c  lmstr1.c  qrfac.c   r1updt.c
-  dogleg.c  fdjac1.c  hybrd.c   lmder1.c  lmdif.c   lmstr.c   qrsolv.c  rwupdt.c
-  dpmpar.c  fdjac2.c  hybrj1.c  lmder.c   lmpar.c   qform.c   r1mpyq.c  covar.c covar1.c
-  minpack.h
-  chkder_.c enorm_.c  hybrd1_.c hybrj_.c  lmdif1_.c lmstr1_.c qrfac_.c  r1updt_.c
-  dogleg_.c fdjac1_.c hybrd_.c  lmder1_.c lmdif_.c  lmstr_.c  qrsolv_.c rwupdt_.c
-  dpmpar_.c fdjac2_.c hybrj1_.c lmder_.c  lmpar_.c  qform_.c  r1mpyq_.c covar_.c
+  include/cminpack.h src/cminpackP.h
+  src/chkder.c  src/enorm.c   src/hybrd1.c  src/hybrj.c   src/lmdif1.c  src/lmstr1.c  src/qrfac.c   src/r1updt.c
+  src/dogleg.c  src/fdjac1.c  src/hybrd.c   src/lmder1.c  src/lmdif.c   src/lmstr.c   src/qrsolv.c  src/rwupdt.c
+  src/dpmpar.c  src/fdjac2.c  src/hybrj1.c  src/lmder.c   src/lmpar.c   src/qform.c   src/r1mpyq.c  src/covar.c src/covar1.c
+  include/minpack.h src/minpackP.h
+  src/f2c/chkder_.c src/f2c/enorm_.c  src/f2c/hybrd1_.c src/f2c/hybrj_.c  src/f2c/lmdif1_.c src/f2c/lmstr1_.c src/f2c/qrfac_.c  src/f2c/r1updt_.c
+  src/f2c/dogleg_.c src/f2c/fdjac1_.c src/f2c/hybrd_.c  src/f2c/lmder1_.c src/f2c/lmdif_.c  src/f2c/lmstr_.c  src/f2c/qrsolv_.c src/f2c/rwupdt_.c
+  src/f2c/dpmpar_.c src/f2c/fdjac2_.c src/f2c/hybrj1_.c src/f2c/lmder_.c  src/f2c/lmpar_.c  src/f2c/qform_.c  src/f2c/r1mpyq_.c src/f2c/covar_.c
   )
 set (cminpack_hdrs
-  cminpack.h cminpackcpp.hpp minpack.h)
+  include/cminpack.h include/cminpackcpp.hpp include/minpack.h)
 
 include (CheckTypeSize)
 check_type_size ("double" SIZEOF_DOUBLE)
@@ -150,10 +150,12 @@ foreach (cminpack_lib ${cminpack_libs})
     target_compile_definitions (${cminpack_lib} PUBLIC CMINPACK_NO_DLL)
   endif ()
 
-  target_include_directories (${cminpack_lib} INTERFACE
-    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
-    $<INSTALL_INTERFACE:${CMINPACK_INCLUDE_INSTALL_DIR}/>
-    )
+  target_include_directories (${cminpack_lib}
+    PUBLIC
+      $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+      $<INSTALL_INTERFACE:${CMINPACK_INCLUDE_INSTALL_DIR}/>
+    PRIVATE
+      ${PROJECT_SOURCE_DIR}/src)
 
   if (${CMAKE_SYSTEM_NAME} STREQUAL "FreeBSD")
     target_link_libraries (${cminpack_lib} PUBLIC m)

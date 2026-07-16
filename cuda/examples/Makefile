@@ -3,7 +3,7 @@ SOURCES = $(wildcard t*.cu)
 TEST_PROGRAMS = $(SOURCES:.cu=)
 
 CC=nvcc
-CFLAGS=  -I.. -I../..
+CFLAGS=  -I.. -I../../include -I../../src
 
 all:
 	@echo    make cudatest, make clean
