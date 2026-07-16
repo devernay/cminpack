@@ -1,4 +1,4 @@
-C/C++ Minpack [![Ubuntu CI](https://github.com/devernay/cminpack/actions/workflows/ubuntu-cminpack-install.yaml/badge.svg)](https://github.com/devernay/cminpack/actions/workflows/ubuntu-cminpack-install.yaml) [![Windows MSVC CI](https://github.com/devernay/cminpack/actions/workflows/windows-visual-studio-cminpack-install.yaml/badge.svg)](https://github.com/devernay/cminpack/actions/workflows/windows-visual-studio-cminpack-install.yaml) [![Windows MSYS2 CI](https://github.com/devernay/cminpack/actions/workflows/msys2-cminpack-install.yaml/badge.svg)](https://github.com/devernay/cminpack/actions/workflows/msys2-cminpack-install.yaml)
+C/C++ Minpack [![Ubuntu CI](https://github.com/devernay/cminpack/actions/workflows/ubuntu-cminpack-install.yaml/badge.svg)](https://github.com/devernay/cminpack/actions/workflows/ubuntu-cminpack-install.yaml) [![Windows MSVC CI](https://github.com/devernay/cminpack/actions/workflows/windows-visual-studio-cminpack-install.yaml/badge.svg)](https://github.com/devernay/cminpack/actions/workflows/windows-visual-studio-cminpack-install.yaml) [![Windows MSYS2 CI](https://github.com/devernay/cminpack/actions/workflows/msys2-cminpack-install.yaml/badge.svg)](https://github.com/devernay/cminpack/actions/workflows/msys2-cminpack-install.yaml) [![AppVeyor CI](https://ci.appveyor.com/api/projects/status/github/devernay/cminpack?svg=true)](https://ci.appveyor.com/project/devernay/cminpack)
 ==========
 
 This is a C version of the minpack minimization package.
@@ -46,8 +46,9 @@ History
     compatibility) and remove the unmaintained Xcode, Visual Studio and Eclipse
     project files (`cminpack.xcodeproj`, `cminpack*.vcproj`/`.vcxproj`,
     `cminpack.sln`, `.cproject`, `.project`)
-  - Move CI to GitHub Actions and remove the obsolete Travis CI, AppVeyor,
-    Coveralls and Coverity configuration and badges
+  - Move CI to GitHub Actions (keeping the CMake-based AppVeyor build) and
+    remove the obsolete Travis CI, Coveralls and Coverity configuration and
+    badges
 
 * version 1.3.11 (13/09/2024):
   - Bump installed version number to 1.3.11 #75
