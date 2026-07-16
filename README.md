@@ -28,6 +28,12 @@ The project home page is at http://devernay.github.io/cminpack
 History
 ------
 
+* version 1.3.12 (16/07/2026):
+  - Fix non-convergence/NaN in `lmder`, `lmdif` and `lmstr` on problems whose
+    solution is the zero vector, by guarding a 0/0 division in `lmpar` #76
+  - Compare test output using a numeric tolerance instead of an exact text
+    match, so the tests pass across compilers and math libraries #37 #77
+
 * version 1.3.11 (13/09/2024):
   - Bump installed version number to 1.3.11 #75
 
