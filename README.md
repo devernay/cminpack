@@ -43,8 +43,9 @@ History
   - Add `cminpackcpp.hpp`, a header-only C++ wrapper so the solvers accept
     lambdas, functors and `std::function` #74
   - Make CMake the standard build system (the `Makefile` is kept for backward
-    compatibility) and remove the unmaintained Xcode and Visual Studio project
-    files (`cminpack.xcodeproj`, `cminpack*.vcproj`/`.vcxproj`, `cminpack.sln`)
+    compatibility) and remove the unmaintained Xcode, Visual Studio and Eclipse
+    project files (`cminpack.xcodeproj`, `cminpack*.vcproj`/`.vcxproj`,
+    `cminpack.sln`, `.cproject`, `.project`)
   - Move CI to GitHub Actions and remove the obsolete Travis CI, AppVeyor,
     Coveralls and Coverity configuration and badges
 
