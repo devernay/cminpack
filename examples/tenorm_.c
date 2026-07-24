@@ -41,14 +41,17 @@ int main()
   real* x;
   real norm;
   real agiant;
+  /* dpmpar uses the FORTRAN/f2c calling convention (__minpack_func__), which
+     takes the index by pointer, so pass the address of an int -- not a literal. */
+  int i2 = 2, i3 = 3;
 
-  real rdwarf = sqrt(__minpack_func__(dpmpar)(2)*SQRTFAC) * FAC;
-  real rgiant = sqrt(__minpack_func__(dpmpar)(3)) / FAC;
+  real rdwarf = sqrt(__minpack_func__(dpmpar)(&i2)*SQRTFAC) * FAC;
+  real rgiant = sqrt(__minpack_func__(dpmpar)(&i3)) / FAC;
 #ifdef __cminpack_long_double__
-  printf ("dpmpar(2) = %18.7Lg, dpmpar(3) = %18.7Lg\n", __minpack_func__(dpmpar)(2), __minpack_func__(dpmpar)(3));
+  printf ("dpmpar(2) = %18.7Lg, dpmpar(3) = %18.7Lg\n", __minpack_func__(dpmpar)(&i2), __minpack_func__(dpmpar)(&i3));
   printf ("rdwarf = %.19Lg, rgiant = %.19Lg\n", rdwarf, rgiant);
 #else
-  printf ("dpmpar(2) = %15.7g, dpmpar(3) = %15.7g\n", (double)__minpack_func__(dpmpar)(2), (double)__minpack_func__(dpmpar)(3));
+  printf ("dpmpar(2) = %15.7g, dpmpar(3) = %15.7g\n", (double)__minpack_func__(dpmpar)(&i2), (double)__minpack_func__(dpmpar)(&i3));
   printf ("rdwarf = %.16g, rgiant = %.16g\n", (double)rdwarf, (double)rgiant);
 #endif
 

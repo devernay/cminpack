@@ -27,15 +27,15 @@
     http://www.netlib.org/slatec/src/enorm.f
   These give rdwarf**2 ~ 1.5e-39 and rgiant**2 ~ 1.7e38, i.e. they are sized for
   a machine whose dynamic range is about 1e+-38. MINPACK dates from 1980, before
-  IEEE 754 (1985): at the time the worst-case "double precision" in wide use --
+  IEEE 754 (1985). Back then the worst-case "double precision" in wide use --
   notably the DEC VAX D_floating format -- had the *same* exponent range as
-  single precision (~1e+-38, only more mantissa bits), so a single conservative
-  pair of constants was chosen to be portable "for every known computer".
+  single precision (~1e+-38, with only more mantissa bits). A single conservative
+  pair of constants was therefore chosen to be portable "for every known
+  computer".
 
   On IEEE 754 those constants are safe but far too conservative:
-    - in IEEE single (FLT_MIN ~ 1.18e-38), rdwarf**2 ~ 1.5e-39 actually
-      UNDERFLOWS, violating the constraint above (rdwarf 3.834e-20 is below
-      sqrt(FLT_MIN) = 1.084e-19);
+    - in IEEE single, rdwarf = 3.834e-20 is below sqrt(FLT_MIN) = 1.084e-19, so
+      rdwarf**2 ~ 1.5e-39 UNDERFLOWS, violating the constraint above;
     - in IEEE double (DBL_MIN ~ 2.2e-308, DBL_MAX ~ 1.8e308) the usable middle
       band spans ~1e+-308, but 3.834e-20/1.304e19 restrict it to ~1e+-38 and so
       needlessly rescale many components.
@@ -50,20 +50,29 @@
   (half cminpack is only a proof of concept). The values below are those
   formulas evaluated per type; see examples/tenorm*.c, which prints them.
 
-  Consequence -- why cminpack's double enorm differs from FORTRAN MINPACK:
+  Consequence -- why cminpack's double enorm can differ from FORTRAN MINPACK:
   because the middle-band boundary differs, a vector with very small
   (< 3.834e-20) or very large (> 1.304e19) components is bucketed differently
-  and its Euclidean norm can differ in the last bit. Both norms are equally
-  correct. This is the *only* source of numerical divergence between cminpack
-  and the original FORTRAN: with the Argonne constants restored, cminpack (both
-  the pure-C and the f2c sources) reproduces the FORTRAN results bit for bit,
-  and every other routine is already identical (the pure-C and f2c versions are
-  themselves bit-identical). The last-bit norm difference is invisible to the
-  Levenberg-Marquardt solvers, but because the hybrd/hybrj dogleg trust-region
-  test compares norms it can make those two solvers take a slightly different
-  number of iterations, function and Jacobian evaluations on a few hard
-  problems whose residual drives components far outside [3.834e-20, 1.304e19].
-  cminpack keeps the IEEE-appropriate constants deliberately.
+  and its Euclidean norm can then differ in the last bit. Both norms are equally
+  correct. cminpack's own pure-C and f2c sources are, however, bit-identical to
+  each other at every precision (verified by examples/crosscheck.py).
+
+  These constants are NOT the main reason cminpack and the original FORTRAN take
+  different iteration counts on the harder test problems. Aligning them
+  (restoring the Argonne values here) does not reproduce the FORTRAN runs: many
+  of the difficult More/Garbow/Hillstrom problems (the intensive driver programs
+  under examples/) still diverge, and enorm-insensitive drivers such as lmddrv
+  diverge by the same amount either way. dpmpar returns identical machine constants on both sides, so the
+  convergence tolerance is not involved. The dominant cause is floating-point
+  contraction: gcc and gfortran fuse "a*b + c" into a fused multiply-add (FMA) at
+  different places, so intermediate values differ by one ULP. Building both
+  compilers with -ffp-contract=off removes most of the divergence; the small
+  residual is chaotic amplification of last-bit differences over hundreds of
+  iterations on ill-conditioned problems, where a single ULP can flip a
+  trust-region accept/reject decision and send the two runs to different -- but
+  equally valid -- results. Every affected problem still converges. cminpack
+  keeps the IEEE-appropriate constants deliberately; see README.md, section
+  "Numerical differences from FORTRAN MINPACK".
 */
 #define double_dwarf (1.82691291192569e-153)
 #define double_giant (1.34078079299426e+153)

@@ -90,6 +90,60 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
   add_minpack_driver_smoketest (hyjdrvc neq.data)
   add_minpack_driver_smoketest (hybdrvc neq.data)
   add_minpack_driver_smoketest (chkdrvc chkder.data)
+
+  # Cross-check: the pure-C and f2c implementations MUST be byte-identical at
+  # double precision -- the one strict cminpack invariant. This reuses the same
+  # Python comparator as the Makefile route (examples/compare.py), so both build
+  # systems enforce the invariant. It needs a Python 3 interpreter; if none is
+  # found the cross-check tests are skipped (the rest of the build is
+  # unaffected). Long double/float and vs-FORTRAN differences are informational
+  # and are left to examples/crosscheck.py (see README.md).
+  option (CMINPACK_CROSSCHECK "Add the pure-C vs f2c cross-check tests (needs Python 3)." ON)
+  find_package (Python3 COMPONENTS Interpreter QUIET)
+  if (CMINPACK_CROSSCHECK AND Python3_Interpreter_FOUND)
+    add_executable (lmddrv_ lmddrv_.c ssqipt.c ssqfcn.c ssqjac.c)
+    add_executable (lmfdrv_ lmfdrv_.c ssqipt.c ssqfcn.c)
+    add_executable (lmsdrv_ lmsdrv_.c ssqipt.c ssqfcn.c ssqjac.c)
+    add_executable (hyjdrv_ hyjdrv_.c neqipt.c vecfcn.c vecjac.c)
+    add_executable (hybdrv_ hybdrv_.c neqipt.c vecfcn.c)
+    add_executable (chkdrv_ chkdrv_.c neqipt.c vecfcn.c errjac.c)
+    foreach (drv lmddrv_ lmfdrv_ lmsdrv_ hyjdrv_ hybdrv_ chkdrv_)
+      target_link_libraries (${drv} cminpack)
+    endforeach ()
+
+    macro (add_crosscheck name purec f2c inputfile)
+      add_test (NAME ${name} COMMAND "${CMAKE_COMMAND}"
+        -DCMAKE_CROSSCOMPILING_EMULATOR=${CMAKE_CROSSCOMPILING_EMULATOR}
+        -DPURE=$<TARGET_FILE:${purec}>
+        -DF2C=$<TARGET_FILE:${f2c}>
+        -DINPUT=${CMINPACK_SOURCE_DIR}/examples/testdata/${inputfile}
+        -DOUT_PURE=${CMINPACK_BINARY_DIR}/examples/${name}.pure.out
+        -DOUT_F2C=${CMINPACK_BINARY_DIR}/examples/${name}.f2c.out
+        -DPYTHON=${Python3_EXECUTABLE}
+        -DCOMPARE=${CMINPACK_SOURCE_DIR}/examples/compare.py
+        -DINTDIR=${CMAKE_CFG_INTDIR}
+        -P "${CMINPACK_SOURCE_DIR}/examples/runcrosscheck.cmake")
+    endmacro ()
+
+    add_crosscheck (crosscheck_lmddrv lmddrvc lmddrv_ ssq.data)
+    add_crosscheck (crosscheck_lmfdrv lmfdrvc lmfdrv_ ssq.data)
+    add_crosscheck (crosscheck_lmsdrv lmsdrvc lmsdrv_ ssq.data)
+    add_crosscheck (crosscheck_hyjdrv hyjdrvc hyjdrv_ neq.data)
+    add_crosscheck (crosscheck_hybdrv hybdrvc hybdrv_ neq.data)
+    add_crosscheck (crosscheck_chkdrv chkdrvc chkdrv_ chkder.data)
+    message (STATUS "cminpack tests: pure-C vs f2c cross-check ENABLED (Python 3 found).")
+  elseif (CMINPACK_CROSSCHECK)
+    # Python 3 is NOT required to build cminpack, and it is not needed for the
+    # standard tests (which use the C tool cmpfiles) or the driver smoke tests
+    # (pure CMake). It is only needed for the pure-C vs f2c cross-check, so we
+    # skip just that part and let everything else run.
+    message (WARNING
+      "Python 3 was not found: the pure-C vs f2c cross-check tests are SKIPPED. "
+      "The build and the rest of the test suite (standard tests + driver smoke "
+      "tests) are unaffected, but `ctest` coverage is INCOMPLETE -- it will not "
+      "verify that the pure-C and f2c implementations produce identical results. "
+      "Install Python 3 (or use the Makefile's `make check`) for full coverage.")
+  endif ()
 endif ()
 
 if (BUILD_EXAMPLES_FORTRAN AND TARGET cminpack)

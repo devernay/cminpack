@@ -29,6 +29,81 @@ Repackaging by Frederic Devernay -- frederic dot devernay at m4x dot org
 
 The project home page is at http://devernay.github.io/cminpack
 
+Testing
+-------
+
+Two test routes are available:
+
+- **CMake / CTest** (recommended): after building, run `ctest --test-dir build`.
+  This runs the standard example tests (compared against `examples/ref/*.ref`
+  with the dependency-free C tool `cmpfiles`), the self-checking regression
+  tests, the intensive driver programs as smoke tests (run to completion, no
+  NaN), and — when Python 3 is available — the pure-C-vs-f2c cross-check. Set
+  `-DCMINPACK_CROSSCHECK=OFF` to disable that cross-check.
+- **Makefile**: `make check` runs the standard tests for the double, long
+  double and float builds, then `make crosscheck`. The double standard tests
+  are strict (a failure fails the build); the long double and float tests are
+  informational.
+
+The cross-check (`examples/crosscheck.py`) verifies the one strict,
+deterministic invariant — the pure-C and f2c implementations are byte-identical
+at double precision. Differences against the original FORTRAN MINPACK, and
+single/extended-precision iteration-path differences, are reported for
+information only (see the next section).
+
+**Python 3 is optional.** It is not needed to build cminpack, nor for the
+standard or smoke tests (which use `cmpfiles`); only the cross-check uses it
+(via `examples/compare.py` and `examples/driver_check.py`). When Python 3 is
+missing, both build systems skip only that cross-check — printing a disclaimer
+that coverage is incomplete — and run everything else.
+
+Numerical differences from FORTRAN MINPACK
+------------------------------------------
+
+On the difficult test problems (the Moré/Garbow/Hillstrom functions exercised
+by the intensive driver programs `examples/*drv*`), cminpack and the original
+FORTRAN MINPACK can report different iteration, function- and
+Jacobian-evaluation counts, and last-digit differences in the results. **This
+is expected and harmless: the problems still converge to equally valid
+solutions.** Test messages reporting such differences are normal, not a sign of
+a broken build.
+
+The difficult test problems themselves are from Moré, Garbow & Hillstrom,
+*Testing Unconstrained Optimization Software*, ACM TOMS 7(1):17-41 (1981)
+([doi:10.1145/355934.355936](https://doi.org/10.1145/355934.355936); free
+open-access technical report ANL-AMD-TM-324:
+<https://www.osti.gov/servlets/purl/6650344>), and the companion Algorithm 566,
+ACM TOMS 7(1):136-140 (1981)
+([doi:10.1145/355934.355943](https://doi.org/10.1145/355934.355943)). They are
+defined in `examples/ssqfcn.c` (least squares) and `examples/vecfcn.c` (systems
+of equations); the driver programs run each one from progressively harder
+starting points (`x0`, `10*x0`, `100*x0`), so the hardest problems (e.g.
+problem 10, the Meyer function) are deliberately pushed to non-convergence.
+
+The differences do *not* come from the algorithm:
+
+- `dpmpar` returns identical machine constants on both sides, so the convergence
+  tolerance is the same.
+- cminpack's own pure-C and f2c builds are bit-identical to each other.
+- The dominant cause is floating-point contraction: `gcc` and `gfortran` fuse
+  `a*b + c` into a fused multiply-add (FMA) at different places, so intermediate
+  values differ by one unit in the last place (ULP). On ill-conditioned problems
+  a single ULP early in the iteration can flip a trust-region accept/reject
+  decision, and the two runs then follow different paths to (equally valid)
+  results. Compiling both sides with `-ffp-contract=off` removes most of the
+  divergence.
+
+(The `enorm` scaling constants `rdwarf`/`rgiant`, which cminpack tunes to the
+IEEE range rather than MINPACK's 1980 values, are a separate and minor effect:
+they only change the norm of out-of-range vectors in the last bit. See
+[`src/enorm.c`](src/enorm.c) for the full explanation.)
+
+Because of this, `examples/crosscheck.py` and `make check` treat **pure-C ==
+f2c** as the strict, deterministic invariant — a mismatch there is a real bug
+and fails the build — while differences against the original FORTRAN, and
+single/extended-precision driver differences, are reported for information only
+and never fail the build.
+
 History
 ------
 

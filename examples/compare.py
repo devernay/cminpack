@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 """Tolerant numeric comparison for cminpack test output.
 
-This compares two text files token by token and reports only the differences
-that actually matter, ignoring the last-significant-digit and formatting noise
-that legitimately varies between compilers, C runtimes and math libraries (see
-issues #37 and #77). It is a smarter companion to the in-tree C tool
-``cmpfiles`` (which stays dependency-free); use this when you want a clear,
-categorised report -- in particular for cross-version comparison (FORTRAN vs
-f2c vs pure C), where iteration counts, function-evaluation counts and
-Jacobian-evaluation counts are expected to be *identical* and only the printed
-floating-point values may differ in the last digit.
+Compares two text files token by token and reports only the differences that
+actually matter. It ignores last-digit and formatting noise -- the kind that
+legitimately varies between compilers, C runtimes and math libraries (see
+issues #37 and #77). It is a higher-level companion to the in-tree C tool
+``cmpfiles`` (which stays dependency-free): use it when you want a clear,
+categorised report, especially for cross-version comparison (FORTRAN vs f2c vs
+pure C), where the integer counts (iterations, nfev, njev) must be identical and
+only the printed floating-point values may differ in the last digit.
 
 Tokens are classified and compared as follows:
 
@@ -17,9 +16,9 @@ Tokens are classified and compared as follows:
   the structurally meaningful counts (iterations, nfev, njev, exit codes), so a
   mismatch is a real ("structural") difference. Pass --int-tol to relax.
 * floating-point numbers          -- compared with a relative tolerance
-  (--rtol) and an absolute tolerance (--atol). Two values that are both within
-  --atol of zero are treated as equal (near-zero noise). A relative difference
-  above --rtol on non-near-zero values is a real ("numeric") difference.
+  (--rtol) and an absolute tolerance (--atol). Two values are equal if they
+  differ by at most --atol (which also absorbs near-zero noise); otherwise a
+  relative difference above --rtol is a real ("numeric") difference.
 * everything else                 -- compared as text (whitespace-insensitive).
 
 Exit status is 0 when the files are equal up to tolerance, 1 when a difference
@@ -28,6 +27,7 @@ status is produced.
 """
 
 import argparse
+import math
 import re
 import sys
 
@@ -95,6 +95,15 @@ def compare(path_a, path_b, rtol, atol, int_tol):
             fa_ = _as_float(a)
             fb_ = _as_float(b)
             if fa_ is not None and fb_ is not None:
+                # non-finite (e.g. an overflowing 1e999): compare directly,
+                # never via a ratio -- inf/inf is NaN and would slip through as
+                # "equal".
+                if not (math.isfinite(fa_) and math.isfinite(fb_)):
+                    if fa_ == fb_:
+                        continue
+                    diffs.append(Diff(ln, col, "numeric", a, b,
+                                      "non-finite value differs"))
+                    continue
                 # both near zero -> noise, treat as equal
                 if abs(fa_) <= atol and abs(fb_) <= atol:
                     continue
@@ -120,7 +129,8 @@ def main(argv=None):
     p.add_argument("--rtol", type=float, default=1e-2,
                    help="relative tolerance for floating-point tokens (default 1e-2)")
     p.add_argument("--atol", type=float, default=1e-4,
-                   help="absolute/near-zero tolerance for floats (default 1e-4)")
+                   help="absolute tolerance for floats: values within --atol are "
+                        "equal, which also absorbs near-zero noise (default 1e-4)")
     p.add_argument("--int-tol", type=int, default=0,
                    help="max allowed difference between integer tokens "
                         "(default 0 = must match exactly; these are the "

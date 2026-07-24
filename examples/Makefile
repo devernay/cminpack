@@ -15,6 +15,14 @@ DIFF=./cmpfiles
 #F77=g77
 F77=gfortran
 
+# Python 3 is optional. It is NOT needed to build cminpack, nor for the standard
+# tests or driver smoke tests (which use the C tool cmpfiles). It is only needed
+# for `make crosscheck` (the pure-C vs f2c cross-check via crosscheck.py, which
+# uses compare.py and driver_check.py). If it is unavailable that one check is
+# skipped with a disclaimer; everything else still runs.
+PYTHON ?= python3
+HAVE_PYTHON := $(shell command -v $(PYTHON) >/dev/null 2>&1 && echo yes || echo no)
+
 # uncomment the following for FORTRAN MINPACK
 #MINPACK=-lminpack
 #F77C=$(F77)
@@ -187,7 +195,7 @@ all:
 
 test: $(MINPACK) $(PGM) | cmpfiles
 	@echo "*** Running standard tests (calling MINPACK from C using $(MINPACK))"
-	for x in $(PGM); do echo $$x; $(VALGRIND) ./$$x > $$x.out; $(DIFF) ref/`echo $$x.ref|sed -e s/_.ref/c.ref/` $$x.out ; done
+	@fail=0; for x in $(PGM); do echo $$x; $(VALGRIND) ./$$x > $$x.out; $(DIFF) ref/`echo $$x.ref|sed -e s/_.ref/c.ref/` $$x.out || fail=1 ; done; exit $$fail
 
 testdrv: $(MINPACK) $(FDRVPGM) testlmdrv testhydrv testchkdrv
 
@@ -205,7 +213,7 @@ testchkdrv: $(LIBSUFFIX)chkdrv_ | cmpfiles
 
 ctest: $(MINPACK) $(CPGM) $(LIBSUFFIX)tissue76 $(LIBSUFFIX)tcppwrap | cmpfiles
 	@echo "*** Running standard tests (calling CMINPACK from C using $(MINPACK))"
-	for x in $(CPGM); do echo $$x; $(VALGRIND) ./$$x > $$x.out; $(DIFF) ref/$$x.ref $$x.out ; done
+	@fail=0; for x in $(CPGM); do echo $$x; $(VALGRIND) ./$$x > $$x.out; $(DIFF) ref/$$x.ref $$x.out || fail=1 ; done; exit $$fail
 	@echo "*** Running issue #76 regression test (self-checking)"
 	$(VALGRIND) ./$(LIBSUFFIX)tissue76
 	@echo "*** Running C++ wrapper test (self-checking)"
@@ -227,7 +235,7 @@ ctestchkdrv: $(LIBSUFFIX)chkdrvc | cmpfiles
 
 ftest: $(MINPACK) $(FPGM) | cmpfiles
 	@echo "*** Running standard tests (calling MINPACK from FORTRAN using $(MINPACK))"
-	for x in ${FPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; $(DIFF) ref/$$x.ref $$x.out ; done
+	@fail=0; for x in ${FPGM}; do echo $$x; $(VALGRIND) ./$$x > $$x.out; $(DIFF) ref/$$x.ref $$x.out || fail=1 ; done; exit $$fail
 
 ftestdrv: $(MINPACK) $(DRVPGM) ftestlmdrv ftesthydrv ftestchkdrv
 
@@ -243,65 +251,77 @@ ftestchkdrv: $(LIBSUFFIX)chkdrv | cmpfiles
 	@echo "*** Running CHK tests (calling MINPACK from FORTRAN using $(MINPACK))"
 	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; $(DIFF) ref/$$x.ref $$x.out ; done
 
-check: checkdouble checklongdouble checkfloat
+# `make check` gates on: (1) the double-precision standard tests (fatal), and
+# (2) crosscheck's pure-C == f2c driver equality at double (fatal, via
+# compare.py). The long double / float standard tests run informationally (the
+# '-' below is intentional: their reference files carry last-digit differences
+# beyond the comparator's tolerance). Driver validation is done entirely by
+# crosscheck.py -- the driver-vs-ref comparisons are NOT run here, because the
+# checked-in ref files match neither current cminpack nor current FORTRAN
+# MINPACK. See README.md, "Numerical differences from FORTRAN MINPACK".
+check: checkdouble checklongdouble checkfloat crosscheck
 
-# Cross-version comparison (double precision): verifies that the pure-C and f2c
-# solvers are numerically identical, and reports the documented enorm-driven
-# differences between cminpack and the original FORTRAN MINPACK (if a Fortran
-# compiler is available). Uses compare.py.
+# Cross-version comparison (crosscheck.py): verifies that the pure-C and f2c
+# solvers are numerically identical (strict at double -- a mismatch there exits
+# non-zero and fails the build), and reports the EXPECTED, harmless
+# FMA/compiler-codegen differences at long double/float and against the original
+# FORTRAN MINPACK. Uses compare.py (strict) and driver_check.py (semantic). See
+# README.md, "Numerical differences from FORTRAN MINPACK".
 crosscheck:
-	$(MAKE) -C .. double 2>&1 > /dev/null
-	sh ./crosscheck.sh
+	@if [ "$(HAVE_PYTHON)" = "yes" ]; then \
+		echo "*** Running pure-C vs f2c cross-check ($(PYTHON) crosscheck.py)"; \
+		$(PYTHON) ./crosscheck.py; \
+	else \
+		echo "*** DISCLAIMER: '$(PYTHON)' not found -- SKIPPING the pure-C vs f2c cross-check."; \
+		echo "*** The other tests still ran; test coverage is INCOMPLETE without Python 3."; \
+	fi
 
 checkdoublec:
 	$(MAKE) -C .. double 2>&1 > /dev/null
 	$(MAKE) clean LIBSUFFIX= 2>&1 > /dev/null
-	-$(MAKE) ctest LIBSUFFIX=
-	$(MAKE) clean LIBSUFFIX= 2>&1 > /dev/null
-	-$(MAKE) -k ctestdrv LIBSUFFIX=
+	$(MAKE) ctest LIBSUFFIX=
 	$(MAKE) clean 2>&1 > /dev/null
 
 checkdouble: checkdoublec ../fortran/libminpack.a
 	$(MAKE) clean LIBSUFFIX= 2>&1 > /dev/null
-	-$(MAKE) test LIBSUFFIX=
+	$(MAKE) test LIBSUFFIX=
 	$(MAKE) clean LIBSUFFIX= MINPACK=../fortran/libminpack.a 2>&1 > /dev/null
-	-$(MAKE) test LIBSUFFIX= MINPACK=../fortran/libminpack.a
+	$(MAKE) test LIBSUFFIX= MINPACK=../fortran/libminpack.a
 	$(MAKE) clean LIBSUFFIX= 2>&1 > /dev/null
-	-$(MAKE) ftest LIBSUFFIX=
+	$(MAKE) ftest LIBSUFFIX=
 	$(MAKE) clean LIBSUFFIX= MINPACK=../fortran/libminpack.a 2>&1 > /dev/null
-	-$(MAKE) ftest LIBSUFFIX= MINPACK=../fortran/libminpack.a
-	$(MAKE) clean LIBSUFFIX= 2>&1 > /dev/null
-	-$(MAKE) -k testdrv LIBSUFFIX=
+	$(MAKE) ftest LIBSUFFIX= MINPACK=../fortran/libminpack.a
 	$(MAKE) clean 2>&1 > /dev/null
 
+# Long double and float variants are INFORMATIONAL: the '-' on the standard
+# test invocations below is intentional. Their reference files carry small
+# last-digit differences beyond the comparator's tolerance, so a mismatch here
+# is reported but must not fail `make check`. Deterministic float/long-double
+# validation is done by crosscheck.py (pure-C == f2c) instead.
 checklongdoublec:
+	@echo ">>> long double tests below are INFORMATIONAL: last-digit differences vs the reference files are expected (compiler/precision) and do NOT fail 'make check'. See README.md."
 	$(MAKE) -C .. longdouble 2>&1 > /dev/null
 	$(MAKE) clean LIBSUFFIX=ld 2>&1 > /dev/null
 	-$(MAKE) ctest LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)" 
 	$(MAKE) clean LIBSUFFIX=ld 2>&1 > /dev/null
-	-$(MAKE) -k ctestdrv LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)"
-	$(MAKE) clean LIBSUFFIX=ld 2>&1 > /dev/null
 
 checklongdouble: checklongdoublec
+	@echo ">>> (long double, informational -- differences below are expected and non-fatal)"
 	$(MAKE) clean LIBSUFFIX=ld 2>&1 > /dev/null
 	-$(MAKE) test LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)"
-	$(MAKE) clean LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)" 2>&1 > /dev/null
-	-$(MAKE) -k testdrv LIBSUFFIX=ld CFLAGS="$(CFLAGS_LD)" 
 	$(MAKE) clean LIBSUFFIX=ld 2>&1 > /dev/null
 
 checkfloatc:
+	@echo ">>> float (single precision) tests below are INFORMATIONAL: last-digit differences vs the reference files are expected and do NOT fail 'make check'. See README.md."
 	$(MAKE) -C .. float 2>&1 > /dev/null
 	$(MAKE) clean LIBSUFFIX=s 2>&1 > /dev/null
 	-$(MAKE) ctest LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 
 	$(MAKE) clean LIBSUFFIX=s 2>&1 > /dev/null
-	-$(MAKE) -k ctestdrv LIBSUFFIX=s CFLAGS="$(CFLAGS_F)"
-	$(MAKE) clean LIBSUFFIX=s 2>&1 > /dev/null
 
 checkfloat: checkfloatc
+	@echo ">>> (float, informational -- differences below are expected and non-fatal)"
 	$(MAKE) clean LIBSUFFIX=s 2>&1 > /dev/null
 	-$(MAKE) test LIBSUFFIX=s CFLAGS="$(CFLAGS_F)"
-	$(MAKE) clean LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 2>&1 > /dev/null
-	-$(MAKE) -k testdrv LIBSUFFIX=s CFLAGS="$(CFLAGS_F)" 
 	$(MAKE) clean LIBSUFFIX=s 2>&1 > /dev/null
 
 checklapack:
