@@ -160,10 +160,12 @@ REF=test.ref ctest.ref ftest.ref
 cmpfiles: cmpfiles.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ cmpfiles.c -lm
 
-# C++ wrapper test (issue #74). Uses the header-only cminpackcpp.hpp.
+# C++ wrapper test (issue #74). Uses the header-only cminpackcpp.hpp, which is
+# precision-agnostic, so it needs the same precision define ($(CFLAGS)) as the
+# rest of the build to target the float/long double/half variants.
 CXX?=g++
 $(LIBSUFFIX)tcppwrap: tcppwrap.cpp $(MINPACK)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -std=c++11 -o $@ tcppwrap.cpp $(MINPACK) $(LDADD) -lm
+	$(CXX) $(CPPFLAGS) $(CFLAGS) $(CXXFLAGS) -std=c++11 -o $@ tcppwrap.cpp $(MINPACK) $(LDADD) -lm
 
 all:
 	@echo "*****************************************************"

@@ -19,11 +19,24 @@
 
 typedef __cminpack_real__ real;
 
+/* Solver tolerance and solution-accuracy threshold. Single precision cannot
+   reach the tight double/long-double tolerances, so scale them by the real
+   type. This test checks that the C++ wrapper forwards callables correctly,
+   not the numerical accuracy of the solvers, so the float thresholds are
+   deliberately loose. */
+#ifdef __cminpack_float__
+static const real   SOLVE_TOL = 1e-4f;
+static const double CHECK_TOL = 1e-2;
+#else
+static const real   SOLVE_TOL = 1e-10;
+static const double CHECK_TOL = 1e-6;
+#endif
+
 static int failures = 0;
 
 static void check(const char *name, bool converged, double err)
 {
-    bool ok = converged && err < 1e-6;
+    bool ok = converged && err < CHECK_TOL;
     std::printf("  %-20s : %s (converged=%d max_err=%.3e)\n",
                 name, ok ? "PASS" : "FAIL", (int)converged, err);
     if (!ok) {
@@ -77,7 +90,7 @@ int main()
         real x[3] = { 0., 0., 0. }, fvec[10], fjac[10 * 3], wa[5 * 3 + 10];
         int ipvt[3];
         int info = cminpack::lmder1(fcn, m, n, x, fvec, fjac, m,
-                                    1e-10, ipvt, wa, 5 * 3 + 10);
+                                    SOLVE_TOL, ipvt, wa, 5 * 3 + 10);
         check("lmder1 (lambda)", info >= 1 && info <= 4, max_abs_diff(x, truec, n));
     }
 
@@ -98,7 +111,7 @@ int main()
         } fitter(data);
         real x[3] = { 0., 0., 0. }, fvec[10], wa[10 * 3 + 5 * 3 + 10];
         int iwa[3];
-        int info = cminpack::lmdif1(fitter, m, n, x, fvec, 1e-10,
+        int info = cminpack::lmdif1(fitter, m, n, x, fvec, SOLVE_TOL,
                                     iwa, wa, 10 * 3 + 5 * 3 + 10);
         check("lmdif1 (functor)", info >= 1 && info <= 4, max_abs_diff(x, truec, n));
         /* prove the functor state was actually used (no globals) */
@@ -122,7 +135,7 @@ int main()
                 return 0;
             };
         real x[3] = { 1., 1., 1. }, fvec[3], wa[(3 * (3 * 3 + 13)) / 2];
-        int info = cminpack::hybrd1(fcn, 3, x, fvec, 1e-10,
+        int info = cminpack::hybrd1(fcn, 3, x, fvec, SOLVE_TOL,
                                     wa, (3 * (3 * 3 + 13)) / 2);
         check("hybrd1 (std::function)", info == 1, max_abs_diff(x, rootc, 3));
     }
@@ -151,7 +164,7 @@ int main()
             return 0;
         };
         real x[3] = { 1., 1., 1. }, fvec[3], fjac[3 * 3], wa[(3 * (3 + 13)) / 2];
-        int info = cminpack::hybrj1(fcn, 3, x, fvec, fjac, 3, 1e-10,
+        int info = cminpack::hybrj1(fcn, 3, x, fvec, fjac, 3, SOLVE_TOL,
                                     wa, (3 * (3 + 13)) / 2);
         check("hybrj1 (lambda)", info == 1 && njev > 0, max_abs_diff(x, rootc, 3));
     }
