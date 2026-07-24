@@ -183,7 +183,7 @@ all:
 	@echo "make ftestdrv: calling FORTRAN CMINPACK from FORTRAN"
 	@echo "make ftestdrv MINPACK=../fortran/libminpack.a: calling FORTRAN MINPACK from FORTRAN"
 
-.PHONY: test ctest ctestdrv ctestlmdrv ctesthydrv ctestchkdrv ftest ftestdrv ftestlmdrv ftesthydrv ftestchkdrv check checkdoublec checkdouble checklongdoublec checklongdouble checkfloatc checkfloat checkhalfc checkhalf checkfail clean veryclean
+.PHONY: test ctest ctestdrv ctestlmdrv ctesthydrv ctestchkdrv ftest ftestdrv ftestlmdrv ftesthydrv ftestchkdrv check checkdoublec checkdouble checklongdoublec checklongdouble checkfloatc checkfloat checkhalfc checkhalf checkfail crosscheck clean veryclean
 
 test: $(MINPACK) $(PGM) | cmpfiles
 	@echo "*** Running standard tests (calling MINPACK from C using $(MINPACK))"
@@ -244,6 +244,14 @@ ftestchkdrv: $(LIBSUFFIX)chkdrv | cmpfiles
 	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; $(DIFF) ref/$$x.ref $$x.out ; done
 
 check: checkdouble checklongdouble checkfloat
+
+# Cross-version comparison (double precision): verifies that the pure-C and f2c
+# solvers are numerically identical, and reports the documented enorm-driven
+# differences between cminpack and the original FORTRAN MINPACK (if a Fortran
+# compiler is available). Uses compare.py.
+crosscheck:
+	$(MAKE) -C .. double 2>&1 > /dev/null
+	sh ./crosscheck.sh
 
 checkdoublec:
 	$(MAKE) -C .. double 2>&1 > /dev/null

@@ -5,29 +5,59 @@
 /*
   About the values for rdwarf and rgiant.
 
-  The original values, both in single-precision FORTRAN source code and in double-precision code were:
+  enorm accumulates the sum of squares in three buckets so that squaring a
+  component can neither overflow nor destructively underflow: components in the
+  middle band [rdwarf, rgiant/n] are summed directly as x*x, while smaller and
+  larger ones are rescaled first. The only real constraints are that rdwarf**2
+  must not underflow and rgiant**2 must not overflow *in the floating-point
+  format actually being used*.
+
+  The original MINPACK values, used identically in both the single- and the
+  double-precision FORTRAN sources, were:
 #define rdwarf 3.834e-20
 #define rgiant 1.304e19
   See for example:
     http://www.netlib.org/slatec/src/denorm.f
     http://www.netlib.org/slatec/src/enorm.f
-  However, rdwarf is smaller than sqrt(FLT_MIN) = 1.0842021724855044e-19, so that rdwarf**2 will
-  underflow. This contradicts the constraints expressed in the comments below.
+  These give rdwarf**2 ~ 1.5e-39 and rgiant**2 ~ 1.7e38, i.e. they are sized for
+  a machine whose dynamic range is about 1e+-38. MINPACK dates from 1980, before
+  IEEE 754 (1985): at the time the worst-case "double precision" in wide use --
+  notably the DEC VAX D_floating format -- had the *same* exponent range as
+  single precision (~1e+-38, only more mantissa bits), so a single conservative
+  pair of constants was chosen to be portable "for every known computer".
 
-  We changed these constants to those proposed by the
-  implementation found in MPFIT http://cow.physics.wisc.edu/~craigm/idl/fitting.html
+  On IEEE 754 those constants are safe but far too conservative:
+    - in IEEE single (FLT_MIN ~ 1.18e-38), rdwarf**2 ~ 1.5e-39 actually
+      UNDERFLOWS, violating the constraint above (rdwarf 3.834e-20 is below
+      sqrt(FLT_MIN) = 1.084e-19);
+    - in IEEE double (DBL_MIN ~ 2.2e-308, DBL_MAX ~ 1.8e308) the usable middle
+      band spans ~1e+-308, but 3.834e-20/1.304e19 restrict it to ~1e+-38 and so
+      needlessly rescale many components.
 
- cmpfit-1.2 proposes the following definitions:
-  rdwarf = sqrt(dpmpar(2)*1.5) * 10
-  rgiant = sqrt(dpmpar(3)) * 0.1
+  cminpack therefore tunes rdwarf/rgiant to the actual range of each real type,
+  following MPFIT (http://cow.physics.wisc.edu/~craigm/idl/fitting.html):
+    rdwarf = sqrt(dpmpar(2)*1.5) * 10      (dpmpar(2) = smallest normal)
+    rgiant = sqrt(dpmpar(3)) * 0.1         (dpmpar(3) = largest magnitude)
+  Half precision does not work well with that formula, so for half we use:
+    rdwarf = sqrt(dpmpar(2)) * 2
+    rgiant = sqrt(dpmpar(3)) * 0.5
+  (half cminpack is only a proof of concept). The values below are those
+  formulas evaluated per type; see examples/tenorm*.c, which prints them.
 
- The half version does not really worked that way, so we use for half:
-  rdwarf = sqrt(dpmpar(2)) * 2
-  rgiant = sqrt(dpmpar(3)) * 0.5
- Any suggestion is welcome. Half CMINPACK is really only a
- proof-of-concept anyway.
-
- See the example/tenorm*c, which computes these values 
+  Consequence -- why cminpack's double enorm differs from FORTRAN MINPACK:
+  because the middle-band boundary differs, a vector with very small
+  (< 3.834e-20) or very large (> 1.304e19) components is bucketed differently
+  and its Euclidean norm can differ in the last bit. Both norms are equally
+  correct. This is the *only* source of numerical divergence between cminpack
+  and the original FORTRAN: with the Argonne constants restored, cminpack (both
+  the pure-C and the f2c sources) reproduces the FORTRAN results bit for bit,
+  and every other routine is already identical (the pure-C and f2c versions are
+  themselves bit-identical). The last-bit norm difference is invisible to the
+  Levenberg-Marquardt solvers, but because the hybrd/hybrj dogleg trust-region
+  test compares norms it can make those two solvers take a slightly different
+  number of iterations, function and Jacobian evaluations on a few hard
+  problems whose residual drives components far outside [3.834e-20, 1.304e19].
+  cminpack keeps the IEEE-appropriate constants deliberately.
 */
 #define double_dwarf (1.82691291192569e-153)
 #define double_giant (1.34078079299426e+153)
