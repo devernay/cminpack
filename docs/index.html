@@ -142,6 +142,28 @@ which came from the FORTRAN version:</p>
 <p>The single-precision versions of the functions are prefixed by "s" (as in "<code>slmder(...)</code>"), and the half-precision are prefixed by "h".</p>
 <p>CMinpack defines __cminpack_real__ as the floating point type, and the <code>__cminpack_func__()</code> macro can be used to call CMinpack functions independently of the precision used (as in the examples). However, you shouldn't use these macros in your own code, since your code is probably designed for a specific precision, and you should prefer calling directly <code>lmder(...)</code> or <code>slmder(...)</code>.</p>
 
+<h2>C++ bindings</h2>
+
+<p><code>include/cminpackcpp.hpp</code> is a header-only C++ wrapper (issue #74). The C API takes the user callback as a plain function pointer plus an opaque <code>void *p</code> for user data, which a capturing lambda, a functor, or a <code>std::function</code> cannot satisfy. The wrapper adds overloads in namespace <code>cminpack</code> that accept <b>any callable</b> whose signature matches the C callback minus the leading <code>void *p</code>; the callable is forwarded through the <code>void *p</code> slot by a small template trampoline, so no global state is needed. It adds no allocation and no virtual dispatch, and the callable only has to outlive the solver call.</p>
+
+<p>The wrapped entry points are <code>hybrd1</code>/<code>hybrd</code> and <code>hybrj1</code> (nonlinear equations), and <code>lmdif1</code>/<code>lmdif</code>, <code>lmder1</code>/<code>lmder</code> and <code>lmstr1</code>/<code>lmstr</code> (least squares). Every argument after the callable is identical to the C function &mdash; you just drop the <code>(fcn, p)</code> pair and pass your callable first:</p>
+
+<pre>#include &lt;cminpackcpp.hpp&gt;
+#include &lt;vector&gt;
+
+std::vector&lt;double&gt; y = /* measured data */;
+
+// signature = the C callback minus the leading void *p
+auto residual = [&amp;](int m, int n, const double *x, double *fvec, int iflag) {
+    for (int i = 0; i &lt; m; ++i)
+        fvec[i] = model(x, i) - y[i];   // captures y, no global needed
+    return 0;
+};
+
+int info = cminpack::lmdif1(residual, m, n, x, fvec, tol, iwa, wa, lwa);</pre>
+
+<p>The header is precision-agnostic: like <code>cminpack.h</code> it selects the real type via <code>__cminpack_real__</code>, so defining <code>__cminpack_float__</code> (or the long-double macro) before including it targets that variant &mdash; link against the matching cminpack library. A worked example exercising a capturing lambda, a stateful functor and a <code>std::function</code> is in <code>examples/tcppwrap.cpp</code>.</p>
+
 <h2>Testing</h2>
 
 <p>Two test routes are available:</p>

@@ -29,6 +29,46 @@ Repackaging by Frederic Devernay -- frederic dot devernay at m4x dot org
 
 The project home page is at http://devernay.github.io/cminpack
 
+C++ bindings
+------------
+
+[`include/cminpackcpp.hpp`](include/cminpackcpp.hpp) is a header-only C++
+wrapper (issue #74). The C API takes the user callback as a plain function
+pointer plus an opaque `void *p` for user data, which a capturing lambda, a
+functor, or a `std::function` cannot satisfy. The wrapper adds overloads in
+namespace `cminpack` that accept **any callable** whose signature matches the C
+callback minus the leading `void *p`; the callable is forwarded through the
+`void *p` slot by a small template trampoline, so no global state is needed. It
+adds no allocation and no virtual dispatch, and the callable only has to outlive
+the solver call.
+
+The wrapped entry points are `hybrd1`/`hybrd` and `hybrj1` (nonlinear
+equations), and `lmdif1`/`lmdif`, `lmder1`/`lmder` and `lmstr1`/`lmstr` (least
+squares). Every argument after the callable is identical to the C function — you
+just drop the `(fcn, p)` pair and pass your callable first:
+
+```cpp
+#include <cminpackcpp.hpp>
+#include <vector>
+
+std::vector<double> y = /* measured data */;
+
+// signature = the C callback minus the leading void *p
+auto residual = [&](int m, int n, const double *x, double *fvec, int iflag) {
+    for (int i = 0; i < m; ++i)
+        fvec[i] = model(x, i) - y[i];   // captures y, no global needed
+    return 0;
+};
+
+int info = cminpack::lmdif1(residual, m, n, x, fvec, tol, iwa, wa, lwa);
+```
+
+The header is precision-agnostic: like `cminpack.h` it selects the real type via
+`__cminpack_real__`, so defining `__cminpack_float__` (or the long-double macro)
+before including it targets that variant — link against the matching cminpack
+library. A worked example exercising a capturing lambda, a stateful functor and
+a `std::function` is in [`examples/tcppwrap.cpp`](examples/tcppwrap.cpp).
+
 Testing
 -------
 
