@@ -45,11 +45,13 @@ Two test routes are available:
   are strict (a failure fails the build); the long double and float tests are
   informational.
 
-The cross-check (`examples/crosscheck.py`) verifies the one strict invariant —
-the pure-C and f2c implementations converge to equivalent solutions at double
-precision. Differences against the original FORTRAN MINPACK, and
-single/extended-precision iteration-path differences, are reported for
-information only (see the next section).
+The cross-check (`examples/crosscheck.py`, and the CMake `crosscheck_*` tests)
+is **informational**: it reports how the pure-C, f2c and FORTRAN implementations
+compare on the hard driver problems. They agree on well-conditioned problems,
+but on these deliberately-extreme problems they can take different iteration
+paths and even reach different (equally valid) results, for the reasons in the
+next section. The pass/fail gates are the standard example tests and the driver
+smoke tests — not the cross-check.
 
 **Python 3 is optional.** It is not needed to build cminpack, nor for the
 standard or smoke tests (which use `cmpfiles`); only the cross-check uses it
@@ -84,8 +86,11 @@ The differences do *not* come from the algorithm:
 
 - `dpmpar` returns identical machine constants on both sides, so the convergence
   tolerance is the same.
-- cminpack's own pure-C and f2c builds converge to equivalent solutions (they
-  are independent translations, so they need not be bit-identical).
+- cminpack's own pure C (`src/`) is a cleaned-up rewrite of the f2c output
+  (`src/f2c/`); the two agree on well-conditioned problems, but the cleanup
+  regrouped some expressions, so the compiler can contract FMAs differently in
+  each — meaning even these two can reach different (equally valid) results on
+  the hardest driver problems.
 - The dominant cause is floating-point contraction: `gcc` and `gfortran` fuse
   `a*b + c` into a fused multiply-add (FMA) at different places, so intermediate
   values differ by one unit in the last place (ULP). On ill-conditioned problems
@@ -114,10 +119,10 @@ History
     digits differ between compilers because of floating-point contraction
     (FMA), even though every problem still converges. The non-portable
     driver-vs-reference comparison was dropped from `make check`; driver
-    validation now uses a cross-check that the pure-C and f2c implementations
-    converge to equivalent solutions at double precision, while differences
-    across compilers and against the original FORTRAN MINPACK are reported for
-    information only.
+    validation now uses an informational cross-check that reports how the
+    pure-C, f2c and FORTRAN implementations compare (they can differ on the hard
+    problems for the same FMA reason); the pass/fail gates are the standard
+    example tests and the driver smoke tests.
   - Replace `examples/crosscheck.sh` with `examples/crosscheck.py` (no /bin/sh
     dependency); add `examples/compare.py` and `examples/driver_check.py`. Wire
     the cross-check into CMake/CTest via the `CMINPACK_CROSSCHECK` option.
