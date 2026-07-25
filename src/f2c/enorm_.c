@@ -54,8 +54,10 @@
   because the middle-band boundary differs, a vector with very small
   (< 3.834e-20) or very large (> 1.304e19) components is bucketed differently
   and its Euclidean norm can then differ in the last bit. Both norms are equally
-  correct. cminpack's own pure-C and f2c sources are, however, bit-identical to
-  each other at every precision (verified by examples/crosscheck.py).
+  correct. cminpack's own pure-C and f2c sources converge to equivalent
+  solutions on every problem (verified by examples/crosscheck.py); they are not
+  necessarily bit-identical, since the two are independent translations and a
+  compiler may contract FMAs differently in each.
 
   These constants are NOT the main reason cminpack and the original FORTRAN take
   different iteration counts on the harder test problems. Aligning them

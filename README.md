@@ -45,9 +45,9 @@ Two test routes are available:
   are strict (a failure fails the build); the long double and float tests are
   informational.
 
-The cross-check (`examples/crosscheck.py`) verifies the one strict,
-deterministic invariant — the pure-C and f2c implementations are byte-identical
-at double precision. Differences against the original FORTRAN MINPACK, and
+The cross-check (`examples/crosscheck.py`) verifies the one strict invariant —
+the pure-C and f2c implementations converge to equivalent solutions at double
+precision. Differences against the original FORTRAN MINPACK, and
 single/extended-precision iteration-path differences, are reported for
 information only (see the next section).
 
@@ -84,7 +84,8 @@ The differences do *not* come from the algorithm:
 
 - `dpmpar` returns identical machine constants on both sides, so the convergence
   tolerance is the same.
-- cminpack's own pure-C and f2c builds are bit-identical to each other.
+- cminpack's own pure-C and f2c builds converge to equivalent solutions (they
+  are independent translations, so they need not be bit-identical).
 - The dominant cause is floating-point contraction: `gcc` and `gfortran` fuse
   `a*b + c` into a fused multiply-add (FMA) at different places, so intermediate
   values differ by one unit in the last place (ULP). On ill-conditioned problems
@@ -106,6 +107,27 @@ and never fail the build.
 
 History
 ------
+
+* version 1.3.14 (24/07/2026):
+  - Fix spurious `make check` failures on the intensive driver tests (#78): on
+    the difficult Moré/Garbow/Hillstrom problems, iteration counts and last
+    digits differ between compilers because of floating-point contraction
+    (FMA), even though every problem still converges. The non-portable
+    driver-vs-reference comparison was dropped from `make check`; driver
+    validation now uses a cross-check that the pure-C and f2c implementations
+    converge to equivalent solutions at double precision, while differences
+    across compilers and against the original FORTRAN MINPACK are reported for
+    information only.
+  - Replace `examples/crosscheck.sh` with `examples/crosscheck.py` (no /bin/sh
+    dependency); add `examples/compare.py` and `examples/driver_check.py`. Wire
+    the cross-check into CMake/CTest via the `CMINPACK_CROSSCHECK` option.
+    Python 3 is optional in both build systems: when it is absent only the
+    cross-check is skipped, with a disclaimer.
+  - Fix a compile error in `examples/tenorm_.c` (pass `dpmpar_` its index by
+    pointer, the FORTRAN/f2c calling convention).
+  - Document the numerical differences from FORTRAN MINPACK and the test setup
+    in README.md and the HTML documentation; correct the `enorm.c` comments
+    (the divergence is FMA, not the rdwarf/rgiant scaling constants).
 
 * version 1.3.13 (16/07/2026):
   - Fix a division by zero in `covar1` when the Jacobian rank equals the number

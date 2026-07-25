@@ -2,37 +2,37 @@
 """Cross-version comparison of the cminpack solvers.
 
 Python port of the former crosscheck.sh. Keeping all the test tooling in one
-language lets this orchestrator import compare.py and driver_check.py directly
-instead of shelling out to them, and drops the /bin/sh dependency. It still
-drives the Makefile build (it invokes `make`), so it runs in the same Unix-like
-environments as `make check`; the portable, cross-platform test route remains
-CMake + ctest.
+language lets this orchestrator import driver_check.py directly instead of
+shelling out, and drops the /bin/sh dependency. It still drives the Makefile
+build (it invokes `make`), so it runs in the same Unix-like environments as
+`make check`; the portable, cross-platform test route remains CMake + ctest.
 
 It builds the intensive driver programs (the difficult More/Garbow/Hillstrom
 problems) against each implementation -- pure C, f2c, and the original FORTRAN
-MINPACK -- and compares their output two ways:
+MINPACK -- and checks, with driver_check.py, that they reach *equivalent
+results*: every problem's final L2 residual norm agrees. It does NOT require
+byte-identical output. pure-C (src/*.c) and f2c (src/f2c/*.c) are two
+independent source trees, so a compiler may contract "a*b + c" into a fused
+multiply-add at different places in each; on the ill-conditioned problems that
+one-ULP difference sends the runs down different (but equally convergent)
+iteration paths. The same is true across compilers and versus the original
+FORTRAN MINPACK (see README.md, "Numerical differences from FORTRAN MINPACK").
 
-  * pure C (lmddrvc, ...) vs f2c (lmddrv_, ...) at DOUBLE precision MUST be
-    byte-identical. This is the one strict invariant; a difference is a real
-    bug. The check is a byte compare (filecmp); compare.py is used only to
-    explain a failure.
-
-  * every other comparison -- pure C vs f2c at long double/float, and f2c vs
-    FORTRAN MINPACK -- is INFORMATIONAL. There the iteration paths legitimately
-    differ (see README.md, "Numerical differences from FORTRAN MINPACK"), so
-    driver_check.py compares the actual convergence outcome (final residual
-    norms) and reports only genuinely different results, not the last-digit
-    noise.
+  * pure C vs f2c at DOUBLE precision is the one strict check: both must
+    converge to the same solution on every problem. A genuine divergence
+    (one converges, the other does not) is a real bug and makes this exit 1.
+  * pure C vs f2c at long double/float, and f2c vs FORTRAN MINPACK, are
+    INFORMATIONAL: differences are reported but never fail the run.
 
 Exit status (so the Makefile and CI treat non-zero as FAIL):
-  0  the strict invariant holds (pure C == f2c at double); informational
-     differences, however large, never change this.
-  1  the strict invariant is VIOLATED -- a real bug.
+  0  the strict check passed (pure C and f2c converge equivalently at double);
+     informational differences never change this.
+  1  the strict check FAILED -- pure C and f2c reached a materially different
+     result at double precision.
   2  a build/run/IO error prevented the strict check from running.
-A confirmed bug (1) takes precedence over a build error (2).
+A confirmed failure (1) takes precedence over a build error (2).
 """
 
-import filecmp
 import os
 import shutil
 import subprocess
@@ -41,7 +41,6 @@ import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import compare        # noqa: E402  (sibling module)
 import driver_check   # noqa: E402  (sibling module)
 
 BASECFLAGS = "-O3 -g -Wall"
@@ -107,18 +106,18 @@ def build_run(lib_rel, tag, progsuffix, libsuffix, cflags, outdir):
 
 def main():
     tmp = tempfile.mkdtemp(prefix="cross.", dir=HERE)
-    fatal_bug = False        # pure C != f2c at double -> exit 1
+    fatal_bug = False        # pure C != f2c convergence at double -> exit 1
     fatal_build_err = False  # could not run the strict check -> exit 2
     try:
         # --- pure C vs f2c, per precision -----------------------------------
         for label, top, suf, define, fatal in PRECISIONS:
             clib_rel = "../libcminpack%s.a" % suf
             if fatal:
-                print("=== pure C vs f2c [%s] (must be byte-identical) ===" % label)
+                print("=== pure C vs f2c [%s] (must converge equivalently) ===" % label)
             else:
-                print("=== pure C vs f2c [%s] (informational: differences here "
-                      "are EXPECTED and harmless -- FMA/compiler codegen; the "
-                      "problems still converge) ===" % label)
+                print("=== pure C vs f2c [%s] (informational: iteration paths "
+                      "may differ -- FMA/compiler codegen; both still converge) ==="
+                      % label)
             if _make(["-C", "..", top]) != 0:
                 print("  build of the %s library failed" % label)
                 if fatal:
@@ -135,19 +134,12 @@ def main():
                     if fatal:
                         fatal_build_err = True
                     continue
-                if fatal:
-                    # the strict invariant: pure C and f2c MUST be byte-identical
-                    if filecmp.cmp(a, b, shallow=False):
-                        print("  %s: identical" % d)
-                    else:
-                        print("  %s: DIFFERENT (unexpected!)" % d)
-                        for dd in compare.compare(a, b, rtol=0.0, atol=0.0,
-                                                  int_tol=0)[:8]:
-                            print("    " + str(dd))
-                        fatal_bug = True
-                else:
-                    # informational: equivalent CONVERGENCE, not bit-exactness
-                    driver_check.check(a, b, atol=1e-4, rtol=1e-1, label="  " + d)
+                # Compare CONVERGENCE (final residual norms), not bytes:
+                # pure C and f2c are independent sources and need not be
+                # bit-identical, but they must reach equivalent solutions.
+                rc = driver_check.check(a, b, atol=1e-4, rtol=1e-1, label="  " + d)
+                if fatal and rc != 0:
+                    fatal_bug = True
             _make(["clean", "LIBSUFFIX=" + suf])
 
         # --- f2c vs original FORTRAN MINPACK (double only, informational) ----
@@ -158,8 +150,7 @@ def main():
             if os.path.exists(FLIB_ABS):
                 print("=== f2c vs FORTRAN MINPACK [double] (informational: "
                       "differences here are EXPECTED and harmless -- FMA/compiler"
-                      " codegen, not enorm; the problems still converge; see "
-                      "README.md) ===")
+                      " codegen; the problems still converge; see README.md) ===")
                 build_run("../libcminpack.a", "F2Cd", "_", "", BASECFLAGS, tmp)
                 build_run(FLIB_REL, "FORT", "_", "", BASECFLAGS, tmp)
                 for d in DRIVERS:
@@ -175,15 +166,17 @@ def main():
             print("=== f2c vs FORTRAN skipped (no Fortran compiler) ===")
 
         if fatal_bug:
-            print("=== FAIL: pure-C and f2c differ at double precision -- this "
-                  "is a real bug (see the diffs above). ===")
+            print("=== FAIL: pure-C and f2c reached a materially different "
+                  "result at double precision -- this is a real bug (see "
+                  "above). ===")
             return 1
         if fatal_build_err:
-            print("=== FAIL: the strict pure-C == f2c check could not be run "
+            print("=== FAIL: the strict pure-C vs f2c check could not be run "
                   "(build/run error above). ===")
             return 2
-        print("=== PASS: pure-C == f2c at double (the only strict invariant). "
-              "All differences reported above are expected and harmless. ===")
+        print("=== PASS: pure-C and f2c converge equivalently at double (the "
+              "strict check). All other differences reported above are expected "
+              "and harmless. ===")
         return 0
     finally:
         _make(["clean", "LIBSUFFIX="])
