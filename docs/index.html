@@ -162,6 +162,24 @@ auto residual = [&amp;](int m, int n, const double *x, double *fvec, int iflag) 
 
 int info = cminpack::lmdif1(residual, m, n, x, fvec, tol, iwa, wa, lwa);</pre>
 
+<p>A <b>class member function</b> works too, as long as it is wrapped in a callable that supplies the instance &mdash; a lambda capturing <code>this</code> (or the object) is the simplest, and <code>std::bind</code>/<code>std::function</code> also work. A bare pointer-to-member (<code>&amp;Class::residual</code>) is not itself callable, so it must be wrapped:</p>
+
+<pre>struct LineModel {
+    std::vector&lt;double&gt; y;
+    int residual(int m, int n, const double *x, double *fvec, int iflag) const {
+        for (int i = 0; i &lt; m; ++i) fvec[i] = model(x, i) - y[i];
+        return 0;
+    }
+};
+
+LineModel obj = /* ... */;
+auto cb = [&amp;obj](int m, int n, const double *x, double *fvec, int iflag) {
+    return obj.residual(m, n, x, fvec, iflag);      // supplies the instance
+};
+int info = cminpack::lmdif1(cb, m, n, x, fvec, tol, iwa, wa, lwa);
+// std::bind is equivalent:
+//   auto cb = std::bind(&amp;LineModel::residual, &amp;obj, _1, _2, _3, _4, _5);</pre>
+
 <p>The header is precision-agnostic: like <code>cminpack.h</code> it selects the real type via <code>__cminpack_real__</code>, so defining <code>__cminpack_float__</code> (or the long-double macro) before including it targets that variant &mdash; link against the matching cminpack library. A worked example exercising a capturing lambda, a stateful functor and a <code>std::function</code> is in <code>examples/tcppwrap.cpp</code>.</p>
 
 <h2>Testing</h2>

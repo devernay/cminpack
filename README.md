@@ -63,6 +63,29 @@ auto residual = [&](int m, int n, const double *x, double *fvec, int iflag) {
 int info = cminpack::lmdif1(residual, m, n, x, fvec, tol, iwa, wa, lwa);
 ```
 
+A **class member function** works too, as long as it is wrapped in a callable
+that supplies the instance — a lambda capturing `this` (or the object) is the
+simplest, and `std::bind`/`std::function` also work. A bare pointer-to-member
+(`&Class::residual`) is not itself callable, so it must be wrapped:
+
+```cpp
+struct LineModel {
+    std::vector<double> y;
+    int residual(int m, int n, const double *x, double *fvec, int iflag) const {
+        for (int i = 0; i < m; ++i) fvec[i] = model(x, i) - y[i];
+        return 0;
+    }
+};
+
+LineModel obj = /* ... */;
+auto cb = [&obj](int m, int n, const double *x, double *fvec, int iflag) {
+    return obj.residual(m, n, x, fvec, iflag);      // supplies the instance
+};
+int info = cminpack::lmdif1(cb, m, n, x, fvec, tol, iwa, wa, lwa);
+// std::bind is equivalent:
+//   auto cb = std::bind(&LineModel::residual, &obj, _1, _2, _3, _4, _5);
+```
+
 The header is precision-agnostic: like `cminpack.h` it selects the real type via
 `__cminpack_real__`, so defining `__cminpack_float__` (or the long-double macro)
 before including it targets that variant — link against the matching cminpack
