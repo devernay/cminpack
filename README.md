@@ -339,7 +339,7 @@ History
 
 * version 1.1.4 (30/10/2011):
   - Translated all the Levenberg-Marquardt code (`lmder`, `lmdif`, `lmstr`,
-    `lmder1, `lmdif1`, `lmstr1`, `lmpar`, `qrfac`, `qrsolv`, `fdjac2`, `chkder`) to use
+    `lmder1`, `lmdif1`, `lmstr1`, `lmpar`, `qrfac`, `qrsolv`, `fdjac2`, `chkder`) to use
     C-style indices.
 
 * version 1.1.3 (16/03/2011):
