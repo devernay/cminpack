@@ -1,20 +1,18 @@
 # BLAS/LAPACK-specific cross-check exclusions.
 #
-# These are applied ON TOP OF crosscheck_exclude.txt, but ONLY when cminpack is
-# built with -DUSE_BLAS=ON and/or -DUSE_LAPACK=ON (see examples/CMakeLists.txt).
-# A BLAS/LAPACK build takes a different numeric path -- enorm uses cblas_dnrm2
-# and the QR factorization uses LAPACK -- so it can coin-flip a different set of
-# the deliberately-extreme More/Garbow/Hillstrom problems than the plain build.
+# Applied ON TOP OF crosscheck_exclude.txt, but ONLY when cminpack is built with
+# -DUSE_BLAS=ON and/or -DUSE_LAPACK=ON (see examples/CMakeLists.txt). A
+# BLAS/LAPACK build takes a different numeric path -- enorm uses cblas_dnrm2 and
+# the QR factorization uses LAPACK -- so on the knife's-edge problems it can flip
+# a problem's exit parameter (info) differently from the plain build, and the
+# exact set depends on the BLAS/LAPACK IMPLEMENTATION, not just the compiler:
+# reference BLAS/LAPACK 3.12 (Ubuntu) flips nothing, while the GitHub Actions
+# runner's BLAS flips hybrd problem 7/7. So this list grows from CI observation,
+# per the "add more if needed" workflow, and is kept OUT of the base list so a
+# plain build still gates these problems strictly.
 #
-# Two important properties:
-#   * The exact flip set depends on the BLAS/LAPACK IMPLEMENTATION, not just the
-#     compiler: e.g. reference BLAS/LAPACK 3.12 (Ubuntu) flips nothing here,
-#     while the GitHub Actions runner's BLAS flips 7/7 on hybdrv. So this list
-#     grows from CI observation, per the "add more if needed" workflow.
-#   * They are kept OUT of crosscheck_exclude.txt on purpose: on a plain build
-#     these same problems converge and must stay gated. Only BLAS/LAPACK builds
-#     get the extra slack.
+# Format: one "nprob/dimension" per line (same as crosscheck_exclude.txt).
 #
-# Format: one "nprob/dimension" per line (same as crosscheck_exclude.txt). When
-# the gate fails it prints the problem as "nprob/dim"; add that token here.
+# 7/7: hybrd, observed on the GitHub Actions BLAS build -- FORTRAN converges but
+#      the BLAS dnrm2 path drives this problem to a non-converged exit code.
 7/7

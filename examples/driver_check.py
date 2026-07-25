@@ -29,14 +29,13 @@ Everything else prints a short, reassuring one-line summary.
 
 Reference-gate mode (--reference-gate): treat FILE_A as the authoritative
 FORTRAN reference and apply a one-sided regression gate instead of a symmetric
-comparison. It fails only where FORTRAN drove a problem to convergence (a
-near-zero reference residual, <= --atol) but FILE_B did not -- i.e. cminpack
-failed to solve a problem the original FORTRAN MINPACK solved. It is deliberately
-conservative: where FORTRAN itself does not converge (the 10*x0/100*x0 starts,
-which leave a large reference residual) any result is accepted, and problems
-with a genuinely nonzero minimum are not gated, since a nonzero residual cannot
-be distinguished from non-convergence by magnitude alone. Use --exclude to skip
-the handful of deliberately-extreme coin-flip problems (see
+comparison. Following the original MINPACK test drivers, it uses each problem's
+exit parameter (info): where FORTRAN converged (info < 5) it requires this build
+to converge too (info < 5), and it ignores problems where FORTRAN itself did not
+converge (info >= 5, e.g. the maximum number of evaluations reached on the
+10*x0/100*x0 starts). Using info rather than the residual magnitude makes the
+gate well defined even for problems with a genuinely nonzero minimum. Use
+--exclude to skip the handful of deliberately-extreme coin-flip problems (see
 crosscheck_exclude.txt); each failure line names the problem as "nprob/dim", the
 exact token to add to that list.
 
@@ -56,6 +55,7 @@ import sys
 _PROBLEM_RE = re.compile(r"^\s*problem\b", re.IGNORECASE)
 _FNORM_RE = re.compile(
     r"final l2 norm of the residuals\s+([-+0-9.eEdD]+)", re.IGNORECASE)
+_INFO_RE = re.compile(r"exit parameter\s+(\d+)", re.IGNORECASE)
 _NUM_RE = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eEdD][-+]?\d+)?")
 
 
@@ -184,18 +184,26 @@ def check(path_a, path_b, atol, rtol, label, gate=False, exclude=None):
             if denom:
                 worst_rel = max(worst_rel, d / denom)
             if gate:
-                # file_a is the FORTRAN reference. Fail only where FORTRAN
-                # drove the problem to convergence -- a near-zero residual
-                # (fa <= atol) -- but this build did not (fb > atol). This is
-                # deliberately conservative: a large reference residual means
-                # FORTRAN itself did not converge (the 10x/100x starts), so any
-                # result is accepted; and problems with a genuinely nonzero
-                # minimum are not gated, because a nonzero residual cannot be
-                # told apart from non-convergence by magnitude alone.
-                if fa <= atol and fb > atol:
+                # file_a is the FORTRAN reference. Following the original
+                # MINPACK test drivers, use the exit parameter (info): treat
+                # info >= 5 as "FORTRAN did not converge" (e.g. the maximum
+                # number of evaluations was reached) and ignore those problems.
+                # Where FORTRAN converged (info < 5), require this build to
+                # converge too (info < 5). This mirrors the fortran-lang/minpack
+                # `info_original < 5` filter and, unlike a residual-magnitude
+                # test, is well defined for problems with a nonzero minimum.
+                ri = int(_INFO_RE.search("".join(blk_a)).group(1)) \
+                    if _INFO_RE.search("".join(blk_a)) else None
+                ci = int(_INFO_RE.search("".join(blk_b)).group(1)) \
+                    if _INFO_RE.search("".join(blk_b)) else None
+                if ri is None or ri >= 5:
+                    continue        # FORTRAN did not converge here -> ignore
+                if ci is None or ci >= 5:
                     bad.append("  problem %s (block %d): FORTRAN reference "
-                               "converged (residual %.3g) but this build did "
-                               "NOT (residual %.3g)" % (pid, i, fa, fb))
+                               "converged (exit parameter %s) but this build did "
+                               "NOT (exit parameter %s; final residual %.3g vs "
+                               "%.3g)" % (pid, i, ri,
+                                          "missing" if ci is None else ci, fa, fb))
             elif not _close(fa, fb, atol, rtol):
                 bad.append("  problem %s (block %d): final residual %.7g vs %.7g "
                            "(rel %.2g)" % (pid, i, fa, fb,

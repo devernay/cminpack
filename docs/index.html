@@ -256,8 +256,11 @@ the last bit. See <code>src/enorm.c</code> for the full explanation.)</p>
 original FORTRAN MINPACK</strong>: on the intensive driver problems, cminpack
 must converge on every problem FORTRAN converges on (compared against the
 committed <code>examples/ref/*.fortran.ref</code>, so no Fortran compiler is
-needed). Where FORTRAN itself does not converge, a different result is accepted
-&mdash; and iteration-count and last-digit differences are reported for
+needed). Convergence is judged by the solver's exit parameter (<code>info</code>),
+following the original MINPACK drivers: where FORTRAN converged
+(<code>info &lt; 5</code>) cminpack must converge too, and where FORTRAN itself
+does not converge (<code>info &gt;= 5</code>) a different result is accepted
+&mdash; iteration-count and last-digit differences are reported for
 information only and never fail the build. A handful of deliberately-extreme
 problems have compiler-dependent, coin-flip convergence (FORTRAN itself
 converges on them only at some optimization levels); those are listed, with the
