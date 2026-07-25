@@ -114,6 +114,18 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
       target_link_libraries (${drv} cminpack)
     endforeach ()
 
+    # Extra exclusions applied ONLY to BLAS/LAPACK builds. Those use a different
+    # numeric path (cblas_dnrm2 in enorm, LAPACK qrfac/qrsolv) that can flip a
+    # different set of extreme coin-flip problems than the plain build, and the
+    # exact set depends on the BLAS/LAPACK implementation. Kept separate from
+    # crosscheck_exclude.txt so the plain-build gate stays strict on problems
+    # that only BLAS/LAPACK flips.
+    set (CROSSCHECK_BLAS_EXCLUDE "")
+    if (USE_BLAS OR USE_LAPACK)
+      set (CROSSCHECK_BLAS_EXCLUDE
+        -DEXCLUDE_FILE_BLAS=${CMINPACK_SOURCE_DIR}/examples/crosscheck_exclude_blas.txt)
+    endif ()
+
     # name : driver target : input data : committed FORTRAN reference
     macro (add_crosscheck name exe inputfile ref)
       add_test (NAME ${name} COMMAND "${CMAKE_COMMAND}"
@@ -125,6 +137,7 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
         -DPYTHON=${Python3_EXECUTABLE}
         -DDRIVER_CHECK=${CMINPACK_SOURCE_DIR}/examples/driver_check.py
         -DEXCLUDE_FILE=${CMINPACK_SOURCE_DIR}/examples/crosscheck_exclude.txt
+        ${CROSSCHECK_BLAS_EXCLUDE}
         -DINTDIR=${CMAKE_CFG_INTDIR}
         -P "${CMINPACK_SOURCE_DIR}/examples/runcrosscheck.cmake")
     endmacro ()

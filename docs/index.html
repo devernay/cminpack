@@ -213,7 +213,11 @@ information only and never fail the build. A handful of deliberately-extreme
 problems have compiler-dependent, coin-flip convergence (FORTRAN itself
 converges on them only at some optimization levels); those are listed, with the
 rationale, in <code>examples/crosscheck_exclude.txt</code> and skipped by the
-gate.</p>
+gate. BLAS/LAPACK builds take a different numeric path (a BLAS <code>dnrm2</code>
+in <code>enorm</code>, a LAPACK QR factorization) that can flip a different,
+implementation-dependent set, so they get an additional list,
+<code>examples/crosscheck_exclude_blas.txt</code>, applied only when
+<code>USE_BLAS</code>/<code>USE_LAPACK</code> is on.</p>
 
 <h2>Documentation</h2>
 <ul>

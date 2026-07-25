@@ -24,23 +24,26 @@ if(NOT "${R_RUN}" STREQUAL "0")
   message(FATAL_ERROR "driver ${DRIVER} exited with status ${R_RUN}")
 endif()
 
-# Build the comma-separated exclusion list from EXCLUDE_FILE (user-maintained
-# list of coin-flip problems; see examples/crosscheck_exclude.txt).
+# Build the comma-separated exclusion list from the base list plus, for
+# BLAS/LAPACK builds, the BLAS-specific list (user-maintained lists of coin-flip
+# problems; see examples/crosscheck_exclude.txt and crosscheck_exclude_blas.txt).
 set(_excl "")
-if(EXCLUDE_FILE AND EXISTS "${EXCLUDE_FILE}")
-  file(STRINGS "${EXCLUDE_FILE}" _lines)
-  foreach(_l IN LISTS _lines)
-    string(REGEX REPLACE "#.*" "" _l "${_l}")
-    string(STRIP "${_l}" _l)
-    if(_l)
-      if(_excl)
-        set(_excl "${_excl},${_l}")
-      else()
-        set(_excl "${_l}")
+foreach(_ef "${EXCLUDE_FILE}" "${EXCLUDE_FILE_BLAS}")
+  if(_ef AND EXISTS "${_ef}")
+    file(STRINGS "${_ef}" _lines)
+    foreach(_l IN LISTS _lines)
+      string(REGEX REPLACE "#.*" "" _l "${_l}")
+      string(STRIP "${_l}" _l)
+      if(_l)
+        if(_excl)
+          set(_excl "${_excl},${_l}")
+        else()
+          set(_excl "${_l}")
+        endif()
       endif()
-    endif()
-  endforeach()
-endif()
+    endforeach()
+  endif()
+endforeach()
 
 # driver_check.py --reference-gate exit codes: 0 = converges wherever the
 # reference does, 1 = a reference-converged problem is not converged here (a
