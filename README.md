@@ -38,24 +38,27 @@ Two test routes are available:
   This runs the standard example tests (compared against `examples/ref/*.ref`
   with the dependency-free C tool `cmpfiles`), the self-checking regression
   tests, the intensive driver programs as smoke tests (run to completion, no
-  NaN), and — when Python 3 is available — the pure-C-vs-f2c cross-check. Set
-  `-DCMINPACK_CROSSCHECK=OFF` to disable that cross-check.
+  NaN), and — when Python 3 is available — the FORTRAN-reference cross-check
+  (see below). Set `-DCMINPACK_CROSSCHECK=OFF` to disable that cross-check.
 - **Makefile**: `make check` runs the standard tests for the double, long
   double and float builds, then `make crosscheck`. The double standard tests
   are strict (a failure fails the build); the long double and float tests are
   informational.
 
 The cross-check (`examples/crosscheck.py`, and the CMake `crosscheck_*` tests)
-is **informational**: it reports how the pure-C, f2c and FORTRAN implementations
-compare on the hard driver problems. They agree on well-conditioned problems,
-but on these deliberately-extreme problems they can take different iteration
-paths and even reach different (equally valid) results, for the reasons in the
-next section. The pass/fail gates are the standard example tests and the driver
-smoke tests — not the cross-check.
+is a **regression gate against the original FORTRAN MINPACK**: on the intensive
+driver problems, cminpack must converge on every problem FORTRAN converges on.
+It compares against committed FORTRAN reference outputs
+(`examples/ref/*.fortran.ref`), so **no Fortran compiler is needed**. Where
+FORTRAN itself does not converge (the problems pushed from `10*x0`/`100*x0`
+starting points), a different result is accepted — pure-C and f2c, like
+different compilers, take different (equally valid) iteration paths there, for
+the reasons in the next section. Iteration-count and last-digit differences
+never fail the build.
 
 **Python 3 is optional.** It is not needed to build cminpack, nor for the
 standard or smoke tests (which use `cmpfiles`); only the cross-check uses it
-(via `examples/compare.py` and `examples/driver_check.py`). When Python 3 is
+(via `examples/crosscheck.py` and `examples/driver_check.py`). When Python 3 is
 missing, both build systems skip only that cross-check — printing a disclaimer
 that coverage is incomplete — and run everything else.
 
@@ -104,11 +107,17 @@ IEEE range rather than MINPACK's 1980 values, are a separate and minor effect:
 they only change the norm of out-of-range vectors in the last bit. See
 [`src/enorm.c`](src/enorm.c) for the full explanation.)
 
-Because of this, `examples/crosscheck.py` and `make check` treat **pure-C ==
-f2c** as the strict, deterministic invariant — a mismatch there is a real bug
-and fails the build — while differences against the original FORTRAN, and
-single/extended-precision driver differences, are reported for information only
-and never fail the build.
+Because of this, `examples/crosscheck.py` and the CMake `crosscheck_*` tests are
+a **regression gate against the original FORTRAN MINPACK**: on the intensive
+driver problems, cminpack must converge on every problem FORTRAN converges on
+(compared against the committed `examples/ref/*.fortran.ref`, so no Fortran
+compiler is needed). Where FORTRAN itself does not converge, a different result
+is accepted — and iteration-count and last-digit differences are reported for
+information only and never fail the build. A handful of deliberately-extreme
+problems have compiler-dependent, coin-flip convergence (FORTRAN itself
+converges on them only at some optimization levels); those are listed, with the
+rationale, in [`examples/crosscheck_exclude.txt`](examples/crosscheck_exclude.txt)
+and skipped by the gate.
 
 History
 ------
@@ -121,8 +130,10 @@ History
     driver-vs-reference comparison was dropped from `make check`; driver
     validation now uses an informational cross-check that reports how the
     pure-C, f2c and FORTRAN implementations compare (they can differ on the hard
-    problems for the same FMA reason); the pass/fail gates are the standard
-    example tests and the driver smoke tests.
+    problems for the same FMA reason), and — separately — a regression gate that
+    fails only if cminpack does not converge on a problem the original FORTRAN
+    MINPACK converges on (compared against committed `examples/ref/*.fortran.ref`,
+    so no Fortran compiler is needed).
   - Replace `examples/crosscheck.sh` with `examples/crosscheck.py` (no /bin/sh
     dependency); add `examples/compare.py` and `examples/driver_check.py`. Wire
     the cross-check into CMake/CTest via the `CMINPACK_CROSSCHECK` option.

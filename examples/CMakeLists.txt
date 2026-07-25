@@ -91,17 +91,17 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
   add_minpack_driver_smoketest (hybdrvc neq.data)
   add_minpack_driver_smoketest (chkdrvc chkder.data)
 
-  # Cross-check (INFORMATIONAL): report how the pure-C and f2c implementations
-  # compare on the hard driver problems, using examples/driver_check.py. This is
-  # NOT a pass/fail gate on agreement -- pure C (src/*.c) is a cleaned-up
-  # rewrite of the f2c output (src/f2c/*.c), and a compiler can contract FMAs
-  # differently in the two, so on the deliberately-extreme problems they can
-  # reach different (equally valid) results, just as different compilers do. The
-  # tests fail only
-  # if a driver crashes or the tool errors; convergence differences are reported
-  # for information. Needs Python 3; skipped (build unaffected) if none is found.
-  # See README.md, "Numerical differences from FORTRAN MINPACK".
-  option (CMINPACK_CROSSCHECK "Add the pure-C vs f2c cross-check tests (needs Python 3)." ON)
+  # Cross-check: run each cminpack driver (pure-C and f2c) and require, via
+  # examples/driver_check.py, that it converges on every problem the committed
+  # FORTRAN reference (examples/ref/*.fortran.ref) converges on. Where FORTRAN
+  # itself does not converge -- the deliberately-extreme problems -- a different
+  # result is accepted (both are valid). This is a real regression gate against
+  # the original FORTRAN MINPACK, and needs NO Fortran compiler (the reference is
+  # checked in). Iteration-count / last-digit differences, and differences on
+  # problems FORTRAN does not converge, are ignored (see README.md, "Numerical
+  # differences from FORTRAN MINPACK"). Needs Python 3; if none is found the
+  # cross-check tests are skipped (the rest of the build is unaffected).
+  option (CMINPACK_CROSSCHECK "Add the FORTRAN-reference cross-check tests (needs Python 3)." ON)
   find_package (Python3 COMPONENTS Interpreter QUIET)
   if (CMINPACK_CROSSCHECK AND Python3_Interpreter_FOUND)
     add_executable (lmddrv_ lmddrv_.c ssqipt.c ssqfcn.c ssqjac.c)
@@ -114,38 +114,47 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
       target_link_libraries (${drv} cminpack)
     endforeach ()
 
-    macro (add_crosscheck name purec f2c inputfile)
+    # name : driver target : input data : committed FORTRAN reference
+    macro (add_crosscheck name exe inputfile ref)
       add_test (NAME ${name} COMMAND "${CMAKE_COMMAND}"
         -DCMAKE_CROSSCOMPILING_EMULATOR=${CMAKE_CROSSCOMPILING_EMULATOR}
-        -DPURE=$<TARGET_FILE:${purec}>
-        -DF2C=$<TARGET_FILE:${f2c}>
+        -DDRIVER=$<TARGET_FILE:${exe}>
         -DINPUT=${CMINPACK_SOURCE_DIR}/examples/testdata/${inputfile}
-        -DOUT_PURE=${CMINPACK_BINARY_DIR}/examples/${name}.pure.out
-        -DOUT_F2C=${CMINPACK_BINARY_DIR}/examples/${name}.f2c.out
+        -DOUTPUT=${CMINPACK_BINARY_DIR}/examples/${name}.out
+        -DREF=${CMINPACK_SOURCE_DIR}/examples/ref/${ref}
         -DPYTHON=${Python3_EXECUTABLE}
         -DDRIVER_CHECK=${CMINPACK_SOURCE_DIR}/examples/driver_check.py
+        -DEXCLUDE_FILE=${CMINPACK_SOURCE_DIR}/examples/crosscheck_exclude.txt
         -DINTDIR=${CMAKE_CFG_INTDIR}
         -P "${CMINPACK_SOURCE_DIR}/examples/runcrosscheck.cmake")
     endmacro ()
 
-    add_crosscheck (crosscheck_lmddrv lmddrvc lmddrv_ ssq.data)
-    add_crosscheck (crosscheck_lmfdrv lmfdrvc lmfdrv_ ssq.data)
-    add_crosscheck (crosscheck_lmsdrv lmsdrvc lmsdrv_ ssq.data)
-    add_crosscheck (crosscheck_hyjdrv hyjdrvc hyjdrv_ neq.data)
-    add_crosscheck (crosscheck_hybdrv hybdrvc hybdrv_ neq.data)
-    add_crosscheck (crosscheck_chkdrv chkdrvc chkdrv_ chkder.data)
-    message (STATUS "cminpack tests: pure-C vs f2c cross-check ENABLED (Python 3 found).")
+    # Gate both the pure-C (...c) and f2c (..._) builds against the FORTRAN ref.
+    add_crosscheck (crosscheck_lmddrvc lmddrvc ssq.data    lmddrv.fortran.ref)
+    add_crosscheck (crosscheck_lmddrv_ lmddrv_ ssq.data    lmddrv.fortran.ref)
+    add_crosscheck (crosscheck_lmfdrvc lmfdrvc ssq.data    lmfdrv.fortran.ref)
+    add_crosscheck (crosscheck_lmfdrv_ lmfdrv_ ssq.data    lmfdrv.fortran.ref)
+    add_crosscheck (crosscheck_lmsdrvc lmsdrvc ssq.data    lmsdrv.fortran.ref)
+    add_crosscheck (crosscheck_lmsdrv_ lmsdrv_ ssq.data    lmsdrv.fortran.ref)
+    add_crosscheck (crosscheck_hyjdrvc hyjdrvc neq.data    hyjdrv.fortran.ref)
+    add_crosscheck (crosscheck_hyjdrv_ hyjdrv_ neq.data    hyjdrv.fortran.ref)
+    add_crosscheck (crosscheck_hybdrvc hybdrvc neq.data    hybdrv.fortran.ref)
+    add_crosscheck (crosscheck_hybdrv_ hybdrv_ neq.data    hybdrv.fortran.ref)
+    add_crosscheck (crosscheck_chkdrvc chkdrvc chkder.data chkdrv.fortran.ref)
+    add_crosscheck (crosscheck_chkdrv_ chkdrv_ chkder.data chkdrv.fortran.ref)
+    message (STATUS "cminpack tests: FORTRAN-reference cross-check ENABLED (Python 3 found).")
   elseif (CMINPACK_CROSSCHECK)
-    # Python 3 is NOT required to build cminpack, and it is not needed for the
-    # standard tests (which use the C tool cmpfiles) or the driver smoke tests
-    # (pure CMake). It is only needed for the pure-C vs f2c cross-check, so we
-    # skip just that part and let everything else run.
+    # Python 3 is NOT required to build cminpack, nor for the standard tests
+    # (which use the C tool cmpfiles) or the driver smoke tests (pure CMake). It
+    # is only needed for the FORTRAN-reference cross-check, so we skip just that
+    # part and let everything else run.
     message (WARNING
-      "Python 3 was not found: the pure-C vs f2c cross-check tests are SKIPPED. "
-      "The build and the rest of the test suite (standard tests + driver smoke "
-      "tests) are unaffected, but `ctest` coverage is INCOMPLETE -- it will not "
-      "verify that the pure-C and f2c implementations produce identical results. "
-      "Install Python 3 (or use the Makefile's `make check`) for full coverage.")
+      "Python 3 was not found: the FORTRAN-reference cross-check tests are "
+      "SKIPPED. The build and the rest of the test suite (standard tests + "
+      "driver smoke tests) are unaffected, but `ctest` coverage is INCOMPLETE "
+      "-- it will not verify that cminpack converges wherever FORTRAN MINPACK "
+      "does. Install Python 3 (or use the Makefile's `make check`) for full "
+      "coverage.")
   endif ()
 endif ()
 

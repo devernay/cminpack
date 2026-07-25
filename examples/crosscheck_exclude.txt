@@ -1,0 +1,20 @@
+# Problems excluded from the FORTRAN-reference cross-check gate
+# (examples/crosscheck.py and the CMake crosscheck_* tests).
+#
+# These are the handful of deliberately-extreme More/Garbow/Hillstrom driver
+# problems (pushed from 10x/100x starting points) whose convergence is a
+# last-bit, compiler-dependent COIN-FLIP: the original FORTRAN MINPACK itself
+# converges on them only at some optimization levels (e.g. -O0 but not
+# -O3 -ffast-math, or vice versa). Requiring cminpack to match the FORTRAN
+# reference on these is therefore not meaningful, so they are skipped.
+#
+# On GNU/Linux GCC (the CI platform) cminpack matches FORTRAN at every standard
+# -On with NO exclusions; this list mostly covers Apple-clang and -ffast-math
+# builds. Format: one "nprob/dimension" per line. When the gate fails it prints
+# the offending problem as "nprob/dim" (e.g. "problem 8/30 (block ...)") -- that
+# is exactly the token to add here if the build legitimately flips another one
+# (once listed, it never fails the build).
+8/30
+8/40
+6/9
+7/6

@@ -1,26 +1,26 @@
 #!/usr/bin/env python3
-"""Cross-version comparison of the cminpack solvers (INFORMATIONAL).
+"""Cross-version comparison of the cminpack solvers.
 
 Python port of the former crosscheck.sh. It builds the intensive driver
-programs (the difficult More/Garbow/Hillstrom problems) against each
-implementation -- pure C, f2c, and the original FORTRAN MINPACK -- and reports,
-with driver_check.py, how their convergence compares.
+programs (the difficult More/Garbow/Hillstrom problems) against the pure-C and
+f2c cminpack implementations and compares them with driver_check.py to the
+committed FORTRAN reference outputs (examples/ref/*.fortran.ref). No Fortran
+compiler is needed -- the reference is checked in.
 
-This is a DIAGNOSTIC, not a pass/fail gate on agreement. pure C (src/*.c) is a
-hand-cleaned-up rewrite of the f2c output (src/f2c/*.c); the cleanup regrouped
-some expressions, so a compiler may contract "a*b + c" into a fused multiply-add
-at different places in the two. On these deliberately-extreme problems that
-one-ULP difference can send the runs down different iteration paths and even to
-different results -- exactly as different compilers do, and as cminpack does
-versus the original FORTRAN MINPACK. Those differences are expected and harmless
-(both results are valid); see README.md, "Numerical differences from FORTRAN
-MINPACK". The build-failing gates live elsewhere: the standard example tests
-(well-conditioned, compared against references) and the driver smoke tests
-(each implementation runs to completion without NaN).
+The pass/fail check (DOUBLE precision) is a regression gate against the original
+FORTRAN MINPACK: cminpack must converge on every problem FORTRAN converges on.
+Where FORTRAN itself does not converge -- the problems pushed from 10x/100x
+starting points -- a different result is accepted. pure C is a cleaned-up
+rewrite of the f2c output; like different compilers, the two contract FMAs
+differently and so take different (equally valid) iteration paths on those
+ill-conditioned problems (see README.md, "Numerical differences from FORTRAN
+MINPACK"). The long double / float runs, and the pure-C vs f2c comparison, are
+printed for information only.
 
-Exit status (so the Makefile treats non-zero as a real problem):
-  0  the comparison ran; any differences reported above are informational.
-  2  a build or driver run failed, so the comparison could not be produced.
+Exit status (so the Makefile treats non-zero as FAIL):
+  0  cminpack converges wherever the FORTRAN reference does (at double).
+  1  a problem the FORTRAN reference converges on is NOT converged by cminpack.
+  2  a build or driver run failed, so the gate could not be evaluated.
 """
 
 import os
@@ -33,9 +33,23 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import driver_check   # noqa: E402  (sibling module)
 
+REF_DIR = os.path.join(HERE, "ref")
+EXCLUDE_FILE = os.path.join(HERE, "crosscheck_exclude.txt")
 BASECFLAGS = "-O3 -g -Wall"
-FLIB_REL = "../fortran/libminpack.a"
-FLIB_ABS = os.path.join(HERE, "..", "fortran", "libminpack.a")
+
+
+def load_exclusions():
+    """Read the user-maintained 'nprob/dim' exclusion list (crosscheck_exclude.txt)."""
+    excl = set()
+    try:
+        with open(EXCLUDE_FILE, encoding="utf-8") as f:
+            for line in f:
+                line = line.split("#", 1)[0].strip()
+                if line:
+                    excl.add(line)
+    except OSError:
+        pass
+    return excl
 MAKE_TIMEOUT = 1800   # seconds; a full precision build should be well under this
 RUN_TIMEOUT = 300     # seconds per driver; guards against a hung solver
 
@@ -45,11 +59,11 @@ DATA = {
     "lmsdrv": "testdata/ssq.data", "hyjdrv": "testdata/neq.data",
     "hybdrv": "testdata/neq.data", "chkdrv": "testdata/chkder.data",
 }
-# label : top-level make target : LIBSUFFIX : precision define
+# label : top-level make target : LIBSUFFIX : precision define : gate-vs-FORTRAN?
 PRECISIONS = [
-    ("double",      "double",     "",   ""),
-    ("long double", "longdouble", "ld", "-D__cminpack_long_double__"),
-    ("float",       "float",      "s",  "-D__cminpack_float__"),
+    ("double",      "double",     "",   "",                           True),
+    ("long double", "longdouble", "ld", "-D__cminpack_long_double__",  False),
+    ("float",       "float",      "s",  "-D__cminpack_float__",        False),
 ]
 
 
@@ -96,14 +110,17 @@ def build_run(lib_rel, tag, progsuffix, libsuffix, cflags, outdir):
 
 def main():
     tmp = tempfile.mkdtemp(prefix="cross.", dir=HERE)
-    build_err = False  # a build or driver run failed -> exit 2
+    exclude = load_exclusions()
+    gate_fail = False   # cminpack fails a problem FORTRAN converges on -> exit 1
+    build_err = False   # a build or driver run failed -> exit 2
     try:
-        # --- pure C vs f2c, per precision (informational) -------------------
-        for label, top, suf, define in PRECISIONS:
+        for label, top, suf, define, gate in PRECISIONS:
             clib_rel = "../libcminpack%s.a" % suf
-            print("=== pure C vs f2c [%s] (informational: differences on the "
-                  "hard problems are EXPECTED -- FMA/compiler codegen; both "
-                  "results are valid) ===" % label)
+            if gate:
+                print("=== [%s] cminpack vs FORTRAN reference (regression gate) ===" % label)
+            else:
+                print("=== [%s] pure C vs f2c (informational: differences on the "
+                      "hard problems are EXPECTED -- FMA/compiler codegen) ===" % label)
             if _make(["-C", "..", top]) != 0:
                 print("  build of the %s library failed" % label)
                 build_err = True
@@ -118,39 +135,37 @@ def main():
                     print("  %s: build/run FAILED" % d)
                     build_err = True
                     continue
-                driver_check.check(a, b, atol=1e-4, rtol=1e-1, label="  " + d)
+                if gate:
+                    ref = os.path.join(REF_DIR, "%s.fortran.ref" % d)
+                    try:
+                        rc_c = driver_check.check(ref, a, atol=1e-4, rtol=1e-1,
+                                                  label="  %s pure-C" % d,
+                                                  gate=True, exclude=exclude)
+                        rc_f = driver_check.check(ref, b, atol=1e-4, rtol=1e-1,
+                                                  label="  %s f2c   " % d,
+                                                  gate=True, exclude=exclude)
+                    except OSError as e:
+                        print("  %s: cannot read reference (%s)" % (d, e))
+                        build_err = True
+                        continue
+                    if rc_c == 1 or rc_f == 1:
+                        gate_fail = True
+                    elif rc_c == 2 or rc_f == 2:
+                        build_err = True
+                else:
+                    driver_check.check(a, b, atol=1e-4, rtol=1e-1, label="  " + d)
             _make(["clean", "LIBSUFFIX=" + suf])
 
-        # --- f2c vs original FORTRAN MINPACK (double only, informational) ----
-        if os.path.exists(FLIB_ABS) or shutil.which("gfortran"):
-            _make(["-C", "..", "double"])
-            if not os.path.exists(FLIB_ABS):
-                _make(["-C", "../fortran"])
-            if os.path.exists(FLIB_ABS):
-                print("=== f2c vs FORTRAN MINPACK [double] (informational: "
-                      "differences here are EXPECTED and harmless -- FMA/compiler"
-                      " codegen; the problems still converge; see README.md) ===")
-                build_run("../libcminpack.a", "F2Cd", "_", "", BASECFLAGS, tmp)
-                build_run(FLIB_REL, "FORT", "_", "", BASECFLAGS, tmp)
-                for d in DRIVERS:
-                    a = os.path.join(tmp, "F2Cd.%s.out" % d)
-                    b = os.path.join(tmp, "FORT.%s.out" % d)
-                    if os.path.exists(a) and os.path.exists(b):
-                        driver_check.check(a, b, atol=1e-4, rtol=1e-1,
-                                           label="  " + d)
-                    else:
-                        print("  %s: build/run failed (informational, skipped)"
-                              % d)
-        else:
-            print("=== f2c vs FORTRAN skipped (no Fortran compiler) ===")
-
+        if gate_fail:
+            print("=== FAIL: cminpack does not converge on a problem the FORTRAN "
+                  "reference converges on -- a real regression (see above). ===")
+            return 1
         if build_err:
-            print("=== INCOMPLETE: a build or driver run failed, so the "
-                  "cross-check could not be produced. ===")
+            print("=== INCOMPLETE: a build or driver run failed, so the gate "
+                  "could not be fully evaluated. ===")
             return 2
-        print("=== Cross-check complete (informational). Differences on the "
-              "hard problems are expected; the pass/fail gates are the standard "
-              "example tests and the driver smoke tests. ===")
+        print("=== PASS: cminpack converges wherever the FORTRAN reference does. "
+              "Other differences reported above are expected and harmless. ===")
         return 0
     finally:
         _make(["clean", "LIBSUFFIX="])

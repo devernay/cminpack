@@ -1,46 +1,60 @@
-# Cross-check invoked by ctest (INFORMATIONAL). Runs the pure-C driver (PURE)
-# and the f2c driver (F2C) on INPUT and reports, via driver_check.py, how their
-# convergence compares.
+# Cross-check invoked by ctest. Runs a cminpack driver (DRIVER) on INPUT and
+# requires, via driver_check.py --reference-gate, that it converges on every
+# problem the committed FORTRAN reference (REF) converges on. Where FORTRAN
+# itself does not converge -- the deliberately-extreme More/Garbow/Hillstrom
+# problems pushed from 10x/100x starting points -- a different result is
+# accepted (both are valid). This is a real regression gate: cminpack must not
+# fail a problem the original FORTRAN MINPACK solves.
 #
-# This is NOT a pass/fail gate on agreement. pure C (src/*.c) is a hand-cleaned-
-# up rewrite of the f2c output (src/f2c/*.c); the cleanup regrouped some
-# expressions, so a compiler may contract "a*b + c" into a fused multiply-add at
-# different places in the two. On the deliberately-extreme More/Garbow/Hillstrom
-# driver problems that one-ULP difference can send the runs to different results
-# -- exactly as different compilers do, and as cminpack does versus the original
-# FORTRAN MINPACK (see
-# README.md, "Numerical differences from FORTRAN MINPACK"). Those differences
-# are expected and harmless. The test therefore fails ONLY if a driver crashes
-# or the comparison tool errors; convergence differences are reported for
-# information. The build-failing gates are the standard example tests and the
-# driver smoke tests.
+# The FORTRAN reference is checked in (examples/ref/*.fortran.ref), so NO Fortran
+# compiler is needed to run this. The test fails on a driver crash, a gate
+# violation, or a tooling error. Iteration-count / last-digit differences, and
+# differences on problems FORTRAN does not converge, are ignored (see README.md,
+# "Numerical differences from FORTRAN MINPACK").
 
 # Multi-config generators (e.g. Visual Studio): resolve the INTDIR placeholder.
 if(NOT "${INTDIR}" STREQUAL ".")
-  string(REPLACE "${INTDIR}" "$ENV{CMAKE_CONFIG_TYPE}" PURE "${PURE}")
-  string(REPLACE "${INTDIR}" "$ENV{CMAKE_CONFIG_TYPE}" F2C "${F2C}")
+  string(REPLACE "${INTDIR}" "$ENV{CMAKE_CONFIG_TYPE}" DRIVER "${DRIVER}")
 endif()
 
-execute_process(COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} ${PURE}
-  INPUT_FILE "${INPUT}" OUTPUT_FILE "${OUT_PURE}" ERROR_FILE "${OUT_PURE}.err"
-  RESULT_VARIABLE R_PURE)
-if(NOT "${R_PURE}" STREQUAL "0")
-  message(FATAL_ERROR "pure-C driver ${PURE} exited with status ${R_PURE}")
+execute_process(COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} ${DRIVER}
+  INPUT_FILE "${INPUT}" OUTPUT_FILE "${OUTPUT}" ERROR_FILE "${OUTPUT}.err"
+  RESULT_VARIABLE R_RUN)
+if(NOT "${R_RUN}" STREQUAL "0")
+  message(FATAL_ERROR "driver ${DRIVER} exited with status ${R_RUN}")
 endif()
 
-execute_process(COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} ${F2C}
-  INPUT_FILE "${INPUT}" OUTPUT_FILE "${OUT_F2C}" ERROR_FILE "${OUT_F2C}.err"
-  RESULT_VARIABLE R_F2C)
-if(NOT "${R_F2C}" STREQUAL "0")
-  message(FATAL_ERROR "f2c driver ${F2C} exited with status ${R_F2C}")
+# Build the comma-separated exclusion list from EXCLUDE_FILE (user-maintained
+# list of coin-flip problems; see examples/crosscheck_exclude.txt).
+set(_excl "")
+if(EXCLUDE_FILE AND EXISTS "${EXCLUDE_FILE}")
+  file(STRINGS "${EXCLUDE_FILE}" _lines)
+  foreach(_l IN LISTS _lines)
+    string(REGEX REPLACE "#.*" "" _l "${_l}")
+    string(STRIP "${_l}" _l)
+    if(_l)
+      if(_excl)
+        set(_excl "${_excl},${_l}")
+      else()
+        set(_excl "${_l}")
+      endif()
+    endif()
+  endforeach()
 endif()
 
-# driver_check.py exit codes: 0 = equivalent, 1 = a hard problem differs
-# (informational here), 2 = tooling/parse error (a real failure).
-execute_process(COMMAND "${PYTHON}" "${DRIVER_CHECK}" "${OUT_PURE}" "${OUT_F2C}"
-  RESULT_VARIABLE R_CMP)
-if("${R_CMP}" STREQUAL "2")
-  message(FATAL_ERROR "driver_check.py could not compare ${OUT_PURE} and ${OUT_F2C}")
+# driver_check.py --reference-gate exit codes: 0 = converges wherever the
+# reference does, 1 = a reference-converged problem is not converged here (a
+# real regression), 2 = tooling/parse error.
+set(_cmd "${PYTHON}" "${DRIVER_CHECK}" --reference-gate)
+if(_excl)
+  list(APPEND _cmd --exclude "${_excl}")
+endif()
+list(APPEND _cmd "${REF}" "${OUTPUT}")
+execute_process(COMMAND ${_cmd} RESULT_VARIABLE R_GATE)
+if(NOT "${R_GATE}" STREQUAL "0")
+  message(FATAL_ERROR
+    "${DRIVER} does not converge on a problem the FORTRAN reference "
+    "(${REF}) converges on -- see the report above")
 endif()
 
-message("cross-check ran (informational): pure-C and f2c compared for ${OUT_PURE}")
+message("cross-check OK: ${DRIVER} converges wherever FORTRAN does")

@@ -17,8 +17,8 @@ F77=gfortran
 
 # Python 3 is optional. It is NOT needed to build cminpack, nor for the standard
 # tests or driver smoke tests (which use the C tool cmpfiles). It is only needed
-# for `make crosscheck` (the pure-C vs f2c cross-check via crosscheck.py, which
-# uses compare.py and driver_check.py). If it is unavailable that one check is
+# for `make crosscheck` (the FORTRAN-reference cross-check via crosscheck.py,
+# which uses driver_check.py). If it is unavailable that one check is
 # skipped with a disclaimer; everything else still runs.
 PYTHON ?= python3
 HAVE_PYTHON := $(shell command -v $(PYTHON) >/dev/null 2>&1 && echo yes || echo no)
@@ -252,27 +252,30 @@ ftestchkdrv: $(LIBSUFFIX)chkdrv | cmpfiles
 	for x in $^; do echo $$x; $(VALGRIND) ./$$x < testdata/chkder.data > $$x.out; $(DIFF) ref/$$x.ref $$x.out ; done
 
 # `make check` gates on: (1) the double-precision standard tests (fatal), and
-# (2) crosscheck's pure-C == f2c driver equality at double (fatal, via
-# compare.py). The long double / float standard tests run informationally (the
-# '-' below is intentional: their reference files carry last-digit differences
-# beyond the comparator's tolerance). Driver validation is done entirely by
-# crosscheck.py -- the driver-vs-ref comparisons are NOT run here, because the
-# checked-in ref files match neither current cminpack nor current FORTRAN
-# MINPACK. See README.md, "Numerical differences from FORTRAN MINPACK".
+# (2) crosscheck's regression gate -- cminpack must converge on every intensive
+# driver problem the committed FORTRAN reference converges on (fatal, via
+# driver_check.py; no Fortran compiler needed). The long double / float standard
+# tests run informationally (the '-' below is intentional: their reference files
+# carry last-digit differences beyond the comparator's tolerance). The
+# driver-vs-ref comparisons are NOT run here, because the checked-in ref files
+# match neither current cminpack nor current FORTRAN MINPACK. See README.md,
+# "Numerical differences from FORTRAN MINPACK".
 check: checkdouble checklongdouble checkfloat crosscheck
 
-# Cross-version comparison (crosscheck.py): verifies that the pure-C and f2c
-# solvers are numerically identical (strict at double -- a mismatch there exits
-# non-zero and fails the build), and reports the EXPECTED, harmless
-# FMA/compiler-codegen differences at long double/float and against the original
-# FORTRAN MINPACK. Uses compare.py (strict) and driver_check.py (semantic). See
-# README.md, "Numerical differences from FORTRAN MINPACK".
+# Cross-version comparison (crosscheck.py): a regression gate against the
+# original FORTRAN MINPACK -- cminpack must converge on every intensive driver
+# problem FORTRAN converges on (checked against committed FORTRAN reference
+# outputs, examples/ref/*.fortran.ref, so no Fortran compiler is needed; a
+# failure exits non-zero and fails the build). Iteration counts and the harder,
+# non-converging problems differ for FMA/codegen reasons and are reported for
+# information. Uses driver_check.py. See README.md, "Numerical differences from
+# FORTRAN MINPACK".
 crosscheck:
 	@if [ "$(HAVE_PYTHON)" = "yes" ]; then \
-		echo "*** Running pure-C vs f2c cross-check ($(PYTHON) crosscheck.py)"; \
+		echo "*** Running FORTRAN-reference cross-check ($(PYTHON) crosscheck.py)"; \
 		$(PYTHON) ./crosscheck.py; \
 	else \
-		echo "*** DISCLAIMER: '$(PYTHON)' not found -- SKIPPING the pure-C vs f2c cross-check."; \
+		echo "*** DISCLAIMER: '$(PYTHON)' not found -- SKIPPING the FORTRAN-reference cross-check."; \
 		echo "*** The other tests still ran; test coverage is INCOMPLETE without Python 3."; \
 	fi
 
@@ -296,8 +299,9 @@ checkdouble: checkdoublec ../fortran/libminpack.a
 # Long double and float variants are INFORMATIONAL: the '-' on the standard
 # test invocations below is intentional. Their reference files carry small
 # last-digit differences beyond the comparator's tolerance, so a mismatch here
-# is reported but must not fail `make check`. Deterministic float/long-double
-# validation is done by crosscheck.py (pure-C == f2c) instead.
+# is reported but must not fail `make check`. The FORTRAN-reference gate in
+# crosscheck.py runs at double precision only; there is no fatal float or
+# long-double convergence check.
 checklongdoublec:
 	@echo ">>> long double tests below are INFORMATIONAL: last-digit differences vs the reference files are expected (compiler/precision) and do NOT fail 'make check'. See README.md."
 	$(MAKE) -C .. longdouble 2>&1 > /dev/null
