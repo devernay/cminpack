@@ -33,7 +33,7 @@ C++ bindings
 ------------
 
 [`include/cminpackcpp.hpp`](include/cminpackcpp.hpp) is a header-only C++
-wrapper (issue #74). The C API takes the user callback as a plain function
+wrapper (issue [#74](https://github.com/devernay/cminpack/issues/74)). The C API takes the user callback as a plain function
 pointer plus an opaque `void *p` for user data, which a capturing lambda, a
 functor, or a `std::function` cannot satisfy. The wrapper adds overloads in
 namespace `cminpack` that accept **any callable** whose signature matches the C
@@ -167,7 +167,7 @@ History
 ------
 
 * version 1.3.14 (25/07/2026):
-  - Fix spurious `make check` failures on the intensive driver tests (#78): the
+  - Fix spurious `make check` failures on the intensive driver tests ([#78](https://github.com/devernay/cminpack/issues/78)): the
     non-portable driver-vs-reference text comparison was dropped. Driver
     validation is now a regression gate against the original FORTRAN MINPACK —
     cminpack (pure C and f2c) must converge on every driver problem the committed
@@ -211,14 +211,14 @@ History
 
 * version 1.3.12 (16/07/2026):
   - Fix non-convergence/NaN in `lmder`, `lmdif` and `lmstr` on problems whose
-    solution is the zero vector, by guarding a 0/0 division in `lmpar` #76
+    solution is the zero vector, by guarding a 0/0 division in `lmpar` [#76](https://github.com/devernay/cminpack/issues/76)
   - Compare test output using a numeric tolerance instead of an exact text
-    match, so the tests pass across compilers and math libraries #37 #77
+    match, so the tests pass across compilers and math libraries [#37](https://github.com/devernay/cminpack/issues/37) [#77](https://github.com/devernay/cminpack/issues/77)
   - Fix Windows linking: correct the DLL export/import macros and document
-    that static-library users define `CMINPACK_NO_DLL` #18
-  - Detect and link the CBLAS interface when `USE_BLAS` is enabled #12
+    that static-library users define `CMINPACK_NO_DLL` [#18](https://github.com/devernay/cminpack/issues/18)
+  - Detect and link the CBLAS interface when `USE_BLAS` is enabled [#12](https://github.com/devernay/cminpack/issues/12)
   - Add `cminpackcpp.hpp`, a header-only C++ wrapper so the solvers accept
-    lambdas, functors and `std::function` #74
+    lambdas, functors and `std::function` [#74](https://github.com/devernay/cminpack/issues/74)
   - Make CMake the standard build system (the `Makefile` is kept for backward
     compatibility) and remove the unmaintained Xcode, Visual Studio and Eclipse
     project files (`cminpack.xcodeproj`, `cminpack*.vcproj`/`.vcxproj`,
@@ -228,34 +228,34 @@ History
     badges
 
 * version 1.3.11 (13/09/2024):
-  - Bump installed version number to 1.3.11 #75
+  - Bump installed version number to 1.3.11 [#75](https://github.com/devernay/cminpack/issues/75)
 
 * version 1.3.10 (11/09/2024):
-  - Disable BLAS by default #66 #70
-  - Fix BLAS usage (broken by #58) #68
-  - Fix testing on Windows #63
-  - Fix pkg-config files #71
-  - Bump minimum CMake version #69
+  - Disable BLAS by default [#66](https://github.com/devernay/cminpack/issues/66) [#70](https://github.com/devernay/cminpack/issues/70)
+  - Fix BLAS usage (broken by [#58](https://github.com/devernay/cminpack/issues/58)) [#68](https://github.com/devernay/cminpack/issues/68)
+  - Fix testing on Windows [#63](https://github.com/devernay/cminpack/issues/63)
+  - Fix pkg-config files [#71](https://github.com/devernay/cminpack/issues/71)
+  - Bump minimum CMake version [#69](https://github.com/devernay/cminpack/issues/69)
 
 * version 1.3.9 (28/05/2024):
-  - CMake portability fixes #50 #53 #56 #57 #58 #62
-  - MKL-related fixes #51 #52
-  - Support more CI build configurations #59 #61
+  - CMake portability fixes [#50](https://github.com/devernay/cminpack/issues/50) [#53](https://github.com/devernay/cminpack/issues/53) [#56](https://github.com/devernay/cminpack/issues/56) [#57](https://github.com/devernay/cminpack/issues/57) [#58](https://github.com/devernay/cminpack/issues/58) [#62](https://github.com/devernay/cminpack/issues/62)
+  - MKL-related fixes [#51](https://github.com/devernay/cminpack/issues/51) [#52](https://github.com/devernay/cminpack/issues/52)
+  - Support more CI build configurations [#59](https://github.com/devernay/cminpack/issues/59) [#61](https://github.com/devernay/cminpack/issues/61)
 
 * version 1.3.8 (09/02/2021):
-  - CMake now builds by default the single-, double-, and extended-precision versions #45 #48
-  - Avoid promoting to doubles in all operations for the single-precision version #47
+  - CMake now builds by default the single-, double-, and extended-precision versions [#45](https://github.com/devernay/cminpack/issues/45) [#48](https://github.com/devernay/cminpack/issues/48)
+  - Avoid promoting to doubles in all operations for the single-precision version [#47](https://github.com/devernay/cminpack/issues/47)
 
 * version 1.3.7 (09/12/2020):
-  - Makefile cleanups #11
-  - Cmake-related fixes #20 #21 #23 #27 #28
-  - Add Appveyor CI #24
-  - Add support for single-precision CBLAS and LAPACK #40
+  - Makefile cleanups [#11](https://github.com/devernay/cminpack/issues/11)
+  - Cmake-related fixes [#20](https://github.com/devernay/cminpack/issues/20) [#21](https://github.com/devernay/cminpack/issues/21) [#23](https://github.com/devernay/cminpack/issues/23) [#27](https://github.com/devernay/cminpack/issues/27) [#28](https://github.com/devernay/cminpack/issues/28)
+  - Add Appveyor CI [#24](https://github.com/devernay/cminpack/issues/24)
+  - Add support for single-precision CBLAS and LAPACK [#40](https://github.com/devernay/cminpack/issues/40)
 
 * version 1.3.6 (24/02/2017):
-  - Fix FreeBSD build #6
-  - CMake: install CMinpackConfig.cmake rather than FindCMinpack.cmake #8
-  - CMake: add option USE_BLAS to compile with blas #9
+  - Fix FreeBSD build [#6](https://github.com/devernay/cminpack/issues/6)
+  - CMake: install CMinpackConfig.cmake rather than FindCMinpack.cmake [#8](https://github.com/devernay/cminpack/issues/8)
+  - CMake: add option USE_BLAS to compile with blas [#9](https://github.com/devernay/cminpack/issues/9)
 
 * version 1.3.5 (28/05/2016):
   - Add support for compiling a long double version (Makefile only).
