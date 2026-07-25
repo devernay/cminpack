@@ -126,7 +126,7 @@ applied only when `USE_BLAS`/`USE_LAPACK` is on.
 History
 ------
 
-* version 1.3.14 (unreleased):
+* version 1.3.14 (25/07/2026):
   - Fix spurious `make check` failures on the intensive driver tests (#78): the
     non-portable driver-vs-reference text comparison was dropped. Driver
     validation is now a regression gate against the original FORTRAN MINPACK —
