@@ -126,28 +126,27 @@ applied only when `USE_BLAS`/`USE_LAPACK` is on.
 History
 ------
 
-* version 1.3.14 (24/07/2026):
-  - Fix spurious `make check` failures on the intensive driver tests (#78): on
-    the difficult Moré/Garbow/Hillstrom problems, iteration counts and last
-    digits differ between compilers because of floating-point contraction
-    (FMA), even though every problem still converges. The non-portable
-    driver-vs-reference comparison was dropped from `make check`; driver
-    validation now uses an informational cross-check that reports how the
-    pure-C, f2c and FORTRAN implementations compare (they can differ on the hard
-    problems for the same FMA reason), and — separately — a regression gate that
-    fails only if cminpack does not converge on a problem the original FORTRAN
-    MINPACK converges on (compared against committed `examples/ref/*.fortran.ref`,
-    so no Fortran compiler is needed).
-  - Replace `examples/crosscheck.sh` with `examples/crosscheck.py` (no /bin/sh
-    dependency); add `examples/compare.py` and `examples/driver_check.py`. Wire
-    the cross-check into CMake/CTest via the `CMINPACK_CROSSCHECK` option.
-    Python 3 is optional in both build systems: when it is absent only the
-    cross-check is skipped, with a disclaimer.
+* version 1.3.14 (unreleased):
+  - Fix spurious `make check` failures on the intensive driver tests (#78): the
+    non-portable driver-vs-reference text comparison was dropped. Driver
+    validation is now a regression gate against the original FORTRAN MINPACK —
+    cminpack (pure C and f2c) must converge on every driver problem the committed
+    reference (`examples/ref/*.fortran.ref`) converges on, so no Fortran compiler
+    is needed. Iteration-count and last-digit differences (compiler FMA) never
+    fail the build.
+  - Add user-maintained exclusion lists for the few deliberately-extreme
+    coin-flip problems (FORTRAN itself converges on them only at some
+    optimization levels): `examples/crosscheck_exclude.txt`, plus
+    `examples/crosscheck_exclude_blas.txt` for `USE_BLAS`/`USE_LAPACK` builds.
+    Each gate failure prints the problem as `nprob/dim`, the token to add.
+  - Replace `crosscheck.sh` with `crosscheck.py`; add `driver_check.py`
+    (`--reference-gate`) and `crosscheck_matrix.sh` (an optimization-level
+    diagnostic). Wire the cross-check into CMake/CTest (`CMINPACK_CROSSCHECK`);
+    Python 3 is optional (only the cross-check needs it).
   - Fix a compile error in `examples/tenorm_.c` (pass `dpmpar_` its index by
     pointer, the FORTRAN/f2c calling convention).
-  - Document the numerical differences from FORTRAN MINPACK and the test setup
-    in README.md and the HTML documentation; correct the `enorm.c` comments
-    (the divergence is FMA, not the rdwarf/rgiant scaling constants).
+  - Document the numerical differences from FORTRAN MINPACK and correct the
+    `enorm.c` comments (the divergence is FMA, not the rdwarf/rgiant constants).
 
 * version 1.3.13 (16/07/2026):
   - Fix a division by zero in `covar1` when the Jacobian rank equals the number
