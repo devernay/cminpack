@@ -4,6 +4,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <link rel="stylesheet" type="text/css" href="fd.css" />
+<style type="text/css">
+table.equiv { border-collapse: collapse; margin: 1em 0; }
+table.equiv caption { padding: 6px 0; font-style: italic; text-align: left; }
+table.equiv th, table.equiv td { border: 1px solid #888; padding: 4px 10px;
+    text-align: left; vertical-align: top; }
+table.equiv th { background: #eaeaea; }
+table.equiv tr:nth-child(even) td { background: #f6f6f6; }
+</style>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <meta name="description"
 content="C/C++ version of Minpack, the software for solving nonlinear equations and nonlinear least squares problems" />
@@ -313,21 +322,23 @@ implementation-dependent set, so they get an additional list,
 
 <h2>Equivalence table with other libraries</h2>
 <p>The following table may be useful if you need to switch to or from another library.</p>
-<table>
-<caption>Equivalence table between MINPACK and NAG, NPL, SLATEC, levmar and <a href="http://www.gnu.org/software/gsl/">GSL</a></caption>
-<tr><th>MINPACK</th> <th>NAG          </th> <th>NPL   </th> <th>SLATEC</th> <th>levmar     </th> <th>GSL                             </th></tr>
-<tr><td>lmdif  </td> <td>E04FCF       </td> <td>LSQNDN</td> <td>DNLS1 </td> <td>dlevmar_dif</td> <td>                                </td></tr>
-<tr><td>lmdif1 </td> <td>E04FYF       </td> <td>LSNDN1</td> <td>DNLS1E</td> <td>dlevmar_dif</td> <td>                                </td></tr>
-<tr><td>lmder  </td> <td>E04GDF/E04GBF</td> <td>LSQFDN</td> <td>DNLS1 </td> <td>dlevmar_der</td> <td>gsl_multifit_fdfsolver_lmsder   </td></tr>
-<tr><td>lmder1 </td> <td>E04GZF       </td> <td>LSFDN2</td> <td>DNLS1E</td> <td>dlevmar_der</td> <td>                                </td></tr>
-<tr><td>lmstr  </td> <td>*            </td> <td>*     </td> <td>DNLS1 </td> <td>           </td> <td>                                </td></tr>
-<tr><td>hybrd  </td> <td>C05NCF       </td> <td>*     </td> <td>DNSQ  </td> <td>           </td> <td>gsl_multiroot_fsolver_hybrids   </td></tr>
-<tr><td>hybrd1 </td> <td>C05NBF       </td> <td>*     </td> <td>DNSQE </td> <td>           </td> <td>                                </td></tr>
-<tr><td>hybrj  </td> <td>C05PCF       </td> <td>*     </td> <td>DNSQ  </td> <td>           </td> <td>gsl_multiroot_fdfsolver_hybridsj</td></tr>
-<tr><td>hybrj1 </td> <td>C05PBF       </td> <td>*     </td> <td>DNSQE </td> <td>           </td> <td>                                </td></tr>
-<tr><td>covar  </td> <td>E04YCF       </td> <td>*     </td> <td>DCOV  </td> <td>           </td> <td>gsl_multifit_covar              </td></tr>
-<tr><td>chkder </td> <td>C05ZAF       </td> <td>      </td> <td>      </td> <td>           </td> <td>                                </td></tr>
+<table class="equiv">
+<caption>Equivalence table between MINPACK and NAG, NPL, SLATEC, levmar, GSL, SciPy and Eigen. A blank or <code>*</code> cell means that library has no direct equivalent; see the note on Ceres Solver below the table.</caption>
+<tr><th><a href="http://www.netlib.org/minpack/">MINPACK</a></th><th><a href="https://www.nag.com/">NAG</a></th><th>NPL</th><th><a href="https://www.netlib.org/slatec/">SLATEC</a></th><th><a href="http://www.ics.forth.gr/~lourakis/levmar/">levmar</a></th><th><a href="https://www.gnu.org/software/gsl/">GSL</a></th><th><a href="https://docs.scipy.org/doc/scipy/reference/optimize.html">SciPy</a></th><th><a href="http://eigen.tuxfamily.org/dox/unsupported/group__NonLinearOptimization__Module.html">Eigen</a></th></tr>
+<tr><td><a href="http://www.netlib.org/minpack/">lmdif</a></td><td>E04FCF</td><td>LSQNDN</td><td>DNLS1</td><td>dlevmar_dif</td><td>&nbsp;</td><td><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.leastsq.html">leastsq</a></td><td>LevenbergMarquardt (num. diff)</td></tr>
+<tr><td><a href="http://www.netlib.org/minpack/">lmdif1</a></td><td>E04FYF</td><td>LSNDN1</td><td>DNLS1E</td><td>dlevmar_dif</td><td>&nbsp;</td><td><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.leastsq.html">leastsq</a></td><td>LevenbergMarquardt (num. diff)</td></tr>
+<tr><td><a href="http://www.netlib.org/minpack/">lmder</a></td><td>E04GDF/E04GBF</td><td>LSQFDN</td><td>DNLS1</td><td>dlevmar_der</td><td><a href="https://www.gnu.org/software/gsl/doc/html/nls.html">gsl_multifit_fdfsolver_lmsder</a></td><td><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.leastsq.html">leastsq</a></td><td>LevenbergMarquardt</td></tr>
+<tr><td><a href="http://www.netlib.org/minpack/">lmder1</a></td><td>E04GZF</td><td>LSFDN2</td><td>DNLS1E</td><td>dlevmar_der</td><td>&nbsp;</td><td><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.leastsq.html">leastsq</a></td><td>LevenbergMarquardt</td></tr>
+<tr><td><a href="http://www.netlib.org/minpack/">lmstr</a></td><td>*</td><td>*</td><td>DNLS1</td><td>&nbsp;</td><td>&nbsp;</td><td>*</td><td>*</td></tr>
+<tr><td><a href="http://www.netlib.org/minpack/">hybrd</a></td><td>C05NCF</td><td>*</td><td>DNSQ</td><td>&nbsp;</td><td><a href="https://www.gnu.org/software/gsl/doc/html/multiroots.html">gsl_multiroot_fsolver_hybrids</a></td><td><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fsolve.html">fsolve</a></td><td>HybridNonLinearSolver (num. diff)</td></tr>
+<tr><td><a href="http://www.netlib.org/minpack/">hybrd1</a></td><td>C05NBF</td><td>*</td><td>DNSQE</td><td>&nbsp;</td><td>&nbsp;</td><td><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fsolve.html">fsolve</a></td><td>HybridNonLinearSolver (num. diff)</td></tr>
+<tr><td><a href="http://www.netlib.org/minpack/">hybrj</a></td><td>C05PCF</td><td>*</td><td>DNSQ</td><td>&nbsp;</td><td><a href="https://www.gnu.org/software/gsl/doc/html/multiroots.html">gsl_multiroot_fdfsolver_hybridsj</a></td><td><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fsolve.html">fsolve</a></td><td>HybridNonLinearSolver</td></tr>
+<tr><td><a href="http://www.netlib.org/minpack/">hybrj1</a></td><td>C05PBF</td><td>*</td><td>DNSQE</td><td>&nbsp;</td><td>&nbsp;</td><td><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.fsolve.html">fsolve</a></td><td>HybridNonLinearSolver</td></tr>
+<tr><td><a href="http://www.netlib.org/minpack/">covar</a></td><td>E04YCF</td><td>*</td><td>DCOV</td><td>&nbsp;</td><td><a href="https://www.gnu.org/software/gsl/doc/html/nls.html">gsl_multifit_covar</a></td><td><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.leastsq.html">leastsq</a> (cov_x)</td><td>*</td></tr>
+<tr><td><a href="http://www.netlib.org/minpack/">chkder</a></td><td>C05ZAF</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td><a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.check_grad.html">check_grad</a></td><td>*</td></tr>
 </table>
+
+<p><strong>Ceres Solver.</strong> <a href="http://ceres-solver.org/">Ceres Solver</a> is not listed as a column because it does not map to MINPACK function-by-function: you build a <code>ceres::Problem</code> and call <code>ceres::Solver</code>. Its trust-region minimizer implements the same Levenberg-Marquardt method as <code>lmder</code>/<code>lmdif</code> (with a Dogleg alternative), selected via <code>Solver::Options::trust_region_strategy_type</code> = <code>LEVENBERG_MARQUARDT</code> (default) or <code>DOGLEG</code> (<a href="http://ceres-solver.org/nnls_solving.html">solving docs</a>). Parameter covariance &mdash; the analogue of <code>covar</code> &mdash; is provided by <code>ceres::Covariance</code> (<a href="http://ceres-solver.org/nnls_covariance.html">covariance docs</a>), and the analogue of <code>chkder</code> is the <code>Solver::Options::check_gradients</code> option. Ceres solves non-linear least squares only, so there is no direct equivalent of the <code>hybrd</code>/<code>hybrj</code> non-linear-equation solvers (a system F(x)=0 would be handled by minimizing ||F(x)||<sup>2</sup>).</p>
 
 <h2>Other MINPACK implementations</h2>
 <ul>
