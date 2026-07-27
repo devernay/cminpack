@@ -3,16 +3,19 @@
 # Applied ON TOP OF crosscheck_exclude.txt, but ONLY when cminpack is built with
 # -DUSE_BLAS=ON and/or -DUSE_LAPACK=ON (see examples/CMakeLists.txt). A
 # BLAS/LAPACK build takes a different numeric path -- enorm uses cblas_dnrm2 and
-# the QR factorization uses LAPACK -- so on the knife's-edge problems it can flip
-# a problem's exit parameter (info) differently from the plain build, and the
-# exact set depends on the BLAS/LAPACK IMPLEMENTATION, not just the compiler:
-# reference BLAS/LAPACK 3.12 (Ubuntu) flips nothing, while the GitHub Actions
-# runner's BLAS flips hybrd problem 7/7. So this list grows from CI observation,
-# per the "add more if needed" workflow, and is kept OUT of the base list so a
-# plain build still gates these problems strictly.
+# the QR factorization uses LAPACK -- so on the knife's-edge problems it flips a
+# different set than the plain build, and that set depends on the BLAS/LAPACK
+# IMPLEMENTATION, not just the compiler: reference BLAS/LAPACK 3.12 (Ubuntu)
+# flips nothing, while the GitHub Actions runner's BLAS has flipped 7/7 (hybrd)
+# and 7/6 (hybrj) on different runs. So this list grows from CI observation, per
+# the "add more if needed" workflow, and is kept OUT of the base list so a plain
+# build still gates these problems strictly.
 #
 # Format: one "nprob/dimension" per line (same as crosscheck_exclude.txt).
 #
-# 7/7: hybrd, observed on the GitHub Actions BLAS build -- FORTRAN converges but
-#      the BLAS dnrm2 path drives this problem to a non-converged exit code.
+# 7/6, 7/7: observed diverging on the GitHub Actions BLAS build -- FORTRAN
+#           converges but the BLAS dnrm2 / LAPACK QR path drives these problems
+#           to a non-converged result (a 1-ULP coin-flip; see
+#           docs/crosscheck-8-30-analysis.md for the same mechanism on 8/30).
+7/6
 7/7
