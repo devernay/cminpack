@@ -1,6 +1,7 @@
 #include "cminpack.h"
 #include <math.h>
 #ifdef USE_LAPACK
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
@@ -30,6 +31,10 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
         assert( lipvt >= n );
         if (sizeof(__CLPK_integer) != sizeof(ipvt[0])) {
             jpvt = malloc(n*sizeof(__CLPK_integer));
+            if (jpvt == NULL) {
+                fprintf(stderr, "cminpack qrfac: out of memory\n");
+                abort();
+            }
         } else {
             /* __CLPK_integer is actually an int, just do a cast */
             jpvt = (__CLPK_integer *)ipvt;
@@ -47,24 +52,32 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
     lwork = -1;
     if (pivot) {
         __cminpack_lapack__(geqp3_)(&m_,&n_,a,&lda_,jpvt,tau,tau,&lwork,&info);
-        lwork = (int)tau[0];
+        lwork = (__CLPK_integer)tau[0];
         assert( lwork >= 3*n+1  );
     } else {
         __cminpack_lapack__(geqrf_)(&m_,&n_,a,&lda_,tau,tau,&lwork,&info);
-        lwork = (int)tau[0];
+        lwork = (__CLPK_integer)tau[0];
         assert( lwork >= 1 && lwork >= n );
     }
-    
-    assert( info == 0 );
+    if (info != 0) {
+        fprintf(stderr, "cminpack qrfac: LAPACK QR workspace query failed "
+                "(info=%d)\n", (int)info);
+        abort();
+    }
     
     /* alloc work area.
-       NOTE: qrfac() returns void, so it has no way to report a LAPACK error
-       or an out-of-memory condition to its callers (lmder/lmstr/hybr*). The
-       asserts below catch these in debug builds but are compiled out under
-       NDEBUG; a robust fix would require adding an int error return to the
-       qrfac API (a breaking change), which is deliberately not done here. */
+       NOTE: qrfac() returns void, so it cannot report a LAPACK error or an
+       out-of-memory condition to its callers (lmder/lmstr/hybr*). Rather than
+       let a NULL work pointer or a nonzero LAPACK info silently crash or
+       corrupt a release (NDEBUG) build -- where the asserts are compiled out --
+       these unrecoverable conditions are reported to stderr and abort(). A
+       non-fatal alternative would require adding an int error return to the
+       qrfac API (a breaking change), deliberately not done here. */
     work = (real *)malloc(sizeof(real)*lwork);
-    assert(work != NULL);
+    if (work == NULL) {
+        fprintf(stderr, "cminpack qrfac: out of memory\n");
+        abort();
+    }
     
     /* set acnorm first (from the doc of qrfac, acnorm may point to the same area as rdiag) */
     if (acnorm != rdiag) {
@@ -79,7 +92,11 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
     } else {
         __cminpack_lapack__(geqrf_)(&m_,&n_,a,&lda_,tau,work,&lwork,&info);
     }
-    assert(info == 0);
+    if (info != 0) {
+        fprintf(stderr, "cminpack qrfac: LAPACK QR factorization failed "
+                "(info=%d)\n", (int)info);
+        abort();
+    }
     
     /* set rdiag, before the diagonal is replaced */
     memset(rdiag, 0, sizeof(real)*n);
