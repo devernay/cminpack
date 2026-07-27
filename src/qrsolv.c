@@ -147,15 +147,15 @@ void __cminpack_func__(qrsolv)(int n, real *r, int ldr,
                         sin = cos * tan;
                     }
 
+#                 endif /* !USE_LAPACK */
+
 /*           compute the modified diagonal element of r and */
 /*           the modified element of ((q transpose)*b,0). */
-
-#                 endif /* !USE_LAPACK */
                     temp = cos * wa[k] + sin * qtbpj;
                     qtbpj = -sin * wa[k] + cos * qtbpj;
                     wa[k] = temp;
 
-/*           accumulate the tranformation in the row of s. */
+/*           accumulate the transformation in the row of s. */
 #                 ifdef USE_BLAS
                     const __cminpack_blasint__ n_minus_k = n - k;
                     const __cminpack_blasint__ c__1 = 1;

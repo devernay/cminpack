@@ -3,7 +3,7 @@
 #define __CMINPACKP_H__
 
 #ifndef __CMINPACK_H__
-#error "cminpackP.h in an internal cminpack header, and must be included after all other headers (including cminpack.h)"
+#error "cminpackP.h is an internal cminpack header, and must be included after all other headers (including cminpack.h)"
 #endif
 
 #if (defined (USE_BLAS) || defined (USE_LAPACK)) && !defined (__cminpack_double__) && !defined (__cminpack_float__)

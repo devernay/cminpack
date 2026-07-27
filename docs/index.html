@@ -142,7 +142,7 @@ which came from the FORTRAN version:</p>
 
 <p>CMinpack can be built with CMake.  By default, CMake will build a single precision library named <code>cminpacks</code>, and a double precision library named <code>cminpack</code>.  You can choose to build only one of the single, double, or long double precision variants by setting <code>CMINPACK_PRECISION</code> to one of "s", "d", or "ld" respectively (e.g. <code>cmake -DCMINPACK_PRECISION=d ..</code>).</p>
 
-<p>The source distribution also contains a Makefile which can be used to build cminpack for double precision (the default, <code>make</code> or <code>make double</code>) for single-precision (<code>make float</code>), half-precision (<code>make half</code>), long double precision (<code>make longdouble</code>), and even CUDA (<code>make cuda</code>), or using LAPACK for linear algebra (<code>make lapack</code>). Unit tests are also provided, but results may depend on the platform (<code>make checkdouble checkfloat checkhalf checklongdouble checklapack</code>).</p>
+<p>The source distribution also contains a Makefile which can be used to build cminpack for double precision (the default, <code>make</code> or <code>make double</code>) for single-precision (<code>make float</code>), half-precision (<code>make half</code>), long double precision (<code>make longdouble</code>), and even CUDA (<code>make cuda</code>), or using LAPACK for linear algebra (<code>make lapack</code>, double or single precision only). Unit tests are also provided, but results may depend on the platform (<code>make checkdouble checkfloat checkhalf checklongdouble checklapack</code>).</p>
 
 <h3>Using CMinpack</h3>
 
@@ -200,7 +200,7 @@ int info = cminpack::lmdif1(cb, m, n, x, fvec, tol, iwa, wa, lwa);
 (compared against <code>examples/ref/*.ref</code> with the dependency-free C
 tool <code>cmpfiles</code>), the self-checking regression tests, the intensive
 driver programs as smoke tests (run to completion, no NaN), and &mdash; when
-Python 3 is available &mdash; the pure-C-vs-f2c cross-check. Set
+Python 3 is available &mdash; the FORTRAN-reference cross-check. Set
 <code>-DCMINPACK_CROSSCHECK=OFF</code> to disable that cross-check.</li>
 <li><strong>Makefile</strong>: <code>make check</code> runs the standard tests
 for the double, long double and float builds, then <code>make crosscheck</code>.
@@ -267,11 +267,15 @@ information only and never fail the build. A handful of deliberately-extreme
 problems have compiler-dependent, coin-flip convergence (FORTRAN itself
 converges on them only at some optimization levels); those are listed, with the
 rationale, in <code>examples/crosscheck_exclude.txt</code> and skipped by the
-gate. BLAS/LAPACK builds take a different numeric path (a BLAS <code>dnrm2</code>
-in <code>enorm</code>, a LAPACK QR factorization) that can flip a different,
-implementation-dependent set, so they get an additional list,
-<code>examples/crosscheck_exclude_blas.txt</code>, applied only when
-<code>USE_BLAS</code>/<code>USE_LAPACK</code> is on.</p>
+gate. <code>USE_BLAS</code>/<code>USE_LAPACK</code> builds (double or single
+precision only) take a genuinely different numeric path &mdash; a BLAS
+<code>dnrm2</code> in <code>enorm</code>, BLAS <code>dot</code>/<code>trsv</code>/<code>swap</code>/<code>rot</code>
+in <code>lmpar</code>/<code>qrsolv</code>, and above all a LAPACK
+<code>geqp3</code>/<code>geqrf</code> QR factorization with different column
+pivoting (a different algorithm, not merely a last-bit FMA effect). They can
+flip a different, implementation-dependent set of problems, so they get an
+additional list, <code>examples/crosscheck_exclude_blas.txt</code>, applied only
+when those options are on.</p>
 
 <h2>Documentation</h2>
 <ul>

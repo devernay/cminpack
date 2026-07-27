@@ -37,8 +37,9 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
         /* set all columns free. Use sizeof(*jpvt) (== sizeof(__CLPK_integer)),
            not sizeof(int): when __CLPK_integer is wider than int (an ILP64
            LAPACK) jpvt is a separately allocated __CLPK_integer array, and
-           sizeof(int)*n would zero only part of it, leaving garbage in the
-           high words that geqp3 would treat as fixed (leading) columns. */
+           sizeof(int)*n would clear only the first int-sized bytes -- i.e. only
+           the first few whole elements -- leaving the remaining elements as
+           garbage that geqp3 would treat as fixed (leading) columns. */
         memset(jpvt, 0, sizeof(*jpvt)*n);
     }
     
@@ -86,7 +87,7 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
         rdiag[i] = a[i*lda+i];
     }
     
-    /* modify lower trinagular part to look like qrfac's output */
+    /* rebuild the lower triangle in minpack qrfac's u-vector format */
     for(i=0 ; i<ltau ; ++i) {
         k = i*lda+i;
         t = tau[i];

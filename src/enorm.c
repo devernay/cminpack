@@ -93,6 +93,8 @@ __cminpack_attr__
 real __cminpack_func__(enorm)(int n, const real *x)
 {
 #ifdef USE_BLAS
+    /* dnrm2 does its own overflow/underflow-safe scaling, so the rdwarf/rgiant
+       algorithm and constants below are unused in this build. */
     const __cminpack_blasint__ c__1 = 1;
     return __cminpack_blas__(nrm2)(&n, x, &c__1);
 #else /* !USE_BLAS */

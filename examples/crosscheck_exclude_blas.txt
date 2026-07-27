@@ -15,7 +15,8 @@
 #
 # 7/6, 7/7: observed diverging on the GitHub Actions BLAS build -- FORTRAN
 #           converges but the BLAS dnrm2 / LAPACK QR path drives these problems
-#           to a non-converged result (a 1-ULP coin-flip; see
-#           docs/crosscheck-8-30-analysis.md for the same mechanism on 8/30).
+#           to a non-converged result. Like 8/30 (docs/crosscheck-8-30-analysis.md)
+#           this is a last-bit sensitivity on a knife's-edge problem, but here it
+#           is driven by the BLAS/LAPACK implementation, not the compiler's FMA.
 7/6
 7/7

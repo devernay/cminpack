@@ -185,11 +185,15 @@ build. A handful of deliberately-extreme
 problems have compiler-dependent, coin-flip convergence (FORTRAN itself
 converges on them only at some optimization levels); those are listed, with the
 rationale, in [`examples/crosscheck_exclude.txt`](examples/crosscheck_exclude.txt)
-and skipped by the gate. BLAS/LAPACK builds take a different numeric path (a
-BLAS `dnrm2` in `enorm`, a LAPACK QR factorization) that can flip a different,
-implementation-dependent set, so they get an additional list,
+and skipped by the gate. `USE_BLAS`/`USE_LAPACK` builds (double or single
+precision only) take a genuinely different numeric path — a BLAS `dnrm2` in
+`enorm`, BLAS `dot`/`trsv`/`swap`/`rot` in `lmpar`/`qrsolv`, and above all a
+LAPACK `geqp3`/`geqrf` QR factorization with different column pivoting (a
+different algorithm, not merely a last-bit FMA effect). They can flip a
+different, implementation-dependent set of problems, so they get an additional
+list,
 [`examples/crosscheck_exclude_blas.txt`](examples/crosscheck_exclude_blas.txt),
-applied only when `USE_BLAS`/`USE_LAPACK` is on.
+applied only when those options are on.
 
 History
 ------
