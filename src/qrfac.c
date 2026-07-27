@@ -206,6 +206,13 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
 /*       wa is a work array of length n. if pivot is false, then wa */
 /*         can coincide with rdiag. */
 
+/*       when built with USE_LAPACK, the QR is computed by LAPACK, which */
+/*       needs more workspace than the length-n wa above (3*n+1 with pivoting, */
+/*       n without). qrfac has no wa-length argument, so it cannot use extra */
+/*       caller space; instead it obtains that workspace with an internal */
+/*       malloc (once per call) and abort()s if the allocation fails. Callers */
+/*       that must never abort on out-of-memory should not enable USE_LAPACK. */
+
 /*     subprograms called */
 
 /*       minpack-supplied ... dpmpar,enorm */
