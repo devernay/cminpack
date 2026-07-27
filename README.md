@@ -174,11 +174,13 @@ Because of this, `examples/crosscheck.py` and the CMake `crosscheck_*` tests are
 a **regression gate against the original FORTRAN MINPACK**: on the intensive
 driver problems, cminpack must converge on every problem FORTRAN converges on
 (compared against the committed `examples/ref/*.fortran.ref`, so no Fortran
-compiler is needed). Convergence is judged by the solver's exit parameter
-(`info`), following the original MINPACK drivers: where FORTRAN converged
-(`info < 5`) cminpack must converge too, and where FORTRAN itself does not
-converge (`info >= 5`) a different result is accepted — iteration-count and
-last-digit differences are reported for information only and never fail the
+compiler is needed). Following the original MINPACK drivers, a problem is gated
+only where FORTRAN converged (exit parameter `info < 5`); where FORTRAN itself
+does not converge (`info >= 5`) a different result is accepted. On a gated
+problem the build fails if either its own solver reports non-convergence
+(`info >= 5`) or FORTRAN drove the residual to ~0 but this build did not (which
+catches a genuine divergence the exit code alone would miss). Iteration-count
+and last-digit differences are reported for information only and never fail the
 build. A handful of deliberately-extreme
 problems have compiler-dependent, coin-flip convergence (FORTRAN itself
 converges on them only at some optimization levels); those are listed, with the

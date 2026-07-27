@@ -29,12 +29,16 @@ Everything else prints a short, reassuring one-line summary.
 
 Reference-gate mode (--reference-gate): treat FILE_A as the authoritative
 FORTRAN reference and apply a one-sided regression gate instead of a symmetric
-comparison. Following the original MINPACK test drivers, it uses each problem's
-exit parameter (info): where FORTRAN converged (info < 5) it requires this build
-to converge too (info < 5), and it ignores problems where FORTRAN itself did not
-converge (info >= 5, e.g. the maximum number of evaluations reached on the
-10*x0/100*x0 starts). Using info rather than the residual magnitude makes the
-gate well defined even for problems with a genuinely nonzero minimum. Use
+comparison. Following the original MINPACK test drivers, a problem is gated only
+where FORTRAN converged (exit parameter info < 5); problems where FORTRAN itself
+did not converge (info >= 5, e.g. the maximum number of evaluations reached on
+the 10*x0/100*x0 starts) are ignored. On a gated problem the build fails if
+EITHER (a) its own solver reports non-convergence (info >= 5), OR (b) FORTRAN
+drove the residual to ~0 (<= --atol) but this build did not. Part (a) mirrors
+fortran-lang/minpack's info_original < 5 filter; part (b) additionally catches a
+genuine divergence the solver did not flag (info < 5 but a wrong, large
+residual, e.g. hybrd problem 8/30 on some compilers), and is applied only to
+zero-minimum problems so a nonzero reference residual is never gated. Use
 --exclude to skip the handful of deliberately-extreme coin-flip problems (see
 crosscheck_exclude.txt); each failure line names the problem as "nprob/dim", the
 exact token to add to that list.
@@ -184,26 +188,36 @@ def check(path_a, path_b, atol, rtol, label, gate=False, exclude=None):
             if denom:
                 worst_rel = max(worst_rel, d / denom)
             if gate:
-                # file_a is the FORTRAN reference. Following the original
-                # MINPACK test drivers, use the exit parameter (info): treat
-                # info >= 5 as "FORTRAN did not converge" (e.g. the maximum
-                # number of evaluations was reached) and ignore those problems.
-                # Where FORTRAN converged (info < 5), require this build to
-                # converge too (info < 5). This mirrors the fortran-lang/minpack
-                # `info_original < 5` filter and, unlike a residual-magnitude
-                # test, is well defined for problems with a nonzero minimum.
-                ri = int(_INFO_RE.search("".join(blk_a)).group(1)) \
-                    if _INFO_RE.search("".join(blk_a)) else None
-                ci = int(_INFO_RE.search("".join(blk_b)).group(1)) \
-                    if _INFO_RE.search("".join(blk_b)) else None
+                # file_a is the FORTRAN reference. Hybrid convergence gate,
+                # following the original MINPACK test drivers: a problem is
+                # gated only where FORTRAN converged (exit parameter info < 5);
+                # problems where FORTRAN itself did not converge (info >= 5, e.g.
+                # the maximum number of evaluations reached on the 10*x0/100*x0
+                # starts) are ignored. On a gated problem the build FAILS if
+                # EITHER (a) its own solver reports non-convergence (info >= 5),
+                # OR (b) FORTRAN drove the residual to ~0 (<= --atol) but this
+                # build did not. Condition (b) catches genuine divergence that
+                # the solver did not flag (info < 5 but a wrong, large residual);
+                # it is applied only to zero-minimum problems, so a nonzero
+                # reference residual -- which cannot be told apart from
+                # non-convergence by magnitude -- is never gated.
+                _ra = _INFO_RE.search("".join(blk_a))
+                _rb = _INFO_RE.search("".join(blk_b))
+                ri = int(_ra.group(1)) if _ra else None
+                ci = int(_rb.group(1)) if _rb else None
                 if ri is None or ri >= 5:
                     continue        # FORTRAN did not converge here -> ignore
+                reasons = []
                 if ci is None or ci >= 5:
-                    bad.append("  problem %s (block %d): FORTRAN reference "
-                               "converged (exit parameter %s) but this build did "
-                               "NOT (exit parameter %s; final residual %.3g vs "
-                               "%.3g)" % (pid, i, ri,
-                                          "missing" if ci is None else ci, fa, fb))
+                    reasons.append("exit parameter %s (FORTRAN reported %s)"
+                                   % ("missing" if ci is None else ci, ri))
+                if fa <= atol and fb > atol:
+                    reasons.append("FORTRAN reached a near-zero residual (%.3g) "
+                                   "but this build did not (%.3g)" % (fa, fb))
+                if reasons:
+                    bad.append("  problem %s (block %d) did NOT converge like the "
+                               "FORTRAN reference: %s"
+                               % (pid, i, "; ".join(reasons)))
             elif not _close(fa, fb, atol, rtol):
                 bad.append("  problem %s (block %d): final residual %.7g vs %.7g "
                            "(rel %.2g)" % (pid, i, fa, fb,
