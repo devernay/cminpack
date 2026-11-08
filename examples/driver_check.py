@@ -111,8 +111,13 @@ def _close(a, b, atol, rtol):
 
 
 def _prob_id(header):
-    """Extract 'nprob/dim' from a problem header line, or None."""
-    m = re.search(r"problem\s+(\d+)\s+dimensions?\s+(\d+)", header, re.IGNORECASE)
+    """Extract 'nprob/dim' from a problem header line, or None.
+
+    Solver drivers print "problem N dimension D" (or "dimensions D M"),
+    chkdrv prints "problem N with dimension D".
+    """
+    m = re.search(r"problem\s+(\d+)\s+(?:with\s+)?dimensions?\s+(\d+)",
+                  header, re.IGNORECASE)
     return "%s/%s" % (m.group(1), m.group(2)) if m else None
 
 
