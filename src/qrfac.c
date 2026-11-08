@@ -98,9 +98,10 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
         abort();
     }
     
-    /* set rdiag, before the diagonal is replaced */
+    /* set rdiag, before the diagonal is replaced. R has only ltau = min(m,n)
+       diagonal entries; the remaining rdiag entries are left at zero. */
     memset(rdiag, 0, sizeof(real)*n);
-    for(i=0 ; i<n ; ++i) {
+    for(i=0 ; i<ltau ; ++i) {
         rdiag[i] = a[i*lda+i];
     }
     
