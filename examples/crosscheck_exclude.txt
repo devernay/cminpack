@@ -7,7 +7,7 @@
 # reports non-convergence (info >= 5) OR if FORTRAN reached a near-zero residual
 # but this build did not.
 #
-# A few deliberately-extreme More/Garbow/Hillstrom problems (the 10x/100x
+# A few deliberately-extreme More/Garbow/Hillstrom problems (mostly the 10x/100x
 # starting points) sit on a knife's edge where a one-ULP, compiler-dependent
 # difference (FMA contraction) flips a trust-region accept/reject decision and
 # sends the two runs down different, equally valid paths. Requiring a match
@@ -24,7 +24,7 @@
 # 6/4: Powell singular function (dim 4), a zero-minimum problem. The FORTRAN
 #      reference exits info=4, this build info=5; both drive the residual to
 #      ~1e-33, so the difference is only the stop code.
-# 8/30: variably-dimensioned function (dim 30). On Apple clang this build
+# 8/30: Brown almost-linear function (dim 30). On Apple clang this build
 #      diverges (residual ~83, info=4) where FORTRAN reaches ~0 (info=1); on
 #      Linux GCC both converge. A last-bit FMA coin-flip -- see the analysis in
 #      docs/crosscheck-8-30-analysis.md.

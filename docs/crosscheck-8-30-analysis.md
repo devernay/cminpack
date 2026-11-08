@@ -6,9 +6,10 @@ driver problem **8 at dimension 30** (`crosscheck_exclude.txt`).
 
 ## The problem
 
-Driver problem 8 is the **variably dimensioned function** (Moré, Garbow &
-Hillstrom), whose exact solution is `x* = (1, 1, ..., 1)` with residual 0. The
-driver runs it at dimension 30 from the hardest starting point (`100 * x0`).
+Driver problem 8 is **Brown's almost-linear function** (Moré, Garbow &
+Hillstrom; `examples/vecfcn.c`), which has the exact solution
+`x* = (1, 1, ..., 1)` with residual 0. The driver runs it at dimension 30 from
+the standard starting point `x0` only (`examples/testdata/neq.data`).
 
 ## What we observe
 
@@ -46,9 +47,8 @@ Two facts stand out:
 **Is it just a last-significant-digit difference?** Yes. A fused multiply-add
 computes `a*b + c` with a single rounding instead of two, so a contracted
 expression differs from the separately-rounded one by about one unit in the last
-place (ULP). The variably dimensioned function at dim 30 from the `100*x0` start
-is ill-conditioned enough that a single ULP early in the iteration flips a
-dogleg accept/reject decision; the two runs then follow different paths, one to
+place (ULP). Brown's almost-linear function at dim 30 is ill-conditioned
+enough that a single ULP early in the iteration flips a dogleg accept/reject decision; the two runs then follow different paths, one to
 the true solution and one to the all-halves stationary point. Removing
 contraction (`-ffp-contract=off`) collapses the difference and the run matches
 FORTRAN exactly.
