@@ -48,6 +48,15 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
   add_test (NAME tissue76
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue76>)
 
+  # Self-checking regression test for issue #84: the USE_LAPACK qrfac must not
+  # read past the end of a when m < n. See tissue84.c.
+  if (USE_LAPACK)
+    add_executable (tissue84 tissue84.c)
+    target_link_libraries (tissue84 cminpack)
+    add_test (NAME tissue84
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue84>)
+  endif ()
+
   # C++ wrapper test (issue #74): accept lambdas/functors/std::function.
   # Only built if a C++ compiler is available, since cminpack itself is C.
   include (CheckLanguage)
