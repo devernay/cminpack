@@ -2,7 +2,8 @@
  * Test for the header-only C++ wrapper cminpackcpp.hpp (issue #74).
  *
  * It exercises the wrapper with the kinds of callables the C API cannot take
- * directly: a capturing lambda, a stateful functor, and a std::function. Each
+ * directly: a capturing lambda, a stateful functor, and a std::function, plus
+ * plain functions passed by name and by address (issue #92). Each
  * solver must converge to the known solution, which proves both that the
  * templated trampolines forward the arguments correctly and that user state is
  * carried without any global variable.
@@ -54,6 +55,17 @@ static double max_abs_diff(const real *a, const double *b, int n)
         }
     }
     return e;
+}
+
+/* plain C++ function for the nonlinear system with root (2, 3, 2), passed to
+   the wrapper by name (issue #92) */
+static int root_fcn(int n, const real *x, real *fvec, int iflag)
+{
+    (void)n; (void)iflag;
+    fvec[0] = x[0] * x[0] - 4.;
+    fvec[1] = x[0] * x[1] - 6.;
+    fvec[2] = x[1] + x[2] - 5.;
+    return 0;
 }
 
 int main()
@@ -138,6 +150,23 @@ int main()
         int info = cminpack::hybrd1(fcn, 3, x, fvec, SOLVE_TOL,
                                     wa, (3 * (3 * 3 + 13)) / 2);
         check("hybrd1 (std::function)", info == 1, max_abs_diff(x, rootc, 3));
+    }
+
+    /* hybrd1 with a plain function passed by name (issue #92): a function
+       type, not a pointer, so the wrapper must decay it itself */
+    {
+        real x[3] = { 1., 1., 1. }, fvec[3], wa[(3 * (3 * 3 + 13)) / 2];
+        int info = cminpack::hybrd1(root_fcn, 3, x, fvec, SOLVE_TOL,
+                                    wa, (3 * (3 * 3 + 13)) / 2);
+        check("hybrd1 (function)", info == 1, max_abs_diff(x, rootc, 3));
+    }
+
+    /* hybrd1 with a function pointer (worked before #92, keep it working) */
+    {
+        real x[3] = { 1., 1., 1. }, fvec[3], wa[(3 * (3 * 3 + 13)) / 2];
+        int info = cminpack::hybrd1(&root_fcn, 3, x, fvec, SOLVE_TOL,
+                                    wa, (3 * (3 * 3 + 13)) / 2);
+        check("hybrd1 (&function)", info == 1, max_abs_diff(x, rootc, 3));
     }
 
     /* hybrj1 with a capturing lambda (analytic Jacobian) */
