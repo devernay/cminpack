@@ -37,8 +37,10 @@ wrapper (issue [#74](https://github.com/devernay/cminpack/issues/74)). The C API
 pointer plus an opaque `void *p` for user data, which a capturing lambda, a
 functor, or a `std::function` cannot satisfy. The wrapper adds overloads in
 namespace `cminpack` that accept **any callable** whose signature matches the C
-callback minus the leading `void *p`; the callable is forwarded through the
-`void *p` slot by a small template trampoline, so no global state is needed. It
+callback minus the leading `void *p` (a lambda, a functor, a `std::function`, or
+a plain function passed by name or by address); the callable is forwarded
+through the `void *p` slot by a small template trampoline, so no global state
+is needed. It
 adds no allocation and no virtual dispatch, and the callable only has to outlive
 the solver call.
 

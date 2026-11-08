@@ -7,8 +7,10 @@
 
    This header adds overloads in namespace `cminpack` that accept ANY callable
    whose signature matches the corresponding cminpack callback (minus the
-   leading `void *p`). The callable is forwarded through the `void *p` slot and
-   invoked by a small template trampoline, so no state needs to be global.
+   leading `void *p`): a lambda, a functor, a std::function, or a plain
+   function passed by name or by address. The callable is forwarded through
+   the `void *p` slot and invoked by a small template trampoline, so no state
+   needs to be global.
 
    Example:
 
@@ -39,7 +41,7 @@
 #endif
 
 #include <memory>       /* std::addressof */
-#include <type_traits>  /* std::remove_reference, std::remove_cv */
+#include <type_traits>  /* std::remove_reference, std::remove_cv, std::is_function */
 
 namespace cminpack {
 
@@ -47,20 +49,33 @@ typedef __cminpack_real__ real;
 
 namespace detail {
 
-/* remove reference and cv qualifiers to get the stored callable type */
-template <typename F>
-struct callable_type {
+/* callable<F> holds what is passed through the `void *p` slot, and `type` is
+   what the trampolines cast p back to.
+
+   For objects (lambdas, functors, std::function, function pointers) p points
+   to the caller's object itself: reference and cv qualifiers are stripped. */
+template <typename F,
+          bool = std::is_function<typename std::remove_reference<F>::type>::value>
+struct callable {
     typedef typename std::remove_cv<
         typename std::remove_reference<F>::type>::type type;
+    void *ptr;
+    explicit callable(typename std::remove_reference<F>::type &fcn)
+        : ptr(const_cast<void *>(
+              static_cast<const void *>(std::addressof(fcn)))) {}
+    void *get() const { return ptr; }
 };
 
-/* obtain a void* to the callable that the trampolines cast back */
+/* A plain function passed by name has a function type, and a function's
+   address cannot be cast to void * (issue #92). Decay it to a function
+   pointer, store that pointer here, and pass the address of the pointer. */
 template <typename F>
-inline void *as_void(F &&fcn)
-{
-    return const_cast<void *>(
-        static_cast<const void *>(std::addressof(fcn)));
-}
+struct callable<F, true> {
+    typedef typename std::remove_reference<F>::type *type;
+    type fp;
+    explicit callable(type fcn) : fp(fcn) {}
+    void *get() { return &fp; }
+};
 
 /* trampolines: recover the callable from p and forward the arguments */
 template <typename Fn>
@@ -104,9 +119,10 @@ template <typename F>
 inline int hybrd1(F &&fcn, int n, real *x, real *fvec, real tol,
                   real *wa, int lwa)
 {
-    typedef typename detail::callable_type<F>::type Fn;
+    detail::callable<F> c(fcn);
+    typedef typename detail::callable<F>::type Fn;
     return ::__cminpack_func__(hybrd1)(
-        &detail::fcn_nn<Fn>, detail::as_void(fcn),
+        &detail::fcn_nn<Fn>, c.get(),
         n, x, fvec, tol, wa, lwa);
 }
 
@@ -117,9 +133,10 @@ inline int hybrd(F &&fcn, int n, real *x, real *fvec, real xtol, int maxfev,
                  real *r, int lr, real *qtf,
                  real *wa1, real *wa2, real *wa3, real *wa4)
 {
-    typedef typename detail::callable_type<F>::type Fn;
+    detail::callable<F> c(fcn);
+    typedef typename detail::callable<F>::type Fn;
     return ::__cminpack_func__(hybrd)(
-        &detail::fcn_nn<Fn>, detail::as_void(fcn),
+        &detail::fcn_nn<Fn>, c.get(),
         n, x, fvec, xtol, maxfev, ml, mu, epsfcn, diag, mode, factor, nprint,
         nfev, fjac, ldfjac, r, lr, qtf, wa1, wa2, wa3, wa4);
 }
@@ -130,9 +147,10 @@ template <typename F>
 inline int hybrj1(F &&fcn, int n, real *x, real *fvec, real *fjac, int ldfjac,
                   real tol, real *wa, int lwa)
 {
-    typedef typename detail::callable_type<F>::type Fn;
+    detail::callable<F> c(fcn);
+    typedef typename detail::callable<F>::type Fn;
     return ::__cminpack_func__(hybrj1)(
-        &detail::fcnder_nn<Fn>, detail::as_void(fcn),
+        &detail::fcnder_nn<Fn>, c.get(),
         n, x, fvec, fjac, ldfjac, tol, wa, lwa);
 }
 
@@ -142,9 +160,10 @@ template <typename F>
 inline int lmdif1(F &&fcn, int m, int n, real *x, real *fvec, real tol,
                   int *iwa, real *wa, int lwa)
 {
-    typedef typename detail::callable_type<F>::type Fn;
+    detail::callable<F> c(fcn);
+    typedef typename detail::callable<F>::type Fn;
     return ::__cminpack_func__(lmdif1)(
-        &detail::fcn_mn<Fn>, detail::as_void(fcn),
+        &detail::fcn_mn<Fn>, c.get(),
         m, n, x, fvec, tol, iwa, wa, lwa);
 }
 
@@ -155,9 +174,10 @@ inline int lmdif(F &&fcn, int m, int n, real *x, real *fvec, real ftol,
                  int ldfjac, int *ipvt, real *qtf,
                  real *wa1, real *wa2, real *wa3, real *wa4)
 {
-    typedef typename detail::callable_type<F>::type Fn;
+    detail::callable<F> c(fcn);
+    typedef typename detail::callable<F>::type Fn;
     return ::__cminpack_func__(lmdif)(
-        &detail::fcn_mn<Fn>, detail::as_void(fcn),
+        &detail::fcn_mn<Fn>, c.get(),
         m, n, x, fvec, ftol, xtol, gtol, maxfev, epsfcn, diag, mode, factor,
         nprint, nfev, fjac, ldfjac, ipvt, qtf, wa1, wa2, wa3, wa4);
 }
@@ -168,9 +188,10 @@ template <typename F>
 inline int lmder1(F &&fcn, int m, int n, real *x, real *fvec, real *fjac,
                   int ldfjac, real tol, int *ipvt, real *wa, int lwa)
 {
-    typedef typename detail::callable_type<F>::type Fn;
+    detail::callable<F> c(fcn);
+    typedef typename detail::callable<F>::type Fn;
     return ::__cminpack_func__(lmder1)(
-        &detail::fcnder_mn<Fn>, detail::as_void(fcn),
+        &detail::fcnder_mn<Fn>, c.get(),
         m, n, x, fvec, fjac, ldfjac, tol, ipvt, wa, lwa);
 }
 
@@ -181,9 +202,10 @@ inline int lmder(F &&fcn, int m, int n, real *x, real *fvec, real *fjac,
                  int *njev, int *ipvt, real *qtf,
                  real *wa1, real *wa2, real *wa3, real *wa4)
 {
-    typedef typename detail::callable_type<F>::type Fn;
+    detail::callable<F> c(fcn);
+    typedef typename detail::callable<F>::type Fn;
     return ::__cminpack_func__(lmder)(
-        &detail::fcnder_mn<Fn>, detail::as_void(fcn),
+        &detail::fcnder_mn<Fn>, c.get(),
         m, n, x, fvec, fjac, ldfjac, ftol, xtol, gtol, maxfev, diag, mode,
         factor, nprint, nfev, njev, ipvt, qtf, wa1, wa2, wa3, wa4);
 }
@@ -194,9 +216,10 @@ template <typename F>
 inline int lmstr1(F &&fcn, int m, int n, real *x, real *fvec, real *fjac,
                   int ldfjac, real tol, int *ipvt, real *wa, int lwa)
 {
-    typedef typename detail::callable_type<F>::type Fn;
+    detail::callable<F> c(fcn);
+    typedef typename detail::callable<F>::type Fn;
     return ::__cminpack_func__(lmstr1)(
-        &detail::fcnderstr_mn<Fn>, detail::as_void(fcn),
+        &detail::fcnderstr_mn<Fn>, c.get(),
         m, n, x, fvec, fjac, ldfjac, tol, ipvt, wa, lwa);
 }
 
@@ -207,9 +230,10 @@ inline int lmstr(F &&fcn, int m, int n, real *x, real *fvec, real *fjac,
                  int *njev, int *ipvt, real *qtf,
                  real *wa1, real *wa2, real *wa3, real *wa4)
 {
-    typedef typename detail::callable_type<F>::type Fn;
+    detail::callable<F> c(fcn);
+    typedef typename detail::callable<F>::type Fn;
     return ::__cminpack_func__(lmstr)(
-        &detail::fcnderstr_mn<Fn>, detail::as_void(fcn),
+        &detail::fcnderstr_mn<Fn>, c.get(),
         m, n, x, fvec, fjac, ldfjac, ftol, xtol, gtol, maxfev, diag, mode,
         factor, nprint, nfev, njev, ipvt, qtf, wa1, wa2, wa3, wa4);
 }
