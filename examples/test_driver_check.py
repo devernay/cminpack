@@ -37,6 +37,12 @@ def test_error_vector_read_fully():  # issue 100
     n = len(driver_check._error_vectors(blk))
     assert n == 9, "read %d of the 9 error-vector elements" % n
 
+def test_chkdrv_error_vector_changed():  # issue 99
+    out = ref("chkdrv")
+    v = out.split("error vector")[1].split()[0]  # problem 1, first element
+    assert gate("chkdrv", out.replace(v, "0.5", 1)) == 1, \
+        "changed error vector not detected"
+
 
 if __name__ == "__main__":
     for name, test in list(globals().items()):
