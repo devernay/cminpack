@@ -80,8 +80,13 @@
 */
 #define double_dwarf (1.82691291192569e-153)
 #define double_giant (1.34078079299426e+153)
+#if LDBL_MAX_EXP == 16384
 #define long_double_dwarf (2.245696932951581572e-2465l)
 #define long_double_giant (1.090748135619415929e+2465l)
+#else
+#define long_double_dwarf (sqrtl(LDBL_MIN*1.5l)*10.l)
+#define long_double_giant (sqrtl(LDBL_MAX)*0.1l)
+#endif
 #define float_dwarf (1.327871072777421e-18f)
 #define float_giant (1.844674297419792e+18f)
 #define half_dwarf (0.015625f)

@@ -66,6 +66,17 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
   add_test (NAME tissue88
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue88>)
 
+  # built from the enorm sources: cminpackld is not built everywhere
+  add_executable (tissue82 tissue82.c
+    ${CMINPACK_SOURCE_DIR}/src/enorm.c ${CMINPACK_SOURCE_DIR}/src/f2c/enorm_.c)
+  target_compile_definitions (tissue82 PRIVATE __cminpack_long_double__ CMINPACK_NO_DLL)
+  target_include_directories (tissue82 PRIVATE ${CMINPACK_SOURCE_DIR}/src)
+  if (HAVE_LIBM)
+    target_link_libraries (tissue82 m)
+  endif ()
+  add_test (NAME tissue82
+    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue82>)
+
   # C++ wrapper test (issue #74): accept lambdas/functors/std::function.
   # Only built if a C++ compiler is available, since cminpack itself is C.
   include (CheckLanguage)
