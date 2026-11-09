@@ -141,7 +141,7 @@ if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
 
   # The low-level routines must be exported from a Windows DLL (issue #91).
   add_executable (tlowlevel tlowlevel.c)
-  target_link_libraries (tlowlevel cminpack)
+  target_link_libraries (tlowlevel ${CMINPACK_TEST_LIB})
   add_test (NAME tlowlevel
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tlowlevel>)
 
