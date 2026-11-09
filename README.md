@@ -42,7 +42,7 @@ a plain function passed by name or by address); the callable is forwarded
 through the `void *p` slot by a small template trampoline, so no global state
 is needed. It
 adds no allocation and no virtual dispatch, and the callable only has to outlive
-the solver call.
+the solver call. A `const` callable is invoked as `const`.
 
 The wrapped entry points are `hybrd1`/`hybrd` and `hybrj1` (nonlinear
 equations), and `lmdif1`/`lmdif`, `lmder1`/`lmder` and `lmstr1`/`lmstr` (least

@@ -41,7 +41,7 @@
 #endif
 
 #include <memory>       /* std::addressof */
-#include <type_traits>  /* std::remove_reference, std::remove_cv, std::is_function */
+#include <type_traits>  /* std::remove_reference, std::is_function */
 
 namespace cminpack {
 
@@ -53,12 +53,12 @@ namespace detail {
    what the trampolines cast p back to.
 
    For objects (lambdas, functors, std::function, function pointers) p points
-   to the caller's object itself: reference and cv qualifiers are stripped. */
+   to the caller's object itself.
+   cv-qualifiers are kept so a const callable is invoked as const. */
 template <typename F,
           bool = std::is_function<typename std::remove_reference<F>::type>::value>
 struct callable {
-    typedef typename std::remove_cv<
-        typename std::remove_reference<F>::type>::type type;
+    typedef typename std::remove_reference<F>::type type;
     void *ptr;
     explicit callable(typename std::remove_reference<F>::type &fcn)
         : ptr(const_cast<void *>(
