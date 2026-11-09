@@ -76,6 +76,9 @@ jobs:
       - name: Build cminpack
         run: cmake --build ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMAKE_BUILD_TYPE }}
       
+      - name: Check that make clean removes the object files
+        run: make -C cminpack/examples ssqfcn.o && make -C cminpack/examples clean && ! ls cminpack/examples/*.o
+      
       - name: Test cminpack
         run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMAKE_BUILD_TYPE }} --output-on-failure
       
