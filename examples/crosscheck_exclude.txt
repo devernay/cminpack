@@ -11,9 +11,12 @@
 # starting points) sit on a knife's edge where a one-ULP, compiler-dependent
 # difference (FMA contraction) flips a trust-region accept/reject decision and
 # sends the two runs down different, equally valid paths. Requiring a match
-# there is not meaningful, so they are listed here. On GNU/Linux GCC (the CI
-# platform) cminpack matches FORTRAN and NO exclusions are needed; this list
-# mostly covers Apple clang.
+# there is not meaningful, so they are listed here. Which problems flip depends
+# on the compiler's default FMA contraction and on the optimization level:
+# Apple clang contracts even at -O0, and GCC contracts by default wherever the
+# target has FMA instructions (e.g. aarch64, but not baseline x86-64). The list
+# below covers Apple clang (Release and Debug) and GCC on arm64. Building with
+# -ffp-contract=off, cminpack passes the gate with no exclusions at all.
 #
 # Format: one "nprob/dimension" per line. When the gate fails it prints the
 # problem as "nprob/dim"; add that token here (it then never fails the build).
@@ -25,5 +28,15 @@
 #      diverges (residual ~83, info=4) where FORTRAN reaches ~0 (info=1); on
 #      Linux GCC both converge. A last-bit FMA coin-flip -- see the analysis in
 #      docs/crosscheck-8-30-analysis.md.
+# 8/40: the same problem 8 at dim 40 (standard starting point). With gcc-16
+#      Release on arm64 and with Apple clang Debug, hybrd and hybrj stall at a
+#      residual of ~128 (info=4) where FORTRAN reaches ~1e-13 (info=1). On
+#      arm64, the original FORTRAN built with gfortran -O2 stalls in the same way.
+# 6/9: Watson function (dim 9). With Apple clang Debug, hybrd from the 10*x0
+#      start stops at a residual of ~0.63 where FORTRAN reaches ~3e-13 (the
+#      token excludes both starting points of 6/9). On arm64, the original
+#      FORTRAN built with gfortran -O2 fails it too (examples/crosscheck_matrix.sh).
 6/4
 8/30
+8/40
+6/9
