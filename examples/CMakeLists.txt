@@ -36,6 +36,12 @@ if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
       ${CMINPACK_SOURCE_DIR}/examples/testdata/cmpfiles_d_a.txt
       ${CMINPACK_SOURCE_DIR}/examples/testdata/cmpfiles_d_b.txt)
 
+  # Self-test of cmpfiles' default tolerances (see runcmpfilestest.cmake).
+  add_test (NAME cmpfiles_selftest COMMAND "${CMAKE_COMMAND}"
+    -DCMPFILES=$<TARGET_FILE:cmpfiles>
+    -DDIR=${CMINPACK_BINARY_DIR}/examples
+    -P "${CMINPACK_SOURCE_DIR}/examples/runcmpfilestest.cmake")
+
   # inspired by http://www.netlib.org/clapack/clapack-3.2.1-CMAKE/TESTING/CMakeLists.txt
   # except that here we have to compare the output to a reference
   macro(add_minpack_test testname reference)
