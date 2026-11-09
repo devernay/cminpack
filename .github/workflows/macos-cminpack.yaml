@@ -1,0 +1,18 @@
+name: Build cminpack on macOS through CMake
+run-name: Build and test cminpack on macOS through CMake
+on: [push, pull_request]
+
+jobs:
+  cminpack-macos:
+    name: cminpack (macOS, BLAS + LAPACK)
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build and test with Homebrew GCC
+        run: |
+          CC=$(ls $(brew --prefix)/bin/gcc-[0-9]* | sort -t- -k2 -n | tail -1)
+          cmake -DCMAKE_C_COMPILER=$CC -DUSE_BLAS=ON -DUSE_LAPACK=ON -S . -B $RUNNER_TEMP/build-gcc
+          cmake --build $RUNNER_TEMP/build-gcc -j4
+          ctest --test-dir $RUNNER_TEMP/build-gcc -j4 --no-tests=error --output-on-failure
