@@ -29,11 +29,11 @@
 #include <math.h>
 #include <ctype.h>
 
-/* Default tolerances, chosen to match the Makefile's
-   "numdiff -a 1e-4 -r 1e-4" and loosened enough to absorb the
-   platform-dependent last digits of 7-significant-digit output. */
+/* 1% relative tolerance absorbs last-digit differences in 7-digit output;
+   the absolute tolerance only treats values that are zero up to rounding
+   (e.g. 1e-17 vs 0) as equal. */
 #define DEFAULT_RELTOL 1e-2
-#define DEFAULT_ABSTOL 1e-4
+#define DEFAULT_ABSTOL 1e-10
 
 /* Parse a token as a floating-point number. Returns 1 and stores the
    value in *v if the whole token (ignoring surrounding blanks) is a
