@@ -57,24 +57,11 @@ if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
       -P "${CMINPACK_SOURCE_DIR}/examples/runtest.cmake")
   endmacro()
 
-  # In single precision, tlmdif and tlmdif1 may end with a different exit
-  # parameter than the reference under FMA contraction (issue #154): they are
-  # run without comparing their output.
-  set (NOREF_PGM "")
-  if (CMINPACK_TEST_REF_PREFIX STREQUAL "s")
-    set (NOREF_PGM tlmdif tlmdif1)
-  endif ()
-
   foreach (source ${CPGM})
     foreach (test ${source}_ ${source}c)
       add_executable (${test} ${test}.c)
       target_link_libraries (${test} ${CMINPACK_TEST_LIB})
-      if (source IN_LIST NOREF_PGM)
-        add_test (NAME ${test}
-          COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${test}>)
-      else ()
-        add_minpack_test(${test} ${CMINPACK_TEST_REF_PREFIX}${source}c)
-      endif ()
+      add_minpack_test(${test} ${CMINPACK_TEST_REF_PREFIX}${source}c)
     endforeach ()
   endforeach()
 
