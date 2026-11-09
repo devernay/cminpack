@@ -18,5 +18,9 @@
 #           to a non-converged result. Like 8/30 (docs/crosscheck-8-30-analysis.md)
 #           this is a last-bit sensitivity on a knife's-edge problem, but here it
 #           is driven by the BLAS/LAPACK implementation, not the compiler's FMA.
+# 11/12: Watson function (dim 12), lmdif. On the Ubuntu OpenBLAS build it stops
+#        at a residual of ~0.058 where FORTRAN reaches ~2.2e-5: this
+#        ill-conditioned problem is sensitive to the LAPACK QR pivoting.
 7/6
 7/7
+11/12
