@@ -57,6 +57,9 @@ jobs:
         with:
           path: cminpack
       
+      - name: Check that an invalid CMINPACK_PRECISION is rejected
+        run: "! cmake -DCMINPACK_PRECISION=double -S cminpack -B $RUNNER_TEMP/bad-precision 2> err.txt && grep 'must be one of' err.txt"
+      
       - name: Configure cminpack build
         run: cmake -G "Unix Makefiles" -DBUILD_SHARED_LIBS=${{ matrix.BUILD_SHARED_LIBS }} -DCMAKE_BUILD_TYPE=${{ matrix.CMAKE_BUILD_TYPE }} -DCMINPACK_PRECISION=${{ matrix.CMINPACK_PRECISION }} -DUSE_BLAS=${{ matrix.USE_BLAS }} -DUSE_LAPACK=${{ matrix.USE_LAPACK }} -DCMAKE_C_FLAGS=${{ matrix.USE_LAPACK == 'ON' && '-Werror=comment' || '' }} -DBUILD_EXAMPLES_FORTRAN=${{ matrix.BUILD_EXAMPLES_FORTRAN }} --install-prefix ${{ env.CMINPACK_INSTALL_DIR }} -S cminpack -B ${{ env.CMINPACK_BUILD_DIR }}
       
