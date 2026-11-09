@@ -43,6 +43,17 @@ def test_chkdrv_error_vector_changed():  # issue 99
     assert gate("chkdrv", out.replace(v, "0.5", 1)) == 1, \
         "changed error vector not detected"
 
+def test_worse_residual():  # issue 103
+    out = ref("lmddrv")  # problem 1/5: final residual 2.24, FORTRAN info 3
+    fnorm = out.split("final l2 norm of the residuals")[1].split()[0]
+
+    def gate_with(factor):
+        x = factor * driver_check._to_float(fnorm)
+        return gate("lmddrv", out.replace(fnorm, "%.7e" % x, 1))
+    assert gate_with(3 / 2.236068) == 1, "worse residual not detected"
+    assert gate_with(1.05) == 0  # 5% worse
+    assert gate_with(0.95) == 0  # 5% better
+
 
 if __name__ == "__main__":
     for name, test in list(globals().items()):
