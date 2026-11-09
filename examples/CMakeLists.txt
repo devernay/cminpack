@@ -2,6 +2,9 @@ option (BUILD_EXAMPLES "Build the examples and tests." ON)
 option (BUILD_EXAMPLES_FORTRAN "Build the FORTRAN examples and tests." OFF)
 
 if (BUILD_EXAMPLES AND TARGET cminpack)
+  # the test drivers define their own helpers and macros in each file
+  set (CMAKE_UNITY_BUILD OFF)
+
   # Make sure the compiler can find include files from our cminpack library.
   include_directories (${CMINPACK_SOURCE_DIR}/include)
 

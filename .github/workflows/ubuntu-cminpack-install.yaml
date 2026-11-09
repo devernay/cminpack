@@ -34,6 +34,13 @@ jobs:
             USE_BLAS: 'OFF'
             USE_LAPACK: 'OFF'
             BUILD_EXAMPLES_FORTRAN: 'ON'
+          - BUILD_SHARED_LIBS: 'OFF'
+            CMAKE_BUILD_TYPE: 'Release'
+            CMINPACK_PRECISION: 'all'
+            USE_BLAS: 'OFF'
+            USE_LAPACK: 'OFF'
+            BUILD_EXAMPLES_FORTRAN: 'OFF'
+            CMAKE_UNITY_BUILD: 'ON'
     
     env:
       CMINPACK_BUILD_DIR: $RUNNER_TEMP/cminpack-build-shared-libs-${{ matrix.BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMAKE_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
@@ -61,7 +68,7 @@ jobs:
         run: "! cmake -DCMINPACK_PRECISION=double -S cminpack -B $RUNNER_TEMP/bad-precision 2> err.txt && grep 'must be one of' err.txt"
       
       - name: Configure cminpack build
-        run: cmake -G "Unix Makefiles" -DBUILD_SHARED_LIBS=${{ matrix.BUILD_SHARED_LIBS }} -DCMAKE_BUILD_TYPE=${{ matrix.CMAKE_BUILD_TYPE }} -DCMINPACK_PRECISION=${{ matrix.CMINPACK_PRECISION }} -DUSE_BLAS=${{ matrix.USE_BLAS }} -DUSE_LAPACK=${{ matrix.USE_LAPACK }} -DCMAKE_C_FLAGS=${{ matrix.USE_LAPACK == 'ON' && '-Werror=comment' || '' }} -DBUILD_EXAMPLES_FORTRAN=${{ matrix.BUILD_EXAMPLES_FORTRAN }} --install-prefix ${{ env.CMINPACK_INSTALL_DIR }} -S cminpack -B ${{ env.CMINPACK_BUILD_DIR }}
+        run: cmake -G "Unix Makefiles" -DBUILD_SHARED_LIBS=${{ matrix.BUILD_SHARED_LIBS }} -DCMAKE_BUILD_TYPE=${{ matrix.CMAKE_BUILD_TYPE }} -DCMINPACK_PRECISION=${{ matrix.CMINPACK_PRECISION }} -DUSE_BLAS=${{ matrix.USE_BLAS }} -DUSE_LAPACK=${{ matrix.USE_LAPACK }} -DCMAKE_C_FLAGS=${{ matrix.USE_LAPACK == 'ON' && '-Werror=comment' || '' }} -DBUILD_EXAMPLES_FORTRAN=${{ matrix.BUILD_EXAMPLES_FORTRAN }} -DCMAKE_UNITY_BUILD=${{ matrix.CMAKE_UNITY_BUILD || 'OFF' }} --install-prefix ${{ env.CMINPACK_INSTALL_DIR }} -S cminpack -B ${{ env.CMINPACK_BUILD_DIR }}
       
       - name: Check that an empty CMAKE_BUILD_TYPE is accepted
         run: cmake -DCMAKE_BUILD_TYPE= -S cminpack -B $RUNNER_TEMP/empty-build-type

@@ -357,3 +357,4 @@ TERMINATE:
 
 } /* lmpar_ */
 
+#undef p001

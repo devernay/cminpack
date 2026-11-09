@@ -157,3 +157,4 @@ void __cminpack_func__(chkder)(int m, int n, const real *x,
 
 } /* chkder_ */
 
+#undef factor
