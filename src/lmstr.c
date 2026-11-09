@@ -276,15 +276,15 @@ int __cminpack_func__(lmstr)(__cminpack_decl_fcnderstr_mn__ void *p, int m, int 
                 fjac[i + j * ldfjac] = 0.;
             }
         }
-        iflag = 2;
         for (i = 0; i < m; ++i) {
-            if (fcnderstr_mn(p, m, n, x, fvec, wa3, iflag) < 0) {
+            /* row i of the jacobian is requested with iflag = i+2 */
+            iflag = fcnderstr_mn(p, m, n, x, fvec, wa3, i + 2);
+            if (iflag < 0) {
                 goto TERMINATE;
             }
             temp = fvec[i];
             __cminpack_func__(rwupdt)(n, fjac, ldfjac, wa3, qtf, &temp,
                    wa1, wa2);
-            ++iflag;
         }
         ++(*njev);
 

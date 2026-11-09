@@ -53,6 +53,14 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
   add_test (NAME tissue76
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue76>)
 
+  # Self-checking regression test for issue #81: a negative value returned by
+  # the user function while lmstr computes a Jacobian row must be returned as
+  # info (it was reported as 0). See tissue81.c.
+  add_executable (tissue81 tissue81.c)
+  target_link_libraries (tissue81 cminpack)
+  add_test (NAME tissue81
+    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue81>)
+
   # C++ wrapper test (issue #74): accept lambdas/functors/std::function.
   # Only built if a C++ compiler is available, since cminpack itself is C.
   include (CheckLanguage)
