@@ -356,33 +356,33 @@ int CMINPACK_EXPORT __cminpack_func__(covar1)(int m, int n, __cminpack_real__ fs
 
 /* internal MINPACK subroutines */
 __cminpack_attr__
-void __cminpack_func__(dogleg)(int n, const __cminpack_real__ *r, int lr, 
+void CMINPACK_EXPORT __cminpack_func__(dogleg)(int n, const __cminpack_real__ *r, int lr, 
              const __cminpack_real__ *diag, const __cminpack_real__ *qtb, __cminpack_real__ delta, __cminpack_real__ *x, 
              __cminpack_real__ *wa1, __cminpack_real__ *wa2);
 __cminpack_attr__
-void __cminpack_func__(qrfac)(int m, int n, __cminpack_real__ *a, int
+void CMINPACK_EXPORT __cminpack_func__(qrfac)(int m, int n, __cminpack_real__ *a, int
             lda, int pivot, int *ipvt, int lipvt, __cminpack_real__ *rdiag,
             __cminpack_real__ *acnorm, __cminpack_real__ *wa);
 __cminpack_attr__
-void __cminpack_func__(qrsolv)(int n, __cminpack_real__ *r, int ldr, 
+void CMINPACK_EXPORT __cminpack_func__(qrsolv)(int n, __cminpack_real__ *r, int ldr, 
              const int *ipvt, const __cminpack_real__ *diag, const __cminpack_real__ *qtb, __cminpack_real__ *x, 
              __cminpack_real__ *sdiag, __cminpack_real__ *wa);
 __cminpack_attr__
-void __cminpack_func__(qform)(int m, int n, __cminpack_real__ *q, int
+void CMINPACK_EXPORT __cminpack_func__(qform)(int m, int n, __cminpack_real__ *q, int
             ldq, __cminpack_real__ *wa);
 __cminpack_attr__
-void __cminpack_func__(r1updt)(int m, int n, __cminpack_real__ *s, int
+void CMINPACK_EXPORT __cminpack_func__(r1updt)(int m, int n, __cminpack_real__ *s, int
              ls, const __cminpack_real__ *u, __cminpack_real__ *v, __cminpack_real__ *w, int *sing);
 __cminpack_attr__
-void __cminpack_func__(r1mpyq)(int m, int n, __cminpack_real__ *a, int
+void CMINPACK_EXPORT __cminpack_func__(r1mpyq)(int m, int n, __cminpack_real__ *a, int
              lda, const __cminpack_real__ *v, const __cminpack_real__ *w);
 __cminpack_attr__
-void __cminpack_func__(lmpar)(int n, __cminpack_real__ *r, int ldr, 
+void CMINPACK_EXPORT __cminpack_func__(lmpar)(int n, __cminpack_real__ *r, int ldr, 
             const int *ipvt, const __cminpack_real__ *diag, const __cminpack_real__ *qtb, __cminpack_real__ delta, 
             __cminpack_real__ *par, __cminpack_real__ *x, __cminpack_real__ *sdiag, __cminpack_real__ *wa1, 
             __cminpack_real__ *wa2);
 __cminpack_attr__
-void __cminpack_func__(rwupdt)(int n, __cminpack_real__ *r, int ldr, 
+void CMINPACK_EXPORT __cminpack_func__(rwupdt)(int n, __cminpack_real__ *r, int ldr, 
              const __cminpack_real__ *w, __cminpack_real__ *b, __cminpack_real__ *alpha, __cminpack_real__ *cos, 
              __cminpack_real__ *sin);
 #ifdef __cplusplus

@@ -259,33 +259,33 @@ void MINPACK_EXPORT __minpack_func__(covar)(const int *n, __minpack_real__ *r, c
 
 /* internal MINPACK subroutines */
 __minpack_attr__
-void __minpack_func__(dogleg)(const int *n, const __minpack_real__ *r, const int *lr, 
+void MINPACK_EXPORT __minpack_func__(dogleg)(const int *n, const __minpack_real__ *r, const int *lr, 
              const __minpack_real__ *diag, const __minpack_real__ *qtb, const __minpack_real__ *delta, __minpack_real__ *x, 
              __minpack_real__ *wa1, __minpack_real__ *wa2);
 __minpack_attr__
-void __minpack_func__(qrfac)(const int *m, const int *n, __minpack_real__ *a, const int *
+void MINPACK_EXPORT __minpack_func__(qrfac)(const int *m, const int *n, __minpack_real__ *a, const int *
             lda, const int *pivot, int *ipvt, const int *lipvt, __minpack_real__ *rdiag,
             __minpack_real__ *acnorm, __minpack_real__ *wa);
 __minpack_attr__
-void __minpack_func__(qrsolv)(const int *n, __minpack_real__ *r, const int *ldr, 
+void MINPACK_EXPORT __minpack_func__(qrsolv)(const int *n, __minpack_real__ *r, const int *ldr, 
              const int *ipvt, const __minpack_real__ *diag, const __minpack_real__ *qtb, __minpack_real__ *x, 
              __minpack_real__ *sdiag, __minpack_real__ *wa);
 __minpack_attr__
-void __minpack_func__(qform)(const int *m, const int *n, __minpack_real__ *q, const int *
+void MINPACK_EXPORT __minpack_func__(qform)(const int *m, const int *n, __minpack_real__ *q, const int *
             ldq, __minpack_real__ *wa);
 __minpack_attr__
-void __minpack_func__(r1updt)(const int *m, const int *n, __minpack_real__ *s, const int *
+void MINPACK_EXPORT __minpack_func__(r1updt)(const int *m, const int *n, __minpack_real__ *s, const int *
              ls, const __minpack_real__ *u, __minpack_real__ *v, __minpack_real__ *w, int *sing);
 __minpack_attr__
-void __minpack_func__(r1mpyq)(const int *m, const int *n, __minpack_real__ *a, const int *
+void MINPACK_EXPORT __minpack_func__(r1mpyq)(const int *m, const int *n, __minpack_real__ *a, const int *
              lda, const __minpack_real__ *v, const __minpack_real__ *w);
 __minpack_attr__
-void __minpack_func__(lmpar)(const int *n, __minpack_real__ *r, const int *ldr, 
+void MINPACK_EXPORT __minpack_func__(lmpar)(const int *n, __minpack_real__ *r, const int *ldr, 
             const int *ipvt, const __minpack_real__ *diag, const __minpack_real__ *qtb, const __minpack_real__ *delta, 
             __minpack_real__ *par, __minpack_real__ *x, __minpack_real__ *sdiag, __minpack_real__ *wa1, 
             __minpack_real__ *wa2);
 __minpack_attr__
-void __minpack_func__(rwupdt)(const int *n, __minpack_real__ *r, const int *ldr, 
+void MINPACK_EXPORT __minpack_func__(rwupdt)(const int *n, __minpack_real__ *r, const int *ldr, 
              const __minpack_real__ *w, __minpack_real__ *b, __minpack_real__ *alpha, __minpack_real__ *cos, 
              __minpack_real__ *sin);
 #ifdef __cplusplus

@@ -139,6 +139,12 @@ if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
         ${CMINPACK_C_SOURCES})
   endif ()
 
+  # The low-level routines must be exported from a Windows DLL (issue #91).
+  add_executable (tlowlevel tlowlevel.c)
+  target_link_libraries (tlowlevel cminpack)
+  add_test (NAME tlowlevel
+    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tlowlevel>)
+
   # C++ wrapper test (issue #74): accept lambdas/functors/std::function.
   # Only built if a C++ compiler is available, since cminpack itself is C.
   include (CheckLanguage)
