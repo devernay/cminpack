@@ -137,9 +137,8 @@ if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
     if (CMAKE_OSX_SYSROOT)
       set (BLASINT_SYSROOT -isysroot ${CMAKE_OSX_SYSROOT})
     endif ()
-    # -U__APPLE__: Accelerate's prototypes are int-only, use the generic ones
     add_test (NAME blasint_types
-      COMMAND ${CMAKE_C_COMPILER} ${BLASINT_SYSROOT} -fsyntax-only -U__APPLE__
+      COMMAND ${CMAKE_C_COMPILER} ${BLASINT_SYSROOT} -fsyntax-only
         -DUSE_BLAS -D__cminpack_blasint__=long -Werror=incompatible-pointer-types
         -I${CMINPACK_SOURCE_DIR}/include -I${CMINPACK_SOURCE_DIR}/src
         ${CMINPACK_C_SOURCES})

@@ -11,10 +11,6 @@
 #endif
 
 #ifdef USE_BLAS
-#if defined(__APPLE__) && defined(__clang__) /* gcc cannot parse the Accelerate headers */
-#include <Accelerate/Accelerate.h>
-#define __cminpack_blasint__ int
-#else /* !(__APPLE__ && __clang__) */
 #ifndef __cminpack_blasint__
 #define __cminpack_blasint__ int
 #endif
@@ -40,13 +36,9 @@ void __cminpack_blas__(trsv)(
   const char *TransA, const char *Diag,
   const __cminpack_blasint__ *N, const __cminpack_real__ *A, const __cminpack_blasint__ *lda, __cminpack_real__ *X,
   const __cminpack_blasint__ *incX);
-#endif /* !(__APPLE__ && __clang__) */
 #endif /* USE_BLAS */
 
 #ifdef USE_LAPACK
-#if defined(__APPLE__) && defined(__clang__)
-#include <Accelerate/Accelerate.h>
-#else /* !(__APPLE__ && __clang__) */
 #if defined(__LP64__) /* In LP64 match sizes with the 32 bit ABI */
 typedef int 		__CLPK_integer;
 typedef int 		__CLPK_logical;
@@ -68,7 +60,6 @@ void __cminpack_lapack__(geqp3_)(
 void __cminpack_lapack__(geqrf_)(
   __CLPK_integer *m, __CLPK_integer *n, __cminpack_real__ *a, __CLPK_integer * lda,
   __cminpack_real__ *tau, __cminpack_real__ *work, __CLPK_integer *lwork, __CLPK_integer *info);
-#endif /* !(__APPLE__ && __clang__) */
 #endif
 
 #include "minpackP.h"
