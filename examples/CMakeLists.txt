@@ -253,6 +253,8 @@ if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
     add_crosscheck (crosscheck_hybdrv_ hybdrv_ neq.data    hybdrv.fortran.ref)
     add_crosscheck (crosscheck_chkdrvc chkdrvc chkder.data chkdrv.fortran.ref)
     add_crosscheck (crosscheck_chkdrv_ chkdrv_ chkder.data chkdrv.fortran.ref)
+    add_test (NAME test_driver_check COMMAND ${Python3_EXECUTABLE}
+      "${CMINPACK_SOURCE_DIR}/examples/test_driver_check.py")
     message (STATUS "cminpack tests: FORTRAN-reference cross-check ENABLED (Python 3 found).")
   elseif (CMINPACK_CROSSCHECK AND NOT Python3_Interpreter_FOUND)
     # Python 3 is NOT required to build cminpack, nor for the standard tests
