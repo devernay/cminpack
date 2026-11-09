@@ -342,7 +342,7 @@ L320:
 	    temp = 3. * (d__1 * d__1);
 /* Computing MIN */
 	    d__1 = tj * (1. - tk), d__2 = tk * (1. - tj);
-	    fjac[k + j * ldfjac] = h__ * min(d__1,d__2) * temp / 2.;
+	    fjac[k + j * ldfjac] = h__ * (d__1 < d__2 ? d__1 : d__2) * temp / 2.;
 /* L330: */
 	}
 	fjac[k + k * ldfjac] -= 1.;
