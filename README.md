@@ -117,7 +117,12 @@ The cross-check (`examples/crosscheck.py`, and the CMake `crosscheck_*` tests)
 is a **regression gate against the original FORTRAN MINPACK**: on the intensive
 driver problems, cminpack must converge on every problem FORTRAN converges on.
 It compares against committed FORTRAN reference outputs
-(`examples/ref/*.fortran.ref`), so **no Fortran compiler is needed**. Where
+(`examples/ref/*.fortran.ref`), so **no Fortran compiler is needed**. These
+are the outputs of the pure-FORTRAN drivers, regenerated with
+`make -C fortran FFLAGS="-O0 -g"`, then in `examples/`
+`make lmddrv lmfdrv lmsdrv hyjdrv hybdrv chkdrv LIBSUFFIX= MINPACK=../fortran/libminpack.a FFLAGS="-O0 -g"`,
+and running each driver on its `testdata/*.data` input (`ssq.data` for
+`lm*drv`, `neq.data` for `hy*drv`, `chkder.data` for `chkdrv`). Where
 FORTRAN itself does not converge (the problems pushed from `10*x0`/`100*x0`
 starting points), a different result is accepted — pure-C and f2c, like
 different compilers, take different (equally valid) iteration paths there, for

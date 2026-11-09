@@ -3,8 +3,8 @@
 #
 # Shows how the intensive-driver convergence set varies with compiler
 # optimization. It generates a FORTRAN -O0 reference ON THIS MACHINE, then
-# builds the driver programs against FORTRAN MINPACK and against cminpack at
-# several optimization levels and, for each, reports (via
+# builds the FORTRAN drivers against FORTRAN MINPACK, and the C drivers against
+# cminpack, at several optimization levels and, for each, reports (via
 # driver_check.py --reference-gate) how many problems the FORTRAN -O0 reference
 # converges on but that build does NOT -- and which ones.
 #
@@ -62,6 +62,16 @@ build_and_run() {
     done
 }
 
+# Build the six FORTRAN driver programs (at -O0) against FORTRAN MINPACK built
+# with FORTRAN flags $1, then run each on its input; outputs go to $2.<driver>.out
+fortran_run() {
+    make -C ../fortran clean >/dev/null 2>&1
+    make -C ../fortran F77="$F77" FFLAGS="$1" >/dev/null 2>&1
+    make clean LIBSUFFIX= >/dev/null 2>&1
+    make $DRIVERS LIBSUFFIX= F77="$F77" FFLAGS="-O0 -g" MINPACK=../fortran/libminpack.a >/dev/null 2>&1
+    for d in $DRIVERS; do ./$d < "$(data_for "$d")" > "$2.$d.out" 2>/dev/null; done
+}
+
 # Gate a run against the FORTRAN -O0 reference and print one table row.
 # driver_check.py --reference-gate prints one line per regressing problem:
 #   "  problem <nprob>/<dim> (block N): FORTRAN reference residual ... worse)"
@@ -86,15 +96,13 @@ gate_row() {
 }
 
 echo "Generating FORTRAN -O0 reference on this machine ($($F77 --version | head -1)) ..."
-make -C ../fortran clean >/dev/null 2>&1
-make -C ../fortran F77="$F77" FFLAGS="-O0 -g" >/dev/null 2>&1
-build_and_run "-O0 -g" ../fortran/libminpack.a "$TMP/ref"
+fortran_run "-O0 -g" "$TMP/ref"
 
 echo
 printf "%-26s %4s   %s\n" "configuration" "fail" "problems (FORTRAN -O0 converges, build does not)"
 printf "%-26s %4s   %s\n" "-------------------------" "----" "------------------------------------------------"
 
-# FORTRAN at several optimization levels (driver harness fixed at -O0).
+# FORTRAN MINPACK at several optimization levels (FORTRAN drivers at -O0).
 for spec in \
     "FORTRAN -O0|-O0 -g" \
     "FORTRAN -O1|-O1 -g" \
@@ -102,9 +110,7 @@ for spec in \
     "FORTRAN -O3|-O3 -g" \
     "FORTRAN -O3 -ffast-math|-O3 -ffast-math -g" ; do
     _lbl=${spec%%|*}; _ff=${spec#*|}
-    make -C ../fortran clean >/dev/null 2>&1
-    make -C ../fortran F77="$F77" FFLAGS="$_ff" >/dev/null 2>&1
-    build_and_run "-O0 -g" ../fortran/libminpack.a "$TMP/t"
+    fortran_run "$_ff" "$TMP/t"
     gate_row "$_lbl" "$TMP/t"
 done
 
