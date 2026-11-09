@@ -8,51 +8,23 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
-        BUILD_SHARED_LIBS: [ 'ON' , 'OFF' ]
-        CMAKE_BUILD_TYPE: [ 'Release', 'Debug', 'RelWithDebInfo', 'MinSizeRel' ]
-        CMINPACK_PRECISION: [ 'd' ] # s and ld are tested once each, below
-        USE_BLAS: [ 'OFF' ]
-        USE_LAPACK: [ 'OFF' ]
-        BUILD_EXAMPLES_FORTRAN: [ 'OFF' ]
         include:
-          - BUILD_SHARED_LIBS: 'ON'
-            CMAKE_BUILD_TYPE: 'RelWithDebInfo'
-            CMINPACK_PRECISION: 'd'
-            USE_BLAS: 'ON'
-            USE_LAPACK: 'OFF'
-            BUILD_EXAMPLES_FORTRAN: 'OFF'
-          - BUILD_SHARED_LIBS: 'ON'
-            CMAKE_BUILD_TYPE: 'RelWithDebInfo'
-            CMINPACK_PRECISION: 'd'
-            USE_BLAS: 'ON'
-            USE_LAPACK: 'ON'
-            BUILD_EXAMPLES_FORTRAN: 'OFF'
-          - BUILD_SHARED_LIBS: 'ON'
-            CMAKE_BUILD_TYPE: 'RelWithDebInfo'
-            CMINPACK_PRECISION: 'd'
-            USE_BLAS: 'OFF'
-            USE_LAPACK: 'OFF'
-            BUILD_EXAMPLES_FORTRAN: 'ON'
-          - BUILD_SHARED_LIBS: 'OFF'
-            CMAKE_BUILD_TYPE: 'Release'
-            CMINPACK_PRECISION: 'all'
-            USE_BLAS: 'OFF'
-            USE_LAPACK: 'OFF'
-            BUILD_EXAMPLES_FORTRAN: 'OFF'
-            CMAKE_UNITY_BUILD: 'ON'
-          - BUILD_SHARED_LIBS: 'OFF'
-            CMAKE_BUILD_TYPE: 'Release'
-            CMINPACK_PRECISION: 's'
-            USE_BLAS: 'OFF'
-            USE_LAPACK: 'OFF'
-            BUILD_EXAMPLES_FORTRAN: 'OFF'
-          - BUILD_SHARED_LIBS: 'OFF'
-            CMAKE_BUILD_TYPE: 'Release'
-            CMINPACK_PRECISION: 'ld'
-            USE_BLAS: 'OFF'
-            USE_LAPACK: 'OFF'
-            BUILD_EXAMPLES_FORTRAN: 'OFF'
+          # shared, optimized, FORTRAN examples
+          - { BUILD_SHARED_LIBS: 'ON', CMAKE_BUILD_TYPE: 'Release', CMINPACK_PRECISION: 'd', USE_BLAS: 'OFF', USE_LAPACK: 'OFF', BUILD_EXAMPLES_FORTRAN: 'ON', CMAKE_UNITY_BUILD: 'OFF' }
+          # static, unoptimized
+          - { BUILD_SHARED_LIBS: 'OFF', CMAKE_BUILD_TYPE: 'Debug', CMINPACK_PRECISION: 'd', USE_BLAS: 'OFF', USE_LAPACK: 'OFF', BUILD_EXAMPLES_FORTRAN: 'OFF', CMAKE_UNITY_BUILD: 'OFF' }
+          # all precisions, unity build
+          - { BUILD_SHARED_LIBS: 'OFF', CMAKE_BUILD_TYPE: 'Release', CMINPACK_PRECISION: 'all', USE_BLAS: 'OFF', USE_LAPACK: 'OFF', BUILD_EXAMPLES_FORTRAN: 'OFF', CMAKE_UNITY_BUILD: 'ON' }
+          # single precision
+          - { BUILD_SHARED_LIBS: 'OFF', CMAKE_BUILD_TYPE: 'Release', CMINPACK_PRECISION: 's', USE_BLAS: 'OFF', USE_LAPACK: 'OFF', BUILD_EXAMPLES_FORTRAN: 'OFF', CMAKE_UNITY_BUILD: 'OFF' }
+          # extended precision
+          - { BUILD_SHARED_LIBS: 'OFF', CMAKE_BUILD_TYPE: 'Release', CMINPACK_PRECISION: 'ld', USE_BLAS: 'OFF', USE_LAPACK: 'OFF', BUILD_EXAMPLES_FORTRAN: 'OFF', CMAKE_UNITY_BUILD: 'OFF' }
+          # BLAS
+          - { BUILD_SHARED_LIBS: 'ON', CMAKE_BUILD_TYPE: 'RelWithDebInfo', CMINPACK_PRECISION: 'd', USE_BLAS: 'ON', USE_LAPACK: 'OFF', BUILD_EXAMPLES_FORTRAN: 'OFF', CMAKE_UNITY_BUILD: 'OFF' }
+          # BLAS + LAPACK, pkg-config
+          - { BUILD_SHARED_LIBS: 'ON', CMAKE_BUILD_TYPE: 'RelWithDebInfo', CMINPACK_PRECISION: 'd', USE_BLAS: 'ON', USE_LAPACK: 'ON', BUILD_EXAMPLES_FORTRAN: 'OFF', CMAKE_UNITY_BUILD: 'OFF' }
     
     env:
       CMINPACK_BUILD_DIR: $RUNNER_TEMP/cminpack-build-shared-libs-${{ matrix.BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMAKE_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
