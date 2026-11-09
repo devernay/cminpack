@@ -13,12 +13,10 @@ jobs:
         include:
           # shared, optimized, FORTRAN examples
           - { BUILD_SHARED_LIBS: 'ON', CMAKE_BUILD_TYPE: 'Release', CMINPACK_PRECISION: 'd', USE_BLAS: 'OFF', USE_LAPACK: 'OFF', BUILD_EXAMPLES_FORTRAN: 'ON', CMAKE_UNITY_BUILD: 'OFF' }
-          # static, unoptimized, all precisions, unity build
+          # static, unoptimized, unity build, tests all precisions
           - { BUILD_SHARED_LIBS: 'OFF', CMAKE_BUILD_TYPE: 'Debug', CMINPACK_PRECISION: 'all', USE_BLAS: 'OFF', USE_LAPACK: 'OFF', BUILD_EXAMPLES_FORTRAN: 'OFF', CMAKE_UNITY_BUILD: 'ON' }
-          # single precision
+          # single precision only (no double library), optimized
           - { BUILD_SHARED_LIBS: 'OFF', CMAKE_BUILD_TYPE: 'Release', CMINPACK_PRECISION: 's', USE_BLAS: 'OFF', USE_LAPACK: 'OFF', BUILD_EXAMPLES_FORTRAN: 'OFF', CMAKE_UNITY_BUILD: 'OFF' }
-          # extended precision
-          - { BUILD_SHARED_LIBS: 'OFF', CMAKE_BUILD_TYPE: 'Release', CMINPACK_PRECISION: 'ld', USE_BLAS: 'OFF', USE_LAPACK: 'OFF', BUILD_EXAMPLES_FORTRAN: 'OFF', CMAKE_UNITY_BUILD: 'OFF' }
           # BLAS + LAPACK, pkg-config
           - { BUILD_SHARED_LIBS: 'ON', CMAKE_BUILD_TYPE: 'RelWithDebInfo', CMINPACK_PRECISION: 'd', USE_BLAS: 'ON', USE_LAPACK: 'ON', BUILD_EXAMPLES_FORTRAN: 'OFF', CMAKE_UNITY_BUILD: 'OFF' }
     
