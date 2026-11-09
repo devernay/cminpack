@@ -14,6 +14,11 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
   # cmpfiles is used by runtest.cmake to compare test output to the
   # reference with a numeric tolerance (portable across platforms).
   add_executable (cmpfiles cmpfiles.c)
+  # Issue #151: FORTRAN D exponents must be compared as numbers.
+  add_test (NAME cmpfiles_dexp
+    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:cmpfiles>
+      ${CMINPACK_SOURCE_DIR}/examples/testdata/cmpfiles_d_a.txt
+      ${CMINPACK_SOURCE_DIR}/examples/testdata/cmpfiles_d_b.txt)
 
   # inspired by http://www.netlib.org/clapack/clapack-3.2.1-CMAKE/TESTING/CMakeLists.txt
   # except that here we have to compare the output to a reference
