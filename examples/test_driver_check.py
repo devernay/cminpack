@@ -18,12 +18,13 @@ def ref(name):
         return f.read()
 
 
-def gate(name, out):
-    """Exit status of the reference gate of the output text out vs ref name."""
+def gate(name, out, msg=None):
+    """Exit status of the reference gate of the output text out vs ref name.
+    Its messages go to the file-like msg if given."""
     with tempfile.NamedTemporaryFile("w", suffix=".out", delete=False) as f:
         f.write(out)
     try:
-        with redirect_stdout(io.StringIO()):
+        with redirect_stdout(msg if msg is not None else io.StringIO()):
             return driver_check.check(
                 os.path.join(HERE, "ref", name + ".fortran.ref"), f.name,
                 1e-4, 0.1, "", gate=True)
@@ -53,6 +54,14 @@ def test_worse_residual():  # issue 103
     assert gate_with(3 / 2.236068) == 1, "worse residual not detected"
     assert gate_with(1.05) == 0  # 5% worse
     assert gate_with(0.95) == 0  # 5% better
+
+def test_nan_residual():  # issue 152
+    out = ref("lmddrv")  # problem 1/5
+    fnorm = out.split("final l2 norm of the residuals")[1].split()[0]
+    msg = io.StringIO()
+    assert gate("lmddrv", out.replace(fnorm, "NaN", 1), msg) == 1
+    assert "problem 1/5 (block 1): final residual norm is NaN" \
+        in msg.getvalue(), msg.getvalue()
 
 
 if __name__ == "__main__":
