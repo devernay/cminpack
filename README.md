@@ -44,6 +44,9 @@ is needed. It
 adds no allocation and no virtual dispatch, and the callable only has to outlive
 the solver call. A `const` callable is invoked as `const`.
 
+If the callable throws, the solver is stopped as if it returned -1, the callable
+is not called again, and the exception is rethrown after the solver returns.
+
 The wrapped entry points are `hybrd1`/`hybrd` and `hybrj1` (nonlinear
 equations), and `lmdif1`/`lmdif`, `lmder1`/`lmder` and `lmstr1`/`lmstr` (least
 squares). Every argument after the callable is identical to the C function — you

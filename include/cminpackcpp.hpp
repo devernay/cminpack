@@ -28,6 +28,10 @@
    __cminpack_real__ / __cminpack_func__ selection as cminpack.h, so defining
    __cminpack_float__ (etc.) before including this header targets that variant.
 
+   If the callable throws, the solver is stopped as if it returned -1, the
+   callable is not called again, and the exception is rethrown after the
+   solver returns.
+
    The callable must outlive the solver call (which it always does when passed
    as an argument). The wrapper adds no allocation and no virtual dispatch.
 */
@@ -40,8 +44,13 @@
 #error "cminpackcpp.hpp is a C++ header; include cminpack.h from C code."
 #endif
 
+#include <exception>    /* std::exception_ptr */
 #include <memory>       /* std::addressof */
 #include <type_traits>  /* std::remove_reference, std::is_function */
+
+#if defined(__cpp_exceptions) || defined(_CPPUNWIND)
+#define CMINPACKCPP_EXCEPTIONS
+#endif
 
 namespace cminpack {
 
@@ -77,38 +86,76 @@ struct callable<F, true> {
     void *get() { return &fp; }
 };
 
-/* trampolines: recover the callable from p and forward the arguments */
+/* what is passed through the `void *p` slot: the callable, and the
+   exception it threw, if any */
+struct context {
+    void *fcn;
+    std::exception_ptr error;
+    explicit context(void *f) : fcn(f), error() {}
+    int rethrow(int info) const
+    {
+#ifdef CMINPACKCPP_EXCEPTIONS
+        if (error) {
+            std::rethrow_exception(error);
+        }
+#endif
+        return info;
+    }
+};
+
+/* call the callable; if it throws, store the exception and return -1 to stop
+   the solver, and don't call it again */
+template <typename Fn, typename... Args>
+int call(void *p, Args... args)
+{
+    context *c = static_cast<context *>(p);
+#ifdef CMINPACKCPP_EXCEPTIONS
+    if (c->error) {
+        return -1;
+    }
+    try {
+        return (*static_cast<Fn *>(c->fcn))(args...);
+    } catch (...) {
+        c->error = std::current_exception();
+        return -1;
+    }
+#else
+    return (*static_cast<Fn *>(c->fcn))(args...);
+#endif
+}
+
+/* trampolines: forward the arguments to the callable */
 template <typename Fn>
 int fcn_nn(void *p, int n, const real *x, real *fvec, int iflag)
 {
-    return (*static_cast<Fn *>(p))(n, x, fvec, iflag);
+    return call<Fn>(p, n, x, fvec, iflag);
 }
 
 template <typename Fn>
 int fcnder_nn(void *p, int n, const real *x, real *fvec, real *fjac,
               int ldfjac, int iflag)
 {
-    return (*static_cast<Fn *>(p))(n, x, fvec, fjac, ldfjac, iflag);
+    return call<Fn>(p, n, x, fvec, fjac, ldfjac, iflag);
 }
 
 template <typename Fn>
 int fcn_mn(void *p, int m, int n, const real *x, real *fvec, int iflag)
 {
-    return (*static_cast<Fn *>(p))(m, n, x, fvec, iflag);
+    return call<Fn>(p, m, n, x, fvec, iflag);
 }
 
 template <typename Fn>
 int fcnder_mn(void *p, int m, int n, const real *x, real *fvec, real *fjac,
               int ldfjac, int iflag)
 {
-    return (*static_cast<Fn *>(p))(m, n, x, fvec, fjac, ldfjac, iflag);
+    return call<Fn>(p, m, n, x, fvec, fjac, ldfjac, iflag);
 }
 
 template <typename Fn>
 int fcnderstr_mn(void *p, int m, int n, const real *x, real *fvec, real *fjrow,
                  int iflag)
 {
-    return (*static_cast<Fn *>(p))(m, n, x, fvec, fjrow, iflag);
+    return call<Fn>(p, m, n, x, fvec, fjrow, iflag);
 }
 
 } /* namespace detail */
@@ -121,9 +168,10 @@ inline int hybrd1(F &&fcn, int n, real *x, real *fvec, real tol,
 {
     detail::callable<F> c(fcn);
     typedef typename detail::callable<F>::type Fn;
-    return ::__cminpack_func__(hybrd1)(
-        &detail::fcn_nn<Fn>, c.get(),
-        n, x, fvec, tol, wa, lwa);
+    detail::context ctx(c.get());
+    return ctx.rethrow(::__cminpack_func__(hybrd1)(
+        &detail::fcn_nn<Fn>, &ctx,
+        n, x, fvec, tol, wa, lwa));
 }
 
 template <typename F>
@@ -135,10 +183,11 @@ inline int hybrd(F &&fcn, int n, real *x, real *fvec, real xtol, int maxfev,
 {
     detail::callable<F> c(fcn);
     typedef typename detail::callable<F>::type Fn;
-    return ::__cminpack_func__(hybrd)(
-        &detail::fcn_nn<Fn>, c.get(),
+    detail::context ctx(c.get());
+    return ctx.rethrow(::__cminpack_func__(hybrd)(
+        &detail::fcn_nn<Fn>, &ctx,
         n, x, fvec, xtol, maxfev, ml, mu, epsfcn, diag, mode, factor, nprint,
-        nfev, fjac, ldfjac, r, lr, qtf, wa1, wa2, wa3, wa4);
+        nfev, fjac, ldfjac, r, lr, qtf, wa1, wa2, wa3, wa4));
 }
 
 /* --- nonlinear equations: hybrj / hybrj1 (analytic Jacobian) --- */
@@ -149,9 +198,10 @@ inline int hybrj1(F &&fcn, int n, real *x, real *fvec, real *fjac, int ldfjac,
 {
     detail::callable<F> c(fcn);
     typedef typename detail::callable<F>::type Fn;
-    return ::__cminpack_func__(hybrj1)(
-        &detail::fcnder_nn<Fn>, c.get(),
-        n, x, fvec, fjac, ldfjac, tol, wa, lwa);
+    detail::context ctx(c.get());
+    return ctx.rethrow(::__cminpack_func__(hybrj1)(
+        &detail::fcnder_nn<Fn>, &ctx,
+        n, x, fvec, fjac, ldfjac, tol, wa, lwa));
 }
 
 /* --- least squares, finite-difference Jacobian: lmdif / lmdif1 --- */
@@ -162,9 +212,10 @@ inline int lmdif1(F &&fcn, int m, int n, real *x, real *fvec, real tol,
 {
     detail::callable<F> c(fcn);
     typedef typename detail::callable<F>::type Fn;
-    return ::__cminpack_func__(lmdif1)(
-        &detail::fcn_mn<Fn>, c.get(),
-        m, n, x, fvec, tol, iwa, wa, lwa);
+    detail::context ctx(c.get());
+    return ctx.rethrow(::__cminpack_func__(lmdif1)(
+        &detail::fcn_mn<Fn>, &ctx,
+        m, n, x, fvec, tol, iwa, wa, lwa));
 }
 
 template <typename F>
@@ -176,10 +227,11 @@ inline int lmdif(F &&fcn, int m, int n, real *x, real *fvec, real ftol,
 {
     detail::callable<F> c(fcn);
     typedef typename detail::callable<F>::type Fn;
-    return ::__cminpack_func__(lmdif)(
-        &detail::fcn_mn<Fn>, c.get(),
+    detail::context ctx(c.get());
+    return ctx.rethrow(::__cminpack_func__(lmdif)(
+        &detail::fcn_mn<Fn>, &ctx,
         m, n, x, fvec, ftol, xtol, gtol, maxfev, epsfcn, diag, mode, factor,
-        nprint, nfev, fjac, ldfjac, ipvt, qtf, wa1, wa2, wa3, wa4);
+        nprint, nfev, fjac, ldfjac, ipvt, qtf, wa1, wa2, wa3, wa4));
 }
 
 /* --- least squares, analytic Jacobian: lmder / lmder1 --- */
@@ -190,9 +242,10 @@ inline int lmder1(F &&fcn, int m, int n, real *x, real *fvec, real *fjac,
 {
     detail::callable<F> c(fcn);
     typedef typename detail::callable<F>::type Fn;
-    return ::__cminpack_func__(lmder1)(
-        &detail::fcnder_mn<Fn>, c.get(),
-        m, n, x, fvec, fjac, ldfjac, tol, ipvt, wa, lwa);
+    detail::context ctx(c.get());
+    return ctx.rethrow(::__cminpack_func__(lmder1)(
+        &detail::fcnder_mn<Fn>, &ctx,
+        m, n, x, fvec, fjac, ldfjac, tol, ipvt, wa, lwa));
 }
 
 template <typename F>
@@ -204,10 +257,11 @@ inline int lmder(F &&fcn, int m, int n, real *x, real *fvec, real *fjac,
 {
     detail::callable<F> c(fcn);
     typedef typename detail::callable<F>::type Fn;
-    return ::__cminpack_func__(lmder)(
-        &detail::fcnder_mn<Fn>, c.get(),
+    detail::context ctx(c.get());
+    return ctx.rethrow(::__cminpack_func__(lmder)(
+        &detail::fcnder_mn<Fn>, &ctx,
         m, n, x, fvec, fjac, ldfjac, ftol, xtol, gtol, maxfev, diag, mode,
-        factor, nprint, nfev, njev, ipvt, qtf, wa1, wa2, wa3, wa4);
+        factor, nprint, nfev, njev, ipvt, qtf, wa1, wa2, wa3, wa4));
 }
 
 /* --- least squares, row-wise analytic Jacobian: lmstr / lmstr1 --- */
@@ -218,9 +272,10 @@ inline int lmstr1(F &&fcn, int m, int n, real *x, real *fvec, real *fjac,
 {
     detail::callable<F> c(fcn);
     typedef typename detail::callable<F>::type Fn;
-    return ::__cminpack_func__(lmstr1)(
-        &detail::fcnderstr_mn<Fn>, c.get(),
-        m, n, x, fvec, fjac, ldfjac, tol, ipvt, wa, lwa);
+    detail::context ctx(c.get());
+    return ctx.rethrow(::__cminpack_func__(lmstr1)(
+        &detail::fcnderstr_mn<Fn>, &ctx,
+        m, n, x, fvec, fjac, ldfjac, tol, ipvt, wa, lwa));
 }
 
 template <typename F>
@@ -232,12 +287,15 @@ inline int lmstr(F &&fcn, int m, int n, real *x, real *fvec, real *fjac,
 {
     detail::callable<F> c(fcn);
     typedef typename detail::callable<F>::type Fn;
-    return ::__cminpack_func__(lmstr)(
-        &detail::fcnderstr_mn<Fn>, c.get(),
+    detail::context ctx(c.get());
+    return ctx.rethrow(::__cminpack_func__(lmstr)(
+        &detail::fcnderstr_mn<Fn>, &ctx,
         m, n, x, fvec, fjac, ldfjac, ftol, xtol, gtol, maxfev, diag, mode,
-        factor, nprint, nfev, njev, ipvt, qtf, wa1, wa2, wa3, wa4);
+        factor, nprint, nfev, njev, ipvt, qtf, wa1, wa2, wa3, wa4));
 }
 
 } /* namespace cminpack */
+
+#undef CMINPACKCPP_EXCEPTIONS
 
 #endif /* !__CMINPACKCPP_HPP__ */
