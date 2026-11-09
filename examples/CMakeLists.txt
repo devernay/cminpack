@@ -69,6 +69,11 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
   add_test (NAME tissue88
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue88>)
 
+  add_executable (tissue87 tissue87.c)
+  target_link_libraries (tissue87 cminpack)
+  add_test (NAME tissue87
+    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue87>)
+
   # built from the enorm sources: cminpackld is not built everywhere
   add_executable (tissue82 tissue82.c
     ${CMINPACK_SOURCE_DIR}/src/enorm.c ${CMINPACK_SOURCE_DIR}/src/f2c/enorm_.c)
