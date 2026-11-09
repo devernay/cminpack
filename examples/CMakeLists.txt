@@ -1,7 +1,20 @@
 option (BUILD_EXAMPLES "Build the examples and tests." ON)
 option (BUILD_EXAMPLES_FORTRAN "Build the FORTRAN examples and tests." OFF)
 
-if (BUILD_EXAMPLES AND TARGET cminpack)
+# The tests use the double precision library if it is built, else the single
+# or extended precision one, with the references examples/ref/s*.ref or ld*.ref.
+if (TARGET cminpack)
+  set (CMINPACK_TEST_LIB cminpack)
+  set (CMINPACK_TEST_REF_PREFIX "")
+elseif (TARGET cminpacks)
+  set (CMINPACK_TEST_LIB cminpacks)
+  set (CMINPACK_TEST_REF_PREFIX s)
+elseif (TARGET cminpackld)
+  set (CMINPACK_TEST_LIB cminpackld)
+  set (CMINPACK_TEST_REF_PREFIX ld)
+endif ()
+
+if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
   # the test drivers define their own helpers and macros in each file
   set (CMAKE_UNITY_BUILD OFF)
 
@@ -38,39 +51,54 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
       -P "${CMINPACK_SOURCE_DIR}/examples/runtest.cmake")
   endmacro()
 
+  # In single precision, tlmdif and tlmdif1 may end with a different exit
+  # parameter than the reference under FMA contraction (issue #154): they are
+  # run without comparing their output.
+  set (NOREF_PGM "")
+  if (CMINPACK_TEST_REF_PREFIX STREQUAL "s")
+    set (NOREF_PGM tlmdif tlmdif1)
+  endif ()
+
   foreach (source ${CPGM})
-    add_executable (${source}_ ${source}_.c)
-    target_link_libraries (${source}_ cminpack)
-    add_minpack_test(${source}_ ${source}c)
-    add_executable (${source}c ${source}c.c)
-    target_link_libraries (${source}c cminpack)
-    add_minpack_test(${source}c ${source}c)
+    foreach (test ${source}_ ${source}c)
+      add_executable (${test} ${test}.c)
+      target_link_libraries (${test} ${CMINPACK_TEST_LIB})
+      if (source IN_LIST NOREF_PGM)
+        add_test (NAME ${test}
+          COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${test}>)
+      else ()
+        add_minpack_test(${test} ${CMINPACK_TEST_REF_PREFIX}${source}c)
+      endif ()
+    endforeach ()
   endforeach()
 
   # Self-checking regression test for issue #76 (non-convergence / NaN in
   # lmpar on a zero-residual problem). It needs no reference file: it exits
   # non-zero if any solver fails to converge, produces NaN/Inf, or runs up to
   # maxfev. See tissue76.c.
-  add_executable (tissue76 tissue76.c)
-  target_link_libraries (tissue76 cminpack)
-  add_test (NAME tissue76
-    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue76>)
+  # Not run in extended precision, where lmdif reaches maxfev (issue #153).
+  if (NOT CMINPACK_TEST_REF_PREFIX STREQUAL "ld")
+    add_executable (tissue76 tissue76.c)
+    target_link_libraries (tissue76 ${CMINPACK_TEST_LIB})
+    add_test (NAME tissue76
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue76>)
+  endif ()
 
   # Self-checking regression test for issue #81: a negative value returned by
   # the user function while lmstr computes a Jacobian row must be returned as
   # info (it was reported as 0). See tissue81.c.
   add_executable (tissue81 tissue81.c)
-  target_link_libraries (tissue81 cminpack)
+  target_link_libraries (tissue81 ${CMINPACK_TEST_LIB})
   add_test (NAME tissue81
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue81>)
 
   add_executable (tissue88 tissue88.c)
-  target_link_libraries (tissue88 cminpack)
+  target_link_libraries (tissue88 ${CMINPACK_TEST_LIB})
   add_test (NAME tissue88
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue88>)
 
   add_executable (tissue87 tissue87.c)
-  target_link_libraries (tissue87 cminpack)
+  target_link_libraries (tissue87 ${CMINPACK_TEST_LIB})
   add_test (NAME tissue87
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue87>)
 
@@ -87,13 +115,13 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
 
   # Issue #84: qrfac must not read past the end of a when m < n.
   add_executable (tissue84 tissue84.c)
-  target_link_libraries (tissue84 cminpack)
+  target_link_libraries (tissue84 ${CMINPACK_TEST_LIB})
   add_test (NAME tissue84
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue84>)
 
   # Issue #85: qrfac with pivot=0 must allow wa to coincide with rdiag.
   add_executable (tissue85 tissue85.c)
-  target_link_libraries (tissue85 cminpack)
+  target_link_libraries (tissue85 ${CMINPACK_TEST_LIB})
   add_test (NAME tissue85
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue85>)
 
@@ -118,7 +146,7 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
   if (CMAKE_CXX_COMPILER)
     enable_language (CXX)
     add_executable (tcppwrap tcppwrap.cpp)
-    target_link_libraries (tcppwrap cminpack)
+    target_link_libraries (tcppwrap ${CMINPACK_TEST_LIB})
     add_test (NAME tcppwrap
       COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tcppwrap>)
   endif ()
@@ -145,7 +173,7 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
   add_executable (hybdrvc hybdrv.c neqipt.c vecfcn.c)
   add_executable (chkdrvc chkdrv.c neqipt.c vecfcn.c errjac.c)
   foreach (drv lmddrvc lmfdrvc lmsdrvc hyjdrvc hybdrvc chkdrvc)
-    target_link_libraries (${drv} cminpack)
+    target_link_libraries (${drv} ${CMINPACK_TEST_LIB})
   endforeach ()
   add_minpack_driver_smoketest (lmddrvc ssq.data)
   add_minpack_driver_smoketest (lmfdrvc ssq.data)
@@ -163,10 +191,11 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
   # checked in). Iteration-count / last-digit differences, and differences on
   # problems FORTRAN does not converge, are ignored (see README.md, "Numerical
   # differences from FORTRAN MINPACK"). Needs Python 3; if none is found the
-  # cross-check tests are skipped (the rest of the build is unaffected).
+  # cross-check tests are skipped (the rest of the build is unaffected). The
+  # FORTRAN reference is double precision, so only the double library is checked.
   option (CMINPACK_CROSSCHECK "Add the FORTRAN-reference cross-check tests (needs Python 3)." ON)
   find_package (Python3 COMPONENTS Interpreter QUIET)
-  if (CMINPACK_CROSSCHECK AND Python3_Interpreter_FOUND)
+  if (CMINPACK_CROSSCHECK AND Python3_Interpreter_FOUND AND CMINPACK_TEST_LIB STREQUAL cminpack)
     add_executable (lmddrv_ lmddrv_.c ssqipt.c ssqfcn.c ssqjac.c)
     add_executable (lmfdrv_ lmfdrv_.c ssqipt.c ssqfcn.c)
     add_executable (lmsdrv_ lmsdrv_.c ssqipt.c ssqfcn.c ssqjac.c)
@@ -219,7 +248,7 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
     add_crosscheck (crosscheck_chkdrvc chkdrvc chkder.data chkdrv.fortran.ref)
     add_crosscheck (crosscheck_chkdrv_ chkdrv_ chkder.data chkdrv.fortran.ref)
     message (STATUS "cminpack tests: FORTRAN-reference cross-check ENABLED (Python 3 found).")
-  elseif (CMINPACK_CROSSCHECK)
+  elseif (CMINPACK_CROSSCHECK AND NOT Python3_Interpreter_FOUND)
     # Python 3 is NOT required to build cminpack, nor for the standard tests
     # (which use the C tool cmpfiles) or the driver smoke tests (pure CMake). It
     # is only needed for the FORTRAN-reference cross-check, so we skip just that
