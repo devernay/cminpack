@@ -87,13 +87,10 @@ if (BUILD_EXAMPLES)
     # lmpar on a zero-residual problem). It needs no reference file: it exits
     # non-zero if any solver fails to converge, produces NaN/Inf, or runs up to
     # maxfev. See tissue76.c.
-    # Not run in extended precision, where lmdif reaches maxfev (issue #153).
-    if (NOT p STREQUAL "ld")
-      add_executable (${p}tissue76 tissue76.c)
-      target_link_libraries (${p}tissue76 ${lib})
-      add_test (NAME ${p}tissue76
-        COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}tissue76>)
-    endif ()
+    add_executable (${p}tissue76 tissue76.c)
+    target_link_libraries (${p}tissue76 ${lib})
+    add_test (NAME ${p}tissue76
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}tissue76>)
 
     # Self-checking regression test for issue #81: a negative value returned by
     # the user function while lmstr computes a Jacobian row must be returned as
