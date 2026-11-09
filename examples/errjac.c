@@ -213,7 +213,7 @@ L100:
 	}
 /* Computing 2nd power */
 	d__1 = sum2;
-	temp1 = 2. * (sum1 - d__1 * d__1 + 1.);
+	temp1 = 2. * (sum1 + d__1 * d__1 + 1.);
 	temp2 = 2. * sum2;
 /* Computing 2nd power */
 	d__1 = ti;
