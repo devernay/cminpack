@@ -149,10 +149,10 @@ void __minpack_func__(fdjac1)(__minpack_decl_fcn_nn__ const int *n, real *x, con
 	}
 	x[j] = temp + h__;
 	fcn_nn(n, &x[1], &wa1[1], iflag);
+	x[j] = temp;
 	if (*iflag < 0) {
 	    goto L30;
 	}
-	x[j] = temp;
 	i__2 = *n;
 	for (i__ = 1; i__ <= i__2; ++i__) {
 	    fjac[i__ + j * fjac_dim1] = (wa1[i__] - fvec[i__]) / h__;
@@ -183,6 +183,11 @@ L40:
 	fcn_nn(n, &x[1], &wa1[1], iflag);
 	if (*iflag < 0) {
 	    /* goto L100; */
+	    i__2 = *n;
+	    i__3 = msum;
+	    for (j = k; j <= i__2; j += i__3) {
+		x[j] = wa2[j];
+	    }
             return;
 	}
 	i__3 = *n;

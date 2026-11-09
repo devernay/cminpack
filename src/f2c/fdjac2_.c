@@ -123,11 +123,11 @@ void __minpack_func__(fdjac2)(__minpack_decl_fcn_mn__ const int *m, const int *n
 	}
 	x[j] = temp + h__;
 	fcn_mn(m, n, &x[1], &wa[1], iflag);
+	x[j] = temp;
 	if (*iflag < 0) {
 	    /* goto L30; */
             return;
 	}
-	x[j] = temp;
 	i__2 = *m;
 	for (i__ = 1; i__ <= i__2; ++i__) {
 	    fjac[i__ + j * fjac_dim1] = (wa[i__] - fvec[i__]) / h__;

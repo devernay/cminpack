@@ -106,10 +106,10 @@ int __cminpack_func__(fdjac2)(__cminpack_decl_fcn_mn__ void *p, int m, int n, re
            the Jacobian (see fcn() in examples/lmfdrv.c, and how njev
            is used to compute the number of Jacobian evaluations) */
 	iflag = fcn_mn(p, m, n, x, wa, 2);
+	x[j] = temp;
 	if (iflag < 0) {
             return iflag;
 	}
-	x[j] = temp;
 	for (i = 0; i < m; ++i) {
 	    fjac[i + j * ldfjac] = (wa[i] - fvec[i]) / h;
 	}
