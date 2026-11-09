@@ -73,6 +73,9 @@ jobs:
       - name: Check that an empty CMAKE_BUILD_TYPE is accepted
         run: cmake -DCMAKE_BUILD_TYPE= -S cminpack -B $RUNNER_TEMP/empty-build-type
       
+      - name: Check that the library builds when the project asks for C90
+        run: cmake -DCMAKE_C_STANDARD=90 -DCMAKE_C_EXTENSIONS=OFF -DBUILD_EXAMPLES=OFF -S cminpack -B $RUNNER_TEMP/c90 && cmake --build $RUNNER_TEMP/c90
+      
       - name: Build cminpack
         run: cmake --build ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMAKE_BUILD_TYPE }}
       
