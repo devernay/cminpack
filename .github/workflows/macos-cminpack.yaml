@@ -10,6 +10,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Build and test with Apple clang, warnings as errors
+        run: |
+          cmake -DUSE_BLAS=ON -DUSE_LAPACK=ON -DCMAKE_C_FLAGS=-Werror -S . -B $RUNNER_TEMP/build-clang
+          cmake --build $RUNNER_TEMP/build-clang -j4
+          ctest --test-dir $RUNNER_TEMP/build-clang -j4 --no-tests=error --output-on-failure
+
       - name: Build and test with Homebrew GCC
         run: |
           CC=$(ls $(brew --prefix)/bin/gcc-[0-9]* | sort -t- -k2 -n | tail -1)
