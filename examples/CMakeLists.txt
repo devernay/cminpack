@@ -162,6 +162,11 @@ if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
     target_link_libraries (tissue95 cminpack)
     add_test (NAME tissue95
       COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue95>)
+
+    add_executable (tissue96 tissue96.c errjac.c)
+    target_link_libraries (tissue96 cminpack)
+    add_test (NAME tissue96
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue96>)
   endif ()
 
   # C++ wrapper test (issue #74): accept lambdas/functors/std::function.
