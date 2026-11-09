@@ -8,10 +8,16 @@ typedef void (*fp)(void);
 
 int main(void)
 {
-    fp f[] = { (fp)dogleg, (fp)qrfac, (fp)qrsolv, (fp)qform, (fp)r1updt,
-               (fp)r1mpyq, (fp)lmpar, (fp)rwupdt,
-               (fp)dogleg_, (fp)qrfac_, (fp)qrsolv_, (fp)qform_, (fp)r1updt_,
-               (fp)r1mpyq_, (fp)lmpar_, (fp)rwupdt_ };
+    fp f[] = {
+        (fp)__cminpack_func__(dogleg), (fp)__cminpack_func__(qrfac),
+        (fp)__cminpack_func__(qrsolv), (fp)__cminpack_func__(qform),
+        (fp)__cminpack_func__(r1updt), (fp)__cminpack_func__(r1mpyq),
+        (fp)__cminpack_func__(lmpar), (fp)__cminpack_func__(rwupdt),
+        (fp)__minpack_func__(dogleg), (fp)__minpack_func__(qrfac),
+        (fp)__minpack_func__(qrsolv), (fp)__minpack_func__(qform),
+        (fp)__minpack_func__(r1updt), (fp)__minpack_func__(r1mpyq),
+        (fp)__minpack_func__(lmpar), (fp)__minpack_func__(rwupdt)
+    };
     int i;
     for (i = 0; i < 16; ++i) {
         if (f[i] == NULL) {
