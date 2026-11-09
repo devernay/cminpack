@@ -98,21 +98,20 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
         abort();
     }
     
-    /* set rdiag, before the diagonal is replaced */
-    memset(rdiag, 0, sizeof(real)*n);
-    for(i=0 ; i<n ; ++i) {
-        rdiag[i] = a[i*lda+i];
-    }
-    
-    /* rebuild the lower triangle in minpack qrfac's u-vector format */
+    /* set rdiag and rebuild the lower triangle in minpack qrfac's u-vector
+       format. tau (wa) may coincide with rdiag: read tau[i] first. */
     for(i=0 ; i<ltau ; ++i) {
         k = i*lda+i;
         t = tau[i];
+        rdiag[i] = a[k];
         a[k] = t;
         for(j=i+1 ; j<m ; j++) {
             k++;
             a[k] *= t;
         }
+    }
+    for(i=ltau ; i<n ; ++i) {
+        rdiag[i] = 0.;
     }
     
     free(work);
