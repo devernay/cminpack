@@ -89,6 +89,20 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
   add_test (NAME tissue85
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue85>)
 
+  # BLAS calls must pass __cminpack_blasint__ (here long), not int: compile only
+  if (CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    file (GLOB CMINPACK_C_SOURCES ${CMINPACK_SOURCE_DIR}/src/*.c)
+    if (CMAKE_OSX_SYSROOT)
+      set (BLASINT_SYSROOT -isysroot ${CMAKE_OSX_SYSROOT})
+    endif ()
+    # -U__APPLE__: Accelerate's prototypes are int-only, use the generic ones
+    add_test (NAME blasint_types
+      COMMAND ${CMAKE_C_COMPILER} ${BLASINT_SYSROOT} -fsyntax-only -U__APPLE__
+        -DUSE_BLAS -D__cminpack_blasint__=long -Werror=incompatible-pointer-types
+        -I${CMINPACK_SOURCE_DIR}/include -I${CMINPACK_SOURCE_DIR}/src
+        ${CMINPACK_C_SOURCES})
+  endif ()
+
   # C++ wrapper test (issue #74): accept lambdas/functors/std::function.
   # Only built if a C++ compiler is available, since cminpack itself is C.
   include (CheckLanguage)
