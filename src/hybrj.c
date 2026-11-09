@@ -215,7 +215,8 @@ int __cminpack_func__(hybrj)(__cminpack_decl_fcnder_nn__ void *p, int n, real *x
 /*     check the input parameters for errors. */
 
     if (n <= 0 || ldfjac < n || xtol < 0. || maxfev <= 0 || factor <= 
-	    0. || (size_t)lr < (size_t)n * (n + 1) / 2) {
+	    0. || lr < 0 ||
+	    (unsigned long long)lr < n * (n + 1ULL) / 2) {
 	goto TERMINATE;
     }
     if (mode == 2) {

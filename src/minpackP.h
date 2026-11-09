@@ -7,7 +7,6 @@
 #endif
 
 #include <float.h>
-#include <stddef.h> /* size_t, used for overflow-safe size checks */
 /* declare the functions remapped below before defining the macros */
 #include <math.h>
 #include <stdlib.h>
