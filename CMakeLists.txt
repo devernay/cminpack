@@ -3,8 +3,9 @@
 # to the root binary directory of the project as ${CMINPACK_BINARY_DIR}.
 cmake_minimum_required (VERSION 3.14)
 
-if (NOT DEFINED CMAKE_BUILD_TYPE)
-  set (CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
+# FORCE replaces an empty cache entry (-DCMAKE_BUILD_TYPE=).
+if (NOT CMAKE_BUILD_TYPE)
+  set (CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
 endif ()
 
 project (CMINPACK C)
@@ -99,7 +100,7 @@ else ()
     set (CMAKE_MINSIZEREL_POSTFIX _s)
   endif ()
 endif ()
-string (TOUPPER ${CMAKE_BUILD_TYPE} _CMAKE_BUILD_TYPE_UPPER)
+string (TOUPPER "${CMAKE_BUILD_TYPE}" _CMAKE_BUILD_TYPE_UPPER)
 set(cminpack_suffix "${CMAKE_${_CMAKE_BUILD_TYPE_UPPER}_POSTFIX}")
 
 if (USE_BLAS)
