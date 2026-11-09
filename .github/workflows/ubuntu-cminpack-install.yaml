@@ -82,6 +82,13 @@ jobs:
       - name: Install cminpack
         run: cmake --install ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMAKE_BUILD_TYPE }}
       
+      - name: Build and run a program with the installed pkg-config file
+        if: ${{ matrix.USE_LAPACK == 'ON' }}
+        run: |
+          export PKG_CONFIG_PATH=${{ env.CMINPACK_INSTALL_DIR }}/lib/pkgconfig
+          cc cminpack/examples/tlmderc.c $(pkg-config --cflags --libs cminpack) -o tlmderc
+          LD_LIBRARY_PATH=${{ env.CMINPACK_INSTALL_DIR }}/lib ./tlmderc
+      
       - name: Delete checkout directory
         run: rm -rf $RUNNER_TEMP/cminpack
       
