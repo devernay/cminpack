@@ -11,6 +11,8 @@
           |a - b| <= abstol   OR   |a - b| <= reltol * max(|a|,|b|)
       (two NaNs, or two infinities of the same sign, also compare equal);
     - otherwise they are compared as strings.
+  A token of the reference file (either argument) may list alternatives
+  separated by '|', e.g. 1|3: it matches if any alternative does.
 
   This replaces an exact byte-for-byte comparison, which is not portable:
   the test drivers print results with %g/%e at ~7 significant digits, and
@@ -85,6 +87,25 @@ static int numbers_equal(double a, double b, double reltol, double abstol)
     return diff <= reltol * scale;
 }
 
+/* Compare two tokens. Either may list alternatives a|b (it is modified). */
+static int tokens_equal(char *t1, char *t2, double reltol, double abstol)
+{
+    double v1, v2;
+    char *bar = strchr(t2, '|');
+    if (bar == NULL && strchr(t1, '|') != NULL) {
+        return tokens_equal(t2, t1, reltol, abstol);
+    }
+    if (bar != NULL) {
+        *bar = '\0';
+        return tokens_equal(t1, t2, reltol, abstol)
+            || tokens_equal(t1, bar + 1, reltol, abstol);
+    }
+    if (parse_number(t1, &v1) && parse_number(t2, &v2)) {
+        return numbers_equal(v1, v2, reltol, abstol);
+    }
+    return strcmp(t1, t2) == 0;
+}
+
 /* Return the next whitespace-delimited token starting at *pp, advancing
    *pp past it and NUL-terminating the token in place. Returns NULL when
    no more tokens remain. This is a minimal reentrant tokenizer (unlike
@@ -126,8 +147,6 @@ static int compare_lines(const char *l1, const char *l2,
     s1 = b1;
     s2 = b2;
     for (;;) {
-        double v1, v2;
-        int n1, n2;
         char *t1 = next_token(&s1);
         char *t2 = next_token(&s2);
         if (t1 == NULL && t2 == NULL) {
@@ -136,13 +155,7 @@ static int compare_lines(const char *l1, const char *l2,
         if (t1 == NULL || t2 == NULL) {
             return 1; /* different number of tokens */
         }
-        n1 = parse_number(t1, &v1);
-        n2 = parse_number(t2, &v2);
-        if (n1 && n2) {
-            if (!numbers_equal(v1, v2, reltol, abstol)) {
-                return 1;
-            }
-        } else if (strcmp(t1, t2) != 0) {
+        if (!tokens_equal(t1, t2, reltol, abstol)) {
             return 1;
         }
     }
