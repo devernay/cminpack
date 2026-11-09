@@ -118,6 +118,9 @@ c
 c     **********
       integer nprob,nfev,njev,j
       double precision temp(65,40)
+c     temp keeps the jacobian between calls (iflag = 2, 3, ...); without
+c     save its contents are undefined after return (fortran 77, 15.8.4).
+      save temp
       common /refnum/ nprob,nfev,njev
       if (iflag .eq. 1) call ssqfcn(m,n,x,fvec,nprob)
       if (iflag .eq. 2) call ssqjac(m,n,x,temp,65,nprob)
