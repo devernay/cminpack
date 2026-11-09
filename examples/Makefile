@@ -373,7 +373,7 @@ checkfail: ../fortran/libminpack.a check
 	$(MAKE) -C ../fortran
 
 clean:
-	-rm -f $(PGM) $(FDRVPGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(FPGM) cmpfiles $(LIBSUFFIX)tissue76 $(LIBSUFFIX)tcppwrap
+	-rm -f $(PGM) $(FDRVPGM) $(DRVPGM) $(CPGM) $(CDRVPGM) $(FPGM) cmpfiles $(LIBSUFFIX)tissue76 $(LIBSUFFIX)tcppwrap $(LIBSUFFIX)*.o
 
 veryclean: clean
 	-rm -f *.o *.gcno *.gcda *.out *~ #*#
