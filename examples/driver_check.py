@@ -60,7 +60,6 @@ _PROBLEM_RE = re.compile(r"^\s*problem\b", re.IGNORECASE)
 _FNORM_RE = re.compile(
     r"final l2 norm of the residuals\s+([-+0-9.eEdD]+)", re.IGNORECASE)
 _INFO_RE = re.compile(r"exit parameter\s+(\d+)", re.IGNORECASE)
-_NUM_RE = re.compile(r"[-+]?(?:\d+\.?\d*|\.\d+)(?:[eEdD][-+]?\d+)?")
 
 
 def _to_float(tok):
@@ -98,11 +97,11 @@ def _error_vectors(block):
             grab = True
             continue
         if grab:
-            nums = [_to_float(t) for t in _NUM_RE.findall(ln)]
-            nums = [x for x in nums if x is not None]
-            if nums:
+            nums = [_to_float(t) for t in ln.split()]
+            if None in nums:
+                grab = False  # e.g. the summary after the last vector
+            else:
                 vals.extend(nums)
-                grab = False  # error vector is on the first non-empty line
     return vals
 
 
