@@ -5,7 +5,8 @@
 
   Each line is split into whitespace-separated tokens. Corresponding
   tokens are compared as follows:
-    - if both tokens parse completely as floating-point numbers, they
+    - if both tokens parse completely as floating-point numbers (FORTRAN
+      D exponents such as 1.0D-08 are accepted), they
       are considered equal when
           |a - b| <= abstol   OR   |a - b| <= reltol * max(|a|,|b|)
       (two NaNs, or two infinities of the same sign, also compare equal);
@@ -40,6 +41,7 @@
 static int parse_number(const char *tok, double *v)
 {
     char *end = NULL;
+    char buf[64];
     double d;
     if (tok == NULL || *tok == '\0') {
         return 0;
@@ -47,6 +49,13 @@ static int parse_number(const char *tok, double *v)
     d = strtod(tok, &end);
     if (end == tok) {
         return 0; /* no conversion */
+    }
+    if ((*end == 'D' || *end == 'd') && strlen(tok) < sizeof buf) {
+        /* FORTRAN exponent, e.g. 1.0D-08: retry with 'e'. */
+        strcpy(buf, tok);
+        buf[end - tok] = 'e';
+        d = strtod(buf, &end);
+        end = (char *)tok + (end - buf);
     }
     while (*end != '\0' && isspace((unsigned char)*end)) {
         ++end;
