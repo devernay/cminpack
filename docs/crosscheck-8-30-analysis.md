@@ -56,13 +56,23 @@ FORTRAN exactly.
 **Did the reference converge by chance?** No -- the un-contracted arithmetic
 converges *robustly*. The FORTRAN reference (gfortran, no contraction at `-O0`)
 converges, and so does cminpack once FMA is disabled -- to the identical value
-and iteration counts. Moreover the FORTRAN build converges on this problem at
-every gfortran optimisation level (`-O0` through `-O3`; see
-`examples/crosscheck_matrix.sh`). It is specifically **clang's contraction of
-the C expressions** that perturbs cminpack onto the diverging side of the
-knife's edge. So FORTRAN is not "lucky"; rather, the exact computation converges
-and a compiler-introduced 1-ULP FMA perturbation is what tips this particular
-build over.
+and iteration counts. FORTRAN MINPACK is not immune to contraction either: on
+arm64, where gfortran contracts from `-O2`, `examples/crosscheck_matrix.sh`
+(gfortran 16.2, macOS; the `-ffp-contract=off` row was added to the script's
+configurations) shows it failing on 8/30 too:
+
+| FORTRAN MINPACK build | problems where FORTRAN `-O0` converges but this build does not |
+|---|---|
+| `-O0`, `-O1` | none |
+| `-O2`, `-O3` | 8/30 and 8/40 (`hybrd`, `hybrj`), 6/4 (`lmstr`) |
+| `-O2 -ffp-contract=off` | none |
+
+On x86-64, gfortran never contracts without `-march` (the baseline ISA has no
+FMA), so FORTRAN converges there at every optimisation level, which is why CI
+did not show this. So FORTRAN is not "lucky"; rather, the exact computation
+converges and a compiler-introduced 1-ULP FMA perturbation is what tips a build
+over, whether it is compiled from the C or the FORTRAN source: the sensitivity
+is in the MINPACK algorithm, not in the C translation.
 
 ## Consequence for the cross-check
 
