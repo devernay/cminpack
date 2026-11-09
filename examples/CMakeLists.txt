@@ -155,6 +155,12 @@ if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
     target_link_libraries (tcppwrap ${CMINPACK_TEST_LIB})
     add_test (NAME tcppwrap
       COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tcppwrap>)
+    # Issue #93: a const functor with a non-const operator() must not compile.
+    add_library (tcppwrap_const OBJECT EXCLUDE_FROM_ALL tcppwrap_const.cpp)
+    add_test (NAME tcppwrap_const
+      COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}
+        --target tcppwrap_const --config $<CONFIG>)
+    set_tests_properties (tcppwrap_const PROPERTIES WILL_FAIL TRUE)
   endif ()
 
   # Intensive driver tests: run cminpack on the difficult problems from More,
