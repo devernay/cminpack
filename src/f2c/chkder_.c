@@ -196,3 +196,4 @@ L20:
 
 } /* chkder_ */
 
+#undef factor

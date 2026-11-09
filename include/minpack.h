@@ -69,21 +69,6 @@ extern "C" {
 #define __minpack_param_fcnder_mn__    fcnder_mn,
 #define __minpack_param_fcnderstr_mn__ fcnderstr_mn,
 #endif
-#undef __cminpack_type_fcn_nn__
-#undef __cminpack_type_fcnder_nn__
-#undef __cminpack_type_fcn_mn__
-#undef __cminpack_type_fcnder_mn__
-#undef __cminpack_type_fcnderstr_mn__
-#undef __cminpack_decl_fcn_nn__
-#undef __cminpack_decl_fcnder_nn__
-#undef __cminpack_decl_fcn_mn__
-#undef __cminpack_decl_fcnder_mn__
-#undef __cminpack_decl_fcnderstr_mn__
-#undef __cminpack_param_fcn_nn__
-#undef __cminpack_param_fcnder_nn__
-#undef __cminpack_param_fcn_mn__
-#undef __cminpack_param_fcnder_mn__
-#undef __cminpack_param_fcnderstr_mn__
 
 /* Declarations for minpack */
 
