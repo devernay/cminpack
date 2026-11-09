@@ -37,7 +37,7 @@ jobs:
         run: cmake --build ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMINPACK_BUILD_TYPE }}
       
       - name: Test cminpack
-        run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMINPACK_BUILD_TYPE }}
+        run: ctest --test-dir ${{ env.CMINPACK_BUILD_DIR }} --build-config ${{ matrix.CMINPACK_BUILD_TYPE }} --no-tests=error
       
       - name: Install cminpack
         run: cmake --install ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMINPACK_BUILD_TYPE }}
