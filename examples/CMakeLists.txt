@@ -166,6 +166,29 @@ if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
       COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}
         --target tcppwrap_const --config $<CONFIG>)
     set_tests_properties (tcppwrap_const PROPERTIES WILL_FAIL TRUE)
+
+    # Issue #94: link this test with a copy of cminpack built without unwind
+    # tables, so that an exception unwinding through C calls std::terminate.
+    get_target_property (_srcs ${CMINPACK_TEST_LIB} SOURCES)
+    list (TRANSFORM _srcs PREPEND ${CMINPACK_SOURCE_DIR}/)
+    add_library (cminpack_nounwind STATIC EXCLUDE_FROM_ALL ${_srcs})
+    target_include_directories (cminpack_nounwind PUBLIC
+      ${CMINPACK_SOURCE_DIR}/include PRIVATE ${CMINPACK_SOURCE_DIR}/src)
+    target_compile_definitions (cminpack_nounwind PUBLIC CMINPACK_NO_DLL
+      $<TARGET_PROPERTY:${CMINPACK_TEST_LIB},INTERFACE_COMPILE_DEFINITIONS>)
+    target_link_libraries (cminpack_nounwind PUBLIC
+      $<TARGET_PROPERTY:${CMINPACK_TEST_LIB},LINK_LIBRARIES>)
+    include (CheckCCompilerFlag)
+    check_c_compiler_flag ("-fno-unwind-tables -fno-asynchronous-unwind-tables"
+      CMINPACK_C_NO_UNWIND_TABLES)
+    if (CMINPACK_C_NO_UNWIND_TABLES)
+      target_compile_options (cminpack_nounwind PRIVATE
+        -fno-unwind-tables -fno-asynchronous-unwind-tables)
+    endif ()
+    add_executable (tcppwrap_except tcppwrap_except.cpp)
+    target_link_libraries (tcppwrap_except cminpack_nounwind)
+    add_test (NAME tcppwrap_except
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tcppwrap_except>)
   endif ()
 
   # Intensive driver tests: run cminpack on the difficult problems from More,
