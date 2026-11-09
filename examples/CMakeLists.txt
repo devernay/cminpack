@@ -61,6 +61,11 @@ if (BUILD_EXAMPLES AND TARGET cminpack)
   add_test (NAME tissue81
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue81>)
 
+  add_executable (tissue88 tissue88.c)
+  target_link_libraries (tissue88 cminpack)
+  add_test (NAME tissue88
+    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue88>)
+
   # C++ wrapper test (issue #74): accept lambdas/functors/std::function.
   # Only built if a C++ compiler is available, since cminpack itself is C.
   include (CheckLanguage)
