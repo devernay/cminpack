@@ -1,20 +1,7 @@
 option (BUILD_EXAMPLES "Build the examples and tests." ON)
 option (BUILD_EXAMPLES_FORTRAN "Build the FORTRAN examples and tests." OFF)
 
-# The tests use the double precision library if it is built, else the single
-# or extended precision one, with the references examples/ref/s*.ref or ld*.ref.
-if (TARGET cminpack)
-  set (CMINPACK_TEST_LIB cminpack)
-  set (CMINPACK_TEST_REF_PREFIX "")
-elseif (TARGET cminpacks)
-  set (CMINPACK_TEST_LIB cminpacks)
-  set (CMINPACK_TEST_REF_PREFIX s)
-elseif (TARGET cminpackld)
-  set (CMINPACK_TEST_LIB cminpackld)
-  set (CMINPACK_TEST_REF_PREFIX ld)
-endif ()
-
-if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
+if (BUILD_EXAMPLES)
   # the test drivers define their own helpers and macros in each file
   set (CMAKE_UNITY_BUILD OFF)
 
@@ -57,145 +44,6 @@ if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
       -P "${CMINPACK_SOURCE_DIR}/examples/runtest.cmake")
   endmacro()
 
-  foreach (source ${CPGM})
-    foreach (test ${source}_ ${source}c)
-      add_executable (${test} ${test}.c)
-      target_link_libraries (${test} ${CMINPACK_TEST_LIB})
-      add_minpack_test(${test} ${CMINPACK_TEST_REF_PREFIX}${source}c)
-    endforeach ()
-  endforeach()
-
-  # Self-checking regression test for issue #76 (non-convergence / NaN in
-  # lmpar on a zero-residual problem). It needs no reference file: it exits
-  # non-zero if any solver fails to converge, produces NaN/Inf, or runs up to
-  # maxfev. See tissue76.c.
-  # Not run in extended precision, where lmdif reaches maxfev (issue #153).
-  if (NOT CMINPACK_TEST_REF_PREFIX STREQUAL "ld")
-    add_executable (tissue76 tissue76.c)
-    target_link_libraries (tissue76 ${CMINPACK_TEST_LIB})
-    add_test (NAME tissue76
-      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue76>)
-  endif ()
-
-  # Self-checking regression test for issue #81: a negative value returned by
-  # the user function while lmstr computes a Jacobian row must be returned as
-  # info (it was reported as 0). See tissue81.c.
-  add_executable (tissue81 tissue81.c)
-  target_link_libraries (tissue81 ${CMINPACK_TEST_LIB})
-  add_test (NAME tissue81
-    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue81>)
-
-  add_executable (tissue88 tissue88.c)
-  target_link_libraries (tissue88 ${CMINPACK_TEST_LIB})
-  add_test (NAME tissue88
-    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue88>)
-
-  add_executable (tissue87 tissue87.c)
-  target_link_libraries (tissue87 ${CMINPACK_TEST_LIB})
-  add_test (NAME tissue87
-    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue87>)
-
-  # built from the enorm sources: cminpackld is not built everywhere
-  add_executable (tissue82 tissue82.c
-    ${CMINPACK_SOURCE_DIR}/src/enorm.c ${CMINPACK_SOURCE_DIR}/src/f2c/enorm_.c)
-  target_compile_definitions (tissue82 PRIVATE __cminpack_long_double__ CMINPACK_NO_DLL)
-  target_include_directories (tissue82 PRIVATE ${CMINPACK_SOURCE_DIR}/src)
-  if (HAVE_LIBM)
-    target_link_libraries (tissue82 m)
-  endif ()
-  add_test (NAME tissue82
-    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue82>)
-
-  # Issue #84: qrfac must not read past the end of a when m < n.
-  add_executable (tissue84 tissue84.c)
-  target_link_libraries (tissue84 ${CMINPACK_TEST_LIB})
-  add_test (NAME tissue84
-    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue84>)
-
-  # Issue #85: qrfac with pivot=0 must allow wa to coincide with rdiag.
-  add_executable (tissue85 tissue85.c)
-  target_link_libraries (tissue85 ${CMINPACK_TEST_LIB})
-  add_test (NAME tissue85
-    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue85>)
-
-  # BLAS calls must pass __cminpack_blasint__ (here long), not int: compile only
-  if (CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-    file (GLOB CMINPACK_C_SOURCES ${CMINPACK_SOURCE_DIR}/src/*.c)
-    if (CMAKE_OSX_SYSROOT)
-      set (BLASINT_SYSROOT -isysroot ${CMAKE_OSX_SYSROOT})
-    endif ()
-    add_test (NAME blasint_types
-      COMMAND ${CMAKE_C_COMPILER} ${BLASINT_SYSROOT} -fsyntax-only
-        -DUSE_BLAS -D__cminpack_blasint__=long -Werror=incompatible-pointer-types
-        -I${CMINPACK_SOURCE_DIR}/include -I${CMINPACK_SOURCE_DIR}/src
-        ${CMINPACK_C_SOURCES})
-  endif ()
-
-  # The low-level routines must be exported from a Windows DLL (issue #91).
-  add_executable (tlowlevel tlowlevel.c)
-  target_link_libraries (tlowlevel ${CMINPACK_TEST_LIB})
-  add_test (NAME tlowlevel
-    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tlowlevel>)
-
-  add_executable (tissue89 tissue89.c)
-  target_link_libraries (tissue89 ${CMINPACK_TEST_LIB})
-  add_test (NAME tissue89
-    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue89>)
-
-  # checks the test helpers with double precision reference values
-  if (TARGET cminpack)
-    add_executable (tissue95 tissue95.c vecfcn.c vecjac.c errjac.c)
-    target_link_libraries (tissue95 cminpack)
-    add_test (NAME tissue95
-      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue95>)
-
-    add_executable (tissue96 tissue96.c errjac.c)
-    target_link_libraries (tissue96 cminpack)
-    add_test (NAME tissue96
-      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue96>)
-  endif ()
-
-  # C++ wrapper test (issue #74): accept lambdas/functors/std::function.
-  # Only built if a C++ compiler is available, since cminpack itself is C.
-  include (CheckLanguage)
-  check_language (CXX)
-  if (CMAKE_CXX_COMPILER)
-    enable_language (CXX)
-    add_executable (tcppwrap tcppwrap.cpp)
-    target_link_libraries (tcppwrap ${CMINPACK_TEST_LIB})
-    add_test (NAME tcppwrap
-      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tcppwrap>)
-    # Issue #93: a const functor with a non-const operator() must not compile.
-    add_library (tcppwrap_const OBJECT EXCLUDE_FROM_ALL tcppwrap_const.cpp)
-    add_test (NAME tcppwrap_const
-      COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}
-        --target tcppwrap_const --config $<CONFIG>)
-    set_tests_properties (tcppwrap_const PROPERTIES WILL_FAIL TRUE)
-
-    # Issue #94: link this test with a copy of cminpack built without unwind
-    # tables, so that an exception unwinding through C calls std::terminate.
-    get_target_property (_srcs ${CMINPACK_TEST_LIB} SOURCES)
-    list (TRANSFORM _srcs PREPEND ${CMINPACK_SOURCE_DIR}/)
-    add_library (cminpack_nounwind STATIC EXCLUDE_FROM_ALL ${_srcs})
-    target_include_directories (cminpack_nounwind PUBLIC
-      ${CMINPACK_SOURCE_DIR}/include PRIVATE ${CMINPACK_SOURCE_DIR}/src)
-    target_compile_definitions (cminpack_nounwind PUBLIC CMINPACK_NO_DLL
-      $<TARGET_PROPERTY:${CMINPACK_TEST_LIB},INTERFACE_COMPILE_DEFINITIONS>)
-    target_link_libraries (cminpack_nounwind PUBLIC
-      $<TARGET_PROPERTY:${CMINPACK_TEST_LIB},LINK_LIBRARIES>)
-    include (CheckCCompilerFlag)
-    check_c_compiler_flag ("-fno-unwind-tables -fno-asynchronous-unwind-tables"
-      CMINPACK_C_NO_UNWIND_TABLES)
-    if (CMINPACK_C_NO_UNWIND_TABLES)
-      target_compile_options (cminpack_nounwind PRIVATE
-        -fno-unwind-tables -fno-asynchronous-unwind-tables)
-    endif ()
-    add_executable (tcppwrap_except tcppwrap_except.cpp)
-    target_link_libraries (tcppwrap_except cminpack_nounwind)
-    add_test (NAME tcppwrap_except
-      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tcppwrap_except>)
-  endif ()
-
   # Intensive driver tests: run cminpack on the difficult problems from More,
   # Garbow and Hillstrom, reading the problem set from stdin. Their detailed
   # output is platform/compiler-dependent (iteration counts and termination
@@ -211,33 +59,185 @@ if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
       -P "${CMINPACK_SOURCE_DIR}/examples/runsmoke.cmake")
   endmacro()
 
-  add_executable (lmddrvc lmddrv.c ssqipt.c ssqfcn.c ssqjac.c)
-  add_executable (lmfdrvc lmfdrv.c ssqipt.c ssqfcn.c)
-  add_executable (lmsdrvc lmsdrv.c ssqipt.c ssqfcn.c ssqjac.c)
-  add_executable (hyjdrvc hyjdrv.c neqipt.c vecfcn.c vecjac.c)
-  add_executable (hybdrvc hybdrv.c neqipt.c vecfcn.c)
-  add_executable (chkdrvc chkdrv.c neqipt.c vecfcn.c errjac.c)
-  foreach (drv lmddrvc lmfdrvc lmsdrvc hyjdrvc hybdrvc chkdrvc)
-    target_link_libraries (${drv} ${CMINPACK_TEST_LIB})
-  endforeach ()
-  add_minpack_driver_smoketest (lmddrvc ssq.data)
-  add_minpack_driver_smoketest (lmfdrvc ssq.data)
-  add_minpack_driver_smoketest (lmsdrvc ssq.data)
-  add_minpack_driver_smoketest (hyjdrvc neq.data)
-  add_minpack_driver_smoketest (hybdrvc neq.data)
-  add_minpack_driver_smoketest (chkdrvc chkder.data)
+  # The C++ wrapper tests are only built if a C++ compiler is available,
+  # since cminpack itself is C.
+  include (CheckLanguage)
+  check_language (CXX)
+  if (CMAKE_CXX_COMPILER)
+    enable_language (CXX)
+    include (CheckCCompilerFlag)
+    check_c_compiler_flag ("-fno-unwind-tables -fno-asynchronous-unwind-tables"
+      CMINPACK_C_NO_UNWIND_TABLES)
+  endif ()
 
-  # The box variants, and the IBM driver (both use the ibmdpdrc reference).
-  add_executable (tchkderc_box tchkderc_box.c)
-  add_executable (tlmderc_box tlmderc_box.c)
-  add_executable (thybrjc_box thybrjc_box.c)
-  add_executable (ibmdpdrc ibmdpdr.c machar.c)
-  add_executable (ibmdpdr_ ibmdpdr_.c machar.c)
-  foreach (test tchkderc_box tlmderc_box thybrjc_box ibmdpdrc ibmdpdr_)
-    target_link_libraries (${test} ${CMINPACK_TEST_LIB})
-    string (REPLACE ibmdpdr_ ibmdpdrc reference ${test})
-    add_minpack_test (${test} ${CMINPACK_TEST_REF_PREFIX}${reference})
+  # The tests below are defined for each precision built, with the prefix of
+  # the Makefile and of the reference files: tlmdifc, stlmdifc, ldtlmdifc.
+  foreach (lib ${cminpack_libs})
+    string (REPLACE cminpack "" p ${lib})
+
+    foreach (source ${CPGM})
+      foreach (test ${source}_ ${source}c)
+        add_executable (${p}${test} ${test}.c)
+        target_link_libraries (${p}${test} ${lib})
+        add_minpack_test(${p}${test} ${p}${source}c)
+      endforeach ()
+    endforeach()
+
+    # Self-checking regression test for issue #76 (non-convergence / NaN in
+    # lmpar on a zero-residual problem). It needs no reference file: it exits
+    # non-zero if any solver fails to converge, produces NaN/Inf, or runs up to
+    # maxfev. See tissue76.c.
+    # Not run in extended precision, where lmdif reaches maxfev (issue #153).
+    if (NOT p STREQUAL "ld")
+      add_executable (${p}tissue76 tissue76.c)
+      target_link_libraries (${p}tissue76 ${lib})
+      add_test (NAME ${p}tissue76
+        COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}tissue76>)
+    endif ()
+
+    # Self-checking regression test for issue #81: a negative value returned by
+    # the user function while lmstr computes a Jacobian row must be returned as
+    # info (it was reported as 0). See tissue81.c.
+    add_executable (${p}tissue81 tissue81.c)
+    target_link_libraries (${p}tissue81 ${lib})
+    add_test (NAME ${p}tissue81
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}tissue81>)
+
+    add_executable (${p}tissue88 tissue88.c)
+    target_link_libraries (${p}tissue88 ${lib})
+    add_test (NAME ${p}tissue88
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}tissue88>)
+
+    add_executable (${p}tissue87 tissue87.c)
+    target_link_libraries (${p}tissue87 ${lib})
+    add_test (NAME ${p}tissue87
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}tissue87>)
+
+    # Issue #84: qrfac must not read past the end of a when m < n.
+    add_executable (${p}tissue84 tissue84.c)
+    target_link_libraries (${p}tissue84 ${lib})
+    add_test (NAME ${p}tissue84
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}tissue84>)
+
+    # Issue #85: qrfac with pivot=0 must allow wa to coincide with rdiag.
+    add_executable (${p}tissue85 tissue85.c)
+    target_link_libraries (${p}tissue85 ${lib})
+    add_test (NAME ${p}tissue85
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}tissue85>)
+
+    # The low-level routines must be exported from a Windows DLL (issue #91).
+    add_executable (${p}tlowlevel tlowlevel.c)
+    target_link_libraries (${p}tlowlevel ${lib})
+    add_test (NAME ${p}tlowlevel
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}tlowlevel>)
+
+    add_executable (${p}tissue89 tissue89.c)
+    target_link_libraries (${p}tissue89 ${lib})
+    add_test (NAME ${p}tissue89
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}tissue89>)
+
+    if (CMAKE_CXX_COMPILER)
+      # C++ wrapper test (issue #74): accept lambdas/functors/std::function.
+      add_executable (${p}tcppwrap tcppwrap.cpp)
+      target_link_libraries (${p}tcppwrap ${lib})
+      add_test (NAME ${p}tcppwrap
+        COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}tcppwrap>)
+
+      # Issue #94: link this test with a copy of cminpack built without unwind
+      # tables, so that an exception unwinding through C calls std::terminate.
+      get_target_property (_srcs ${lib} SOURCES)
+      list (TRANSFORM _srcs PREPEND ${CMINPACK_SOURCE_DIR}/)
+      add_library (${p}cminpack_nounwind STATIC EXCLUDE_FROM_ALL ${_srcs})
+      target_include_directories (${p}cminpack_nounwind PUBLIC
+        ${CMINPACK_SOURCE_DIR}/include PRIVATE ${CMINPACK_SOURCE_DIR}/src)
+      target_compile_definitions (${p}cminpack_nounwind PUBLIC CMINPACK_NO_DLL
+        $<TARGET_PROPERTY:${lib},INTERFACE_COMPILE_DEFINITIONS>)
+      target_link_libraries (${p}cminpack_nounwind PUBLIC
+        $<TARGET_PROPERTY:${lib},LINK_LIBRARIES>)
+      if (CMINPACK_C_NO_UNWIND_TABLES)
+        target_compile_options (${p}cminpack_nounwind PRIVATE
+          -fno-unwind-tables -fno-asynchronous-unwind-tables)
+      endif ()
+      add_executable (${p}tcppwrap_except tcppwrap_except.cpp)
+      target_link_libraries (${p}tcppwrap_except ${p}cminpack_nounwind)
+      add_test (NAME ${p}tcppwrap_except
+        COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}tcppwrap_except>)
+    endif ()
+
+    add_executable (${p}lmddrvc lmddrv.c ssqipt.c ssqfcn.c ssqjac.c)
+    add_executable (${p}lmfdrvc lmfdrv.c ssqipt.c ssqfcn.c)
+    add_executable (${p}lmsdrvc lmsdrv.c ssqipt.c ssqfcn.c ssqjac.c)
+    add_executable (${p}hyjdrvc hyjdrv.c neqipt.c vecfcn.c vecjac.c)
+    add_executable (${p}hybdrvc hybdrv.c neqipt.c vecfcn.c)
+    add_executable (${p}chkdrvc chkdrv.c neqipt.c vecfcn.c errjac.c)
+    foreach (drv lmddrvc lmfdrvc lmsdrvc hyjdrvc hybdrvc chkdrvc)
+      target_link_libraries (${p}${drv} ${lib})
+    endforeach ()
+    add_minpack_driver_smoketest (${p}lmddrvc ssq.data)
+    add_minpack_driver_smoketest (${p}lmfdrvc ssq.data)
+    add_minpack_driver_smoketest (${p}lmsdrvc ssq.data)
+    add_minpack_driver_smoketest (${p}hyjdrvc neq.data)
+    add_minpack_driver_smoketest (${p}hybdrvc neq.data)
+    add_minpack_driver_smoketest (${p}chkdrvc chkder.data)
+
+    # The box variants, and the IBM driver (both use the ibmdpdrc reference).
+    add_executable (${p}tchkderc_box tchkderc_box.c)
+    add_executable (${p}tlmderc_box tlmderc_box.c)
+    add_executable (${p}thybrjc_box thybrjc_box.c)
+    add_executable (${p}ibmdpdrc ibmdpdr.c machar.c)
+    add_executable (${p}ibmdpdr_ ibmdpdr_.c machar.c)
+    foreach (test tchkderc_box tlmderc_box thybrjc_box ibmdpdrc ibmdpdr_)
+      target_link_libraries (${p}${test} ${lib})
+      string (REPLACE ibmdpdr_ ibmdpdrc reference ${test})
+      add_minpack_test (${p}${test} ${p}${reference})
+    endforeach ()
   endforeach ()
+
+  # built from the enorm sources: cminpackld is not built everywhere
+  add_executable (tissue82 tissue82.c
+    ${CMINPACK_SOURCE_DIR}/src/enorm.c ${CMINPACK_SOURCE_DIR}/src/f2c/enorm_.c)
+  target_compile_definitions (tissue82 PRIVATE __cminpack_long_double__ CMINPACK_NO_DLL)
+  target_include_directories (tissue82 PRIVATE ${CMINPACK_SOURCE_DIR}/src)
+  if (HAVE_LIBM)
+    target_link_libraries (tissue82 m)
+  endif ()
+  add_test (NAME tissue82
+    COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue82>)
+
+  # BLAS calls must pass __cminpack_blasint__ (here long), not int: compile only
+  if (CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    file (GLOB CMINPACK_C_SOURCES ${CMINPACK_SOURCE_DIR}/src/*.c)
+    if (CMAKE_OSX_SYSROOT)
+      set (BLASINT_SYSROOT -isysroot ${CMAKE_OSX_SYSROOT})
+    endif ()
+    add_test (NAME blasint_types
+      COMMAND ${CMAKE_C_COMPILER} ${BLASINT_SYSROOT} -fsyntax-only
+        -DUSE_BLAS -D__cminpack_blasint__=long -Werror=incompatible-pointer-types
+        -I${CMINPACK_SOURCE_DIR}/include -I${CMINPACK_SOURCE_DIR}/src
+        ${CMINPACK_C_SOURCES})
+  endif ()
+
+  # checks the test helpers with double precision reference values
+  if (TARGET cminpack)
+    add_executable (tissue95 tissue95.c vecfcn.c vecjac.c errjac.c)
+    target_link_libraries (tissue95 cminpack)
+    add_test (NAME tissue95
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue95>)
+
+    add_executable (tissue96 tissue96.c errjac.c)
+    target_link_libraries (tissue96 cminpack)
+    add_test (NAME tissue96
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue96>)
+  endif ()
+
+  if (CMAKE_CXX_COMPILER)
+    # Issue #93: a const functor with a non-const operator() must not compile.
+    add_library (tcppwrap_const OBJECT EXCLUDE_FROM_ALL tcppwrap_const.cpp)
+    add_test (NAME tcppwrap_const
+      COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}
+        --target tcppwrap_const --config $<CONFIG>)
+    set_tests_properties (tcppwrap_const PROPERTIES WILL_FAIL TRUE)
+  endif ()
 
   # Cross-check: run each cminpack driver (pure-C and f2c) and require, via
   # examples/driver_check.py, that it converges on every problem the committed
@@ -252,7 +252,7 @@ if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
   # FORTRAN reference is double precision, so only the double library is checked.
   option (CMINPACK_CROSSCHECK "Add the FORTRAN-reference cross-check tests (needs Python 3)." ON)
   find_package (Python3 COMPONENTS Interpreter QUIET)
-  if (CMINPACK_CROSSCHECK AND Python3_Interpreter_FOUND AND CMINPACK_TEST_LIB STREQUAL cminpack)
+  if (CMINPACK_CROSSCHECK AND Python3_Interpreter_FOUND AND TARGET cminpack)
     add_executable (lmddrv_ lmddrv_.c ssqipt.c ssqfcn.c ssqjac.c)
     add_executable (lmfdrv_ lmfdrv_.c ssqipt.c ssqfcn.c)
     add_executable (lmsdrv_ lmsdrv_.c ssqipt.c ssqfcn.c ssqjac.c)

@@ -108,6 +108,9 @@ Two test routes are available:
   tests, the intensive driver programs as smoke tests (run to completion, no
   NaN), and — when Python 3 is available — the FORTRAN-reference cross-check
   (see below). Set `-DCMINPACK_CROSSCHECK=OFF` to disable that cross-check.
+  The tests run for each precision built, with the names of the Makefile
+  (`tlmdifc`, `stlmdifc`, `ldtlmdifc`); the cross-check is double precision
+  only.
 - **Makefile**: `make check` runs the standard tests for the double, long
   double and float builds, then `make crosscheck`. The double standard tests
   are strict (a failure fails the build); the long double and float tests are

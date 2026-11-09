@@ -201,7 +201,10 @@ int info = cminpack::lmdif1(cb, m, n, x, fvec, tol, iwa, wa, lwa);
 tool <code>cmpfiles</code>), the self-checking regression tests, the intensive
 driver programs as smoke tests (run to completion, no NaN), and &mdash; when
 Python 3 is available &mdash; the FORTRAN-reference cross-check. Set
-<code>-DCMINPACK_CROSSCHECK=OFF</code> to disable that cross-check.</li>
+<code>-DCMINPACK_CROSSCHECK=OFF</code> to disable that cross-check. The tests
+run for each precision built, with the names of the Makefile
+(<code>tlmdifc</code>, <code>stlmdifc</code>, <code>ldtlmdifc</code>); the
+cross-check is double precision only.</li>
 <li><strong>Makefile</strong>: <code>make check</code> runs the standard tests
 for the double, long double and float builds, then <code>make crosscheck</code>.
 The double standard tests are strict (a failure fails the build); the long
