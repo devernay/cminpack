@@ -41,7 +41,8 @@ residual, e.g. hybrd problem 8/30 on some compilers), and is applied only to
 zero-minimum problems so a nonzero reference residual is never gated. Use
 --exclude to skip the handful of deliberately-extreme coin-flip problems (see
 crosscheck_exclude.txt); each failure line names the problem as "nprob/dim", the
-exact token to add to that list.
+exact token to add to that list. For chkdrv, the gate compares the error
+vectors as above (exclusions do not apply: chkder does not iterate).
 
 Exit status: 0 if equivalent (or, in gate mode, no regression), 1 if a genuine
 convergence discrepancy/regression is found, 2 on usage/IO error or unparseable
@@ -111,7 +112,8 @@ def _close(a, b, atol, rtol):
 
 def _prob_id(header):
     """Extract 'nprob/dim' from a problem header line, or None."""
-    m = re.search(r"problem\s+(\d+)\s+dimensions?\s+(\d+)", header, re.IGNORECASE)
+    m = re.search(r"problem\s+(\d+)\s+(?:with\s+)?dimensions?\s+(\d+)",
+                  header, re.IGNORECASE)
     return "%s/%s" % (m.group(1), m.group(2)) if m else None
 
 
@@ -149,7 +151,7 @@ def check(path_a, path_b, atol, rtol, label, gate=False, exclude=None):
     for i, ((hdr_a, blk_a), (_, blk_b)) in enumerate(zip(blocks_a, blocks_b), 1):
         problems += 1
         pid = _prob_id(hdr_a) or hdr_a.strip()
-        if gate and pid in exclude:
+        if gate and not is_chkder and pid in exclude:
             excluded += 1
             continue
         if is_chkder:
@@ -165,9 +167,8 @@ def check(path_a, path_b, atol, rtol, label, gate=False, exclude=None):
                 if denom:
                     worst_rel = max(worst_rel, d / denom)
                 if not _close(xa, xb, atol, rtol):
-                    if not gate:   # chkder is not a convergence gate
-                        bad.append("  problem %s (block %d): error vector %.7g vs %.7g"
-                                   % (pid, i, xa, xb))
+                    bad.append("  problem %s (block %d): error vector %.7g vs %.7g"
+                               % (pid, i, xa, xb))
                     break
         else:
             ma = _FNORM_RE.search("".join(blk_a))
@@ -224,7 +225,10 @@ def check(path_a, path_b, atol, rtol, label, gate=False, exclude=None):
 
     kind = "error vectors" if is_chkder else "final residual norms"
     if bad:
-        if gate:
+        if gate and is_chkder:
+            print("%s%d of %d problems have error vectors that differ from the "
+                  "FORTRAN reference:" % (tag, len(bad), problems))
+        elif gate:
             print("%s%d of %d problems converge in the FORTRAN reference but "
                   "NOT in this build:" % (tag, len(bad), problems))
         else:
@@ -236,8 +240,10 @@ def check(path_a, path_b, atol, rtol, label, gate=False, exclude=None):
 
     if gate:
         _x = " (%d excluded)" % excluded if excluded else ""
-        print("%sOK -- converges wherever the FORTRAN reference does "
-              "(%d problems checked%s)" % (tag, problems - excluded, _x))
+        what = ("error vectors match the FORTRAN reference" if is_chkder
+                else "converges wherever the FORTRAN reference does")
+        print("%sOK -- %s (%d problems checked%s)"
+              % (tag, what, problems - excluded, _x))
         return 0
     print("%sOK -- %d problems, all converged to equivalent %s "
           "(worst rel %.2g, worst abs %.2g)"

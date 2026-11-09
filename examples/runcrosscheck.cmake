@@ -57,7 +57,8 @@ execute_process(COMMAND ${_cmd} RESULT_VARIABLE R_GATE)
 if(NOT "${R_GATE}" STREQUAL "0")
   message(FATAL_ERROR
     "${DRIVER} does not converge on a problem the FORTRAN reference "
-    "(${REF}) converges on -- see the report above")
+    "(${REF}) converges on, or (chkdrv) its error vectors differ from the "
+    "reference -- see the report above")
 endif()
 
 message("cross-check OK: ${DRIVER} converges wherever FORTRAN does")
