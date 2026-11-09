@@ -38,7 +38,9 @@ drove the residual to ~0 (<= --atol) but this build did not. Part (a) mirrors
 fortran-lang/minpack's info_original < 5 filter; part (b) additionally catches a
 genuine divergence the solver did not flag (info < 5 but a wrong, large
 residual, e.g. hybrd problem 8/30 on some compilers), and is applied only to
-zero-minimum problems so a nonzero reference residual is never gated. Use
+zero-minimum problems so a nonzero reference residual is never gated. On
+least-squares problems where FORTRAN has info 1-3, (c) the residual must not be
+worse than FORTRAN's by more than --rtol (plus --atol). Use
 --exclude to skip the handful of deliberately-extreme coin-flip problems (see
 crosscheck_exclude.txt); each failure line names the problem as "nprob/dim", the
 exact token to add to that list. For chkdrv, the gate compares the error
@@ -214,6 +216,12 @@ def check(path_a, path_b, atol, rtol, label, gate=False, exclude=None):
                 if fa <= atol and fb > atol:
                     reasons.append("FORTRAN reached a near-zero residual (%.3g) "
                                    "but this build did not (%.3g)" % (fa, fb))
+                # (c) least squares, converged in FORTRAN: no clearly worse
+                # residual (a better one always passes)
+                elif ("dimensions" in hdr_a and 1 <= ri <= 3
+                      and fb > (1 + rtol) * fa + atol):
+                    reasons.append("final residual %.7g is worse than FORTRAN's "
+                                   "%.7g" % (fb, fa))
                 if reasons:
                     bad.append("  problem %s (block %d) did NOT converge like the "
                                "FORTRAN reference: %s"
