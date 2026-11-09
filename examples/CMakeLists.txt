@@ -357,6 +357,18 @@ if (BUILD_EXAMPLES_FORTRAN AND TARGET cminpack)
       target_link_libraries (${source} cminpack)
       add_minpack_test(${source} ${source})
     endforeach ()
+    # Pure-FORTRAN lmsdrv: lmsdrv.f with FORTRAN MINPACK
+    set (_f ${CMINPACK_SOURCE_DIR}/fortran)
+    add_executable (lmsdrv lmsdrv.f ssqipt.f ssqfcn.f ssqjac.f ${_f}/lmstr1.f
+      ${_f}/lmstr.f ${_f}/lmpar.f ${_f}/qrfac.f ${_f}/qrsolv.f ${_f}/rwupdt.f
+      ${_f}/enorm.f ${_f}/dpmpar.f)
+    # start locals as NaN, so a value lost between calls cannot pass by luck
+    if (CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
+      target_compile_options (lmsdrv PRIVATE -finit-real=snan)
+    endif ()
+    if (COMMAND add_crosscheck)
+      add_crosscheck (crosscheck_lmsdrv lmsdrv ssq.data lmsdrv.fortran.ref)
+    endif ()
   endif ()
 endif ()
 
