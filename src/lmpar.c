@@ -146,8 +146,11 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
 # ifdef USE_BLAS
     const __cminpack_blasint__ c__1 = 1;
     const __cminpack_blasint__ ldr_plus_1 = ldr + 1;
+    const __cminpack_blasint__ n_ = n;
+    const __cminpack_blasint__ ldr_ = ldr;
+    const __cminpack_blasint__ nsing_ = nsing;
 
-    __cminpack_blas__(trsv)("U", "N", "N", &nsing, r, &ldr, wa1, &c__1);
+    __cminpack_blas__(trsv)("U", "N", "N", &nsing_, r, &ldr_, wa1, &c__1);
 # else
     if (nsing >= 1) {
         int k;
@@ -194,7 +197,7 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
             wa1[j] = diag[l] * (wa2[l] / dxnorm);
         }
 #     ifdef USE_BLAS
-        __cminpack_blas__(trsv)("U", "T", "N", &n, r, &ldr, wa1, &c__1);
+        __cminpack_blas__(trsv)("U", "T", "N", &n_, r, &ldr_, wa1, &c__1);
 #     else
         for (j = 0; j < n; ++j) {
             real sum = 0.;
@@ -300,11 +303,11 @@ void __cminpack_func__(lmpar)(int n, real *r, int ldr,
             wa1[j] = diag[l] * (wa2[l] / dxnorm);
         }
         /* exchange the diagonal of r with sdiag */
-        __cminpack_blas__(swap)(&n, r, &ldr_plus_1, sdiag, &c__1);
+        __cminpack_blas__(swap)(&n_, r, &ldr_plus_1, sdiag, &c__1);
         /* solve lower(s).x = wa1, result is put in wa1 */
-        __cminpack_blas__(trsv)("L", "N", "N", &n, r, &ldr, wa1, &c__1);
+        __cminpack_blas__(trsv)("L", "N", "N", &n_, r, &ldr_, wa1, &c__1);
         /* exchange the diagonal of r with sdiag */
-        __cminpack_blas__(swap)(&n, r, &ldr_plus_1, sdiag, &c__1);
+        __cminpack_blas__(swap)(&n_, r, &ldr_plus_1, sdiag, &c__1);
 #     else /* !USE_BLAS */
         for (j = 0; j < n; ++j) {
             l = ipvt[j]-1;
