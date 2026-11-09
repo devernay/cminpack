@@ -25,7 +25,7 @@ if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
   link_directories (${CMINPACK_BINARY_DIR})
 
   set (FPGM tchkder thybrd thybrd1 thybrj thybrj1 tlmder tlmder1 tlmdif tlmdif1 tlmstr tlmstr1)
-  set (CPGM ${FPGM} tfdjac2)
+  set (CPGM ${FPGM} tfdjac2 tenorm)
 
   # cmpfiles is used by runtest.cmake to compare test output to the
   # reference with a numeric tolerance (portable across platforms).
@@ -187,6 +187,18 @@ if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
   add_minpack_driver_smoketest (hyjdrvc neq.data)
   add_minpack_driver_smoketest (hybdrvc neq.data)
   add_minpack_driver_smoketest (chkdrvc chkder.data)
+
+  # The box variants, and the IBM driver (both use the ibmdpdrc reference).
+  add_executable (tchkderc_box tchkderc_box.c)
+  add_executable (tlmderc_box tlmderc_box.c)
+  add_executable (thybrjc_box thybrjc_box.c)
+  add_executable (ibmdpdrc ibmdpdr.c machar.c)
+  add_executable (ibmdpdr_ ibmdpdr_.c machar.c)
+  foreach (test tchkderc_box tlmderc_box thybrjc_box ibmdpdrc ibmdpdr_)
+    target_link_libraries (${test} ${CMINPACK_TEST_LIB})
+    string (REPLACE ibmdpdr_ ibmdpdrc reference ${test})
+    add_minpack_test (${test} ${CMINPACK_TEST_REF_PREFIX}${reference})
+  endforeach ()
 
   # Cross-check: run each cminpack driver (pure-C and f2c) and require, via
   # examples/driver_check.py, that it converges on every problem the committed
