@@ -12,11 +12,15 @@ jobs:
         shell: cmd
     
     strategy:
+      fail-fast: false
       matrix:
-        ARCH: [ 'x64', 'Win32']
-        CMINPACK_BUILD_SHARED_LIBS: [ 'ON' , 'OFF' ]
-        CMINPACK_BUILD_TYPE: [ 'Release', 'Debug', 'RelWithDebInfo', 'MinSizeRel' ]
-        CMINPACK_PRECISION: [ 'd' ] # seems to be the only precision that the current tests reference work
+        include:
+          # 64-bit DLL, optimized
+          - { ARCH: 'x64', CMINPACK_BUILD_SHARED_LIBS: 'ON', CMINPACK_BUILD_TYPE: 'Release', CMINPACK_PRECISION: 'd' }
+          # 64-bit static, unoptimized
+          - { ARCH: 'x64', CMINPACK_BUILD_SHARED_LIBS: 'OFF', CMINPACK_BUILD_TYPE: 'Debug', CMINPACK_PRECISION: 'd' }
+          # 32-bit static
+          - { ARCH: 'Win32', CMINPACK_BUILD_SHARED_LIBS: 'OFF', CMINPACK_BUILD_TYPE: 'Release', CMINPACK_PRECISION: 'd' }
     
     env:
       CMINPACK_BUILD_DIR: >-

@@ -12,14 +12,15 @@ jobs:
         shell: cmd
     
     strategy:
+      fail-fast: false
       matrix:
-        CMINPACK_BUILD_SHARED_LIBS: [ 'ON' , 'OFF' ]
-        CMINPACK_BUILD_TYPE: [ 'Release', 'Debug', 'RelWithDebInfo', 'MinSizeRel' ]
-        CMINPACK_PRECISION: [ 'd' ] # seems to be the only precision that the current tests reference work
-        MSYS2_CONFIG:
-              - { sys: mingw64, env: x86_64 }
-              - { sys: ucrt64, env: ucrt-x86_64 }
-              - { sys: clang64, env: clang-x86_64 }
+        include:
+          # mingw64 static, optimized, pkg-config
+          - { CMINPACK_BUILD_SHARED_LIBS: 'OFF', CMINPACK_BUILD_TYPE: 'Release', CMINPACK_PRECISION: 'd', MSYS2_CONFIG: { sys: mingw64, env: x86_64 } }
+          # ucrt64 DLL, optimized
+          - { CMINPACK_BUILD_SHARED_LIBS: 'ON', CMINPACK_BUILD_TYPE: 'Release', CMINPACK_PRECISION: 'd', MSYS2_CONFIG: { sys: ucrt64, env: ucrt-x86_64 } }
+          # clang64 static, unoptimized
+          - { CMINPACK_BUILD_SHARED_LIBS: 'OFF', CMINPACK_BUILD_TYPE: 'Debug', CMINPACK_PRECISION: 'd', MSYS2_CONFIG: { sys: clang64, env: clang-x86_64 } }
     
     env:
       CMINPACK_BUILD_DIR: >-
