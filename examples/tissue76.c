@@ -31,10 +31,12 @@
 #define N 4
 #define F_MULT (36./73.)
 #define MAXFEV 10000
-/* A healthy solve of this problem needs at most a few hundred evaluations
-   (lmder ~27, finite-difference lmdif ~205). The bug drove nfev all the way
-   to MAXFEV (10000), so any run near that ceiling indicates the regression. */
-#define NFEV_LIMIT 1000
+/* The bug drove nfev all the way to MAXFEV, so a run that needs more than
+   half of it indicates the regression. A healthy solve needs far fewer: lmder
+   ~27 evaluations; the finite-difference lmdif shrinks x by about sqrt(eps)
+   per iteration until it underflows, ~205 evaluations in double and ~2500 in
+   x87 long double, whose exponent range is 16 times larger. */
+#define NFEV_LIMIT (MAXFEV / 2)
 
 static int all_finite(const real *v, int n)
 {
