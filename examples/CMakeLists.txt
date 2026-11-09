@@ -156,6 +156,14 @@ if (BUILD_EXAMPLES AND CMINPACK_TEST_LIB)
   add_test (NAME tissue89
     COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue89>)
 
+  # checks the test helpers with double precision reference values
+  if (TARGET cminpack)
+    add_executable (tissue95 tissue95.c vecfcn.c vecjac.c errjac.c)
+    target_link_libraries (tissue95 cminpack)
+    add_test (NAME tissue95
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:tissue95>)
+  endif ()
+
   # C++ wrapper test (issue #74): accept lambdas/functors/std::function.
   # Only built if a C++ compiler is available, since cminpack itself is C.
   include (CheckLanguage)
