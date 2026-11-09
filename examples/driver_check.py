@@ -56,12 +56,14 @@ Usage:
 """
 
 import argparse
+import math
 import re
 import sys
 
 _PROBLEM_RE = re.compile(r"^\s*problem\b", re.IGNORECASE)
 _FNORM_RE = re.compile(
-    r"final l2 norm of the residuals\s+([-+0-9.eEdD]+)", re.IGNORECASE)
+    r"final l2 norm of the residuals\s+([-+]?(?:nan|inf(?:inity)?)|[-+0-9.eEdD]+)",
+    re.IGNORECASE)
 _INFO_RE = re.compile(r"exit parameter\s+(\d+)", re.IGNORECASE)
 
 
@@ -183,6 +185,11 @@ def check(path_a, path_b, atol, rtol, label, gate=False, exclude=None):
             if fa is None or fb is None:
                 bad.append("  problem %s (block %d): unparseable residual "
                            "(%r vs %r)" % (pid, i, ma.group(1), mb.group(1)))
+                continue
+            if not (math.isfinite(fa) and math.isfinite(fb)):
+                bad.append("  problem %s (block %d): final residual norm is %s"
+                           % (pid, i, mb.group(1) if math.isfinite(fa)
+                              else ma.group(1)))
                 continue
             d = abs(fa - fb)
             worst_abs = max(worst_abs, d)
