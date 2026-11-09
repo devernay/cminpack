@@ -135,6 +135,8 @@ endif ()
 
 foreach (cminpack_lib ${cminpack_libs})
   add_library (${cminpack_lib} ${cminpack_srcs})
+  # the sources use C99 (// comments, sqrtf/sqrtl); the headers stay C89
+  target_compile_features (${cminpack_lib} PRIVATE c_std_99)
   
   if (OS_WIN AND BUILD_SHARED_LIBS)
     add_custom_command(
