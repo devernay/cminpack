@@ -48,8 +48,8 @@
   because the middle-band boundary differs, a vector with very small
   (< 3.834e-20) or very large (> 1.304e19) components is bucketed differently
   and its Euclidean norm can then differ in the last bit. Both norms are equally
-  correct. cminpack's pure C (src/*.c) is a hand-cleaned-up rewrite of the f2c
-  output (src/f2c/*.c): they agree on well-conditioned inputs, but the cleanup
+  correct. cminpack's pure C (src/) is a hand-cleaned-up rewrite of the f2c
+  output (src/f2c/): they agree on well-conditioned inputs, but the cleanup
   regrouped some expressions, so a compiler can contract FMAs differently in the
   two and -- for the same reason (below) -- they can reach different, equally
   valid results on the hardest driver problems. examples/crosscheck.py reports
