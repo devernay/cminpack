@@ -25,6 +25,7 @@ void __minpack_func__(fdjac1)(__minpack_decl_fcn_nn__ const int *n, real *x, con
     real eps, temp;
     int msum;
     real epsmch;
+    int ml1, mu1;
 
 /*     ********** */
 
@@ -127,7 +128,12 @@ void __minpack_func__(fdjac1)(__minpack_decl_fcn_nn__ const int *n, real *x, con
     epsmch = __minpack_func__(dpmpar)(&c__1);
 
     eps = sqrt((max(*epsfcn,epsmch)));
-    msum = *ml + *mu + 1;
+    /* ml, mu >= n-1 mean dense: clamp so that ml + mu + 1 cannot overflow */
+    ml1 = *ml;
+    mu1 = *mu;
+    if (ml1 > *n - 1) ml1 = *n - 1;
+    if (mu1 > *n - 1) mu1 = *n - 1;
+    msum = ml1 + mu1 + 1;
     if (msum < *n) {
 	goto L40;
     }
@@ -190,7 +196,7 @@ L40:
 	    i__4 = *n;
 	    for (i__ = 1; i__ <= i__4; ++i__) {
 		fjac[i__ + j * fjac_dim1] = 0.;
-		if (i__ >= j - *mu && i__ <= j + *ml) {
+		if (i__ >= j - mu1 && i__ <= j + ml1) {
 		    fjac[i__ + j * fjac_dim1] = (wa1[i__] - fvec[i__]) / h__;
 		}
 /* L70: */
