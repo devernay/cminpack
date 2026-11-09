@@ -191,6 +191,11 @@ all:
 	@echo "make ftestdrv: calling FORTRAN CMINPACK from FORTRAN"
 	@echo "make ftestdrv MINPACK=../fortran/libminpack.a: calling FORTRAN MINPACK from FORTRAN"
 
+# The check targets run "make clean" and rebuild the same files in this
+# directory (and the library in ..), so they must not run concurrently:
+# "make -j check" would delete or overwrite the files of another step.
+.NOTPARALLEL:
+
 .PHONY: test ctest ctestdrv ctestlmdrv ctesthydrv ctestchkdrv ftest ftestdrv ftestlmdrv ftesthydrv ftestchkdrv check checkdoublec checkdouble checklongdoublec checklongdouble checkfloatc checkfloat checkhalfc checkhalf checkfail crosscheck clean veryclean
 
 test: $(MINPACK) $(PGM) | cmpfiles
