@@ -27,7 +27,7 @@ jobs:
       CMINPACK_INSTALL_DIR: >-
         %RUNNER_TEMP%\cminpack-install-shared-libs-${{ matrix.CMINPACK_BUILD_SHARED_LIBS }}-build-type-${{ matrix.CMINPACK_BUILD_TYPE }}-precision-${{ matrix.CMINPACK_PRECISION }}
     
-      MSYS2_PACKAGES_TO_INSTALL: "mingw-w64-${{ matrix.MSYS2_CONFIG.env }}-cc mingw-w64-${{ matrix.MSYS2_CONFIG.env }}-make"
+      MSYS2_PACKAGES_TO_INSTALL: "mingw-w64-${{ matrix.MSYS2_CONFIG.env }}-cc mingw-w64-${{ matrix.MSYS2_CONFIG.env }}-make mingw-w64-${{ matrix.MSYS2_CONFIG.env }}-pkgconf"
 
     steps:
       - name: Checkout repository to cminpack directory
@@ -77,6 +77,14 @@ jobs:
       
       - name: Install cminpack
         run: cmake --install ${{ env.CMINPACK_BUILD_DIR }} --config ${{ matrix.CMINPACK_BUILD_TYPE }}
+      
+      - name: Build and run a program with the installed pkg-config file
+        if: ${{ matrix.CMINPACK_BUILD_SHARED_LIBS == 'OFF' }}
+        run: |
+          set PKG_CONFIG_PATH=${{ env.CMINPACK_INSTALL_DIR }}\lib\pkgconfig
+          for /f "delims=" %%i in ('pkg-config --cflags --libs cminpack') do set PC_FLAGS=%%i
+          cc cminpack\examples\tlmderc.c %PC_FLAGS% -o tlmderc.exe || exit /b 1
+          tlmderc.exe
       
       - name: Delete checkout directory
         run: rmdir /S /Q cminpack
