@@ -140,7 +140,8 @@ int __cminpack_func__(lmstr1)(__cminpack_decl_fcnderstr_mn__ void *p, int m, int
 
 /*     check the input parameters for errors. */
 
-    if (n <= 0 || m < n || ldfjac < n || tol < 0. || lwa < n * 5 + m) {
+    if (n <= 0 || m < n || ldfjac < n || tol < 0. || lwa < 0 ||
+        (unsigned long long)lwa < 5ULL * n + m) {
         return 0;
     }
 

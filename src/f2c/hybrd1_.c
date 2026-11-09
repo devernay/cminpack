@@ -119,7 +119,8 @@ void __minpack_func__(hybrd1)(__minpack_decl_fcn_nn__  const int *n, real *x, re
 
 /*     check the input parameters for errors. */
 
-    if (*n <= 0 || *tol < 0. || (size_t)*lwa < (size_t)*n * (*n * 3 + 13) / 2) {
+    if (*n <= 0 || *tol < 0. || *lwa < 0 ||
+        (unsigned long long)*lwa < *n * (3ULL * *n + 13) / 2) {
 	/* goto L20; */
         return;
     }
