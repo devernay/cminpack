@@ -125,6 +125,9 @@ int __cminpack_func__(fdjac1)(__cminpack_decl_fcn_nn__ void *p, int n, real *x, 
     epsmch = __cminpack_func__(dpmpar)(1);
 
     eps = sqrt((max(epsfcn,epsmch)));
+    /* ml, mu >= n-1 mean dense: clamp so that ml + mu + 1 cannot overflow */
+    if (ml > n - 1) ml = n - 1;
+    if (mu > n - 1) mu = n - 1;
     msum = ml + mu + 1;
     if (msum >= n) {
 

@@ -37,7 +37,7 @@ void __minpack_func__(hybrd)(__minpack_decl_fcn_nn__ const int *n, real *x, real
     int sing;
     int iter;
     real temp;
-    int msum, iflag;
+    int msum, iflag, ml1, mu1;
     real delta;
     int jeval;
     int ncsuc;
@@ -261,7 +261,12 @@ L20:
 /*     the jacobian matrix. */
 
 /* Computing MIN */
-    i__1 = *ml + *mu + 1;
+    /* ml, mu >= n-1 mean dense: clamp so that ml + mu + 1 cannot overflow */
+    ml1 = *ml;
+    mu1 = *mu;
+    if (ml1 > *n - 1) ml1 = *n - 1;
+    if (mu1 > *n - 1) mu1 = *n - 1;
+    i__1 = ml1 + mu1 + 1;
     msum = min(i__1,*n);
 
 /*     initialize iteration counter and monitors. */
