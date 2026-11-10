@@ -224,6 +224,43 @@ applied only when those options are on.
 History
 ------
 
+* version 1.3.15 (10/11/2026):
+  - Speed up `qrfac` and `qform` about 2×: each Householder transformation is
+    applied to `CMINPACK_BLOCK` columns at a time (default 4), contributed by
+    @xizhexin [#80](https://github.com/devernay/cminpack/pull/80)
+  - Add the `tlmderfd` and `thybrjfd` examples, which compute a
+    finite-difference Jacobian in parallel with OpenMP
+  - Fix user aborts: `lmstr` returns the user's `iflag`
+    [#81](https://github.com/devernay/cminpack/issues/81), `fdjac1` and
+    `fdjac2` restore `x` [#89](https://github.com/devernay/cminpack/issues/89);
+    fix integer overflows with huge `ml`/`mu` in `hybrd`
+    [#88](https://github.com/devernay/cminpack/issues/88) and in the work-array
+    size checks [#87](https://github.com/devernay/cminpack/issues/87)
+  - Fix the `USE_BLAS` and `USE_LAPACK` paths
+    [#84](https://github.com/devernay/cminpack/issues/84)
+    [#85](https://github.com/devernay/cminpack/issues/85)
+    [#86](https://github.com/devernay/cminpack/issues/86) and long-double
+    `enorm` [#82](https://github.com/devernay/cminpack/issues/82), and export
+    the low-level routines from the Windows DLL
+    [#91](https://github.com/devernay/cminpack/issues/91)
+  - C++ wrapper: accept plain functions and const callables, and rethrow the
+    callable's exceptions after the solver returns
+    [#92](https://github.com/devernay/cminpack/issues/92)
+    [#93](https://github.com/devernay/cminpack/issues/93)
+    [#94](https://github.com/devernay/cminpack/issues/94)
+  - CMake: require C99, run the tests for every precision built, and fix the
+    pkg-config file [#162](https://github.com/devernay/cminpack/issues/162)
+    [#168](https://github.com/devernay/cminpack/issues/168)
+    [#106](https://github.com/devernay/cminpack/issues/106)
+    [#107](https://github.com/devernay/cminpack/issues/107)
+    [#155](https://github.com/devernay/cminpack/issues/155)
+  - Make the cross-check against FORTRAN MINPACK stricter and fix bugs in the
+    test drivers [#95](https://github.com/devernay/cminpack/issues/95)
+    [#99](https://github.com/devernay/cminpack/issues/99)
+    [#103](https://github.com/devernay/cminpack/issues/103); CI runs on GitHub
+    Actions only, and builds the CUDA port
+    [#190](https://github.com/devernay/cminpack/issues/190)
+
 * version 1.3.14 (25/07/2026):
   - Fix spurious `make check` failures on the intensive driver tests ([#78](https://github.com/devernay/cminpack/issues/78)): the
     non-portable driver-vs-reference text comparison was dropped. Driver
