@@ -97,7 +97,42 @@ void __cminpack_func__(qform)(int m, int n, real *q, int
 	}
 	q[k + k * q_dim1] = 1.;
 	if (wa[k] != 0.) {
-            for (j = k; j <= m; ++j) {
+            /* Transform CMINPACK_BLOCK columns at a time, as in qrfac:
+               their dot products with wa are independent, so interleaving
+               them hides the latency of the additions. Each sum is
+               accumulated in the same order as one column at a time. The
+               loops over c must be unrolled, so that the sums stay in
+               registers; gcc does not do it by itself at -O2 (64: any block
+               size up to 64 is unrolled fully). */
+            for (j = k; j + CMINPACK_BLOCK - 1 <= m; j += CMINPACK_BLOCK) {
+                real s[CMINPACK_BLOCK];
+                int c;
+                for (c = 0; c < CMINPACK_BLOCK; ++c) {
+                    s[c] = 0.;
+                }
+                for (i = k; i <= m; ++i) {
+                    const real u = wa[i];
+#ifdef __GNUC__
+#pragma GCC unroll 64
+#endif
+                    for (c = 0; c < CMINPACK_BLOCK; ++c) {
+                        s[c] += q[i + (j + c) * q_dim1] * u;
+                    }
+                }
+                for (c = 0; c < CMINPACK_BLOCK; ++c) {
+                    s[c] /= wa[k];
+                }
+                for (i = k; i <= m; ++i) {
+                    const real u = wa[i];
+#ifdef __GNUC__
+#pragma GCC unroll 64
+#endif
+                    for (c = 0; c < CMINPACK_BLOCK; ++c) {
+                        q[i + (j + c) * q_dim1] -= s[c] * u;
+                    }
+                }
+            }
+            for (; j <= m; ++j) {
                 sum = 0.;
                 for (i = k; i <= m; ++i) {
                     sum += q[i + j * q_dim1] * wa[i];

@@ -128,12 +128,6 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
     /* Initialized data */
 
 #define p05 .05
-/* qrfac transforms QRFAC_BLOCK columns at a time (default 4). It can be set
-   at compile time: e.g. -DQRFAC_BLOCK=8 is faster on arm64, which has more
-   floating-point registers. */
-#ifndef QRFAC_BLOCK
-#define QRFAC_BLOCK 4
-#endif
 
     /* System generated locals */
     real d1;
@@ -291,16 +285,16 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
 
             jp1 = j + 1;
             if (n > jp1) {
-                /* Transform QRFAC_BLOCK columns at a time: their dot
+                /* Transform CMINPACK_BLOCK columns at a time: their dot
                    products are independent, so interleaving them hides the
                    latency of the additions, and column j is read once per
                    block. Each sum is accumulated in the same order as one
                    column at a time, so the results are unchanged (unless the
                    compiler contracts expressions to FMA differently). */
-                for (k = jp1; k + QRFAC_BLOCK <= n; k += QRFAC_BLOCK) {
-                    real s[QRFAC_BLOCK];
+                for (k = jp1; k + CMINPACK_BLOCK <= n; k += CMINPACK_BLOCK) {
+                    real s[CMINPACK_BLOCK];
                     int q;
-                    for (q = 0; q < QRFAC_BLOCK; ++q) {
+                    for (q = 0; q < CMINPACK_BLOCK; ++q) {
                         s[q] = 0.;
                     }
                     /* the loops over q must be unrolled, so that the sums
@@ -311,11 +305,11 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
 #ifdef __GNUC__
 #pragma GCC unroll 64
 #endif
-                        for (q = 0; q < QRFAC_BLOCK; ++q) {
+                        for (q = 0; q < CMINPACK_BLOCK; ++q) {
                             s[q] += u * a[i + (k + q) * lda];
                         }
                     }
-                    for (q = 0; q < QRFAC_BLOCK; ++q) {
+                    for (q = 0; q < CMINPACK_BLOCK; ++q) {
                         s[q] /= a[j + j * lda];
                     }
                     for (i = j; i < m; ++i) {
@@ -323,7 +317,7 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
 #ifdef __GNUC__
 #pragma GCC unroll 64
 #endif
-                        for (q = 0; q < QRFAC_BLOCK; ++q) {
+                        for (q = 0; q < CMINPACK_BLOCK; ++q) {
                             a[i + (k + q) * lda] -= s[q] * u;
                         }
                     }
