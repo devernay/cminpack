@@ -72,6 +72,7 @@ if (BUILD_EXAMPLES)
 
   # The tests below are defined for each precision built, with the prefix of
   # the Makefile and of the reference files: tlmdifc, stlmdifc, ldtlmdifc.
+  find_package (OpenMP COMPONENTS C QUIET)
   foreach (lib ${cminpack_libs})
     string (REPLACE cminpack "" p ${lib})
 
@@ -82,6 +83,15 @@ if (BUILD_EXAMPLES)
         add_minpack_test(${p}${test} ${p}${source}c)
       endforeach ()
     endforeach()
+
+    # lmder with a parallel finite-difference Jacobian (OpenMP if available)
+    add_executable (${p}tlmderfd tlmderfd.c)
+    target_link_libraries (${p}tlmderfd ${lib})
+    if (OpenMP_C_FOUND)
+      target_link_libraries (${p}tlmderfd OpenMP::OpenMP_C)
+    endif ()
+    add_test (NAME ${p}tlmderfd
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}tlmderfd>)
 
     # Self-checking regression test for issue #76 (non-convergence / NaN in
     # lmpar on a zero-residual problem). It needs no reference file: it exits

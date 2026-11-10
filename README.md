@@ -97,6 +97,17 @@ before including it targets that variant — link against the matching cminpack
 library. A worked example exercising a capturing lambda, a stateful functor and
 a `std::function` is in [`examples/tcppwrap.cpp`](examples/tcppwrap.cpp).
 
+Parallel finite-difference Jacobian
+-----------------------------------
+
+`lmdif` computes the Jacobian by forward differences, calling your function n
+times one after the other. If the function is expensive and thread-safe, these
+calls can run in parallel: in [`examples/tlmderfd.c`](examples/tlmderfd.c),
+`fcn_fdjac` turns an `lmdif` function into an `lmder` function that computes
+the same forward differences, one column per thread (with OpenMP), and `lmder`
+finds the same solution as `lmdif`. The library is unchanged; the application
+decides at runtime whether to use threads and how many.
+
 Testing
 -------
 
