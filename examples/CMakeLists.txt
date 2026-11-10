@@ -84,7 +84,8 @@ if (BUILD_EXAMPLES)
       endforeach ()
     endforeach()
 
-    # lmder with a parallel finite-difference Jacobian (OpenMP if available)
+    # lmder and hybrj with a parallel finite-difference Jacobian (OpenMP if
+    # available)
     add_executable (${p}tlmderfd tlmderfd.c)
     target_link_libraries (${p}tlmderfd ${lib})
     if (OpenMP_C_FOUND)
@@ -92,6 +93,13 @@ if (BUILD_EXAMPLES)
     endif ()
     add_test (NAME ${p}tlmderfd
       COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}tlmderfd>)
+    add_executable (${p}thybrjfd thybrjfd.c)
+    target_link_libraries (${p}thybrjfd ${lib})
+    if (OpenMP_C_FOUND)
+      target_link_libraries (${p}thybrjfd OpenMP::OpenMP_C)
+    endif ()
+    add_test (NAME ${p}thybrjfd
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}thybrjfd>)
 
     # Self-checking regression test for issue #76 (non-convergence / NaN in
     # lmpar on a zero-residual problem). It needs no reference file: it exits
