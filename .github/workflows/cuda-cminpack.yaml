@@ -1,0 +1,34 @@
+name: Build cminpack for CUDA
+
+on: [push, pull_request]
+
+jobs:
+  cminpack-cuda:
+    name: cminpack (CUDA ${{ matrix.CUDA }}, ${{ matrix.OS }})
+    runs-on: ${{ matrix.OS }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { OS: 'ubuntu-24.04', REPO: 'ubuntu2404', CUDA: '13.0' }
+          - { OS: 'ubuntu-22.04', REPO: 'ubuntu2204', CUDA: '12.4' }
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install the CUDA compiler
+        run: |
+          wget -q https://developer.download.nvidia.com/compute/cuda/repos/${{ matrix.REPO }}/x86_64/cuda-keyring_1.1-1_all.deb
+          sudo dpkg -i cuda-keyring_1.1-1_all.deb
+          sudo apt-get update
+          V=$(echo ${{ matrix.CUDA }} | tr . -)
+          sudo apt-get install -y cuda-nvcc-$V cuda-cudart-dev-$V
+          echo "/usr/local/cuda-${{ matrix.CUDA }}/bin" >> $GITHUB_PATH
+
+      # The runners have no GPU: the library and the examples are only built,
+      # with warnings as errors.
+      - name: Build the CUDA library and examples
+        run: |
+          nvcc --version
+          make -C cuda CC="nvcc -Werror all-warnings -Xcompiler -Werror"
+          make -C cuda/examples cudatest CC="nvcc -Werror all-warnings -Xcompiler -Werror"
