@@ -217,7 +217,7 @@ int main (int argc, char** argv)
     // ....................................................... 
     // wait for termination
     // ....................................................... 
-    cudaThreadSynchronize(); 
+    cudaDeviceSynchronize(); 
     fprintf (stderr, " GPU processing done \n\n");
 
     // ....................................................... 
@@ -274,6 +274,6 @@ int main (int argc, char** argv)
 
     cutilSafeCall(cudaFree(results_GPU));
     cutilSafeCall(cudaFreeHost(results_CPU));
-    cudaThreadExit();
+    cudaDeviceReset();
     //cutilExit(argc, argv);
 } // ()

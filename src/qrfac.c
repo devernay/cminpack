@@ -302,7 +302,7 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
                        (64: any block size up to 64 is unrolled fully) */
                     for (i = j; i < m; ++i) {
                         const real u = a[i + j * lda];
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(__CUDACC__)
 #pragma GCC unroll 64
 #endif
                         for (q = 0; q < CMINPACK_BLOCK; ++q) {
@@ -314,7 +314,7 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
                     }
                     for (i = j; i < m; ++i) {
                         const real u = a[i + j * lda];
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(__CUDACC__)
 #pragma GCC unroll 64
 #endif
                         for (q = 0; q < CMINPACK_BLOCK; ++q) {
