@@ -71,7 +71,7 @@ int main(int argc, char **argv)
     real x1[10], x2[10];
     int na[14], np[14];
     real err[10];
-    int lnp;
+    int lnp = 0;
     real fjac[10*10];
     const int ldfjac = 10;
     real diff[10];
