@@ -128,6 +128,12 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
     /* Initialized data */
 
 #define p05 .05
+/* qrfac transforms QRFAC_BLOCK columns at a time (default 4). It can be set
+   at compile time: e.g. -DQRFAC_BLOCK=8 is faster on arm64, which has more
+   floating-point registers. */
+#ifndef QRFAC_BLOCK
+#define QRFAC_BLOCK 4
+#endif
 
     /* System generated locals */
     real d1;
@@ -285,81 +291,40 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
 
             jp1 = j + 1;
             if (n > jp1) {
-                /* ------------------------------------------------------------------
-                   Optimization: apply the Householder transformation to the
-                   trailing columns in groups of QRFAC_BLOCK instead of one at a
-                   time.
-
-                   Each column's dot product is still accumulated over i in
-                   ascending order into a single accumulator per column, so every
-                   intermediate value -- and hence every result -- is bit-identical
-                   to the one-column-at-a-time loop below.  Nothing is reassociated
-                   or reordered: only *independent* work is interleaved.  Two
-                   effects give the speedup:
-
-                     1. QRFAC_BLOCK independent FP addition chains replace the
-                        single latency-bound dependency chain (a dot product
-                        over m rows is a serial chain of m adds, ~4 cycles each
-                        on modern x86 => ~4 cycles per matrix element, versus
-                        ~1/(2*QRFAC_BLOCK) when the chains are interleaved).
-                     2. The Householder vector u = a[:,j] is read once per
-                        QRFAC_BLOCK columns rather than once per column, and it
-                        is read from L1 instead of being re-streamed (for large
-                        m, a[:,j] does not stay in cache across the k loop).
-
-                   The trailing pair of loops are the original code, kept for
-                   the last (n-jp1) % QRFAC_BLOCK columns.
-                   ------------------------------------------------------------------ */
-#define QRFAC_BLOCK 4
-                const real *uj = &a[j * lda];
-                const real ujj = a[j + j * lda];
-                k = jp1;
-                for (; k + (QRFAC_BLOCK - 1) < n; k += QRFAC_BLOCK) {
-                    real *c0 = &a[k * lda];
-                    real *c1 = &a[(k + 1) * lda];
-                    real *c2 = &a[(k + 2) * lda];
-                    real *c3 = &a[(k + 3) * lda];
-                    real s0 = 0., s1 = 0., s2 = 0., s3 = 0.;
-                    real t0, t1, t2, t3;
-                    real *cc[4];
+                /* Transform QRFAC_BLOCK columns at a time: their dot
+                   products are independent, so interleaving them hides the
+                   latency of the additions, and column j is read once per
+                   block. Each sum is accumulated in the same order as one
+                   column at a time, so the results are unchanged (unless the
+                   compiler contracts expressions to FMA differently). */
+                for (k = jp1; k + QRFAC_BLOCK <= n; k += QRFAC_BLOCK) {
+                    real s[QRFAC_BLOCK];
                     int q;
-                    const int k0 = k;
-
-                    for (i = j; i < m; ++i) {
-                        const real ui = uj[i];
-                        s0 += ui * c0[i];
-                        s1 += ui * c1[i];
-                        s2 += ui * c2[i];
-                        s3 += ui * c3[i];
+                    for (q = 0; q < QRFAC_BLOCK; ++q) {
+                        s[q] = 0.;
                     }
-                    t0 = s0 / ujj;
-                    t1 = s1 / ujj;
-                    t2 = s2 / ujj;
-                    t3 = s3 / ujj;
+                    /* the loops over q must be unrolled, so that the sums
+                       stay in registers; gcc does not do it by itself at -O2
+                       (64: any block size up to 64 is unrolled fully) */
                     for (i = j; i < m; ++i) {
-                        const real ui = uj[i];
-                        c0[i] -= t0 * ui;
-                        c1[i] -= t1 * ui;
-                        c2[i] -= t2 * ui;
-                        c3[i] -= t3 * ui;
+                        const real u = a[i + j * lda];
+#ifdef __GNUC__
+#pragma GCC unroll 64
+#endif
+                        for (q = 0; q < QRFAC_BLOCK; ++q) {
+                            s[q] += u * a[i + (k + q) * lda];
+                        }
                     }
-                    if (pivot) {
-                        cc[0] = c0; cc[1] = c1; cc[2] = c2; cc[3] = c3;
-                        for (q = 0; q < 4; ++q) {
-                            const int kq = k0 + q;
-                            if (rdiag[kq] == 0.) {
-                                continue;
-                            }
-                            temp = cc[q][j] / rdiag[kq];
-                            /* Computing MAX */
-                            d1 = 1 - temp * temp;
-                            rdiag[kq] *= sqrt((max((real)0.,d1)));
-                            /* Computing 2nd power */
-                            d1 = rdiag[kq] / wa[kq];
-                            if (p05 * (d1 * d1) <= epsmch) {
-                                rdiag[kq] = __cminpack_func__(enorm)(m - (j+1), &a[jp1 + kq * lda]);
-                                wa[kq] = rdiag[kq];
-                            }
+                    for (q = 0; q < QRFAC_BLOCK; ++q) {
+                        s[q] /= a[j + j * lda];
+                    }
+                    for (i = j; i < m; ++i) {
+                        const real u = a[i + j * lda];
+#ifdef __GNUC__
+#pragma GCC unroll 64
+#endif
+                        for (q = 0; q < QRFAC_BLOCK; ++q) {
+                            a[i + (k + q) * lda] -= s[q] * u;
                         }
                     }
                 }
@@ -372,7 +337,9 @@ void __cminpack_func__(qrfac)(int m, int n, real *a, int
                     for (i = j; i < m; ++i) {
                         a[i + k * lda] -= temp * a[i + j * lda];
                     }
-                    if (pivot && rdiag[k] != 0.) {
+                }
+                for (k = jp1; pivot && k < n; ++k) {
+                    if (rdiag[k] != 0.) {
                         temp = a[j + k * lda] / rdiag[k];
                         /* Computing MAX */
                         d1 = 1 - temp * temp;
