@@ -112,7 +112,7 @@ void __cminpack_func__(qform)(int m, int n, real *q, int
                 }
                 for (i = k; i <= m; ++i) {
                     const real u = wa[i];
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(__CUDACC__)
 #pragma GCC unroll 64
 #endif
                     for (c = 0; c < CMINPACK_BLOCK; ++c) {
@@ -124,7 +124,7 @@ void __cminpack_func__(qform)(int m, int n, real *q, int
                 }
                 for (i = k; i <= m; ++i) {
                     const real u = wa[i];
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(__CUDACC__)
 #pragma GCC unroll 64
 #endif
                     for (c = 0; c < CMINPACK_BLOCK; ++c) {
