@@ -62,6 +62,12 @@
 #define min(a,b) ((a) <= (b) ? (a) : (b))
 #define max(a,b) ((a) >= (b) ? (a) : (b))
 #define abs(x) ((x) >= 0 ? (x) : -(x))
+/* qrfac and qform transform CMINPACK_BLOCK columns at a time (default 4).
+   It can be set at compile time: e.g. -DCMINPACK_BLOCK=8 is faster on arm64,
+   which has more floating-point registers. */
+#ifndef CMINPACK_BLOCK
+#define CMINPACK_BLOCK 4
+#endif
 #define TRUE_ (1)
 #define FALSE_ (0)
 
