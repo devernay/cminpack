@@ -19,6 +19,6 @@ jobs:
       - name: Build and test with Homebrew GCC
         run: |
           CC=$(ls $(brew --prefix)/bin/gcc-[0-9]* | sort -t- -k2 -n | tail -1)
-          cmake -DCMAKE_C_COMPILER=$CC -DUSE_BLAS=ON -DUSE_LAPACK=ON -S . -B $RUNNER_TEMP/build-gcc
+          cmake -DCMAKE_C_COMPILER=$CC -DUSE_BLAS=ON -DUSE_LAPACK=ON "-DCMAKE_C_FLAGS=-Wall -Werror" -S . -B $RUNNER_TEMP/build-gcc
           cmake --build $RUNNER_TEMP/build-gcc -j4
           ctest --test-dir $RUNNER_TEMP/build-gcc -j4 --no-tests=error --output-on-failure
