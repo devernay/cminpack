@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   cminpack-ubuntu:
     name: cminpack (GCC toolchain + CMake)
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.OS || 'ubuntu-latest' }}
 
     strategy:
       fail-fast: false
@@ -17,6 +17,8 @@ jobs:
           - { BUILD_SHARED_LIBS: 'OFF', CMAKE_BUILD_TYPE: 'Debug', CMINPACK_PRECISION: 'all', USE_BLAS: 'OFF', USE_LAPACK: 'OFF', BUILD_EXAMPLES_FORTRAN: 'OFF', CMAKE_UNITY_BUILD: 'ON' }
           # single precision only (no double library), optimized
           - { BUILD_SHARED_LIBS: 'OFF', CMAKE_BUILD_TYPE: 'Release', CMINPACK_PRECISION: 's', USE_BLAS: 'OFF', USE_LAPACK: 'OFF', BUILD_EXAMPLES_FORTRAN: 'OFF', CMAKE_UNITY_BUILD: 'OFF' }
+          # Linux aarch64 (FMA contraction; long double is quad precision), all precisions
+          - { OS: 'ubuntu-24.04-arm', BUILD_SHARED_LIBS: 'ON', CMAKE_BUILD_TYPE: 'Release', CMINPACK_PRECISION: 'all', USE_BLAS: 'OFF', USE_LAPACK: 'OFF', BUILD_EXAMPLES_FORTRAN: 'OFF', CMAKE_UNITY_BUILD: 'OFF' }
           # BLAS + LAPACK, pkg-config
           - { BUILD_SHARED_LIBS: 'ON', CMAKE_BUILD_TYPE: 'RelWithDebInfo', CMINPACK_PRECISION: 'd', USE_BLAS: 'ON', USE_LAPACK: 'ON', BUILD_EXAMPLES_FORTRAN: 'OFF', CMAKE_UNITY_BUILD: 'OFF' }
     
