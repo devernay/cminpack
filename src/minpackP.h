@@ -14,7 +14,14 @@
 #define double_EPSILON DBL_EPSILON
 #define double_MIN DBL_MIN
 #define double_MAX DBL_MAX
+/* For the IBM double-double long double (e.g. Linux ppc64le), LDBL_EPSILON is
+   the smallest denormal, since 1+x is representable for any x: its machine
+   precision is 2^-105 (106-bit mantissa). */
+#if LDBL_MANT_DIG == 106
+#define long_double_EPSILON 0x1p-105L
+#else
 #define long_double_EPSILON LDBL_EPSILON
+#endif
 #define long_double_MIN LDBL_MIN
 #define long_double_MAX LDBL_MAX
 #define float_EPSILON FLT_EPSILON
