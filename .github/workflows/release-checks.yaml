@@ -23,6 +23,8 @@ jobs:
         include:
           # big-endian, and long double is IEEE quad precision
           - { ARCH: 's390x' }
+          # long double is IBM double-double: no long double references
+          - { ARCH: 'ppc64le' }
 
     steps:
       - uses: actions/checkout@v4
