@@ -88,11 +88,13 @@ int main()
   /*      maxfev, so it is given more of them. Both stop when the */
   /*      relative step is below xtol, so their solutions agree to */
   /*      a few times xtol (exactly, if they round the same way). */
+  /*      They may stop on different tests (exit parameter 1, 2 or 3): */
+  /*      every exit parameter from 1 to 4 means convergence. */
 
   info_lmdif = __cminpack_func__(lmdif)(fcn, &data, m, n, x_lmdif, fvec,
         ftol, xtol, gtol, 2*maxfev, 0., diag, mode, factor, nprint, &nfev_lmdif,
         fjac, ldfjac, ipvt, qtf, wa1, wa2, wa3, wa4);
-  same = (info_lmdif == info);
+  same = (info >= 1 && info <= 4 && info_lmdif >= 1 && info_lmdif <= 4);
   for (j=0; j<n; ++j) {
     same = same &&
       fabs((double)(x_lmdif[j] - x[j])) <= 10 * xtol * fabs((double)x[j]);
