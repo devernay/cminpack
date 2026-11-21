@@ -1,0 +1,40 @@
+name: Release checks
+# Slower or rarer platforms, checked before a release instead of on every
+# change: on release/* pull requests, on pull requests labeled release-checks,
+# weekly, and by hand (gh workflow run release-checks.yaml --ref <branch>).
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  cminpack-qemu:
+    name: cminpack (${{ matrix.ARCH }}, emulated)
+    if: >-
+      github.event_name != 'pull_request' ||
+      startsWith(github.head_ref, 'release/') ||
+      contains(github.event.pull_request.labels.*.name, 'release-checks')
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # big-endian, and long double is IEEE quad precision
+          - { ARCH: 's390x' }
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-qemu-action@v3
+        with:
+          platforms: ${{ matrix.ARCH }}
+
+      - name: Build and test cminpack in an emulated ${{ matrix.ARCH }} container
+        run: |
+          docker run --rm --platform linux/${{ matrix.ARCH }} -v $PWD:/src ubuntu:24.04 bash -c '
+            apt-get update -qq && apt-get install -y -qq gcc cmake python3 > /dev/null &&
+            cmake -S /src -B /tmp/build -DCMINPACK_PRECISION=all -DCMAKE_BUILD_TYPE=Release &&
+            cmake --build /tmp/build -j4 &&
+            ctest --test-dir /tmp/build -j4 --no-tests=error --output-on-failure'
