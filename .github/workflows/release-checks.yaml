@@ -38,3 +38,25 @@ jobs:
             cmake -S /src -B /tmp/build -DCMINPACK_PRECISION=all -DCMAKE_BUILD_TYPE=Release &&
             cmake --build /tmp/build -j4 &&
             ctest --test-dir /tmp/build -j4 --no-tests=error --output-on-failure'
+
+  cminpack-msvc-arm64:
+    name: cminpack (MSVC, ARM64)
+    if: >-
+      github.event_name != 'pull_request' ||
+      startsWith(github.head_ref, 'release/') ||
+      contains(github.event.pull_request.labels.*.name, 'release-checks')
+    runs-on: windows-11-arm
+    defaults:
+      run:
+        shell: cmd
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # DLL, optimized, single and double precision (MSVC's long double is
+      # double, so there is no long double library)
+      - name: Build and test cminpack
+        run: |
+          cmake -DBUILD_SHARED_LIBS=ON -DCMINPACK_PRECISION=all -A ARM64 -S . -B build
+          cmake --build build --config Release
+          ctest --test-dir build --build-config Release --no-tests=error
