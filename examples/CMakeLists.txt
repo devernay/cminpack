@@ -73,14 +73,39 @@ if (BUILD_EXAMPLES)
   # The tests below are defined for each precision built, with the prefix of
   # the Makefile and of the reference files: tlmdifc, stlmdifc, ldtlmdifc.
   find_package (OpenMP COMPONENTS C QUIET)
+
+  # The long double references ref/ld*.ref come from the x86 80-bit format
+  # (64-bit mantissa). Where long double is IEEE quad precision (113 bits,
+  # e.g. Linux on aarch64 or s390x), the solvers take other paths, and the
+  # references are in ref/quad: quad is computed in software, so it gives the
+  # same results everywhere. Other formats have no long double references.
+  include (CheckCSourceCompiles)
+  foreach (digits 64 113)
+    check_c_source_compiles ("#include <float.h>
+      #if LDBL_MANT_DIG != ${digits}
+      #error
+      #endif
+      int main (void) { return 0; }" LDBL_MANT_DIG_${digits})
+  endforeach ()
+
   foreach (lib ${cminpack_libs})
     string (REPLACE cminpack "" p ${lib})
+    set (ref ${p})
+    set (with_ref TRUE)
+    if (lib STREQUAL cminpackld AND LDBL_MANT_DIG_113)
+      set (ref quad/ld)
+    elseif (lib STREQUAL cminpackld AND NOT LDBL_MANT_DIG_64)
+      message (STATUS "No ld reference outputs for this long double format: the ld tests that compare with a reference are not run")
+      set (with_ref FALSE)
+    endif ()
 
     foreach (source ${CPGM})
       foreach (test ${source}_ ${source}c)
         add_executable (${p}${test} ${test}.c)
         target_link_libraries (${p}${test} ${lib})
-        add_minpack_test(${p}${test} ${p}${source}c)
+        if (with_ref)
+          add_minpack_test(${p}${test} ${ref}${source}c)
+        endif ()
       endforeach ()
     endforeach()
 
@@ -204,7 +229,9 @@ if (BUILD_EXAMPLES)
     foreach (test tchkderc_box tlmderc_box thybrjc_box ibmdpdrc ibmdpdr_)
       target_link_libraries (${p}${test} ${lib})
       string (REPLACE ibmdpdr_ ibmdpdrc reference ${test})
-      add_minpack_test (${p}${test} ${p}${reference})
+      if (with_ref)
+        add_minpack_test (${p}${test} ${ref}${reference})
+      endif ()
     endforeach ()
   endforeach ()
 
