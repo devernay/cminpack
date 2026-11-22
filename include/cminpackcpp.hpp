@@ -208,6 +208,21 @@ inline int hybrj1(F &&fcn, int n, real *x, real *fvec, real *fjac, int ldfjac,
         n, x, fvec, fjac, ldfjac, tol, wa, lwa));
 }
 
+template <typename F>
+inline int hybrj(F &&fcn, int n, real *x, real *fvec, real *fjac, int ldfjac,
+                 real xtol, int maxfev, real *diag, int mode, real factor,
+                 int nprint, int *nfev, int *njev, real *r, int lr, real *qtf,
+                 real *wa1, real *wa2, real *wa3, real *wa4)
+{
+    detail::callable<F> c(fcn);
+    typedef typename detail::callable<F>::type Fn;
+    detail::context ctx(c.get());
+    return ctx.rethrow(::__cminpack_func__(hybrj)(
+        &detail::fcnder_nn<Fn>, &ctx,
+        n, x, fvec, fjac, ldfjac, xtol, maxfev, diag, mode, factor, nprint,
+        nfev, njev, r, lr, qtf, wa1, wa2, wa3, wa4));
+}
+
 /* --- least squares, finite-difference Jacobian: lmdif / lmdif1 --- */
 
 template <typename F>

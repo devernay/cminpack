@@ -3,7 +3,8 @@
  *
  * It exercises the wrapper with the kinds of callables the C API cannot take
  * directly: a capturing lambda, a stateful functor, and a std::function, plus
- * plain functions passed by name and by address (issue #92). Each
+ * plain functions passed by name and by address (issue #92), with every
+ * solver of the wrapper. Each
  * solver must converge to the known solution, which proves both that the
  * templated trampolines forward the arguments correctly and that user state is
  * carried without any global variable.
@@ -133,6 +134,61 @@ int main()
         }
     }
 
+    /* lmder, lmstr and lmstr1 with the same fit */
+    auto fit_fvec = [&](int m_, const real *x, real *fvec) {
+        for (int i = 0; i < m_; ++i) {
+            fvec[i] = (x[0] + x[1] * i + x[2] * (real)i * i) - data[i];
+        }
+    };
+    {
+        auto fcn = [&](int m_, int, const real *x, real *fvec, real *fjac,
+                       int ldfjac, int iflag) -> int {
+            if (iflag == 1) {
+                fit_fvec(m_, x, fvec);
+            } else if (iflag == 2) {
+                for (int i = 0; i < m_; ++i) {
+                    fjac[i + 0 * ldfjac] = 1.;
+                    fjac[i + 1 * ldfjac] = (real)i;
+                    fjac[i + 2 * ldfjac] = (real)i * i;
+                }
+            }
+            return 0;
+        };
+        real x[3] = { 0., 0., 0. }, fvec[10], fjac[10 * 3], diag[3], qtf[3];
+        real wa1[3], wa2[3], wa3[3], wa4[10];
+        int ipvt[3], nfev, njev;
+        int info = cminpack::lmder(fcn, m, n, x, fvec, fjac, m, SOLVE_TOL,
+                                   SOLVE_TOL, 0., 600, diag, 1, 100., 0,
+                                   &nfev, &njev, ipvt, qtf, wa1, wa2, wa3, wa4);
+        check("lmder (lambda)", info >= 1 && info <= 4, max_abs_diff(x, truec, n));
+    }
+    {
+        /* lmstr asks for row iflag-2 of the Jacobian */
+        auto fcn = [&](int m_, int, const real *x, real *fvec, real *fjrow,
+                       int iflag) -> int {
+            if (iflag == 1) {
+                fit_fvec(m_, x, fvec);
+            } else {
+                const int i = iflag - 2;
+                fjrow[0] = 1.;
+                fjrow[1] = (real)i;
+                fjrow[2] = (real)i * i;
+            }
+            return 0;
+        };
+        real x[3] = { 0., 0., 0. }, fvec[10], fjac[3 * 3], diag[3], qtf[3];
+        real wa1[3], wa2[3], wa3[3], wa4[10], wa[5 * 3 + 10];
+        int ipvt[3], nfev, njev;
+        int info = cminpack::lmstr(fcn, m, n, x, fvec, fjac, n, SOLVE_TOL,
+                                   SOLVE_TOL, 0., 600, diag, 1, 100., 0,
+                                   &nfev, &njev, ipvt, qtf, wa1, wa2, wa3, wa4);
+        check("lmstr (lambda)", info >= 1 && info <= 4, max_abs_diff(x, truec, n));
+        real x1[3] = { 0., 0., 0. };
+        info = cminpack::lmstr1(fcn, m, n, x1, fvec, fjac, n, SOLVE_TOL,
+                                ipvt, wa, 5 * 3 + 10);
+        check("lmstr1 (lambda)", info >= 1 && info <= 4, max_abs_diff(x1, truec, n));
+    }
+
     /* ---------- nonlinear equations, root at (2, 3, 2) ---------- */
     const double rootc[3] = { 2., 3., 2. };
 
@@ -169,7 +225,18 @@ int main()
         check("hybrd1 (&function)", info == 1, max_abs_diff(x, rootc, 3));
     }
 
-    /* hybrj1 with a capturing lambda (analytic Jacobian) */
+    /* hybrd (full interface) with a plain function */
+    {
+        real x[3] = { 1., 1., 1. }, fvec[3], fjac[3 * 3], r[(3 * 4) / 2];
+        real diag[3], qtf[3], wa1[3], wa2[3], wa3[3], wa4[3];
+        int nfev;
+        int info = cminpack::hybrd(root_fcn, 3, x, fvec, SOLVE_TOL, 600, 2, 2,
+                                   0., diag, 1, 100., 0, &nfev, fjac, 3,
+                                   r, (3 * 4) / 2, qtf, wa1, wa2, wa3, wa4);
+        check("hybrd (function)", info == 1, max_abs_diff(x, rootc, 3));
+    }
+
+    /* hybrj1 and hybrj with a capturing lambda (analytic Jacobian) */
     {
         int njev = 0;
         auto fcn = [&](int n_, const real *x, real *fvec, real *fjac,
@@ -196,6 +263,14 @@ int main()
         int info = cminpack::hybrj1(fcn, 3, x, fvec, fjac, 3, SOLVE_TOL,
                                     wa, (3 * (3 + 13)) / 2);
         check("hybrj1 (lambda)", info == 1 && njev > 0, max_abs_diff(x, rootc, 3));
+
+        real x1[3] = { 1., 1., 1. }, r[(3 * 4) / 2], diag[3], qtf[3];
+        real wa1[3], wa2[3], wa3[3], wa4[3];
+        int nfev, njev1;
+        info = cminpack::hybrj(fcn, 3, x1, fvec, fjac, 3, SOLVE_TOL, 600,
+                               diag, 1, 100., 0, &nfev, &njev1, r, (3 * 4) / 2,
+                               qtf, wa1, wa2, wa3, wa4);
+        check("hybrj (lambda)", info == 1, max_abs_diff(x1, rootc, 3));
     }
 
     if (failures == 0) {

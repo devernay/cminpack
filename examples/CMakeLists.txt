@@ -279,6 +279,12 @@ if (BUILD_EXAMPLES)
       COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}
         --target tcppwrap_const --config $<CONFIG>)
     set_tests_properties (tcppwrap_const PROPERTIES WILL_FAIL TRUE)
+    # and the same file with a const operator() must compile
+    add_library (tcppwrap_const_ok OBJECT EXCLUDE_FROM_ALL tcppwrap_const.cpp)
+    target_compile_definitions (tcppwrap_const_ok PRIVATE CONST_OPERATOR)
+    add_test (NAME tcppwrap_const_ok
+      COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}
+        --target tcppwrap_const_ok --config $<CONFIG>)
   endif ()
 
   # Cross-check: run each cminpack driver (pure-C and f2c) and require, via
