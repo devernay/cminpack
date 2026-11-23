@@ -126,6 +126,12 @@ if (BUILD_EXAMPLES)
     add_test (NAME ${p}thybrjfd
       COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}thybrjfd>)
 
+    # dpmpar(1) must be the machine precision. See tissue198.c.
+    add_executable (${p}tissue198 tissue198.c)
+    target_link_libraries (${p}tissue198 ${lib})
+    add_test (NAME ${p}tissue198
+      COMMAND ${CMAKE_CROSSCOMPILING_EMULATOR} $<TARGET_FILE:${p}tissue198>)
+
     # Self-checking regression test for issue #76 (non-convergence / NaN in
     # lmpar on a zero-residual problem). It needs no reference file: it exits
     # non-zero if any solver fails to converge, produces NaN/Inf, or runs up to
