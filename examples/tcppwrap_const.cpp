@@ -1,19 +1,22 @@
 /*
  * Compile-only test for cminpackcpp.hpp (issue #93): a const functor whose
  * operator() is not const must be rejected, like calling a non-const member
- * function on a const object. CTest expects this file to FAIL to compile.
+ * function on a const object. CTest expects this file to FAIL to compile,
+ * and to compile with -DCONST_OPERATOR (a const operator()), so that it does
+ * not pass because of an unrelated error.
  */
 #include <cminpackcpp.hpp>
 
 typedef __cminpack_real__ real;
 
 struct Residual {
-    int calls;
-    Residual() : calls(0) {}
+    Residual() {}
     int operator()(int m, int n, const real *x, real *fvec, int iflag)
+#ifdef CONST_OPERATOR
+        const
+#endif
     {
         (void)n; (void)iflag;
-        ++calls;
         for (int i = 0; i < m; ++i) {
             fvec[i] = x[0] - (real)i;
         }

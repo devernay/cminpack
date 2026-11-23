@@ -24,6 +24,8 @@
        };
        int info = cminpack::lmdif1(residual, m, n, x, fvec, tol, iwa, wa, lwa);
 
+   It requires C++11 (variadic templates, std::exception_ptr).
+
    The wrapper is header-only and precision-agnostic: it uses the same
    __cminpack_real__ / __cminpack_func__ selection as cminpack.h, so defining
    __cminpack_float__ (etc.) before including this header targets that variant.
@@ -104,9 +106,11 @@ struct context {
 };
 
 /* call the callable; if it throws, store the exception and return -1 to stop
-   the solver, and don't call it again */
+   the solver, and don't call it again. It is called from C code, so nothing
+   may propagate out of it: noexcept makes the program terminate if anything
+   ever did, instead of unwinding through the C solver. */
 template <typename Fn, typename... Args>
-int call(void *p, Args... args)
+int call(void *p, Args... args) noexcept
 {
     context *c = static_cast<context *>(p);
 #ifdef CMINPACKCPP_EXCEPTIONS
@@ -126,34 +130,34 @@ int call(void *p, Args... args)
 
 /* trampolines: forward the arguments to the callable */
 template <typename Fn>
-int fcn_nn(void *p, int n, const real *x, real *fvec, int iflag)
+int fcn_nn(void *p, int n, const real *x, real *fvec, int iflag) noexcept
 {
     return call<Fn>(p, n, x, fvec, iflag);
 }
 
 template <typename Fn>
 int fcnder_nn(void *p, int n, const real *x, real *fvec, real *fjac,
-              int ldfjac, int iflag)
+              int ldfjac, int iflag) noexcept
 {
     return call<Fn>(p, n, x, fvec, fjac, ldfjac, iflag);
 }
 
 template <typename Fn>
-int fcn_mn(void *p, int m, int n, const real *x, real *fvec, int iflag)
+int fcn_mn(void *p, int m, int n, const real *x, real *fvec, int iflag) noexcept
 {
     return call<Fn>(p, m, n, x, fvec, iflag);
 }
 
 template <typename Fn>
 int fcnder_mn(void *p, int m, int n, const real *x, real *fvec, real *fjac,
-              int ldfjac, int iflag)
+              int ldfjac, int iflag) noexcept
 {
     return call<Fn>(p, m, n, x, fvec, fjac, ldfjac, iflag);
 }
 
 template <typename Fn>
 int fcnderstr_mn(void *p, int m, int n, const real *x, real *fvec, real *fjrow,
-                 int iflag)
+                 int iflag) noexcept
 {
     return call<Fn>(p, m, n, x, fvec, fjrow, iflag);
 }
@@ -202,6 +206,21 @@ inline int hybrj1(F &&fcn, int n, real *x, real *fvec, real *fjac, int ldfjac,
     return ctx.rethrow(::__cminpack_func__(hybrj1)(
         &detail::fcnder_nn<Fn>, &ctx,
         n, x, fvec, fjac, ldfjac, tol, wa, lwa));
+}
+
+template <typename F>
+inline int hybrj(F &&fcn, int n, real *x, real *fvec, real *fjac, int ldfjac,
+                 real xtol, int maxfev, real *diag, int mode, real factor,
+                 int nprint, int *nfev, int *njev, real *r, int lr, real *qtf,
+                 real *wa1, real *wa2, real *wa3, real *wa4)
+{
+    detail::callable<F> c(fcn);
+    typedef typename detail::callable<F>::type Fn;
+    detail::context ctx(c.get());
+    return ctx.rethrow(::__cminpack_func__(hybrj)(
+        &detail::fcnder_nn<Fn>, &ctx,
+        n, x, fvec, fjac, ldfjac, xtol, maxfev, diag, mode, factor, nprint,
+        nfev, njev, r, lr, qtf, wa1, wa2, wa3, wa4));
 }
 
 /* --- least squares, finite-difference Jacobian: lmdif / lmdif1 --- */
