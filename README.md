@@ -224,6 +224,15 @@ applied only when those options are on.
 History
 ------
 
+* version 1.3.16 (27/11/2026):
+  - Fix the long double solvers on Linux ppc64le (IBM double-double):
+    `dpmpar(1)` returned 4.9e-324
+    [#198](https://github.com/devernay/cminpack/issues/198)
+  - Fix the long double tests on Linux aarch64 and s390x
+    [#193](https://github.com/devernay/cminpack/issues/193), and `tlmderfd` on
+    aarch64 [#195](https://github.com/devernay/cminpack/issues/195)
+  - C++ wrapper: add `hybrj`
+
 * version 1.3.15 (10/11/2026):
   - Speed up `qrfac` and `qform` about 2×: each Householder transformation is
     applied to `CMINPACK_BLOCK` columns at a time (default 4), contributed by
